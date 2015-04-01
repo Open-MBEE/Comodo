@@ -1,0 +1,63 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: ACS_Root.xpt 389 2011-08-29 07:37:23Z nbenes $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model -»
+	«EXPAND txt::Summary::Root FOR this -»		
+	«EXPAND xml::Components::Root FOR this -»		
+	«EXPAND xml::Containers::Root FOR this -»		
+	«EXPAND xml::Manager::Root FOR getPackageVar() -»		
+	«EXPAND xml::Schema::Root FOR this -»		
+	«EXPAND xml::Channels::Root FOR this -»		
+	«EXPAND xml::EventChannel::Root FOR getPackageVar() -»		
+	«EXPAND py::SimClient::Root FOR this -»
+	«EXPAND xml::SimComponent::Root FOR this -»
+	«EXPAND xml::SimComponentCharacteristic::Root FOR this -»
+	«EXPAND xml::SimContainer::Root FOR getPackageVar() -»
+	«EXPAND txt::TATlistlite::Root FOR this -»
+	«EXPAND txt::TATMakefile::Root FOR this -»
+	«EXPAND txt::TATEnvironment::Root FOR getPackageVar() -»
+	«EXPAND txt::TATEpilogue::Root FOR getPackageVar() -»
+	«EXPAND txt::TATPrologue::Root FOR getPackageVar() -»
+	«EXPAND cpp::TestUnit::Root FOR this -»
+	«EXPAND java::TestUnit::Root FOR this -»
+	«EXPAND py::TestUnit::Root FOR this -»
+	«EXPAND xml::TestContainers::Root FOR getPackageVar() -»
+	«EXPAND idl::Component::Root FOR this -»
+	«EXPAND idl::Common::Root FOR this -»
+	«EXPAND idl::SMMaintenance::Root FOR this -»
+	«EXPAND xml::ModuleErr::Root FOR this -»
+	«EXPAND java::ComponentAbstract::Root FOR this -»
+	«EXPAND java::Component::Root FOR this -»
+	«EXPAND java::ComponentHelper::Root FOR this -»
+	«EXPAND java::SMRoot::Root FOR this -»
+	«IF generateModeAll()»	
+		«EXPAND txt::Makefile::Root FOR this-»
+		«EXPAND txt::EclipseProject::Root FOR getPackageVar() -»
+		«EXPAND txt::EclipseClasspath::Root FOR this -»
+		«EXPAND txt::Changelog::Root FOR this -»
+	«ENDIF»
+	
+«ENDDEFINE»

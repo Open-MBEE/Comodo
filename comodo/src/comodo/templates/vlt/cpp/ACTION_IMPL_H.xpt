@@ -1,0 +1,152 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::scxmlutil»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::uml::artifact»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model -»
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+«EXPAND SM FOREACH eElement.getStateMachines()-»
+«ENDFOREACH-»
+«ENDDEFINE»
+
+«DEFINE SM FOR uml::StateMachine -»
+«FOREACH this.getAllActionNamePrefix().removeDuplicates() AS actionName -»
+«LET fileExists(getOutputDirectory()+'/'+this.getModel().getModulePackage().name+'/include/'+this.getModel().getModulePackage().name+'ACTION_'+actionName+'.h') AS alreadyThere -»
+«IF generateModeAll() || (alreadyThere == false && generateModeUpdate())»
+
+«FILE this.getModel().getModulePackage().name+'/include/'+this.getModel().getModulePackage().name+'ACTION_'+actionName+'.h'-»
+#ifndef «this.getModel().getModulePackage().name+'ACTION_'+actionName+'_H'»
+#define «this.getModel().getModulePackage().name+'ACTION_'+actionName+'_H'»
+«EXPAND comodo::templates::vlt::txt::Copyright::Source FOR "" -»
+
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C
+#endif
+
+«IF actionName.isVltStandardAction()-»
+	«EXPAND ActionStandard FOR actionName-»
+«ELSE-»
+	«EXPAND ActionCustom FOR actionName-»
+«ENDIF»	
+
+#endif // !«this.getModel().getModulePackage().name»ACTION_«actionName»_H
+
+«ENDFILE»
+«ENDIF»
+«ENDLET»
+«ENDFOREACH-»
+«ENDDEFINE»
+
+
+«DEFINE ActionStandard FOR String -»
+#ifndef wsf2libACTION_«this»_H
+#include "wsf2libACTION_«this».h"
+#endif
+
+
+class «getPackageVar()»ACTION_MGR;    
+class «getPackageVar()»CONFIG;
+class «getPackageVar()»DATA;
+class wsf2libCONTROL;
+
+
+/** 
+ * «this» action class.    
+ */
+class «getPackageVar()»ACTION_«this» : public wsf2libACTION_«this»
+{
+  public:
+    «getPackageVar()»ACTION_«this»(«getPackageVar()»ACTION_MGR& actionMgr,
+		       wsf2libCONTROL& control, 
+		       «getPackageVar()»CONFIG& config, 
+		       «getPackageVar()»DATA& data);
+    virtual ~«getPackageVar()»ACTION_«this»();
+   
+«IF this.matches("VERSION")-»   
+    virtual ccsCOMPL_STAT Execute();
+«ENDIF-»
+       
+  private:
+    «getPackageVar()»ACTION_MGR& mActionMgr;
+    wsf2libCONTROL&     mControl;
+    «getPackageVar()»CONFIG&     mConfig;
+    «getPackageVar()»DATA&       mData;
+
+    «getPackageVar()»ACTION_«this»(const «getPackageVar()»ACTION_«this»&);
+    «getPackageVar()»ACTION_«this»& operator= (const «getPackageVar()»ACTION_«this»&);
+};
+
+«ENDDEFINE»
+
+
+«DEFINE ActionCustom FOR String -»
+#ifndef wsf2libACTION_H
+#include "wsf2libACTION.h"
+#endif
+
+
+class «getPackageVar()»ACTION_MGR;    
+class «getPackageVar()»CONFIG;
+class «getPackageVar()»DATA;
+class wsf2libCONTROL;
+
+
+/** 
+ * «this» action class.    
+ */
+class «getPackageVar()»ACTION_«this» : public wsf2libACTION
+{
+  public:
+    «getPackageVar()»ACTION_«this»(«getPackageVar()»ACTION_MGR& actionMgr,
+		       wsf2libCONTROL& control, 
+		       «getPackageVar()»CONFIG& config, 
+		       «getPackageVar()»DATA& data);
+    virtual ~«getPackageVar()»ACTION_«this»();
+
+    virtual ccsCOMPL_STAT Init();
+    virtual ccsCOMPL_STAT Execute();
+    virtual ccsCOMPL_STAT Complete();
+    virtual ccsCOMPL_STAT Abort();
+    virtual ccsCOMPL_STAT Reject();
+    virtual ccsCOMPL_STAT Supersede();
+   
+  private:
+    «getPackageVar()»ACTION_MGR& mActionMgr;
+    wsf2libCONTROL&    mControl;
+    «getPackageVar()»CONFIG&     mConfig;
+    «getPackageVar()»DATA&       mData;
+
+    «getPackageVar()»ACTION_«this»(const «getPackageVar()»ACTION_«this»&);
+    «getPackageVar()»ACTION_«this»& operator= (const «getPackageVar()»ACTION_«this»&);
+};
+
+«ENDDEFINE»
+
+
+
+

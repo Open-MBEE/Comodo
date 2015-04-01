@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import SCJavaImpSim
+	</pythonImports>
+        
+	<_corbaMethod Name="reset" Timeout="0">
+SCJavaImpSim.reset()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="status" Timeout="0">
+SCJavaImpSim.status()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getPosition" Timeout="0">
+SCJavaImpSim.getPosition()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="sensorType" Timeout="0">
+SCJavaImpSim.sensorType()
+	</_corbaMethod>
+	
+</SimulatedComponent>

@@ -1,0 +1,233 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Fsms.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::scxmlutil»
+«EXTENSION comodo::xtend::uml::statemachine»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+
+«DEFINE Root FOR uml::Model-»
+«FILE getPackageVar()+"/src/"+getPackageVar()+".java"-»
+«EXPAND Code::SystemStart FOR getPackageVar() -»
+«EXPAND RootSM FOREACH allOwnedElements().typeSelect(uml::StateMachine)-»
+«EXPAND Code::SystemEnd FOR getPackageVar() -»
+«ENDFILE»
+«ENDDEFINE»
+
+
+«DEFINE RootSM FOR uml::StateMachine-»
+«EXPAND Code::StateMachineStart FOR this.name -»
+«EXPAND Code::Properties FOR this-»
+«FOREACH listStates().select(e|e.isTopState()).sortBy(e|e.name) AS st-» 
+	«IF this.getInitialState().name.matches(st.name)-»
+		final S_«st.name» s_«st.name» = makeInitial(new S_«st.name»());
+	«ELSE-»
+		final S_«st.name» s_«st.name» = new S_«st.name»();
+	«ENDIF-»	
+	
+	«EXPAND ExploreState FOR st-»
+«ENDFOREACH-»	
+«EXPAND Code::StateMachineEnd FOR this.name -»
+«ENDDEFINE»
+
+«REM» Explore Generic States «ENDREM»
+«DEFINE ExploreState FOR State -»
+	«IF this.isSimple()-»
+		«EXPAND ExploreSimpleState -»
+	«ELSE»
+		«IF this.isComposite()-»
+			«EXPAND ExploreCompositeState -»
+		«ENDIF»
+	«ENDIF»	
+«ENDDEFINE»
+
+«REM» Explore Simple States «ENDREM»
+«DEFINE ExploreSimpleState FOR State -»
+	«IF this.isFinalState()-»
+		«EXPAND Code::SimpleFinalState-»
+	«ELSE-»	
+		«EXPAND Code::StateBegin-»
+		«EXPAND ExploreActions-»
+		«EXPAND ExploreEventlessTransitions-»
+		«EXPAND ExploreTransitions-»
+		«EXPAND Code::StateEnd-»
+	«ENDIF-»
+«ENDDEFINE»
+
+«REM» Explore Complex States «ENDREM»
+«DEFINE ExploreCompositeState FOR State-»
+	«IF this.isOrthogonal()-»
+		«EXPAND ExploreOrthogonalState-»
+	«ELSEIF !this.listStates().isEmpty-»
+		«EXPAND Code::StateBegin-»
+		//initial state for composite state '«name»': '«this.getInitialState().name»'
+		«FOREACH this.listStates() AS s-»
+			«IF this.getInitialState().name.matches(s.name)-»
+				final S_«s.name» s_«s.name» = makeInitial(new S_«s.name»());
+			«ELSE-»
+		  		final S_«s.name» s_«s.name» = new S_«s.name»();
+		  	«ENDIF-»	
+		«ENDFOREACH-»
+		«FOREACH this.listCompChilds() AS cc-»
+			«EXPAND ExploreCompositeState FOR cc-»
+		«ENDFOREACH-»
+		«FOREACH this.listSimpleChilds() AS sc-»
+			«EXPAND ExploreSimpleState FOR sc-»
+		«ENDFOREACH-»
+		«IF this.hasHistory()-»
+			«EXPAND ExploreHistory -»
+		«ENDIF-»
+		«EXPAND ExploreActions -»
+		«EXPAND ExploreEventlessTransitions-»
+		«EXPAND ExploreTransitions -»
+		«EXPAND Code::StateEnd -»
+	«ELSE-»
+		«EXPAND ExploreSimpleState -»
+	«ENDIF-»
+«ENDDEFINE»
+
+«REM» Explore Orthogonal States «ENDREM»
+«REM» Parallel Regions MUST have a nome in the ecore model  «ENDREM»
+«REM» Parallel Regions are mapped as Complex states: a default state is needed «ENDREM»
+«DEFINE ExploreOrthogonalState FOR State-»
+	«EXPAND Code::StateBegin-»		
+	«FOREACH this.allOwnedElements().typeSelect(Region).select(e|(e.owner == this)) AS oreg-»
+		//initial state for orthogonal region '«oreg.name»': '«oreg.getInitialState().name»'
+		«FOREACH oreg.allOwnedElements().typeSelect(State).select(e| (e.parentState() == oreg.parentState())) AS s -»
+			«IF oreg.getInitialState().name.matches(s.name)»
+				final S_«s.name» s_«s.name» = makeInitial(new S_«s.name»());
+			«ELSE»
+		  		final S_«s.name» s_«s.name» = new S_«s.name»();
+		  	«ENDIF»	
+		«ENDFOREACH-»  	
+		«FOREACH oreg.allOwnedElements().typeSelect(State).select(e|(e.owner == oreg)) AS ost-»
+			«EXPAND ExploreState FOR ost-»
+		«ENDFOREACH-»
+	«ENDFOREACH-»
+	«IF this.hasHistory()-»
+		«EXPAND ExploreHistory-»
+	«ENDIF-»
+	«EXPAND ExploreActions-»
+	«EXPAND ExploreEventlessTransitions-»
+	«EXPAND ExploreTransitions-»
+	«EXPAND Code::StateEnd-»		
+«ENDDEFINE»			
+
+«REM» Explore Actions and Activities «ENDREM»
+«DEFINE ExploreActions FOR State-»
+	«IF this.hasOnEntry()-»
+		«EXPAND Code::EntryAction-»
+	«ENDIF-»
+	«IF this.hasDoActions()-»
+		«EXPAND Code::DoActivity-»
+	«ENDIF-» 
+	«IF this.hasOnExit()-»
+		«EXPAND Code::ExitAction-»
+	«ENDIF-»
+«ENDDEFINE»
+
+«REM» Explore Transitions «ENDREM»
+«DEFINE ExploreTransitions FOR State-»
+	«FOREACH this.getAllEventsName().removeDuplicates() AS event -»
+		«IF event.length > 0 -»
+		public void «event»() {
+			«FOREACH this.outgoing.select(e|e.getEventInTransition().matches(event)) AS tr -»
+				«IF tr.hasCond()-»
+				/* guard */
+				/* MARS:
+				if («tr.getGuardInTransition()») {
+				*/
+				«ENDIF-»					
+				«IF tr.effect != null»	
+					log("Executing action on transition: «tr.effect.name»");
+
+					«IF tr.effect.metaType.name.matches("uml::OpaqueBehavior") -»
+						«EXPAND Code::Activity FOR (uml::OpaqueBehavior)(tr.effect) -»
+					«ENDIF-»
+				«ENDIF-»
+				«IF tr.isInternalTransition() == false -»
+					«IF tr.isTransitionToEndState()-»
+					setEndState();
+					return;
+					«ELSE-»	
+					setNextState(s_«tr.target.name»);
+					return;
+					«ENDIF-»
+				«ENDIF-»	
+				«IF tr.hasCond()-»
+				// MARS: }
+				«ENDIF-»
+			«ENDFOREACH-»	
+		}
+		«ELSE-»
+		«REM» This is a transition with event with no name -> handled by ExploreEventlessTransitions «ENDREM»
+		«ENDIF-»
+	«ENDFOREACH-»
+	
+	«FOREACH this.outgoing AS tr-»
+		«IF tr.isTimerTransition()-»
+		public void timer«tr.getTimeEventDuration()»() {
+			«IF tr.isTransitionToEndState()-»
+			setEndState();
+			«ELSE-»	
+			setNextState(s_«tr.target.name»);
+			«ENDIF-»
+			return;
+		}
+		«ENDIF-»
+	«ENDFOREACH-»
+
+«ENDDEFINE»
+
+«DEFINE ExploreEventlessTransitions FOR State-»
+	«IF (this.outgoing.select(e|(e.getEventInTransition().length == 0) || (e.hasEvent() == false)).isEmpty == false) -»
+		public void completion () {
+	  	«FOREACH this.outgoing AS tr-»
+			«IF tr.hasCond()-»
+			/* guard */
+			/* MARS:
+			if («tr.getGuardInTransition()») {
+			*/
+			«ENDIF-»	
+			«IF tr.isTransitionToEndState()-»
+			setEndState();
+			«ELSE-»	
+      		setNextState(s_«tr.target.name»);
+      		«ENDIF-»
+			«IF tr.hasCond()-»
+			// MARS: }
+			«ENDIF-»	
+		«ENDFOREACH»
+		}
+	«ENDIF-»		
+«ENDDEFINE»
+
+«REM» Explore History «ENDREM»
+«DEFINE ExploreHistory FOR State-»
+	//@@@ History states
+	«FOREACH this.getHistory() AS hs-»
+	//history id «hs.container.getFullName()» «hs.name» «hs.historyType()-»
+	//transition target «hs.outgoing.get(0).target.container.getFullName()»:«hs.outgoing.get(0).target.name»"/>
+	«ENDFOREACH-»
+«ENDDEFINE»

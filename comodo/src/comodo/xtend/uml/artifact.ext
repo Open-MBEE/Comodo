@@ -1,0 +1,68 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: artifact.ext 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+ 
+import uml;
+
+extension comodo::xtend::uml::interface;
+
+
+/**
+ * Navigate to the artifact's first supplier using the first manifestation
+ */
+Class getFirstSupplier(Artifact artifact) :
+	artifact.manifestation.first().supplier.first();
+
+//######################### INTERFACE ##########################################
+/**
+ * Navigate to the 1st realized interface of the artifact.
+ * This is the main interface for the component.
+ */
+Interface getFirstInterface(Artifact artifact) :
+	artifact.getFirstSupplier().allOwnedElements().typeSelect(InterfaceRealization).first().supplier.typeSelect(Interface).first();
+
+List[Interface] getAllInterfaces(Artifact artifact) :
+	artifact.getFirstInterface().getAllInterfaces();
+
+//##################### SIGNALS AND STATEMACHINE ###############################
+List[Signal] getSignals(Artifact artifact) :
+	artifact.getFirstInterface().getSignals();
+
+List[StateMachine] getStateMachines(Artifact artifact) :
+	artifact.getFirstSupplier().allOwnedElements().typeSelect(StateMachine);
+
+boolean hasStateMachine(Artifact artifact) :
+	!artifact.getStateMachines().isEmpty;
+
+
+//############################# OPERATIONS #####################################
+/*
+ * The operations from the main interface are these that should be implemented.
+ */
+List[Operation] getImplOperations(Artifact artifact) : 
+	artifact.getFirstInterface().getAllOperations();
+
+boolean hasImplOperations(Artifact artifact) :
+	!artifact.getImplOperations().isEmpty;
+
+
+
+
+
+

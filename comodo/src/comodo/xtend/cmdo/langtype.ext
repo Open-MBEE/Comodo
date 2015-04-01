@@ -1,0 +1,146 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: langtype.ext 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+
+import uml;
+
+
+extension comodo::xtend::cmdo::interface;
+extension comodo::xtend::uml::interface;
+extension comodo::xtend::cmdo::package;
+extension comodo::xtend::cmdo::artifact;
+
+
+boolean isVoid(Type type):
+	type.name == null || type.name.length == 0 || type.name.toLowerCase() == 'void';
+
+//####################### LANGUAGE DEPENDENT TYPES #############################
+/**
+ * Compose the string to create a new instance of a type.
+ */
+String toPythonNew(Type type):
+	if type.name.toLowerCase() == 'long'
+		then '0'
+	else if type.name.toLowerCase() == 'boolean'
+		then 'False'
+	else if type.name.toLowerCase() == 'timeinterval'
+		then '0'
+    else if type.name.toLowerCase() == 'string'
+		then "'emptyString'"    
+	else
+		type.name+'()';
+
+
+/**
+ * Map a UML type name to Java type name.
+ */
+String toJava(Type type):
+	if type.isVoid()
+		then 'void'
+	else if type.name.toLowerCase() == 'long'
+		then 'int'
+	else if type.name.toLowerCase() == 'boolean'
+		then 'boolean'
+	else if type.name.toLowerCase() == 'timeinterval'
+		then 'long'
+	else if type.name.toLowerCase() == 'integer'
+		then 'int'
+	else if type.name.toLowerCase() == 'real'
+		then 'double'		
+	else
+		type.name;
+
+/**
+ * Compose the string to create a new instance of a type.
+ */
+String toJavaNew(Type type):
+	if type.name.toLowerCase() == 'long' || type.name.toLowerCase() == 'int' || type.name.toLowerCase() == 'char'
+		then '0'
+	else if type.name.toLowerCase() == 'float' || type.name.toLowerCase() == 'double'
+		then '0.0'
+	else if type.name.toLowerCase() == 'boolean'
+		then 'false'
+	else if type.name.toLowerCase() == 'timeinterval'
+		then '0L'
+	else if type.name.toLowerCase() == 'cbstring'
+		then 'CBstring.class.newInstance()'    
+	else
+		'new ' + type.name +'()';
+
+/**
+ * Map a UML type name to IDL type name.
+ */
+String toIDL(Type type, Package current) :
+	if type.isVoid()
+		then 'void'
+	else if type.name.toLowerCase() == 'boolean'
+			|| type.name.toLowerCase() == 'long'
+			|| type.name.toLowerCase() == 'double'
+			|| type.name.toLowerCase() == 'float'
+			|| type.name.toLowerCase() == 'char'
+			|| type.name.toLowerCase() == 'type.nameing'
+			|| type.name.toLowerCase() == 'string' 
+		then type.name.toLowerCase()
+	else assemblePackagePrefix(type, current);
+
+
+/**
+ * Adds the package name as prefix to the the given type, when this type is not
+ * in the package where it is used.
+ */
+private String assemblePackagePrefix(Type element, Package current) :
+	(if current.allOwnedElements().contains(element)
+		then ''
+	else element.package.name + '::')
+	 + element.name;
+
+/**
+ * Assembles a list with all interfaces that should be inherited by a given
+ * IDL interface.
+ * - if this interface has no parents, then
+ *    add CharacteristicComponent or ACSComponent
+ * - if there's no parent with SM AND this hasSM, then
+ *    add the SMMMaintenance interface
+ *
+ * The 'ignorePackage' is a package name that must be ignored when checking the
+ * preconditions to add the 'configurable' dependent inheritances, e.g., the
+ * package name of a platform interface such as 'acs'.
+ *
+ * In general, this function retrieves the names of all interfaces on which the
+ * current interface depends on. 
+ */
+List[String] composeIDLInterfaceInheritance(Interface interface, String ignorePackage) :
+	let iflist = {} :
+		/* i f  no parents  t h e n */
+		(if interface.getParentInterfaces().select(e|e.package.name.toLowerCase() != ignorePackage).isEmpty
+			then
+			/* i f configurable t h e n add CharacteristicCompIF */
+			(if interface.isConfigurable()
+				then iflist.add("ACS::CharacteristicComponent")
+			/* i f not configurable t h e n add ComponentIF */
+			else
+				iflist.add("ACS::ACSComponent")
+			)
+		) -> /* if hasSMM  a n d all parents do not have SMM t h e n add SMM interface */
+		(if interface.hasSMMaintenance() && interface.getParentInterfaces().select(e|e.hasSMMaintenance()).isEmpty
+			then iflist.add("SMMaintenance")
+		) ->
+		iflist.addAll(
+			interface.getImmediateParents().collect(e|e.assemblePackagePrefix(interface.package))
+		);

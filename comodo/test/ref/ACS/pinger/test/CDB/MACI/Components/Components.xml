@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2011-11-19 Created.	
+-->
+<Components  xmlns="urn:schemas-cosylab-com:Components:1.0"
+		xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+		xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		
+		<_ Name="MainPinger" 
+			Code="alma.pinger.PingerImplHelper"
+			Type="IDL:alma/pinger/PingerIF:1.0"
+			Container="PingerContainer" 
+			ImplLang="java" />
+
+		<!-- Component Simulators -->
+		<_ Name="MainPingerSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/pinger/PingerIF:1.0"
+			Container="pingerSimulator" 
+			ImplLang="py" />
+
+	   <!-- Instance to test components -->
+	   
+	   <!-- Java Component Instances -->
+	   
+	   <_ Name="testInstancePingerImpl" 
+			Code="alma.pinger.PingerImplHelper"
+			Type="IDL:alma/pinger/PingerIF:1.0"
+			Container="pingerJavaTest" 
+			ImplLang="java" />
+			
+	   
+	   
+</Components>

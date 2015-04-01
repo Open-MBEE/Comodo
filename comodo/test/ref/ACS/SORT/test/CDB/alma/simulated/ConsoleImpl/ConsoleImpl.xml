@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import ConsoleImplSim
+	</pythonImports>
+        
+	<_corbaMethod Name="setMode" Timeout="0">
+ConsoleImplSim.setMode(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getMode" Timeout="0">
+ConsoleImplSim.getMode()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="moveTelescope" Timeout="0">
+ConsoleImplSim.moveTelescope(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getTelescopePosition" Timeout="0">
+ConsoleImplSim.getTelescopePosition()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getCameraImage" Timeout="0">
+ConsoleImplSim.getCameraImage()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="cameraOn" Timeout="0">
+ConsoleImplSim.cameraOn()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="cameraOff" Timeout="0">
+ConsoleImplSim.cameraOff()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="setRGB" Timeout="0">
+ConsoleImplSim.setRGB(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="setPixelBias" Timeout="0">
+ConsoleImplSim.setPixelBias(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="setResetLevel" Timeout="0">
+ConsoleImplSim.setResetLevel(parameters[0])
+	</_corbaMethod>
+	
+</SimulatedComponent>

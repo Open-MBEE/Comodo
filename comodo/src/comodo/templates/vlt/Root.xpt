@@ -1,0 +1,97 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model -»
+
+	«EXPAND cpp::APPLICATION_H::Root FOR getPackageVar() -»
+	«EXPAND cpp::APPLICATION_C::Root FOR getPackageVar() -»	
+	«EXPAND cpp::Events_H::Root FOR this -»
+	«EXPAND txt::ModMakefile::Root FOR this -»	
+	«EXPAND txt::Events::Root FOR this -»
+
+	«IF generateModeUpdate()»	
+		«EXPAND cpp::ACTION_MGR_C::Root FOR this -»
+		«EXPAND cpp::ACTION_IMPL_C::Root FOR this -»
+		«EXPAND cpp::ACTIVITY_IMPL_C::Root FOR this -»
+
+		«EXPAND cpp::ACTION_MGR_H::Root FOR getPackageVar() -»
+		«EXPAND cpp::ACTION_IMPL_H::Root FOR this -»
+		«EXPAND cpp::ACTIVITY_IMPL_H::Root FOR this -»
+		«EXPAND cpp::Actions_H::Root FOR this -»
+	«ENDIF»	
+	
+	«IF generateModeAll()»	
+		«REM» module/src «ENDREM»
+		«EXPAND txt::SrcMakefile::Root FOR getPackageVar() -»
+		«EXPAND cpp::Control_C::Root FOR getPackageVar() -»
+		«EXPAND cpp::DATA_C::Root FOR getPackageVar() -»
+		«EXPAND cpp::CONFIG_C::Root FOR getPackageVar() -»
+		«EXPAND cpp::ACTION_MGR_C::Root FOR this -»
+		«EXPAND cpp::ACTION_IMPL_C::Root FOR this -»
+		«EXPAND cpp::ACTIVITY_IMPL_C::Root FOR this -»
+
+		«REM» module/include «ENDREM»
+		«EXPAND cpp::Module_H::Root FOR getPackageVar() -»
+		«EXPAND cpp::Defines_H::Root FOR getPackageVar() -»
+		«EXPAND cpp::Actions_H::Root FOR this -»
+		«EXPAND cpp::DATA_H::Root FOR getPackageVar() -»
+		«EXPAND cpp::CONFIG_H::Root FOR getPackageVar() -»
+		«EXPAND cpp::ACTION_MGR_H::Root FOR getPackageVar() -»
+		«EXPAND cpp::ACTION_IMPL_H::Root FOR this -»
+		«EXPAND cpp::ACTIVITY_IMPL_H::Root FOR this -»
+		
+		«REM» module/CDT «ENDREM»
+		«EXPAND txt::CDT::Root FOR getPackageVar() -»
+	
+		«REM» module/ERRORR «ENDREM»
+		«EXPAND txt::ERRORS::Root FOR getPackageVar() -»
+	
+		«REM» module/dbl «ENDREM»
+		«EXPAND txt::DBMain::Root FOR getPackageVar() -»
+		«EXPAND txt::DBConfig::Root FOR getPackageVar() -»
+		«EXPAND txt::DBData::Root FOR getPackageVar() -»
+
+		«REM» module/config «ENDREM»
+
+		«REM» module/test «ENDREM»
+		«EXPAND txt::TestMakefile::Root FOR getPackageVar() -»
+		«EXPAND txt::TestCcsEnvTable::Root FOR getPackageVar() -»
+		«EXPAND txt::TestDatabaseDb::Root FOR getPackageVar() -»
+		«EXPAND txt::TestUserDb::Root FOR getPackageVar() -»
+		«EXPAND txt::TestDbMakefile::Root FOR getPackageVar() -»
+		«EXPAND txt::TestTESTLIST::Root FOR getPackageVar() -»
+		«EXPAND txt::TestList::Root FOR getPackageVar() -»
+		«EXPAND txt::TestDriver::Root FOR getPackageVar() -»
+		«EXPAND txt::Sed::Root FOR getPackageVar() -»
+		«EXPAND txt::TestDriverRef::Root FOR getPackageVar() -»
+		«EXPAND txt::TestSetEnv::Root FOR getPackageVar() -»
+		«EXPAND txt::TestStart::Root FOR getPackageVar() -»
+		«EXPAND txt::TestStdCommandsRef::Root FOR getPackageVar() -»
+		«EXPAND tcl::TestStdCommands::Root FOR getPackageVar() -»
+		«EXPAND tcl::TestSupport::Root FOR getPackageVar() -»		
+	«ENDIF»
+	
+«ENDDEFINE»

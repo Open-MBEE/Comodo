@@ -1,0 +1,152 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Code.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::scxmlutil»
+«EXTENSION comodo::xtend::uml::statemachine»
+«EXTENSION comodo::xtend::cmdo::langtype»
+
+
+«DEFINE SystemStart FOR String-»
+/**
+ * Java PathFinder Statechart (jpf-statechart)
+ */
+
+import gov.nasa.jpf.sc.*;
+
+public class «this» extends State {
+«ENDDEFINE»
+ 
+«DEFINE SystemEnd FOR String -»
+}
+«ENDDEFINE»
+
+
+«DEFINE StateMachineStart FOR String-»
+
+//
+// State Machine: «this»
+//
+
+final SM_«this» sm_«this» = makeInitial(new SM_«this»());
+
+public class SM_«this» extends State {
+«ENDDEFINE»
+ 
+«DEFINE StateMachineEnd FOR String -»
+}
+«ENDDEFINE»
+
+
+«DEFINE FinalState FOR StateMachine -»
+//@@@ Final states:
+«FOREACH this.allOwnedElements().typeSelect(FinalState).select(e|e.parentState().name.toString() == "null") AS st -»
+//«st.name»
+«ENDFOREACH-»
+«ENDDEFINE»
+
+
+«DEFINE SimpleFinalState FOR State -»
+//@@@ Simple final state «name-»
+«ENDDEFINE»
+
+«DEFINE StateBegin FOR State»
+public class S_«name» extends State {
+«REM»
+	private boolean mCond = false;
+	
+	public void setCond(boolean c) {
+		mCond = c;
+	}
+«ENDREM»
+«ENDDEFINE»
+
+«DEFINE StateEnd FOR State»
+}
+«ENDDEFINE»
+
+«DEFINE EntryAction FOR State -»
+public void entryAction() {
+	log("Executing entry action: «this.entry.name»");
+
+	«IF this.entry.metaType.name.matches("uml::OpaqueBehavior") -»
+	«EXPAND Activity FOR (uml::OpaqueBehavior)(this.entry) -»
+	«ENDIF-»
+}
+
+«ENDDEFINE»
+
+«DEFINE ExitAction FOR State -»
+public void exitAction() {
+	log("Executing exit action: «this.exit.name»");
+
+	«IF this.exit.metaType.name.matches("uml::OpaqueBehavior") -»
+	«EXPAND Activity FOR (uml::OpaqueBehavior)(this.exit) -»
+	«ENDIF-»
+}
+
+«ENDDEFINE»
+
+«DEFINE DoActivity FOR State -»
+public void doAction() {
+	log("Executing doActivity: «this.doActivity.name»");
+
+	«IF this.doActivity.metaType.name.matches("uml::OpaqueBehavior") -»
+	«EXPAND Activity FOR (uml::OpaqueBehavior)(this.doActivity) -»
+	«ENDIF-»
+} 
+«ENDDEFINE»
+
+«DEFINE Activity FOR OpaqueBehavior -»
+	«IF (this.body.size > 0) && (this.body.first().length > 0) -»
+	/* MARS
+		«FOREACH this.body AS line-»
+		«line»
+		«ENDFOREACH-»
+	*/
+	«ENDIF-»
+«ENDDEFINE»
+
+
+
+«DEFINE Properties FOR uml::StateMachine -»
+«REM» here we assume that StateMachine are ALWAYS owned by a class «ENDREM»
+«FOREACH this.getContext().attribute AS attr-»
+	«IF attr.metaType.name.matches("uml::Property") -»
+		«IF attr.upper > 1-»
+			«attr.type.toJava()»[] «attr.name» = new «attr.type.toJava()»[«attr.upper»];
+		«ELSE-»
+			«IF attr.defaultValue.stringValue().length > 0 -»
+				«IF attr.type.toJava().matches("String") -»
+					«attr.type.toJava()» «attr.name» = "«attr.defaultValue.stringValue()»";		
+				«ELSE-»
+					«attr.type.toJava()» «attr.name» = «attr.defaultValue.stringValue()»;
+				«ENDIF-»
+			«ELSE-»
+				«attr.type.toJava()» «attr.name»;
+			«ENDIF-»
+		«ENDIF-»
+	«ENDIF-»		
+«ENDFOREACH-»
+«ENDDEFINE»
+

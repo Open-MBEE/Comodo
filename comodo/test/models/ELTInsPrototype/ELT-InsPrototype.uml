@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MagicDrawProfile="http:///schemas/MagicDrawProfile/_RjVawMpJEeCvb87hIvpXdw/0" xmlns:comodoProfile="http:///schemas/comodoProfile/_RjVawspJEeCvb87hIvpXdw/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.0.0/UML" xsi:schemaLocation="http:///schemas/MagicDrawProfile/_RjVawMpJEeCvb87hIvpXdw/0 UML_Standard_Profile.MagicDraw_Profile.profile.uml#_R0eOEspJEeCvb87hIvpXdw http:///schemas/comodoProfile/_RjVawspJEeCvb87hIvpXdw/0 comodoProfile.profile.uml#_R0eSN8pJEeCvb87hIvpXdw">
+  <uml:Model xmi:id="eee_1045467100313_135436_1" name="Data" viewpoint="">
+    <ownedComment xmi:id="_16_8_b5f02cf_1290026647882_565334_1265" body="Author:atejeda.&#xA;Created:11/17/10 5:44 PM.&#xA;Title:.&#xA;Comment:.&#xA;" annotatedElement="eee_1045467100313_135436_1"/>
+    <packageImport xmi:id="_0primitiveTypesData">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypesData">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1294136716173_995299_476" name="EltInsPrototype">
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1299747243471_809129_522" name="pinger">
+        <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1299747327549_884198_524" name="PINGER_M">
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1299747528423_5379_604" name="PingerIF">
+            <ownedComment xmi:id="_16_6_1_ef90368_1299747528423_678656_607" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1299747528423_5379_604"/>
+            <generalization xmi:id="_16_6_1_ef90368_1299748224512_820025_670" isSubstitutable="true" general="_16_6_1_ef90368_1299747621219_179181_621"/>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1299747528423_822191_608" name="spawnChildren" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1299747528423_9239_612" body="Tell the camera to capture a frame with certain exposure time. This is the main function of this component." annotatedElement="_16_6_1_ef90368_1299747528423_822191_608"/>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1299747528423_934512_614" name="howMany" visibility="public">
+                <ownedComment xmi:id="_16_6_1_ef90368_1299748358527_228608_671" body="How many children dynamic components of the same type have to be requested." annotatedElement="_16_6_1_ef90368_1299747528423_934512_614"/>
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1299747528423_341591_613" name="container" visibility="public">
+                <ownedComment xmi:id="_16_6_1_ef90368_1299748384855_577687_672" body="In which container should the new components be deployed" annotatedElement="_16_6_1_ef90368_1299747528423_341591_613"/>
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1299747528423_128508_615" name="baseName" visibility="public">
+                <ownedComment xmi:id="_16_6_1_ef90368_1299748435870_281833_673" body="What base name should be used for these components.&#xA;A postfix _## with the sequential number will be appended to the base name" annotatedElement="_16_6_1_ef90368_1299747528423_128508_615"/>
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1299748450401_620658_674" name="logInfo" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1299748514401_309037_676" body="Sends to the logging system information about the configuration of the component.&#xA;In particular it will log a list of all children, i.e. of all components that will receive a ping command in recursive mode." annotatedElement="_16_6_1_ef90368_1299748450401_620658_674"/>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1299748707821_41607_743" name="Pinger" clientDependency="_16_6_1_ef90368_1299748832539_670252_772">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1299748832539_670252_772" name="" supplier="_16_6_1_ef90368_1299747528423_5379_604" client="_16_6_1_ef90368_1299748707821_41607_743" contract="_16_6_1_ef90368_1299747528423_5379_604"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1299749124709_421213_882" name="Deployment">
+          <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_16_6_1_ef90368_1299749141084_115664_883" name="PingerContainer">
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1299749207099_4967_918" name="MainPinger" visibility="private" type="_16_6_1_ef90368_1299749019225_34102_815"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_6_1_ef90368_1299749265708_939743_924" name="children" memberEnd="_16_6_1_ef90368_1299749265708_589726_926 _16_6_1_ef90368_1299749265708_885841_925">
+          <ownedEnd xmi:id="_16_6_1_ef90368_1299749265708_589726_926" name="" visibility="private" type="_16_6_1_ef90368_1299749019225_34102_815" association="_16_6_1_ef90368_1299749265708_939743_924"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1299749019225_34102_815" name="PingerImpl" clientDependency="_16_6_1_ef90368_1299749041210_275381_849" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1299749041210_275381_849" name="" supplier="_16_6_1_ef90368_1299748707821_41607_743" client="_16_6_1_ef90368_1299749019225_34102_815" utilizedElement="_16_6_1_ef90368_1299748707821_41607_743"/>
+          <ownedAttribute xmi:id="_16_6_1_ef90368_1299749265708_885841_925" name="" visibility="private" type="_16_6_1_ef90368_1299749019225_34102_815" aggregation="shared" association="_16_6_1_ef90368_1299749265708_939743_924">
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_6_1_ef90368_1299749867158_498080_1294" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_6_1_ef90368_1299749867158_572138_1293" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1294137584989_942044_806" name="ACS">
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_6_1_ef90368_1294137880511_904253_865" name="TimeInterval"/>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_6_1_ef90368_1294137709945_509705_811" name="CBDescIn"/>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_6_1_ef90368_1294137682788_602142_807" name="CBstring"/>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1299747621219_179181_621" name="PingableResource">
+          <ownedComment xmi:id="_16_6_1_ef90368_1299747927529_156204_645" body="This interface may be implemented by any remote object (component, offshoot, other resources...)&#xA;that you want to monitor in the master component.&#xA;Note that resource monitoring framework in module 'mastercomp' supports monitoring of ACSComponents&#xA;for which it checks the 'componentState' attribute.&#xA;However, this componentState only tells us something about the Alma component itself, but not about&#xA;any resources it controls or uses.This interface may be implemented by any remote object (component, offshoot, other resources...)&#xA;that you want to monitor in the master component.&#xA;Note that resource monitoring framework in module 'mastercomp' supports monitoring of ACSComponents&#xA;for which it checks the 'componentState' attribute.&#xA;However, this componentState only tells us something about the Alma component itself, but not about&#xA;any resources it controls or uses.&#xA;While resource monitoring via 'componentState' does not require specific changes in the component,&#xA;the check call cannot be intercepted by the component, which means that the value of the returned&#xA;information is limited.&#xA;On the other hand, this 'PingableResource' interface shows up in the component definition,&#xA;but allows for &quot;deeper&quot; outreach of the status check.&#xA;Of course your components and resources can use any other method to get their status checked&#xA;by your master component, but in that case you must implement a custom &quot;ResourceChecker&quot; class;&#xA;with &quot;PingableResource&quot; you can use the convenience methods provided by ACS.&#xA;While resource monitoring via 'componentState' does not require specific changes in the component,&#xA;the check call cannot be intercepted by the component, which means that the value of the returned&#xA;information is limited.&#xA;On the other hand, this 'PingableResource' interface shows up in the component definition,&#xA;but allows for &quot;deeper&quot; outreach of the status check.&#xA;Of course your components and resources can use any other method to get their status checked&#xA;by your master component, but in that case you must implement a custom &quot;ResourceChecker&quot; class;&#xA;with &quot;PingableResource&quot; you can use the convenience methods provided by ACS." annotatedElement="_16_6_1_ef90368_1299747621219_179181_621"/>
+          <ownedOperation xmi:id="_16_6_1_ef90368_1299747647297_883378_639" name="ping" visibility="public">
+            <ownedComment xmi:id="_16_6_1_ef90368_1299747986435_194672_646" body="@param fast  If true, skip performing fancier checks, so that the returned result only tells us whether the resources can communicate, but not if they are otherwise healthy. This could be used for performance measurements.&#xA;@param recursive  If true, the call should recursively ping other PingableResources managed by this PingableResource.&#xA;@param id  The caller may pass a random number that can be used by the resources to identify this call and avoid endless recursion if &quot;recursive&quot; is true and it is not clear whether the resource topology is free of cycles.&#xA;@return true means the resource is OK" annotatedElement="_16_6_1_ef90368_1299747647297_883378_639"/>
+            <ownedParameter xmi:id="_16_6_1_ef90368_1299747678187_9205_641" name="fast" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_6_1_ef90368_1299747718624_338114_642" name="recursive" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_6_1_ef90368_1299747739796_103627_643" name="id" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_6_1_ef90368_1299747785608_635612_644" name="unnamed1" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1294138124543_420914_876" name="prototype">
+        <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1294143826817_78112_1613" name="COMM_M">
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="_16_6_1_ef90368_1294143870456_5386_1616" name="state">
+            <ownedLiteral xmi:id="_16_6_1_ef90368_1294143870456_643739_1618" name="OFF"/>
+            <ownedLiteral xmi:id="_16_6_1_ef90368_1294143870456_155603_1619" name="LOADED"/>
+            <ownedLiteral xmi:id="_16_6_1_ef90368_1294143870471_528738_1620" name="STANDBY"/>
+            <ownedLiteral xmi:id="_16_6_1_ef90368_1294143920110_776702_1626" name="ONLINE"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Enumeration" xmi:id="_16_6_1_ef90368_1294143885596_252941_1621" name="substate">
+            <ownedLiteral xmi:id="_16_6_1_ef90368_1294143885596_548526_1623" name="IDLE"/>
+            <ownedLiteral xmi:id="_16_6_1_ef90368_1294143885596_288281_1624" name="BUSY"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147285493_485565_1278" name="DeviceImpl" clientDependency="_16_6_1_ef90368_1294147481226_671696_1492" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147481226_671696_1492" name="" supplier="_16_6_1_ef90368_1294147042041_183613_624" client="_16_6_1_ef90368_1294147285493_485565_1278" utilizedElement="_16_6_1_ef90368_1294147042041_183613_624"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1294138255527_710617_878" name="DEV_M">
+          <ownedComment xmi:id="_16_6_1_ef90368_1294138375761_29491_881" body="TODO GCH&#xA;This correspond to the IDL module.&#xA;We need to discuss if this is the correct representation.&#xA;In the model itself, is this what we want?" annotatedElement="_16_6_1_ef90368_1294138255527_710617_878"/>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294137832229_166208_817" name="Device">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294137832245_780161_822" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294137832229_166208_817"/>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294138022855_524223_870" name="standby" visibility="public">
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294138029949_805427_872" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294138009012_711438_867" name="online" visibility="public">
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294138017230_310738_869" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294138038777_898264_873" name="off" visibility="public">
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294138048793_737388_875" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294137832245_85279_823" name="setup" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294137832245_676313_831" body="Tell the camera to capture a frame with certain exposure time. This is the main function of this component." annotatedElement="_16_6_1_ef90368_1294137832245_85279_823"/>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137832245_502419_832" name="val" visibility="public">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137832245_756387_834" name="timeout" visibility="public" type="_16_6_1_ef90368_1294137880511_904253_865"/>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137832245_70897_833" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+              </ownedParameter>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294142707582_158343_1339" name="Lamp">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294142707582_985091_1355" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294142707582_158343_1339"/>
+            <generalization xmi:id="_16_6_1_ef90368_1294142707582_48586_1341" isSubstitutable="true" general="_16_6_1_ef90368_1294137832229_166208_817"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294142707582_932370_1342" name="state" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294142707582_290435_1358" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294142707582_932370_1342"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294142707582_68627_1343" name="subState" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294142707582_956207_1360" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294142707582_68627_1343"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294142707582_996584_1344" name="mode" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294142707582_801122_1362" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294142707582_996584_1344"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294142707582_94352_1345" name="lampStatus" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294142707582_928449_1364" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294142707582_94352_1345"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294142707582_609627_1346" name="lampCmd" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294142707582_941082_1366" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294142707582_609627_1346"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294142831476_103310_1418" name="switchOn" visibility="public">
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294142831476_395746_1419" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294142846071_419458_1421" name="switchOff" visibility="public">
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294142846086_382093_1422" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+              </ownedParameter>
+            </ownedOperation>
+            <nestedClassifier xmi:type="uml:Enumeration" xmi:id="_16_6_1_ef90368_1294143432687_13181_1498" name="l_mode">
+              <ownedLiteral xmi:id="_16_6_1_ef90368_1294143432687_767762_1501" name="L_ON"/>
+              <ownedLiteral xmi:id="_16_6_1_ef90368_1294143432687_650995_1500" name="L_OFF"/>
+              <ownedLiteral xmi:id="_16_6_1_ef90368_1294143432687_795747_1502" name="L_WARMUP"/>
+            </nestedClassifier>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294138432994_769349_884" name="Motor">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294138432994_87014_886" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294138432994_769349_884"/>
+            <generalization xmi:id="_16_6_1_ef90368_1294138466307_321168_925" isSubstitutable="true" general="_16_6_1_ef90368_1294137832229_166208_817"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138492494_757637_926" name="state" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138492494_373012_928" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138492494_757637_926"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138609744_673062_932" name="subState" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138609744_725413_934" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138609744_673062_932"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138611603_727027_936" name="mode" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138611603_824226_938" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138611603_727027_936"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138612057_290719_940" name="mStatus" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138612057_402962_942" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138612057_290719_940"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138612416_823845_944" name="mErrorCode" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138612416_319362_946" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138612416_823845_944"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138612760_282532_948" name="mPosition" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138612760_877945_950" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138612760_282532_948"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138613135_665543_952" name="mEnabled" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138613135_345819_954" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138613135_665543_952"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138613541_88382_956" name="mMove" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138613541_575268_958" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138613541_88382_956"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138614057_988605_960" name="mStop" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138614057_293921_962" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138614057_988605_960"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138614760_175971_964" name="mSetPosition" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138614760_249311_966" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138614760_175971_964"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138615385_832702_968" name="mAcc" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138615385_801843_970" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138615385_832702_968"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138615900_241958_972" name="mDec" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138615900_748676_974" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138615900_241958_972"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294138616510_976720_976" name="mVel" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294138616510_130741_978" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294138616510_976720_976"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294143390640_82355_1495" name="move" visibility="public">
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294143390640_233956_1496" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+              </ownedParameter>
+            </ownedOperation>
+            <nestedClassifier xmi:type="uml:Enumeration" xmi:id="_16_6_1_ef90368_1294143253140_476671_1466" name="m_mode">
+              <ownedLiteral xmi:id="_16_6_1_ef90368_1294143292937_754819_1468" name="M_OFF"/>
+              <ownedLiteral xmi:id="_16_6_1_ef90368_1294143303202_369678_1469" name="M_INIT"/>
+              <ownedLiteral xmi:id="_16_6_1_ef90368_1294143313515_17054_1470" name="M_MOVING"/>
+              <ownedLiteral xmi:id="_16_6_1_ef90368_1294143322296_136285_1471" name="M_STAND"/>
+              <ownedLiteral xmi:id="_16_6_1_ef90368_1294143335234_515108_1472" name="M_ERROR"/>
+            </nestedClassifier>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294143641045_404410_1564" name="Lamp2">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294143641045_565836_1568" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294143641045_404410_1564"/>
+            <generalization xmi:id="_16_6_1_ef90368_1294144345505_795363_1768" isSubstitutable="true" general="_16_6_1_ef90368_1294142707582_158343_1339"/>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294143663670_970501_1592" name="warmUp" visibility="public">
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294143663670_617879_1593" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+              </ownedParameter>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294144135728_667918_1695" name="Filter">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294144135728_104353_1699" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294144135728_667918_1695"/>
+            <generalization xmi:id="_16_6_1_ef90368_1294144162212_693471_1728" isSubstitutable="true" general="_16_6_1_ef90368_1294138432994_769349_884"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294144450285_979597_1850" name="CCDImag">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294144450285_896517_1853" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294144450285_979597_1850"/>
+            <generalization xmi:id="_16_6_1_ef90368_1294144450285_917661_1852" isSubstitutable="true" general="_16_6_1_ef90368_1294137832229_166208_817"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294143591249_937891_1505" name="Lamp1">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294143591249_511755_1514" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294143591249_937891_1505"/>
+            <generalization xmi:id="_16_6_1_ef90368_1294144329521_107672_1765" isSubstitutable="true" general="_16_6_1_ef90368_1294142707582_158343_1339"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294144382958_718426_1769" name="CCDSpectro">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294144382958_279692_1778" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294144382958_718426_1769"/>
+            <generalization xmi:id="_16_6_1_ef90368_1294144382958_512503_1771" isSubstitutable="true" general="_16_6_1_ef90368_1294137832229_166208_817"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Signal" xmi:id="_16_6_1_ef90368_1294143782757_708730_1595" name="Lamp2StatusBlockEvent">
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294143969436_652339_1627" name="currentState" visibility="private" type="_16_6_1_ef90368_1294143870456_5386_1616"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294143989279_194207_1631" name="currentSubstate" visibility="private" type="_16_6_1_ef90368_1294143885596_252941_1621"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294144005122_354254_1633" name="currentMode" visibility="private" type="_16_6_1_ef90368_1294143432687_13181_1498"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147287899_517027_1366" name="DCSImpl" clientDependency="_16_6_1_ef90368_1294147464148_954717_1465" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147464148_954717_1465" name="" supplier="_16_6_1_ef90368_1294147040760_525824_612" client="_16_6_1_ef90368_1294147287899_517027_1366" utilizedElement="_16_6_1_ef90368_1294147040760_525824_612"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147041526_203765_618" name="Lamp1" clientDependency="_16_6_1_ef90368_1294147197728_445459_1171">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147197728_445459_1171" name="" supplier="_16_6_1_ef90368_1294143591249_937891_1505" client="_16_6_1_ef90368_1294147041526_203765_618" contract="_16_6_1_ef90368_1294143591249_937891_1505"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147286415_208848_1311" name="Lamp2Impl" clientDependency="_16_6_1_ef90368_1294147520054_469701_1600" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147520054_469701_1600" name="" supplier="_16_6_1_ef90368_1294147041791_654379_621" client="_16_6_1_ef90368_1294147286415_208848_1311" utilizedElement="_16_6_1_ef90368_1294147041791_654379_621"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1294138294808_635088_879" name="SUB_M">
+          <ownedComment xmi:id="_16_6_1_ef90368_1294138382667_895023_882" body="TODO GCH&#xA;This correspond to the IDL module.&#xA;We need to discuss if this is the correct representation.&#xA;In the model itself, is this what we want?" annotatedElement="_16_6_1_ef90368_1294138294808_635088_879"/>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294144054293_161874_1635" name="ICS">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294144054309_56143_1638" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294144054293_161874_1635"/>
+            <generalization xmi:id="_16_6_1_ef90368_1294144110745_443606_1694" isSubstitutable="true" general="_16_6_1_ef90368_1294137448878_586682_758"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294144182836_634941_1729" name="DCS">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294144182836_226316_1732" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294144182836_634941_1729"/>
+            <generalization xmi:id="_16_6_1_ef90368_1294144182836_300254_1731" isSubstitutable="true" general="_16_6_1_ef90368_1294137448878_586682_758"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294137448878_586682_758" name="Subsystem">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294137448878_155865_763" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294137448878_586682_758"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294137448878_135111_762" name="commandTable" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294137448878_363212_771" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294137448878_135111_762"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            </ownedAttribute>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294137448878_355384_764" name="sendCommand" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294137448878_652126_772" body="Tell the camera to capture a frame with certain exposure time. This is the main function of this component." annotatedElement="_16_6_1_ef90368_1294137448878_355384_764"/>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137448878_263573_773" name="commandName" visibility="public">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137448878_566581_774" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137448878_943752_775" name="parameterList" visibility="public">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137766493_795507_815" name="cb" visibility="public" type="_16_6_1_ef90368_1294137682788_602142_807"/>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137785119_155098_816" name="desc" visibility="public" type="_16_6_1_ef90368_1294137709945_509705_811"/>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147287540_947398_1355" name="CCDImagImpl" clientDependency="_16_6_1_ef90368_1294147417789_779049_1411" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147417789_779049_1411" name="" supplier="_16_6_1_ef90368_1294136970674_198481_518" client="_16_6_1_ef90368_1294147287540_947398_1355" utilizedElement="_16_6_1_ef90368_1294136970674_198481_518"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147041197_930363_615" name="Lamp" clientDependency="_16_6_1_ef90368_1294147193134_739766_1150">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147193134_739766_1150" name="" supplier="_16_6_1_ef90368_1294142707582_158343_1339" client="_16_6_1_ef90368_1294147041197_930363_615" contract="_16_6_1_ef90368_1294142707582_158343_1339"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147258884_96277_1256" name="SubsystemImpl" clientDependency="_16_6_1_ef90368_1294147554147_360686_1708" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147554147_360686_1708" name="" supplier="_16_6_1_ef90368_1294147043494_751511_639" client="_16_6_1_ef90368_1294147258884_96277_1256" utilizedElement="_16_6_1_ef90368_1294147043494_751511_639"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147045635_691966_642" name="ICS" clientDependency="_16_6_1_ef90368_1294147188118_525726_1129">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147188118_525726_1129" name="" supplier="_16_6_1_ef90368_1294144054293_161874_1635" client="_16_6_1_ef90368_1294147045635_691966_642" contract="_16_6_1_ef90368_1294144054293_161874_1635"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147286118_238858_1300" name="Lamp1Impl" clientDependency="_16_6_1_ef90368_1294147512038_500838_1573" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147512038_500838_1573" name="" supplier="_16_6_1_ef90368_1294147041526_203765_618" client="_16_6_1_ef90368_1294147286118_238858_1300" utilizedElement="_16_6_1_ef90368_1294147041526_203765_618"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147043151_943327_636" name="CCDSpectro" clientDependency="_16_6_1_ef90368_1294147154759_611386_1045">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147154759_611386_1045" name="" supplier="_16_6_1_ef90368_1294144382958_718426_1769" client="_16_6_1_ef90368_1294147043151_943327_636" contract="_16_6_1_ef90368_1294144382958_718426_1769"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147287274_976834_1344" name="CCDSpectroImpl" clientDependency="_16_6_1_ef90368_1294147446664_257754_1438" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147446664_257754_1438" name="" supplier="_16_6_1_ef90368_1294147043151_943327_636" client="_16_6_1_ef90368_1294147287274_976834_1344" utilizedElement="_16_6_1_ef90368_1294147043151_943327_636"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147041791_654379_621" name="Lamp2" clientDependency="_16_6_1_ef90368_1294147203025_584299_1192">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147203025_584299_1192" name="" supplier="_16_6_1_ef90368_1294143641045_404410_1564" client="_16_6_1_ef90368_1294147041791_654379_621" contract="_16_6_1_ef90368_1294143641045_404410_1564"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294136932332_565547_515" name="OS" clientDependency="_16_6_1_ef90368_1294147213728_568550_1234">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147213728_568550_1234" name="" supplier="_16_6_1_ef90368_1294137127370_964023_609" client="_16_6_1_ef90368_1294136932332_565547_515" contract="_16_6_1_ef90368_1294137127370_964023_609"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147286680_390022_1322" name="MotorImpl" clientDependency="_16_6_1_ef90368_1294147535288_903696_1654" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147535288_903696_1654" name="" supplier="_16_6_1_ef90368_1294147042338_353652_627" client="_16_6_1_ef90368_1294147286680_390022_1322" utilizedElement="_16_6_1_ef90368_1294147042338_353652_627"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1294138403651_749030_883" name="OS_M">
+          <packagedElement xmi:type="uml:Interface" xmi:id="_16_6_1_ef90368_1294137127370_964023_609" name="OS">
+            <ownedComment xmi:id="_16_6_1_ef90368_1294137127386_673441_621" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_6_1_ef90368_1294137127370_964023_609"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294137127370_229994_611" name="state" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294137127386_557143_629" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294137127370_229994_611"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294137214884_958387_745" name="substate" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294137214884_40518_747" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294137214884_958387_745"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294137216368_677552_751" name="subsystemTable" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294137216368_261262_753" body="Holds the last frame that has been taken" annotatedElement="_16_6_1_ef90368_1294137216368_677552_751"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            </ownedAttribute>
+            <ownedOperation xmi:id="_16_6_1_ef90368_1294137127386_323881_622" name="sendCommand" visibility="public">
+              <ownedComment xmi:id="_16_6_1_ef90368_1294137127386_925385_646" body="Tell the camera to capture a frame with certain exposure time. This is the main function of this component." annotatedElement="_16_6_1_ef90368_1294137127386_323881_622"/>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137127386_389067_647" name="commandName" visibility="public">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137127386_205872_648" name="" visibility="public" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+              </ownedParameter>
+              <ownedParameter xmi:id="_16_6_1_ef90368_1294137358755_931363_757" name="parameterList" visibility="public">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+              </ownedParameter>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147042338_353652_627" name="Motor" clientDependency="_16_6_1_ef90368_1294147209353_438301_1213">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147209353_438301_1213" name="" supplier="_16_6_1_ef90368_1294138432994_769349_884" client="_16_6_1_ef90368_1294147042338_353652_627" contract="_16_6_1_ef90368_1294138432994_769349_884"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147043494_751511_639" name="Subsystem" clientDependency="_16_6_1_ef90368_1294147218946_966023_1255">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147218946_966023_1255" name="" supplier="_16_6_1_ef90368_1294137448878_586682_758" client="_16_6_1_ef90368_1294147043494_751511_639" contract="_16_6_1_ef90368_1294137448878_586682_758"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147040760_525824_612" name="DCS" clientDependency="_16_6_1_ef90368_1294147161634_779656_1066">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147161634_779656_1066" name="" supplier="_16_6_1_ef90368_1294144182836_634941_1729" client="_16_6_1_ef90368_1294147040760_525824_612" contract="_16_6_1_ef90368_1294144182836_634941_1729"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147285086_37990_1267" name="ICSImpl" clientDependency="_16_6_1_ef90368_1294147504929_176970_1546" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147504929_176970_1546" name="" supplier="_16_6_1_ef90368_1294147045635_691966_642" client="_16_6_1_ef90368_1294147285086_37990_1267" utilizedElement="_16_6_1_ef90368_1294147045635_691966_642"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147288149_780167_1377" name="OSImpl" clientDependency="_16_6_1_ef90368_1294147545741_156134_1681" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147545741_156134_1681" name="" supplier="_16_6_1_ef90368_1294136932332_565547_515" client="_16_6_1_ef90368_1294147288149_780167_1377" utilizedElement="_16_6_1_ef90368_1294136932332_565547_515"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147042635_193076_630" name="Filter" clientDependency="_16_6_1_ef90368_1294147181150_179782_1108">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147181150_179782_1108" name="" supplier="_16_6_1_ef90368_1294144135728_667918_1695" client="_16_6_1_ef90368_1294147042635_193076_630" contract="_16_6_1_ef90368_1294144135728_667918_1695"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147285883_295025_1289" name="LampImpl" clientDependency="_16_6_1_ef90368_1294147527319_266668_1627" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147527319_266668_1627" name="" supplier="_16_6_1_ef90368_1294147041197_930363_615" client="_16_6_1_ef90368_1294147285883_295025_1289" utilizedElement="_16_6_1_ef90368_1294147041197_930363_615"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_16_6_1_ef90368_1294147670537_889500_1802" name="Deployment">
+          <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_16_6_1_ef90368_1294147786587_585206_1830" name="ICSCOntainer">
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294147786587_631867_1832" name="ICS" visibility="private" type="_16_6_1_ef90368_1294147285086_37990_1267"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_16_6_1_ef90368_1294147787149_563176_1841" name="OSContainer">
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294147787149_276104_1843" name="OS" visibility="private" type="_16_6_1_ef90368_1294147288149_780167_1377"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_16_6_1_ef90368_1294147784743_437734_1819" name="DeviceContainer">
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294147784759_569992_1821" name="LAMP1" visibility="private" type="_16_6_1_ef90368_1294147286118_238858_1300"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294147960836_912738_1854" name="LAMP2" visibility="private" type="_16_6_1_ef90368_1294147286415_208848_1311"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294147972290_111524_1855" name="FILT1" visibility="private" type="_16_6_1_ef90368_1294147287024_247792_1333"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_16_6_1_ef90368_1294147690834_252477_1803" name="DCSContainer">
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294147690834_174836_1810" name="DCS" visibility="private" type="_16_6_1_ef90368_1294147287899_517027_1366"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294147877001_857798_1852" name="CCDIMAG" visibility="private" type="_16_6_1_ef90368_1294147287540_947398_1355"/>
+            <ownedAttribute xmi:id="_16_6_1_ef90368_1294147901847_835844_1853" name="CCDSPECTRO" visibility="private" type="_16_6_1_ef90368_1294147287274_976834_1344"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_6_1_ef90368_1294147287024_247792_1333" name="FilterImpl" clientDependency="_16_6_1_ef90368_1294147493632_255319_1519" fileName="">
+          <manifestation xmi:id="_16_6_1_ef90368_1294147493632_255319_1519" name="" supplier="_16_6_1_ef90368_1294147042635_193076_630" client="_16_6_1_ef90368_1294147287024_247792_1333" utilizedElement="_16_6_1_ef90368_1294147042635_193076_630"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294136970674_198481_518" name="CCDImag" clientDependency="_16_6_1_ef90368_1294147148869_210939_1024">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147148869_210939_1024" name="" supplier="_16_6_1_ef90368_1294144450285_979597_1850" client="_16_6_1_ef90368_1294136970674_198481_518" contract="_16_6_1_ef90368_1294144450285_979597_1850"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_6_1_ef90368_1294147042041_183613_624" name="Device" clientDependency="_16_6_1_ef90368_1294147168900_646812_1087">
+          <interfaceRealization xmi:id="_16_6_1_ef90368_1294147168900_646812_1087" name="" supplier="_16_6_1_ef90368_1294137832229_166208_817" client="_16_6_1_ef90368_1294147042041_183613_624" contract="_16_6_1_ef90368_1294137832229_166208_817"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="magicdraw_uml_standard_profile_v_0001" name="UML Standard Profile">
+      <ownedComment xmi:id="_be00301_1078843546940_242228_131" body="UML Standard Profile contains UML metamodel (metaclasses without properties and associations), StandardProfileL2 and StandardProfileL3 from UML specification, Standard UML stereotypes defined in annex C of UML specification.&#xA;Profile also includes validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally." annotatedElement="magicdraw_uml_standard_profile_v_0001"/>
+    </packagedElement>
+    <profileApplication xmi:id="_16_8beta_62a020a_1256807755193_508228_378profileApplicationData">
+      <eAnnotations xmi:id="_R0xJAMpJEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.StandardProfileL3.profile.uml#_R0naRMpJEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.StandardProfileL3.profile.uml#_16_8beta_62a020a_1256807755193_508228_378"/>
+    </profileApplication>
+    <profileApplication xmi:id="_be00301_1073394351331_445580_2profileApplicationData">
+      <eAnnotations xmi:id="_R0xJAspJEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_R0eOEspJEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
+    </profileApplication>
+    <profileApplication xmi:id="_11_5_be00301_1153310565718_226811_161profileApplicationData">
+      <eAnnotations xmi:id="_R1ED8cpJEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_R0nYyspJEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_11_5_be00301_1153310565718_226811_161"/>
+    </profileApplication>
+    <profileApplication xmi:id="_16_6_1_ec40342_1279695659847_608236_478profileApplicationData">
+      <eAnnotations xmi:id="_R1ED88pJEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="comodoProfile.profile.uml#_R0eSN8pJEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="comodoProfile.profile.uml#_16_6_1_ec40342_1279695659847_608236_478"/>
+    </profileApplication>
+    <profileApplication xmi:id="_9_0_be00301_1108050582343_527400_10847profileApplicationData">
+      <eAnnotations xmi:id="_R1ED9cpJEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.StandardProfileL2.profile.uml#_R0nZG8pJEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.StandardProfileL2.profile.uml#_9_0_be00301_1108050582343_527400_10847"/>
+    </profileApplication>
+    <profileApplication xmi:id="_16_6_8f90291_1254846042821_86742_517profileApplicationData">
+      <eAnnotations xmi:id="_R1ED98pJEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_R0nYFspJEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_16_6_8f90291_1254846042821_86742_517"/>
+    </profileApplication>
+    <profileApplication xmi:id="_11_5_f720368_1159529670215_231387_1profileApplicationData">
+      <eAnnotations xmi:id="_R1ED-cpJEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#_R0UdEspJEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml#_11_5_f720368_1159529670215_231387_1"/>
+    </profileApplication>
+  </uml:Model>
+  <MagicDrawProfile:auxiliaryResource xmi:id="_R1N08MpJEeCvb87hIvpXdw" base_Element="magicdraw_uml_standard_profile_v_0001" base_Package="magicdraw_uml_standard_profile_v_0001"/>
+  <MagicDrawProfile:typeModifier xmi:id="_R1XmFMpJEeCvb87hIvpXdw" base_Element="_16_6_1_ef90368_1294137448878_135111_762" typeModifier="[]"/>
+  <comodoProfile:cmdoTopic xmi:id="_R1zq-spJEeCvb87hIvpXdw" base_Signal="_16_6_1_ef90368_1294137682788_602142_807"/>
+  <comodoProfile:cmdoTopic xmi:id="_R1zq-8pJEeCvb87hIvpXdw" base_Signal="_16_6_1_ef90368_1294137709945_509705_811"/>
+  <comodoProfile:cmdoTopic xmi:id="_R1zq_MpJEeCvb87hIvpXdw" base_Signal="_16_6_1_ef90368_1294143782757_708730_1595"/>
+  <comodoProfile:cmdoTopic xmi:id="_R1zq_cpJEeCvb87hIvpXdw" base_Signal="_16_6_1_ef90368_1294137880511_904253_865"/>
+  <comodoProfile:cmdoEnumeration xmi:id="_R1zq_spJEeCvb87hIvpXdw" base_Enumeration="_16_6_1_ef90368_1294143870456_5386_1616"/>
+  <comodoProfile:cmdoEnumeration xmi:id="_R1zq_8pJEeCvb87hIvpXdw" base_Enumeration="_16_6_1_ef90368_1294143885596_252941_1621"/>
+  <comodoProfile:cmdoEnumeration xmi:id="_R1zrAMpJEeCvb87hIvpXdw" base_Enumeration="_16_6_1_ef90368_1294143432687_13181_1498"/>
+  <comodoProfile:cmdoEnumeration xmi:id="_R1zrAcpJEeCvb87hIvpXdw" base_Enumeration="_16_6_1_ef90368_1294143253140_476671_1466"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrAspJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294142707582_158343_1339" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrA8pJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294143641045_404410_1564" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrBMpJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294144135728_667918_1695" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrBcpJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1299747528423_5379_604" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrBspJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294137832229_166208_817" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrB8pJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294144054293_161874_1635" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrCMpJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294138432994_769349_884" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrCcpJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294144450285_979597_1850" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrCspJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294144182836_634941_1729" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrC8pJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294144382958_718426_1769" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrDMpJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294143591249_937891_1505" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrDcpJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294137127370_964023_609" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="_R1zrDspJEeCvb87hIvpXdw" base_Interface="_16_6_1_ef90368_1294137448878_586682_758" configurable="true"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R1zrD8pJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138615900_241958_972"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R1zrEMpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138614760_175971_964"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R1zrEcpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294142707582_68627_1343"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R1zrEspJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294137214884_958387_745"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R1zrE8pJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138613541_88382_956"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b0MpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138612057_290719_940"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b0cpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294142707582_609627_1346"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b0spJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138615385_832702_968"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b08pJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294137216368_677552_751"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b1MpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294137448878_135111_762"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b1cpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138609744_673062_932"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b1spJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294142707582_996584_1344"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b18pJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138612760_282532_948"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b2MpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138613135_665543_952"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b2cpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138492494_757637_926"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b2spJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294142707582_932370_1342"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b28pJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294137127370_229994_611"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b3MpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294142707582_94352_1345"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b3cpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138611603_727027_936"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b3spJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138614057_988605_960"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b38pJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138616510_976720_976"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="_R19b4MpJEeCvb87hIvpXdw" base_Property="_16_6_1_ef90368_1294138612416_823845_944"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b4cpJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147287899_517027_1366" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b4spJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147288149_780167_1377" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b48pJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147285493_485565_1278" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b5MpJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147258884_96277_1256" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b5cpJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147286680_390022_1322" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b5spJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147286415_208848_1311" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b58pJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147285883_295025_1289" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b6MpJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1299749019225_34102_815" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b6cpJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147287274_976834_1344" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b6spJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147287540_947398_1355" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b68pJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147285086_37990_1267" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b7MpJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147286118_238858_1300" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="_R19b7cpJEeCvb87hIvpXdw" base_Artifact="_16_6_1_ef90368_1294147287024_247792_1333" language="Java"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b7spJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147043494_751511_639"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b78pJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147043151_943327_636"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b8MpJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147045635_691966_642"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b8cpJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147041526_203765_618"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b8spJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294136932332_565547_515"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b88pJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147042041_183613_624"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b9MpJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147041197_930363_615"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b9cpJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147042635_193076_630"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b9spJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147040760_525824_612"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b98pJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147042338_353652_627"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b-MpJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294147041791_654379_621"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b-cpJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1299748707821_41607_743"/>
+  <comodoProfile:cmdoComponent xmi:id="_R19b-spJEeCvb87hIvpXdw" base_Class="_16_6_1_ef90368_1294136970674_198481_518"/>
+  <comodoProfile:cmdoModule xmi:id="_R19b-8pJEeCvb87hIvpXdw" base_Package="_16_6_1_ef90368_1299747243471_809129_522"/>
+  <comodoProfile:cmdoModule xmi:id="_R19b_MpJEeCvb87hIvpXdw" base_Package="_16_6_1_ef90368_1294138124543_420914_876"/>
+  <comodoProfile:cmdoContainer xmi:id="_R19b_cpJEeCvb87hIvpXdw" language="Java" base_ExecutionEnvironment="_16_6_1_ef90368_1299749141084_115664_883"/>
+  <comodoProfile:cmdoContainer xmi:id="_R19b_spJEeCvb87hIvpXdw" language="Java" base_ExecutionEnvironment="_16_6_1_ef90368_1294147786587_585206_1830"/>
+  <comodoProfile:cmdoContainer xmi:id="_R19b_8pJEeCvb87hIvpXdw" language="Java" base_ExecutionEnvironment="_16_6_1_ef90368_1294147690834_252477_1803"/>
+  <comodoProfile:cmdoContainer xmi:id="_R19cAMpJEeCvb87hIvpXdw" language="Java" base_ExecutionEnvironment="_16_6_1_ef90368_1294147787149_563176_1841"/>
+  <comodoProfile:cmdoContainer xmi:id="_R19cAcpJEeCvb87hIvpXdw" language="Java" base_ExecutionEnvironment="_16_6_1_ef90368_1294147784743_437734_1819"/>
+</xmi:XMI>

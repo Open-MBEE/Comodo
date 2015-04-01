@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="STATE">  
+  <state id="STATE"> 
+    <initial>
+      <transition target="STATE::IDLE"/>
+    </initial>  
+    <state id="STATE::IDLE"> 
+      <onentry> 
+        <customActionDomain:SendCmd name="SendCmd"/> 
+      </onentry> 
+    </state> 
+  </state> 
+</scxml>

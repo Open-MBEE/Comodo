@@ -1,0 +1,44 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: EclipseClasspath.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String»
+
+«FILE ".classpath"-»
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="../../Libraries/commons-beanutils-1.8.3.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/commons-digester-1.8.1.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/commons-el-1.0.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/commons-jexl-1.1.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/commons-scxml-0.9.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/jsp-api-2.0.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/myfaces-api-1.2.7.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/servlet-api-2.4.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/xalan-2.6.0.jar"/>
+	<classpathentry kind="lib" path="../../Libraries/xml-apis-1.0.b2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
+«ENDFILE»
+«ENDDEFINE»

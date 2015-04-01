@@ -1,0 +1,111 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: TestContainers.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«DEFINE Root FOR String»
+
+«REM» Java Test Container «ENDREM»
+«FILE this + '/test/CDB/MACI/Containers/' + this + 'JavaTest/' + this + 'JavaTest.xml'-»
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Container 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="urn:schemas-cosylab-com:Container:1.0" 
+	xmlns:log="urn:schemas-cosylab-com:LoggingConfig:1.0"
+	Timeout="20.0" UseIFR="1" 
+	ManagerRetry="10" 
+	DALtype="DAL" 
+	ServerThreads="5" 
+	Recovery="false" 
+	ImplLang="java">
+	
+	<Autoload>
+	</Autoload>
+	
+	<LoggingConfig>
+    	<log:_ Name="jacorb@frodoContainer" minLogLevel="5" minLogLevelLocal="5" />
+    </LoggingConfig>
+	    
+</Container>
+«ENDFILE»
+
+«REM» Python Test Container «ENDREM»
+«FILE this + '/test/CDB/MACI/Containers/' + this + 'PyTest/' + this + 'PyTest.xml'-»
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Container 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="urn:schemas-cosylab-com:Container:1.0" 
+	xmlns:log="urn:schemas-cosylab-com:LoggingConfig:1.0"
+	Timeout="20.0" UseIFR="1" 
+	ManagerRetry="10" 
+	DALtype="DAL" 
+	ServerThreads="5" 
+	Recovery="false"  
+	ImplLang="py">
+	
+	<Autoload>
+	</Autoload>
+	
+	<LoggingConfig 
+		centralizedLogger="Log" 
+		minLogLevel="2" 
+		dispatchPacketSize="0" 
+		immediateDispatchLevel="99" 
+		flushPeriodSeconds="10" 
+		maxLogQueueSize="1000" 
+		maxLogsPerSecond="-1" 
+		minLogLevelLocal="2">
+	</LoggingConfig>
+	    
+</Container>
+«ENDFILE»
+
+«REM» Cpp Test Container «ENDREM»
+«FILE this + '/test/CDB/MACI/Containers/' + this + 'CppTest/' + this + 'CppTest.xml'-»
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Container 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="urn:schemas-cosylab-com:Container:1.0" 
+	xmlns:log="urn:schemas-cosylab-com:LoggingConfig:1.0"
+	Timeout="20.0" UseIFR="1" 
+	ManagerRetry="10" 
+	DALtype="DAL" 
+	ServerThreads="5" 
+	Recovery="false"  
+	ImplLang="cpp">
+	
+	<Autoload>
+	</Autoload>
+	
+	<LoggingConfig 
+		centralizedLogger="Log" 
+		minLogLevel="2" 
+		dispatchPacketSize="0" 
+		immediateDispatchLevel="99" 
+		flushPeriodSeconds="10" 
+		maxLogQueueSize="1000" 
+		maxLogsPerSecond="-1" 
+		minLogLevelLocal="2">
+  </LoggingConfig>  
+    
+</Container>
+«ENDFILE»
+
+«ENDDEFINE»

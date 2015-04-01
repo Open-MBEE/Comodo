@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml
+    xmlns="http://www.w3.org/2005/07/scxml" version="1.0"
+    initial="A">
+  <state id="A">
+    <invoke targettype="scxml" id="extSM" src="extSM.xml"/>
+    <transition event="e1" cond="COND=true" target="B">
+      <log expr="'DoIt'"/>
+    </transition>
+  </state>
+  <state id="B">
+    <transition target="End"/>
+  </state>
+  <final id="End"/>
+</scxml>

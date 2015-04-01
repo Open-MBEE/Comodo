@@ -1,0 +1,47 @@
+<!-- Working with Apache -->
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" 
+	version="1.0 initial="SD">
+		<datamodel>
+		<data id="COND" expr="true" />
+	</datamodel>
+	<state id="SD" initial="SA"> 
+		<state id="SA"> 
+			<onentry>
+				<log expr="'EnterA'" />
+			</onentry>
+			<transition event="log"><log expr="'InA'"/></transition>
+			<onexit>
+				<log expr="'ExitA'"/>
+			</onexit>
+		</state>
+		<state id="SC"> 
+			<onentry>
+				<log expr="'EnterC'"/>
+			</onentry>
+			<transition event="log"><log expr="'InC'"/></transition>
+			<onexit>
+				<log expr="'ExitC'"/>
+			</onexit>
+		</state>
+		<onentry>
+			<log expr="'EnterD'"/>
+		</onentry>
+		<transition event="log"><log expr="'InD'"/></transition>
+		<onexit>
+			<log expr="'ExitD'"/>
+		</onexit>
+		<transition event="E1" target="SB"/>
+	</state>
+	<state id="SB">
+		<onentry>
+			<log expr="'EnterB'"/>
+		</onentry>
+		<transition event="log"><log expr="'InB'"/></transition>
+		<onexit>
+			<log expr="'ExitB'"/>
+		</onexit>
+		<transition event="E2" cond="COND==true" target="SD"/>
+		<transition event="E2" cond="COND==false" target="SC"/>
+	</state>
+</scxml>

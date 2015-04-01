@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   - Configuration Database Schema for a FilterImpl
+   -
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2011-11-19 Created.	
+-->
+<xs:schema 
+	targetNamespace="urn:schemas-cosylab-com:FilterImpl:1.0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="urn:schemas-cosylab-com:FilterImpl:1.0"
+	xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+	xmlns:baci="urn:schemas-cosylab-com:BACI:1.0" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified">
+	
+	<xs:import namespace="urn:schemas-cosylab-com:CDB:1.0" schemaLocation="CDB.xsd"/>
+	<xs:import namespace="urn:schemas-cosylab-com:BACI:1.0" schemaLocation="BACI.xsd"/>
+	 
+	<xs:complexType name="FilterImpl">
+		<xs:complexContent>
+			<xs:extension base="baci:CharacteristicComponent">
+			    <xs:sequence>
+			    	<xs:element name="state" type="baci:ROlong"/>
+			    	<xs:element name="subState" type="baci:ROlong"/>
+			    	<xs:element name="mode" type="baci:ROlong"/>
+			    	<xs:element name="mStatus" type="baci:ROlong"/>
+			    	<xs:element name="mErrorCode" type="baci:ROlong"/>
+			    	<xs:element name="mPosition" type="baci:ROlong"/>
+			    	<xs:element name="mEnabled" type="baci:ROlong"/>
+			    	<xs:element name="mMove" type="baci:ROlong"/>
+			    	<xs:element name="mStop" type="baci:ROlong"/>
+			    	<xs:element name="mSetPosition" type="baci:ROlong"/>
+			    	<xs:element name="mAcc" type="baci:ROlong"/>
+			    	<xs:element name="mDec" type="baci:ROlong"/>
+			    	<xs:element name="mVel" type="baci:ROlong"/>
+			    </xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>	
+	
+	<xs:element name="FilterImpl" type="FilterImpl"/>
+	
+</xs:schema>

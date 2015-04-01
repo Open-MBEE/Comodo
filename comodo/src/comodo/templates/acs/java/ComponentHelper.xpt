@@ -1,0 +1,110 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: ComponentHelper.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::uml::artifact»
+
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FILE getPackageVar() + '/src/alma/'+ getPackageVar() + '/'+ name + 'Helper.java'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+package alma.«getPackageVar()»;
+
+import java.util.logging.Logger;
+
+import alma.acs.container.ComponentHelper;
+
+import alma.acs.component.ComponentLifecycle;
+
+«REM» import packages of non-ACS interfaces «ENDREM»
+«FOREACH getAllInterfaces().select(e|e.package.name.toLowerCase() != 'acs') AS interface-»
+import alma.«getModel().getModulePackage().name».«interface.name»POATie;
+import alma.«getModel().getModulePackage().name».«interface.name»Operations;
+«ENDFOREACH-»
+
+/**«IF hasComment()»«FOREACH getComment().getCommentsWrapped() AS comment»
+ *«comment»«ENDFOREACH»«ENDIF»
+ * @see alma.«getModel().getModulePackage().name»Common
+«FOREACH getAllInterfaces() AS eInterface-»
+ * @see alma.«getModel().getModulePackage().name».«eInterface.name»
+ * @see alma.«getModel().getModulePackage().name».«eInterface.name»Operations
+«ENDFOREACH-»
+ * @see alma.acs.component.ComponentLifecycle
+ * @author ACS Component Code Generator
+ * @version «getPropSet('Id')»
+ */	
+public class «name»Helper extends ComponentHelper
+{
+
+	/**
+	 * Passes a logger to the callback object.
+	 * @param containerLogger
+	 */
+	public «name»Helper(Logger containerLogger)
+	{
+		super(containerLogger);
+	}
+
+    /**
+     * Gets an instance of the implementation class of the LampAccess component.
+     * @return ComponentLifecycle
+	 * @see alma.acs.container.ComponentHelper#_createComponentImpl()
+	 */
+	protected ComponentLifecycle _createComponentImpl()
+	{
+		return new «name»();
+	}
+
+	/**
+	 * Gets an instance of the POATie class of the LampAccess component.
+	 * @return Class
+	 * @see alma.acs.container.ComponentHelper#_getPOATieClass()
+	 */
+	protected Class _getPOATieClass()
+	{
+		return «getFirstInterface().name»POATie.class;
+	}
+
+	/**
+	 * Gets an instance of the operations of the LampAccess component.
+	 * @return Class
+	 * @see alma.acs.container.ComponentHelper#getOperationsInterface()
+	 */
+	protected Class _getOperationsInterface()
+	{
+		return «getFirstInterface().name»Operations.class;
+	}
+	
+}
+
+«ENDFILE»
+«ENDDEFINE»

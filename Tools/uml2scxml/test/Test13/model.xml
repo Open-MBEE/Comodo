@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml
+    xmlns="http://www.w3.org/2005/07/scxml" version="1.0"
+    initial="State1">
+  <state id="State1">
+    <invoke targettype="scxml" id="waiting" src="waiting.xml"/>
+    <transition event="evSTOP" target="End"/>
+    <transition event="sigEv" cond="cost==true">
+      <log expr="'internalActivity'"/>
+    </transition>
+  </state>
+  <final id="End"/>
+</scxml>

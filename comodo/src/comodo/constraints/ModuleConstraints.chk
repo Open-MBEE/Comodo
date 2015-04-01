@@ -1,0 +1,41 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: ModuleConstraints.chk 376 2011-08-11 21:13:46Z nbenes $
+ * 
+ */
+ 
+import uml;
+
+
+extension comodo::xtend::cmdo::stereotypes;
+
+
+String moduleName() : GLOBALVAR ModuleName;
+
+/**
+ * Check that all cmdoModule have a name.
+ */
+context Package if this.isPimModule() == true ERROR getPimStereotypeModule() + " must have a name." :
+	name.length != 0;
+
+/**
+ * Check that at least one cmdoModule has 'ModuleName' name.
+ */
+context Model ERROR "Module <<" + getPimStereotypeModule() + ">> " + moduleName()+ " not found." :
+	this.getPimModules().select(e|e.name.matches(moduleName())).isEmpty == false;
+		
+	

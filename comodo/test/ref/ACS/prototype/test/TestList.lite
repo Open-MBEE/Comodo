@@ -1,0 +1,75 @@
+#*******************************************************************************
+# ALMA - Atacama Large Millimiter Array
+# (c) UNSPECIFIED - FILL IN, 2009 
+# 
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+#
+#  "@(#) $Id$"
+#
+# who                when       what
+# ----------------  ----------  ----------------------------------------------
+# COMODO                        Created.
+# 
+
+
+SOURCE TATEnvironment
+
+PROLOGUE ./prototypeTATPrologue
+
+#java test
+1001 DeviceImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.DeviceImplTest"
+1002 DCSImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.DCSImplTest"
+1003 Lamp2ImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.Lamp2ImplTest"
+1004 CCDImagImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.CCDImagImplTest"
+1005 SubsystemImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.SubsystemImplTest"
+1006 Lamp1ImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.Lamp1ImplTest"
+1007 CCDSpectroImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.CCDSpectroImplTest"
+1008 MotorImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.MotorImplTest"
+1009 ICSImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.ICSImplTest"
+1010 OSImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.OSImplTest"
+1011 LampImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.LampImplTest"
+1012 FilterImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner prototype.FilterImplTest"
+
+#cpp test
+2001 cppUnitTestDeviceImpl "../bin/cppUnitTestDeviceImpl"
+2002 cppUnitTestDCSImpl "../bin/cppUnitTestDCSImpl"
+2003 cppUnitTestLamp2Impl "../bin/cppUnitTestLamp2Impl"
+2004 cppUnitTestCCDImagImpl "../bin/cppUnitTestCCDImagImpl"
+2005 cppUnitTestSubsystemImpl "../bin/cppUnitTestSubsystemImpl"
+2006 cppUnitTestLamp1Impl "../bin/cppUnitTestLamp1Impl"
+2007 cppUnitTestCCDSpectroImpl "../bin/cppUnitTestCCDSpectroImpl"
+2008 cppUnitTestMotorImpl "../bin/cppUnitTestMotorImpl"
+2009 cppUnitTestICSImpl "../bin/cppUnitTestICSImpl"
+2010 cppUnitTestOSImpl "../bin/cppUnitTestOSImpl"
+2011 cppUnitTestLampImpl "../bin/cppUnitTestLampImpl"
+2012 cppUnitTestFilterImpl "../bin/cppUnitTestFilterImpl"
+
+#python test
+3001 pyUnitTestDeviceImpl "python ../bin/pyUnitTestDeviceImpl testInstanceDeviceImpl"
+3002 pyUnitTestDCSImpl "python ../bin/pyUnitTestDCSImpl testInstanceDCSImpl"
+3003 pyUnitTestLamp2Impl "python ../bin/pyUnitTestLamp2Impl testInstanceLamp2Impl"
+3004 pyUnitTestCCDImagImpl "python ../bin/pyUnitTestCCDImagImpl testInstanceCCDImagImpl"
+3005 pyUnitTestSubsystemImpl "python ../bin/pyUnitTestSubsystemImpl testInstanceSubsystemImpl"
+3006 pyUnitTestLamp1Impl "python ../bin/pyUnitTestLamp1Impl testInstanceLamp1Impl"
+3007 pyUnitTestCCDSpectroImpl "python ../bin/pyUnitTestCCDSpectroImpl testInstanceCCDSpectroImpl"
+3008 pyUnitTestMotorImpl "python ../bin/pyUnitTestMotorImpl testInstanceMotorImpl"
+3009 pyUnitTestICSImpl "python ../bin/pyUnitTestICSImpl testInstanceICSImpl"
+3010 pyUnitTestOSImpl "python ../bin/pyUnitTestOSImpl testInstanceOSImpl"
+3011 pyUnitTestLampImpl "python ../bin/pyUnitTestLampImpl testInstanceLampImpl"
+3012 pyUnitTestFilterImpl "python ../bin/pyUnitTestFilterImpl testInstanceFilterImpl"
+
+EPILOGUE ./prototypeTATEpilogue
+
+# ___oOo___

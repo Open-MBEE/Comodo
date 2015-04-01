@@ -1,0 +1,65 @@
+#*******************************************************************************
+#    E.S.O. - VLT project
+#  
+#    "@(#) $Id$"
+#
+# who                when       what
+# ----------------  ----------  ----------------------------------------------
+# COMODO            -           Created.
+# 
+
+#************************************************************************
+#   NAME
+#    CcsEnvTable - CCS environment table
+#
+#   SYNOPSIS
+#    $VLTROOT/ENVIRONMENTS/<envName>/CcsEnvTable
+#
+#------------------------------------------------------------------------
+#
+#
+#   P        R  M  C  G    S   P    C
+#   R        E  U  L  E    H   R    O
+#   O  P  U  S  L  E  T    U   I    M
+#   C  H  S  T  T  A  O    T   O    M
+#   N  A  E  A  I  N  B    D   R    A
+#   U  S  R  R  P  U  I    W   T    N
+#___M__E__?__T__L__P__T____N___Y____D_______________________________________
+#
+#  These are the core processes which I will always want to run.
+#
+    1  0  N  N  N  N  N  100  128   ccsScheduler
+    2  1  N  N  N  N  N  100  128   ccsSHManager -s 100000 >>log/ccsSHManager.log
+    0  1  N  N  N  N  N  100  128   ccsNextPhase -t 3
+
+    3  2  N  N  N  Y  Y  100  128   qsemu           >> log/qsemu.log
+    4  2  N  N  N  Y  Y  100  128   timsTimeKeeper  >> log/timsTimeKeeper.log
+    5  0  N  N  N  N  N  100  128   dbMQDBM
+    0  2  N  N  N  N  N  100  128   dbStartup -r 16000000  >> log/dbStartup.log
+#   dbStartup size options must always be present
+#   dbStartup does an implicit ccsNextPhase unless -s is given
+
+    6  3  N  N  N  N  N  100  128   cmdManager      >> log/cmdManager.log
+    7  3  N  N  N  N  N  100  128   msgServer       >> log/msgServer.log
+    8  3  N  P  N  N  Y  100  128   logManager      >> log/logManager.log
+    9  3  N  N  N  Y  Y  100  128   evtEventConfg   >> log/evtEventConfg.log
+
+#   10  3  N  N  N  Y  Y    1  128   scanMngr -f 1   >> log/scanMngr.log
+    0  3  N  N  N  N  N  100  128   ccsNextPhase -t 15
+
+#   11  0  N  N  N  Y  Y    1  128   ccsScan
+#   12  0  Y  N  N  Y  Y    1  128   scanOut
+#    0  0  N  N  N  N  N    1  128   scanConfig
+    0  0  N  N  N  N  N    1  128   dbRead
+    0  0  N  N  N  N  N    1  128   dbWrite
+    0  0  N  N  Y  Y  Y    1  128   seqObituary
+
+#
+# Application processes are created by a test script
+# in the test directory.
+#
+  
+
+#___oOo___
+
+

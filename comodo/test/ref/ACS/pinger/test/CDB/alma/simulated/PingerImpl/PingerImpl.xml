@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import PingerImplSim
+	</pythonImports>
+        
+	<_corbaMethod Name="spawnChildren" Timeout="0">
+PingerImplSim.spawnChildren(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="logInfo" Timeout="0">
+PingerImplSim.logInfo()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="ping" Timeout="0">
+PingerImplSim.ping(parameters[0])
+	</_corbaMethod>
+	
+</SimulatedComponent>

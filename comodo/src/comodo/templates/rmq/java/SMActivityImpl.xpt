@@ -1,0 +1,80 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: SMActivityImpl.xpt 481 2011-10-10 10:46:44Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::interface»
+
+
+«DEFINE SMActivityImpl FOR State»
+«IF generateModeAll()»
+«FILE getPackageVar() + "/src/" + getPackageVar() + "/SMActivity" + doActivity.name + ".java"»
+«EXPAND comodo::templates::rmq::txt::Copyright::Copyright FOR "" -»
+
+
+package «getPackageVar()»;
+
+import org.apache.commons.scxml.SCInstance;
+
+import org.apache.log4j.Logger;
+
+import «getPackageVar()».SMActivity;
+import RMQCommons.Message;
+
+public class SMActivity«doActivity.name» extends SMActivity {
+	
+	public SMActivity«doActivity.name»(String name, String parentStateId, SCInstance parentSCInstance, Logger logger) {
+		super(name, parentStateId, parentSCInstance, logger);
+	}
+
+	public void run() {
+	
+		startRunning();
+		openConnection();	
+		
+		while (isRunning()) {
+			try {
+				Message msg = nextMessage(10);
+				if (msg != null) {
+
+					«FOREACH getModel().getModulePackage().getPimComponentImpls().getNCSubscribers() AS prop -»
+					if (msg.getName().matches(m«prop.type.name».getName())) {
+						// ToBeImplemented
+					}
+					«ENDFOREACH»
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				stopRunning();
+			}
+		}		
+		closeConnection();
+		triggerEvent("«doActivity.name».done");
+	}
+		
+}
+«ENDFILE»
+«ENDIF»	
+«ENDDEFINE»

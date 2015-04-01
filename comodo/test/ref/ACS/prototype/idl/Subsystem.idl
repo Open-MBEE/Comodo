@@ -1,0 +1,73 @@
+/*******************************************************************************
+ *    ALMA - Atacama Large Millimiter Array
+ *
+ *    (c) European Southern Observatory, 2002
+ *    Copyright by ESO (in the framework of the ALMA collaboration)
+ *    and Cosylab 2002, All rights reserved
+ *  
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation; either
+ *    version 2.1 of the License, or (at your option) any later version.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ *    You should have received a copy of the GNU Lesser General Public
+ *    License along with this library; if not, write to the Free Software
+ *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ *
+ * "@(#) $Id$" 
+ *
+ * who                when       what
+ * ----------------  ----------  ----------------------------------------------
+ * COMODO                        Created.
+ * 
+ */
+
+
+#ifndef _SUBSYSTEM_IDL_
+#define _SUBSYSTEM_IDL_
+
+#include <prototypeCommon.idl>
+#include <baci.idl>
+ 
+
+
+#pragma prefix "alma"
+
+/** 
+ * @file Subsystem.idl
+ */
+module prototype
+{
+	/**
+	 * IDL specification for the DevCCD module interface. This interface is a
+	 * CCD device abstraction, and, thus, it should be a generalization of
+	 * a simple CCD The DecCCD interface defines a DevCCD-like ACS component
+	 * that wili be the one in charge of communicate with the
+	 * hardware itself. The main purpose of this interface is to take
+	 * @interface Subsystem
+	 */
+	interface Subsystem  :  ACS::CharacteristicComponent
+	{  
+		
+		/* Holds the last frame that has been taken */
+		readonly attribute ACS::ROstringSeq commandTable;
+		
+		/**
+		 * Tell the camera to capture a frame with certain exposure time.
+		 * @param commandName 
+		 * @param parameterList 
+		 * @param cb 
+		 * @param desc 
+		 * @return long
+		 */
+		long sendCommand(in string commandName, in string parameterList, in ACS::CBstring cb, in ACS::CBDescIn desc);                             
+		
+		
+	};
+};
+#endif /* _SUBSYSTEM_IDL_ */

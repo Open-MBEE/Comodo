@@ -1,0 +1,69 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ * 
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/include/'+this+'DATA.h'-»
+#ifndef «this»DATA_H
+#define «this»DATA_H
+«EXPAND comodo::templates::vlt::txt::Copyright::Source FOR "" -»
+
+/****************************************************************************
+ * Shared runtime data.
+ *---------------------------------------------------------------------------
+ */
+
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C
+#endif
+
+#ifndef eccs_H
+#include "eccs.h"
+#endif
+
+#ifndef eccsDB_ATTR_H
+#include "eccsDB_ATTR.h"
+#endif
+
+
+class «this»CONFIG;
+
+
+class «this»DATA : public eccsERROR_CLASS
+{
+  public:
+    «this»DATA(const dbSYMADDRESS& dbRoot, «this»CONFIG& config);
+    ~«this»DATA();
+
+    ccsCOMPL_STAT Init();
+
+  private:
+    «this»CONFIG& mConfig;
+
+    «this»DATA(const «this»DATA&);
+    «this»DATA& operator= (const «this»DATA&);
+};
+
+#endif // !«this»DATA_H
+
+«ENDFILE»
+«ENDDEFINE»
+

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import LegoImplSim
+	</pythonImports>
+        
+	<_corbaMethod Name="observe" Timeout="0">
+LegoImplSim.observe(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="moveTo" Timeout="0">
+LegoImplSim.moveTo(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getCurrentPosition" Timeout="0">
+LegoImplSim.getCurrentPosition()
+	</_corbaMethod>
+	
+</SimulatedComponent>

@@ -1,0 +1,112 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: interface.ext 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+
+import uml;
+
+extension comodo::xtend::cmdo::stereotypes;
+extension comodo::xtend::cmdo::property;
+extension comodo::xtend::cmdo::artifact;
+extension comodo::xtend::cmdo::package;
+extension comodo::xtend::uml::interface;
+
+
+//########################## PROPERTY ##########################################
+List[Property] getOwnedROProperties(Interface interface) :
+	interface.ownedAttribute.select(e|e.isPimReadOnlyProperty());
+
+List[Property] getOwnedRWProperties(Interface interface) :
+	interface.ownedAttribute.select(e|e.isPimReadWriteProperty());
+
+List[Property] getOwnedRORWProperties(Interface interface) :
+	interface.getOwnedROProperties().addAll(interface.getOwnedRWProperties());
+
+boolean hasOwnedROProperties(Interface interface) :
+	!interface.getOwnedROProperties().isEmpty;
+
+boolean hasOwnedRWProperties(Interface interface) :
+	!interface.getOwnedRWProperties().isEmpty;
+
+boolean hasOwnedRORWProperties(Interface interface) :
+	!interface.getOwnedRORWProperties().isEmpty;
+
+List[Property] getOwnedNonPimProperties(Interface interface): 
+	interface.ownedAttribute.select(e|!e.isPimReadOnlyProperty()).select(e|!e.isPimReadWriteProperty());
+
+
+List[Property] getROProperties(Interface interface) :
+	interface.getAllAttributes().select(e|e.isPimReadOnlyProperty());
+
+List[Property] getRWProperties(Interface interface) :
+	interface.getAllAttributes().select(e|e.isPimReadWriteProperty());
+
+List[Property] getRORWProperties(Interface interface) :
+	interface.getROProperties().addAll(interface.getRWProperties());
+
+boolean hasROProperties(Interface interface) :
+	!interface.getROProperties().isEmpty;
+
+boolean hasRWProperties(Interface interface) :
+	!interface.getRWProperties().isEmpty;
+
+boolean hasRORWProperties(Interface interface) :
+	!interface.getRORWProperties().isEmpty;
+
+List[Property] getNonPimProperties(Interface interface): 
+	interface.getAllAttributes().select(e|!e.isPimReadOnlyProperty()).select(e|!e.isPimReadWriteProperty());
+
+//###################### NOTIFICATION CHANNEL ##################################
+List[Property] getNCPublishers(Interface interface) :
+	interface.getPimPublishers();
+
+List[Property] getNCSubscribers(Interface interface) :
+	interface.getPimSubscribers();
+
+/**
+ * Gets NCPublishers defined in all parent interfaces
+ * Gets a list of all parent interfaces.
+ * Collects into a list of lists the publishers for each of these interfaces
+ */
+List[Property] getAllNCPublishers(Interface interface) :	
+	  interface.getAllInterfaces().collect(e|e.getPimPublishers()).flatten();
+
+
+/**
+ * Gets a list of all parent interfaces.
+ * Collects into a list of lists the subscribers for each of these interfaces
+ * If there are no NCSubscribers at all we would have a list with an empty list
+ * inside. This is wrong - so remove lists of empty lists: {{}}
+ */
+List[Property] getAllNCSubscribers(Interface interface) :
+	  interface.getAllInterfaces().collect(e|e.getPimSubscribers()).flatten();
+
+
+//####################### TAG VALUES ###########################################
+boolean isConfigurable(Interface interface):
+	(interface.getPimTagValue(getPimStereotypeInterface(),'configurable') != null);
+
+boolean hasSMMaintenance(Interface interface):
+	(interface.getPimTagValue(getPimStereotypeInterface(),'smmaintenance') != null);
+	
+//######################## EXCEPTIONS ##########################################
+List[Signal] getPimExceptions(Interface interface):
+	interface.allOwnedElements().select(e|isPimException(e));
+
+boolean hasPimExceptions(Interface interface):
+	!interface.getPimExceptions().isEmpty;

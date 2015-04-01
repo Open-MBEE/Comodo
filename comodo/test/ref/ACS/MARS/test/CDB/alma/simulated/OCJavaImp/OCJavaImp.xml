@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import OCJavaImpSim
+	</pythonImports>
+        
+	<_corbaMethod Name="executeRAB" Timeout="0">
+OCJavaImpSim.executeRAB(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getReportsList" Timeout="0">
+OCJavaImpSim.getReportsList()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getReport" Timeout="0">
+OCJavaImpSim.getReport(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getSensorsList" Timeout="0">
+OCJavaImpSim.getSensorsList()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getSensorStatus" Timeout="0">
+OCJavaImpSim.getSensorStatus(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getRobotsList" Timeout="0">
+OCJavaImpSim.getRobotsList()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getRobotStatus" Timeout="0">
+OCJavaImpSim.getRobotStatus(parameters[0])
+	</_corbaMethod>
+	
+</SimulatedComponent>

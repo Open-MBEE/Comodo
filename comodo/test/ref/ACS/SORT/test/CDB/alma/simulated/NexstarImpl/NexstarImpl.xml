@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import NexstarImplSim
+	</pythonImports>
+        
+	<_corbaMethod Name="image" Timeout="0">
+NexstarImplSim.image(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="lock" Timeout="0">
+NexstarImplSim.lock()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="unlock" Timeout="0">
+NexstarImplSim.unlock()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="on" Timeout="0">
+NexstarImplSim.on()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="off" Timeout="0">
+NexstarImplSim.off()
+	</_corbaMethod>
+	
+</SimulatedComponent>

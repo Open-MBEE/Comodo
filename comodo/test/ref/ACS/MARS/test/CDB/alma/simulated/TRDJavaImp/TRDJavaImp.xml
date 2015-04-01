@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import TRDJavaImpSim
+	</pythonImports>
+        
+	<_corbaMethod Name="getRAB" Timeout="0">
+TRDJavaImpSim.getRAB(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="createReport" Timeout="0">
+TRDJavaImpSim.createReport(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getReportsList" Timeout="0">
+TRDJavaImpSim.getReportsList()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getReport" Timeout="0">
+TRDJavaImpSim.getReport(parameters[0])
+	</_corbaMethod>
+	
+</SimulatedComponent>

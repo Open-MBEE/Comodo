@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml
+    xmlns="http://www.w3.org/2005/07/scxml" version="1.0"
+    initial="state1">
+  <state id="state1">
+    <initial>
+      <transition target="state1::state2"/>
+    </initial>
+    <parallel id="state1::state3">
+      <state id="state1::state3:reg1">
+        <initial>
+          <transition target="state1::state3:reg1:StateA"/>
+        </initial>
+        <state id="state1::state3:reg1:StateA"> </state>
+      </state>
+      <state id="state1::state3:reg2">
+        <initial>
+          <transition target="state1::state3:reg2:StateB"/>
+        </initial>
+        <state id="state1::state3:reg2:StateB">
+          <transition target="state1::state3:reg2:StateC"/>
+        </state>
+        <parallel id="state1::state3:reg2:StateC">
+          <state id="state1::state3:reg2:StateC:b">
+            <initial>
+              <transition target="state1::state3:reg2:StateC:b:statec1"/>
+            </initial>
+            <state id="state1::state3:reg2:StateC:b:statec1"> </state>
+          </state>
+          <state id="state1::state3:reg2:StateC:a">
+            <initial>
+              <transition target="state1::state3:reg2:StateC:a:statec2"/>
+            </initial>
+            <state id="state1::state3:reg2:StateC:a:statec2"> </state>
+          </state>
+        </parallel>
+      </state>
+      <state id="state1::state3:reg3">
+        <initial>
+          <transition target="state1::state3:reg3:StateD"/>
+        </initial>
+        <state id="state1::state3:reg3:StateD">
+          <initial>
+            <transition target="state1::state3:reg3:StateD::stated2"/>
+          </initial>
+          <state id="state1::state3:reg3:StateD::stated2">
+            <transition target="state1::state3:reg3:StateD::stated1"/>
+          </state>
+          <state id="state1::state3:reg3:StateD::stated1"> </state>
+        </state>
+      </state>
+    </parallel>
+    <state id="state1::state2">
+      <transition event="start" target="state1::state3"/>
+    </state>
+    <transition event="stop" target="END"/>
+  </state>
+  <final id="END"/>
+</scxml>

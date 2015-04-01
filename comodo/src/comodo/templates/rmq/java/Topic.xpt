@@ -1,0 +1,120 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: SMEngine.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::stereotypes»
+«EXTENSION comodo::xtend::cmdo::langtype»
+
+«DEFINE Root FOR uml::Model»
+«EXPAND Topic FOREACH getModulePackage().getPimTopics()»
+«ENDDEFINE»
+
+«DEFINE Topic FOR uml::Signal»
+«FILE getPackageVar() + "/src/" + getPackageVar() + "/" + name + ".java"»
+«EXPAND comodo::templates::rmq::txt::Copyright::Copyright FOR "" -»
+
+package «getPackageVar()»;
+
+import RMQCommons.Topic;
+
+public class «this.name» extends Topic {
+
+«FOREACH this.allOwnedElements().typeSelect(Property) AS el -»
+	private «el.type.name» «el.name» = «el.type.toJavaNew()»;	
+«ENDFOREACH»
+
+	public «this.name»() {
+		super("«this.name»");
+	}
+	
+	public «this.name»(final String msg) {
+		super("«this.name»");
+		setPayload(msg);
+	}
+	
+«FOREACH this.allOwnedElements().typeSelect(Property) AS el -»
+	public «el.type.name» get«el.name.toFirstUpper()»() {
+		return «el.name»;
+	}	
+
+	public void set«el.name.toFirstUpper()»(«el.type.name» the«el.name.toFirstUpper()») {
+		«el.name» = the«el.name.toFirstUpper()»;
+	}	
+«ENDFOREACH»
+
+	public String getPayload() {
+		String payload = "";
+«FOREACH this.allOwnedElements().typeSelect(Property) AS el -»
+		payload += "«el.name» «el.type.name.toLowerCase()» " + get«el.name.toFirstUpper()»() + " ";
+«ENDFOREACH»	
+		return payload;
+	}
+
+	public String getPayloadWithoutType() {
+		String payload = "";
+«FOREACH this.allOwnedElements().typeSelect(Property) AS el -»
+		payload += "«el.name» " + get«el.name.toFirstUpper()»() + " ";
+«ENDFOREACH»	
+		return payload;
+	}
+
+	public String getPayloadWithoutNameAndType() {
+		String payload = "";
+«FOREACH this.allOwnedElements().typeSelect(Property) AS el -»
+		payload += get«el.name.toFirstUpper()»() + " ";
+«ENDFOREACH»	
+		return payload;
+	}
+
+	public void setPayload(final String payload) {
+	
+		/*
+		 * Parse the message parameters and fill in the topic attributes.
+		 */
+		String[] params = payload.split(" ");
+		for (int i = 0; i < params.length; i += 3) {
+«FOREACH this.allOwnedElements().typeSelect(Property) AS el -»
+			if (params[i].matches("«el.name»") && ((i + 2) < params.length)) {
+				«IF el.type.name.toLowerCase().matches("boolean") -»
+					set«el.name.toFirstUpper()»(Boolean.parseBoolean(params[i+2]));	
+				«ELSEIF el.type.name.toLowerCase().matches("int") -»
+					set«el.name.toFirstUpper()»(Integer.parseInt(params[i+2]));	
+				«ELSEIF el.type.name.toLowerCase().matches("long") -»
+					set«el.name.toFirstUpper()»(Long.parseLong(params[i+2]));						
+				«ELSEIF el.type.name.toLowerCase().matches("double") -»
+					set«el.name.toFirstUpper()»(Double.parseDouble(params[i+2]));
+				«ELSEIF el.type.name.toLowerCase().matches("string") -»
+					set«el.name.toFirstUpper()»(params[i+2]);
+				«ENDIF»
+			}
+«ENDFOREACH»		
+		}
+	}
+		
+}
+«ENDFILE»
+«ENDDEFINE»
+

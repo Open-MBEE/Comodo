@@ -1,0 +1,69 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/test/TestDriver'-»
+#! /bin/sh -f
+«EXPAND comodo::templates::vlt::txt::Copyright::Script FOR "" -»
+#************************************************************************
+#   NAME
+#   TestDriver - executes the modular test for the evh module
+# 
+#   SYNOPSIS
+# 
+#   DESCRIPTION
+#
+#   FILES
+#
+#   ENVIRONMENT
+#
+#   RETURN VALUES
+#
+#   CAUTIONS
+#
+#   EXAMPLES
+#
+#   SEE ALSO
+#
+#   BUGS     
+#
+#------------------------------------------------------------------------
+#
+
+RTAPENV=`grep -a wsTat .testSession | awk '{print $3}'`
+wsTat=`grep -a wsTat .testSession | awk '{print $3}'`
+TMP_RTAPENV=$RTAPENV
+
+export RTAPENV TMP_RTAPENV wsTat
+
+params=$@
+
+. «this»TestSetEnv.sh $PWD/INS_ROOT
+
+eccsTestDriver -x $params
+
+#
+# ___oOo___
+
+«ENDFILE»
+«ENDDEFINE»
+

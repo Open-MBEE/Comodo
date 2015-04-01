@@ -1,0 +1,283 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::scxmlutil»
+«EXTENSION comodo::xtend::uml::statemachine»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::uml::artifact»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model -»
+«FILE getModulePackage().name+'/src/'+getModulePackage().name+'ACTION_MGR.C'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::Source FOR "" -»
+
+#define _POSIX_SOURCE 1
+#include "vltPort.h"
+
+#include "«getModulePackage().name».h"
+«getModulePackage().name»WSF_RCSID("@(#) $Id: «getModulePackage().name»ACTION_MGR.C 593 2012-04-22 12:12:12Z landolfa $")
+
+#include "«getModulePackage().name»ACTION_MGR.h"
+#include "«getModulePackage().name»CONFIG.h"
+#include "«getModulePackage().name»DATA.h"
+#include "«getModulePackage().name»Actions.h"
+#include "«getModulePackage().name»Defines.h"
+#include "«getModulePackage().name»Errors.h"
+
+#include "wsf2libACTION.h"
+#include "wsf2libLOG.h"
+#include "wsf2libASSERT.h"
+#include "wsf2libDB_ADDR.h"
+#include "wsf2libCMDH_MGR.h"
+#include "wsf2libCMDH_INTERNAL.h"
+#include "wsf2libFSM.h"
+
+«IF (isVltMultiThreadedConfig() == true)-»
+#include "evhTHREADS.h"
+«ENDIF-»
+
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+«EXPAND SMInclude FOREACH eElement.getStateMachines()»
+«ENDFOREACH-»
+
+
+/** 
+ * Constructor
+ * Creates the shared data objects, the standard actions
+ * and the custom actions.
+ *
+ * @param fsm pointer to the state machine.
+ * @param dbRoot database root.
+ */
+«getModulePackage().name»ACTION_MGR::«getModulePackage().name»ACTION_MGR(const dbSYMADDRESS& dbRoot,
+				     wsf2libOPTIONS* arguments,
+				     wsf2libCMDH_MGR* eventMgr)
+    : wsf2libACTION_MGR(dbRoot, wsf2libDB_ADDR(dbRoot, «getModulePackage().name»DB_CONTROL_POINT), eventMgr),
+      mConfig(NULL),
+      mData(NULL)
+{
+    wsf2libLOG_TRACE();
+
+    mConfig = new «getModulePackage().name»CONFIG(wsf2libDB_ADDR(dbRoot, «getModulePackage().name»DB_CONFIG_POINT), arguments);
+    if (mConfig == NULL)
+	{
+        ErrAdd(«getModulePackage().name»MOD, «getModulePackage().name»ERR_NULL_POINTER, __FILE_LINE__, "«getModulePackage().name»CONFIG");
+        ObjStatus(FAILURE);	
+	return;	
+	}	
+    if (mConfig->ErrStatus() == FAILURE || mConfig->ObjStatus() == FAILURE)
+	{
+        ErrAdd(«getModulePackage().name»MOD, «getModulePackage().name»ERR_CREATE, __FILE_LINE__, "«getModulePackage().name»CONFIG");
+        ObjStatus(FAILURE);	
+	return;
+	}
+	
+    mData = new «getModulePackage().name»DATA(wsf2libDB_ADDR(dbRoot, «getModulePackage().name»DB_DATA_POINT), *mConfig);
+    if (mData == NULL)
+	{
+        ErrAdd(«getModulePackage().name»MOD, «getModulePackage().name»ERR_NULL_POINTER, __FILE_LINE__, "«getModulePackage().name»DATA");
+        ObjStatus(FAILURE);	
+	return;	
+	}	
+    if (mData->ErrStatus() == FAILURE || mData->ObjStatus() == FAILURE)
+	{
+        ErrAdd(«getModulePackage().name»MOD, «getModulePackage().name»ERR_CREATE, __FILE_LINE__, "«getModulePackage().name»DATA");
+        ObjStatus(FAILURE);	
+	return;
+	}
+}
+
+
+/** 
+ * Destructor
+ * Delete all the actions and the shared data objects.
+ */
+«getModulePackage().name»ACTION_MGR::~«getModulePackage().name»ACTION_MGR()
+{
+    wsf2libLOG_TRACE();
+    /*
+     * No ASSERTPTR on mConfig and mData here since an error could have
+     * stopped their instantiation: mData could still be NULL if mConfig instation
+     * failed.
+     */
+
+    /*
+     * Delete all SCXML actions and activities
+     * Delete WSF actions
+     *
+     * NOTE: this has to be done here to avoid deleting DATA and CONFIG
+     *       before the ACTIONs and ACTIVITIEs. ACTIONs may still need
+     *       to access DATA and CONFIG in the destructor.
+     */
+    SCXMLDelAllActions();
+    SCXMLDelAllActivities();
+    DelAllActions();
+    
+    /*
+     * Only now delete DATA and CONFIG
+     */
+    delete mData;
+    delete mConfig;        
+}
+
+
+/** 
+ * Create standard actions for standard commands.
+ *
+ * @param fsm Pointer to the state machine.
+ * @param dbRoot database root.
+ */
+ccsCOMPL_STAT «getModulePackage().name»ACTION_MGR::CreateActions()
+{
+    wsf2libLOG_TRACE();
+
+    wsf2libACTION* action = NULL;
+
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+«EXPAND SM FOREACH eElement.getStateMachines()»
+«ENDFOREACH-»
+
+    return SUCCESS;
+}
+
+/** 
+ * Create activities
+ *
+ */
+ccsCOMPL_STAT «getModulePackage().name»ACTION_MGR::CreateActivities(const char* procName, wsf2libFSM* fsm, evhTHREADS& threadsHandler)
+{
+    wsf2libLOG_TRACE();
+    wsf2libASSERTPTR(procName);
+    wsf2libASSERTPTR(fsm);	
+	
+«IF getModulePackage().getPimComponentImpls().getStateMachines().first().getAllActivityName().size > 0-»
+    wsf2libSCXML_ACTIVITY* activity = NULL;	
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+«EXPAND SM1 FOREACH eElement.getStateMachines()»
+«ENDFOREACH-»
+«ENDIF-»
+
+    return SUCCESS;
+}
+
+/** 
+ * Init all actions.
+ */
+ccsCOMPL_STAT «getModulePackage().name»ACTION_MGR::Init()
+{
+    wsf2libLOG_TRACE();
+    wsf2libASSERTPTR(mConfig);
+    wsf2libASSERTPTR(mData);    
+    ErrReset();
+
+ 
+    /*
+     * Initialize shared data.
+     */
+    if (InitControl() == FAILURE)
+	{
+	ErrAdd(«getModulePackage().name»MOD, «getModulePackage().name»ERR_INIT, __FILE_LINE__, "CONTROL");
+	return FAILURE;
+	}
+
+    if (mConfig->Init() == FAILURE)
+	{
+	ErrAdd(«getModulePackage().name»MOD, «getModulePackage().name»ERR_INIT, __FILE_LINE__, "CONFIG");
+	return FAILURE;
+	}
+
+    if (mData->Init() == FAILURE)
+	{
+	ErrAdd(«getModulePackage().name»MOD, «getModulePackage().name»ERR_INIT, __FILE_LINE__, "DATA");
+	return FAILURE;
+	}
+
+    /*
+     * Initialize all events
+     */
+    if (InitAllEvents() == FAILURE)
+	{
+	ErrAdd(«getModulePackage().name»MOD, «getModulePackage().name»ERR_INIT, __FILE_LINE__, "EVENTS");
+	return FAILURE;	
+	}
+
+    /*
+     * Initialize actions and local data.
+     */
+    if (InitAllActions() == FAILURE)
+	{
+	ErrAdd(«getModulePackage().name»MOD, «getModulePackage().name»ERR_INIT, __FILE_LINE__, "ACTIONS");
+	return FAILURE;
+	};
+    
+    return SUCCESS;
+}
+
+«getModulePackage().name»CONFIG& «getModulePackage().name»ACTION_MGR::GetConfig()
+{
+    wsf2libLOG_TRACE();
+    return *mConfig;    
+}
+
+«getModulePackage().name»DATA& «getModulePackage().name»ACTION_MGR::GetData()
+{
+    wsf2libLOG_TRACE();
+    return *mData;    
+}
+
+
+// __oOo__
+
+
+«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE SM FOR uml::StateMachine -»
+«FOREACH this.getAllActionNamePrefix().toSet().sortBy(e|e) AS actionName»
+    action = new «this.getModel().getModulePackage().name»ACTION_«actionName»(*this, *GetControl(), *mConfig, *mData);
+    if (action == NULL) return FAILURE;
+    if (action->ErrStatus() == FAILURE) return FAILURE;
+    AddAction(action);
+«ENDFOREACH-»
+«ENDDEFINE»
+
+«DEFINE SM1 FOR uml::StateMachine -»
+«FOREACH this.getAllActivityName().toSet().sortBy(e|e) AS activityName»
+    activity = new «this.getModel().getModulePackage().name»ACTIVITY_«activityName»(procName, fsm, threadsHandler, *GetControl(), *mConfig, *mData);
+    if (activity == NULL) return FAILURE;
+    SCXMLAddActivity(activity);
+«ENDFOREACH-»
+«ENDDEFINE»
+
+
+«DEFINE SMInclude FOR uml::StateMachine -»
+«FOREACH this.getAllActionNamePrefix().removeDuplicates() AS actionName-»
+#include "«this.getModel().getModulePackage().name»ACTION_«actionName».h"
+«ENDFOREACH-»
+
+«FOREACH this.getAllActivityName().removeDuplicates() AS activityName-»
+#include "«this.getModel().getModulePackage().name»ACTIVITY_«activityName».h"
+«ENDFOREACH-»
+«ENDDEFINE»

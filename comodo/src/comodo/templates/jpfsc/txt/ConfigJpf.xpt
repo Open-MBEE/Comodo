@@ -1,0 +1,53 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Fsms.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«DEFINE JPFRoot FOR String-»
+«FILE this+"/"+this+".jpf"-»
+#
+# Target class to analyze: the state machine
+#
+target = gov.nasa.jpf.sc.StateMachine
+
+#
+# The argument is a specific implementation of the StateMachine 
+#
+target.args = «this»
+
+#
+# Specify the JPF projects to be use
+#
+@using = jpf-core
+@using = jpf-aprop
+@using = jpf-statechart
+
+#
+# Include the specific application properties
+#
+@include=${config_path}/«this».properties
+
+#
+# Specify the guidance script file with the events to be triggered
+#
+#sc.script=${config_path}/«this».es
+
+«ENDFILE»
+«ENDDEFINE»

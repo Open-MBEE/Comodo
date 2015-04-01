@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2011-11-19 Created.	
+-->
+<Components  xmlns="urn:schemas-cosylab-com:Components:1.0"
+		xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+		xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		
+		<_ Name="ICS" 
+			Code="alma.prototype.ICSImplHelper"
+			Type="IDL:alma/prototype/ICS:1.0"
+			Container="ICSCOntainer" 
+			ImplLang="java" />
+		<_ Name="OS" 
+			Code="alma.prototype.OSImplHelper"
+			Type="IDL:alma/prototype/OS:1.0"
+			Container="OSContainer" 
+			ImplLang="java" />
+		<_ Name="LAMP1" 
+			Code="alma.prototype.Lamp1ImplHelper"
+			Type="IDL:alma/prototype/Lamp1:1.0"
+			Container="DeviceContainer" 
+			ImplLang="java" />
+		<_ Name="LAMP2" 
+			Code="alma.prototype.Lamp2ImplHelper"
+			Type="IDL:alma/prototype/Lamp2:1.0"
+			Container="DeviceContainer" 
+			ImplLang="java" />
+		<_ Name="FILT1" 
+			Code="alma.prototype.FilterImplHelper"
+			Type="IDL:alma/prototype/Filter:1.0"
+			Container="DeviceContainer" 
+			ImplLang="java" />
+		<_ Name="DCS" 
+			Code="alma.prototype.DCSImplHelper"
+			Type="IDL:alma/prototype/DCS:1.0"
+			Container="DCSContainer" 
+			ImplLang="java" />
+		<_ Name="CCDIMAG" 
+			Code="alma.prototype.CCDImagImplHelper"
+			Type="IDL:alma/prototype/CCDImag:1.0"
+			Container="DCSContainer" 
+			ImplLang="java" />
+		<_ Name="CCDSPECTRO" 
+			Code="alma.prototype.CCDSpectroImplHelper"
+			Type="IDL:alma/prototype/CCDSpectro:1.0"
+			Container="DCSContainer" 
+			ImplLang="java" />
+
+		<!-- Component Simulators -->
+		<_ Name="ICSSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prototype/ICS:1.0"
+			Container="prototypeSimulator" 
+			ImplLang="py" />
+		<_ Name="OSSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prototype/OS:1.0"
+			Container="prototypeSimulator" 
+			ImplLang="py" />
+		<_ Name="LAMP1Simulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prototype/Lamp1:1.0"
+			Container="prototypeSimulator" 
+			ImplLang="py" />
+		<_ Name="LAMP2Simulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prototype/Lamp2:1.0"
+			Container="prototypeSimulator" 
+			ImplLang="py" />
+		<_ Name="FILT1Simulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prototype/Filter:1.0"
+			Container="prototypeSimulator" 
+			ImplLang="py" />
+		<_ Name="DCSSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prototype/DCS:1.0"
+			Container="prototypeSimulator" 
+			ImplLang="py" />
+		<_ Name="CCDIMAGSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prototype/CCDImag:1.0"
+			Container="prototypeSimulator" 
+			ImplLang="py" />
+		<_ Name="CCDSPECTROSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prototype/CCDSpectro:1.0"
+			Container="prototypeSimulator" 
+			ImplLang="py" />
+
+	   <!-- Instance to test components -->
+	   
+	   <!-- Java Component Instances -->
+	   
+	   <_ Name="testInstanceDeviceImpl" 
+			Code="alma.prototype.DeviceImplHelper"
+			Type="IDL:alma/prototype/Device:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceDCSImpl" 
+			Code="alma.prototype.DCSImplHelper"
+			Type="IDL:alma/prototype/DCS:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceLamp2Impl" 
+			Code="alma.prototype.Lamp2ImplHelper"
+			Type="IDL:alma/prototype/Lamp2:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceCCDImagImpl" 
+			Code="alma.prototype.CCDImagImplHelper"
+			Type="IDL:alma/prototype/CCDImag:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceSubsystemImpl" 
+			Code="alma.prototype.SubsystemImplHelper"
+			Type="IDL:alma/prototype/Subsystem:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceLamp1Impl" 
+			Code="alma.prototype.Lamp1ImplHelper"
+			Type="IDL:alma/prototype/Lamp1:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceCCDSpectroImpl" 
+			Code="alma.prototype.CCDSpectroImplHelper"
+			Type="IDL:alma/prototype/CCDSpectro:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceMotorImpl" 
+			Code="alma.prototype.MotorImplHelper"
+			Type="IDL:alma/prototype/Motor:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceICSImpl" 
+			Code="alma.prototype.ICSImplHelper"
+			Type="IDL:alma/prototype/ICS:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceOSImpl" 
+			Code="alma.prototype.OSImplHelper"
+			Type="IDL:alma/prototype/OS:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceLampImpl" 
+			Code="alma.prototype.LampImplHelper"
+			Type="IDL:alma/prototype/Lamp:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceFilterImpl" 
+			Code="alma.prototype.FilterImplHelper"
+			Type="IDL:alma/prototype/Filter:1.0"
+			Container="prototypeJavaTest" 
+			ImplLang="java" />
+			
+	   
+	   
+</Components>

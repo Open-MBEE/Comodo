@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml
+    xmlns="http://www.w3.org/2005/07/scxml" version="1.0"
+    initial="A">
+  <state id="A">
+    <initial>
+      <transition target="A::C"/>
+    </initial>
+    <parallel id="A::C">
+      <state id="A::C:reg1">
+        <initial>
+          <transition target="A::C:reg1:E"/>
+        </initial>
+        <state id="A::C:reg1:E"> </state>
+      </state>
+      <state id="A::C:reg2">
+        <initial>
+          <transition target="A::C:reg2:F"/>
+        </initial>
+        <state id="A::C:reg2:F">
+          <transition target="A::C:reg2:G"/>
+        </state>
+        <state id="A::C:reg2:G"> </state>
+      </state>
+    </parallel>
+    <state id="A::D">
+      <initial>
+        <transition target="A::D::H"/>
+      </initial>
+      <state id="A::D::H">
+        <initial>
+          <transition target="A::D::H::I"/>
+        </initial>
+        <state id="A::D::H::I">
+          <transition target="A::D::H::L"/>
+        </state>
+        <state id="A::D::H::L">
+          <transition target="A::D::H::END"/>
+        </state>
+        <final id="A::D::H::END"/>
+        <transition target="M"/>
+      </state>
+    </state>
+  </state>
+  <state id="M">
+    <transition target="OuterEnd"/>
+  </state>
+  <final id="OuterEnd"/>
+</scxml>

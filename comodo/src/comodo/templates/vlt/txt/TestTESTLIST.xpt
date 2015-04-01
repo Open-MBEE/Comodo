@@ -1,0 +1,58 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/test/TESTLIST.td'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::Script FOR "" -»
+
+###################################################################
+#
+#  EVH TESTLIST
+#
+#  "@(#) $Id: TESTLIST.td,v 0.18 2006/09/13 10:06:32 vltsccm Exp $"
+#
+#  Following is a list of test programs that are called 
+#  sequencially.
+#  When two programs are specified the first one is treated
+#  as a server and started in the background.
+#
+#  Following actions are performed:
+#
+#  - Program is started with output redirected into file.
+#  - If two programs are specified the output is merged.
+#  - The timestamp is striped off the output
+#  - The output is compared with the reference output <program>.REF
+#  - If difference are found the are listed in <program>.diff
+# 
+#
+###################################################################
+#
+# Test the main engine for evh
+#
+
+1 «this»TestStdCommands     «this»TestStart.sh "@SLEEP 10" «this»TestStdCommands 
+
+#___o0o___
+
+«ENDFILE»
+«ENDDEFINE»
+

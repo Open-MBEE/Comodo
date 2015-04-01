@@ -1,0 +1,234 @@
+import uml;
+import ecore;
+
+State getTopState( StateMachine this ):
+	this.region.state.get(0);  
+
+stateMachineName( StateMachine this ): name;
+
+// Get the State that contains this state. In case of the topmost, returns null
+State parentState( State this ): 
+	this.container.state;
+ 
+State parentState( Pseudostate this ):
+	this.container.state;  
+
+State parentState( Region this ):
+	this.owner;
+
+Region parentRegion( State this ): 
+	this.owner;
+
+// Lists States, NOT including final
+List[State] listStates( State this ): 
+	allOwnedElements().typeSelect(State).select(e|!(e.name == "Unavailable") && !(e.metaType.name == "uml::FinalState") );
+
+List[State] listStates( StateMachine this ): 
+	allOwnedElements().typeSelect(State).select(e|!(e.name == "Unavailable") && !(e.metaType.name == "uml::FinalState"));
+
+// Get the first Initial state, that is inside this state.
+State getInitialState( State this ): 
+	if( !isComposite() ) 
+		then null 
+	else 
+		if( allOwnedElements().typeSelect(Pseudostate).select(e|e.kind.toString() == "initial").isEmpty ) 
+			then null 
+		else allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString() == "initial") && (e.parentState() == this)).get(0).outgoing.target.get(0);
+
+State getInitialState( Region this ): 
+	if( allOwnedElements().typeSelect(Pseudostate).select(e|e.kind.toString() == "initial").isEmpty ) 
+		then null 
+	else allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString() == "initial") && (e.parentState() == this.parentState())).get(0).outgoing.target.get(0);
+
+State getInitialState( StateMachine this ): 
+	if( allOwnedElements().typeSelect(Pseudostate).select(e|e.kind.toString() == "initial").isEmpty ) 
+		then null 
+	else allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString() == "initial") && (e.isTopState())).get(0).outgoing.target.get(0);
+
+//Get full qualified name
+//Every state is inside a region, every region is inside a state
+string getFullName( State this ) : 
+	if !this.isTopState()
+		then (this.owner == null ? this.name : getFullName(this.parentRegion())+':'+this.name)
+	else this.name;
+
+string getFullName( Region this ) :
+	if !this.isTopState()
+		then (this.owner == null ? this.name : getFullName(this.parentState())+':'+this.name)
+	else this.name;
+	
+string getFullName( StateMachine this ) : 
+	this.name;
+
+string getFullName( Void this ) :
+	 this.toString() ;
+
+
+// Get the name for the superContext class
+string getContextName( State this ): parentState().name;
+string getContextName( Pseudostate this ): parentState().name;		
+		
+//Check if State is a FinalState
+boolean isFinalState( State this ):
+	if isComposite
+		then false
+	else
+		if (this.metaType.name == "uml::FinalState")
+			then true
+		else false;
+
+// If this State is the topmost, returns true.
+boolean isTopState( State this ): 
+	if( this.container.owner == containingStateMachine() ) 
+		then true 
+	else false;
+
+boolean isTopState( Pseudostate this ): 
+	if( this.container.owner == containingStateMachine() ) 
+		then true 
+	else false;
+
+boolean isTopState( Region this ): 
+	if( this.owner == containingStateMachine() ) 
+		then true 
+	else false;
+	
+// Lists composite child states	
+List[State] listCompChilds( StateMachine this ):
+	allOwnedElements().typeSelect(State).select(e|(e.isComposite() && (e.parentState() == this))) ;	
+
+List[State] listCompChilds( State this ):
+	allOwnedElements().typeSelect(State).select(e|(e.isComposite() && (e.parentState() == this))) ;	
+	
+//Lists simple child States	
+List[State] listSimpleChilds( StateMachine this): 
+	allOwnedElements().typeSelect(State).select(e|(!e.isComposite) && (e.parentState() == this)).removeAll(this.allOwnedElements().typeSelect(State).select(e|e.metaType == "uml::FinalState")) ;
+
+List[State] listSimpleChilds( State this): 
+	allOwnedElements().typeSelect(State).select(e|(!e.isComposite) && (e.parentState() == this)).removeAll(this.allOwnedElements().typeSelect(State).select(e|e.metaType == "uml::FinalState")) ;
+	
+// Get all Transition owned by this State
+List[Transition] getTransitions( State this ): 
+	allOwnedElements().typeSelect(Transition);
+	
+//Check if the state has entry or exit actions
+boolean hasOnEntry( State this ):
+	!(this.entry.name.toString() == "null");
+
+boolean hasOnExit( State this ):
+	!(this.exit.name.toString() == "null");
+
+//Check if State has activities
+boolean hasDoActions( State this ):
+	!(this.doActivity.name.toString() == "null" );
+
+//Check if transition has a guard	
+boolean hasCond( Transition this ):
+	!(this.guard.name.toString() == "null");
+
+//Check if transitions has an event that triggers itself
+boolean hasEvent( Transition this ):
+	!(this.trigger.isEmpty);
+
+//Check if transition has target
+boolean hasTarget( Transition this ):
+	!(this.target.name.toString() == "null");
+	
+//Check if transition has Actions
+boolean hasAction( Transition this ):
+	!(this.ownedElement.typeSelect(Activity).isEmpty);
+
+//Log action in transitions with the name of the action
+string getActionInTransition ( Transition this ):
+	if this.hasAction()
+		then "<customActionDomain:"+this.ownedElement.typeSelect(Activity).get(0).name+" name=\"custom action "+this.ownedElement.typeSelect(Activity).get(0).name+"\" />" 
+	else "" ;
+	
+//7 types of transitions are possible
+string getTransition( Transition this ):
+switch {
+	case (this.hasEvent() && this.hasCond() && this.hasTarget()) : 
+		(if !this.target.container.isTopState() then
+		 	"<transition event=\""+this.trigger.get(0).event.name+"\" cond=\""+this.guard.ownedElement.typeSelect(OpaqueExpression).body.get(0).toString()+"\" target=\""+this.target.container.getFullName()+":"+this.target.name+"\">"+this.getActionInTransition()+"</transition>" 
+		 else "<transition event=\""+this.trigger.get(0).event.name+"\" cond=\""+this.guard.ownedElement.typeSelect(OpaqueExpression).body.get(0).toString()+"\" target=\""+this.target.name+"\">"+this.getActionInTransition()+"</transition>" )
+		
+	case (this.hasEvent() && this.hasCond() && !this.hasTarget()) :
+		( "<transition event=\""+this.trigger.get(0).event.name+"\" cond=\""+this.guard.ownedElement.typeSelect(OpaqueExpression).body.get(0).toString()+"\">"+this.getActionInTransition()+"</transition>" )
+		
+	case (this.hasEvent() && !this.hasCond() && this.hasTarget()) :
+		(if !this.target.container.isTopState() then 
+			"<transition event=\""+this.trigger.get(0).event.name+"\" target=\""+this.target.container.getFullName()+":"+this.target.name+"\">"+this.getActionInTransition()+"</transition>" else "<transition event=\""+this.trigger.get(0).event.name+"\" target=\""+this.target.name+"\">"+this.getActionInTransition()+"</transition>" )
+
+	case (this.hasEvent() && !this.hasCond() && !this.hasTarget()) : 
+		("<transition event=\""+this.trigger.get(0).event.name+"\">"+this.getActionInTransition()+"</transition>")
+		 
+	case (!this.hasEvent() && this.hasCond() && this.hasTarget()) : 
+		(if !this.target.container.isTopState() then
+			 "<transition cond=\""+this.guard.ownedElement.typeSelect(OpaqueExpression).body.get(0).toString()+"\" target=\""+this.target.container.getFullName()+":"+this.target.name+"\">"+this.getActionInTransition()+"</transition>" 
+		else "<transition cond=\""+this.guard.ownedElement.typeSelect(OpaqueExpression).body.get(0).toString()+"\" target=\""+this.target.name+"\">"+this.getActionInTransition()+"</transition>")
+		
+	case (!this.hasEvent() && this.hasCond() && !this.hasTarget()) : 
+		("<transition cond=\""+this.guard.ownedElement.typeSelect(OpaqueExpression).body.get(0).toString()+"\">"+this.getActionInTransition()+"</transition>")
+
+	case (!this.hasEvent() && !this.hasCond() && this.hasTarget()) : 
+		( if this.hasTarget() then 
+			( if !this.target.container.isTopState() then
+				 "<transition target=\""+this.target.container.getFullName()+":"+this.target.name+"\">"+this.getActionInTransition()+"</transition>" 
+			else "<transition target=\""+this.target.name+"\">"+this.getActionInTransition()+"</transition>" ))
+	default : " "
+};
+ 
+//Check if a transition is an InternalTransition
+boolean isInternalTransition( Transition this ) :
+	if this.kind.toString()=="internal"
+		then true
+	else false ;
+
+//Get Internal Transition
+//Internal transitions have no target
+//4 types of internal transitions are possible
+string getIntTransition( Transition this ) : 
+switch {
+	case ( this.hasEvent() && this.hasCond() ) : 
+		("<transition event=\""+this.trigger.get(0).event.name+"\" cond=\""+this.guard.ownedElement.typeSelect(OpaqueExpression).body.get(0).toString()+"\">"+this.getActionInTransition()+"</transition>")
+		
+	case ( this.hasEvent() && !this.hasCond() ) : 
+		("<transition event=\""+this.trigger.get(0).event.name+"\">"+this.getActionInTransition()+"</transition>")
+		
+	case ( !this.hasEvent() && this.hasCond() ) : 
+		("<transition cond=\""+this.guard.ownedElement.typeSelect(OpaqueExpression).body.get(0).toString()+"\">"+this.getActionInTransition()+"</transition>")
+	
+	case ( !this.hasEvent() && !this.hasCond() ) : 
+		("<transition>"+this.getActionInTransition()+"</transition>")
+	
+	default : ""
+};
+
+
+//History				
+List[Pseudostate] getHistory( State this ): 
+	if( !isComposite() ) 
+		then null 
+	else 
+		if( allOwnedElements().typeSelect(Pseudostate).select(e|e.kind.toString().contains("History")).isEmpty ) 
+			then null 
+		else allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString().contains("History")) && (e.parentState() == this));
+
+boolean hasHistory( State this ): 
+	if( !isComposite() ) 
+		then false 
+	else
+		if( this.ownedElement.typeSelect(Region).ownedElement.typeSelect(Pseudostate).select(e|e.kind.toString().contains("History")).isEmpty)
+				then false
+		else true;	
+			
+string historyType( Pseudostate this ):
+	switch {
+case (this.kind.toString() == "shallowHistory") : "type=\"shallow\""
+case (this.kind.toString() == "deepHistory") : "type=\"deep\""
+default : null
+}
+;
+	
+
+		

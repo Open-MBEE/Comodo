@@ -1,0 +1,48 @@
+«IMPORT uml»
+«EXTENSION templates::ScxmlUtil»
+
+«REM» Write headers for SCXML «ENDREM» 
+«DEFINE Headers FOR StateMachine»
+<scxml xmlns="http://www.w3.org/2005/07/scxml" 
+xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM"
+version="1.0" initial="«getInitialState().getFullName()»">
+«ENDDEFINE»
+ 
+«DEFINE CloseScxml FOR StateMachine»
+</scxml>
+«ENDDEFINE»
+
+«DEFINE FinalState FOR StateMachine»
+«FOREACH this.allOwnedElements().typeSelect(FinalState).select(e|e.parentState().name.toString() == "null") AS st»
+<final id="«st.getFullName()»"/>
+«ENDFOREACH»
+«ENDDEFINE»
+
+«DEFINE SimFinalState FOR State»
+<final id="«this.getFullName()»"/>
+«ENDDEFINE»
+
+«DEFINE StateName FOR State»
+<state id="«this.getFullName()»">
+«ENDDEFINE»
+
+«DEFINE CloseState FOR State»
+</state>
+«ENDDEFINE»
+
+«DEFINE CAEntry FOR State»
+<onentry>
+	<customActionDomain:«this.entry.name» name="«this.entry.name»" />
+</onentry>
+«ENDDEFINE»
+
+«DEFINE CAExit FOR State»
+<onexit>
+	<customActionDomain:«this.exit.name» name="«this.exit.name»" />
+</onexit>
+«ENDDEFINE»
+
+«DEFINE Invoke FOR State»
+<invoke targettype="java" id="«this.doActivity.name»" src="MyThread«this.doActivity.name».java"/>
+«ENDDEFINE»
+

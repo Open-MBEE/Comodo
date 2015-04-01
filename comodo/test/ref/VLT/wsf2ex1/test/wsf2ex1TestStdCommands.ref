@@ -1,0 +1,611 @@
+1 - wsf2ex1Control - Application started (proc name: wsf2ex1Control, DB root point: :Appl_data:wsf2ex1)
+1 - wsf2ex1 wsf2ex1Control ACTION DEBUG (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION EXIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION INIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION OFF (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SELFTST (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SIMULAT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STANDBY (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION TRACE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERBOSE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERSION (Init)
+1 - wsf2ex1 wsf2ex1Control STATE from   to LOADED IDLE
+1 - wsf2ex1 - Entering the main loop.
+2 - wsf2ex1TestLog: #####################################################################
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: TEST 1: Test of Standard commands
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: #####################################################################
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: STEP 0: Inializing the test environment
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: Waiting for the wsf2ex1Control process to be ready
+2 - wsf2ex1TestLog: #####################################################################
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: STEP 1: Test  standard commands one by one
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: VERSION {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: wsf2ex1 @(#) $Id
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: LOADED
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: Process status LOADED IDLE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: SELFTST {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: VERBOSE On
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.verbose: ON
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: VERBOSE Console
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.verbose: CONSOLE
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: DEBUG On
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.debug: 1
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: DEBUG Off
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.debug: 0
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: SIMULAT {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.simulation: 1
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STOPSIM {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.simulation: 0
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: Process status LOADED IDLE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: LOADED
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 2
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: INIT {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: Process status LOADED IDLE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: LOADED
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 2
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: OFF {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: Process status OFF IDLE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OFF
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 1
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: ONLINE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: Process status ONLINE IDLE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: ONLINE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 4
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STANDBY {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: Process status STANDBY IDLE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: STANDBY
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 3
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STOP {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: Process status STANDBY IDLE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: STANDBY
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 3
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: ONLINE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STOP {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: Process status ONLINE IDLE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: ONLINE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 4
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: ONLINE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: Process status ONLINE IDLE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: STATE {}
+2 - wsf2ex1TestLog: (cmd0) Normal reply.
+2 - wsf2ex1TestLog: (cmd0) Reply: ONLINE
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 4
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: #####################################################################
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: STEP 2: Test standard commands asynchronously
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: OFF {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd1) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd2) Command to wsf2ex1Control: ONLINE {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd3) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd4) Command to wsf2ex1Control: STANDBY {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd5) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd6) Command to wsf2ex1Control: STOP {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd7) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd8) Command to wsf2ex1Control: ONLINE {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd9) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd10) Command to wsf2ex1Control: STOP {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd11) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd12) Command to wsf2ex1Control: INIT {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd13) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd1) Reply: Process status OFF IDLE
+2 - wsf2ex1TestLog: (cmd1) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd2) Reply: OK
+2 - wsf2ex1TestLog: (cmd2) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd3) Reply: Process status ONLINE IDLE
+2 - wsf2ex1TestLog: (cmd3) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd4) Reply: OK
+2 - wsf2ex1TestLog: (cmd4) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd5) Reply: Process status STANDBY IDLE
+2 - wsf2ex1TestLog: (cmd5) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd6) Reply: OK
+2 - wsf2ex1TestLog: (cmd6) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd7) Reply: Process status STANDBY IDLE
+2 - wsf2ex1TestLog: (cmd7) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd8) Reply: OK
+2 - wsf2ex1TestLog: (cmd8) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd9) Reply: Process status ONLINE IDLE
+2 - wsf2ex1TestLog: (cmd9) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd10) Reply: OK
+2 - wsf2ex1TestLog: (cmd10) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd11) Reply: Process status ONLINE IDLE
+2 - wsf2ex1TestLog: (cmd11) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd12) Reply: OK
+2 - wsf2ex1TestLog: (cmd12) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd13) Reply: Process status LOADED IDLE
+2 - wsf2ex1TestLog: (cmd13) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 2
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd13) Command to wsf2ex1Control: OFF {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd12) Command to wsf2ex1Control: OFF {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd11) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd10) Command to wsf2ex1Control: ONLINE {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd9) Command to wsf2ex1Control: ONLINE {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd8) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd7) Command to wsf2ex1Control: STANDBY {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd6) Command to wsf2ex1Control: STANDBY {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd5) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd4) Command to wsf2ex1Control: STOP {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd3) Command to wsf2ex1Control: STOP {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd2) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd1) Command to wsf2ex1Control: ONLINE {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Command to wsf2ex1Control: ONLINE {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd14) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd15) Command to wsf2ex1Control: INIT {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd16) Command to wsf2ex1Control: INIT {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd17) Command to wsf2ex1Control: STATUS {}
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd13) Reply: OK
+2 - wsf2ex1TestLog: (cmd13) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd12) Reply: OK
+2 - wsf2ex1TestLog: (cmd12) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd11) Reply: Process status OFF IDLE
+2 - wsf2ex1TestLog: (cmd11) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd10) Reply: OK
+2 - wsf2ex1TestLog: (cmd10) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd9) Reply: OK
+2 - wsf2ex1TestLog: (cmd9) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd8) Reply: Process status ONLINE IDLE
+2 - wsf2ex1TestLog: (cmd8) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd7) Reply: OK
+2 - wsf2ex1TestLog: (cmd7) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd6) Reply: OK
+2 - wsf2ex1TestLog: (cmd6) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd5) Reply: Process status STANDBY IDLE
+2 - wsf2ex1TestLog: (cmd5) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd4) Reply: OK
+2 - wsf2ex1TestLog: (cmd4) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd3) Reply: OK
+2 - wsf2ex1TestLog: (cmd3) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd2) Reply: Process status STANDBY IDLE
+2 - wsf2ex1TestLog: (cmd2) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd1) Reply: OK
+2 - wsf2ex1TestLog: (cmd1) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd0) Reply: OK
+2 - wsf2ex1TestLog: (cmd0) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd14) Reply: Process status ONLINE IDLE
+2 - wsf2ex1TestLog: (cmd14) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd15) Reply: OK
+2 - wsf2ex1TestLog: (cmd15) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd16) Reply: OK
+2 - wsf2ex1TestLog: (cmd16) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd17) Reply: Process status LOADED IDLE
+2 - wsf2ex1TestLog: (cmd17) Normal reply expected --> test OK.
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.state: 2
+2 - wsf2ex1TestLog: DB Value for Appl_data:wsf2ex1:control.substate: 7
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: #####################################################################
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: Test completed !!!
+2 - wsf2ex1TestLog: 
+2 - wsf2ex1TestLog: #####################################################################
+2 - wsf2ex1TestLog: -------------
+2 - wsf2ex1TestLog: (cmd17) Command to wsf2ex1Control: EXIT {}
+2 - wsf2ex1TestLog: (cmd17) Normal reply.
+2 - wsf2ex1TestLog: (cmd17) Reply: OK
+2 - wsf2ex1TestLog: (cmd17) Normal reply expected --> test OK.
+1 - wsf2ex1 wsf2ex1Control EVENT VERSION (command)
+1 - wsf2ex1 wsf2ex1Control ACTION VERSION (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT SELFTST (command)
+1 - wsf2ex1 wsf2ex1Control ACTION SELFTST (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT VERBOSE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION VERBOSE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT VERBOSE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION VERBOSE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT DEBUG (command)
+1 - wsf2ex1 wsf2ex1Control ACTION DEBUG (Execute)
+1 - wsf2ex1 wsf2ex1Control DEBUG wsf2libCONTROL.C:---- EVENT DEBUG processed
+1 - wsf2ex1 wsf2ex1Control DEBUG wsf2libCONTROL.C:---- STATE <LOADED> <IDLE>
+1 - wsf2ex1 wsf2ex1Control EVENT DEBUG (command)
+1 - wsf2ex1 wsf2ex1Control DEBUG wsf2libCMDH_IN.C:---- Received command DEBUG from @-------:seq_--- (buffer: <Off>)
+1 - wsf2ex1 wsf2ex1Control ACTION DEBUG (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT SIMULAT (command)
+1 - wsf2ex1 wsf2ex1Control ACTION SIMULAT (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STOPSIM (command)
+1 - wsf2ex1 wsf2ex1Control ACTION SIMULAT (Complete)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT INIT (command)
+1 - wsf2ex1 wsf2ex1Control ACTION INIT (Execute)
+1 - wsf2ex1 wsf2ex1Control ACTION DEBUG (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION EXIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION INIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION OFF (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SELFTST (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SIMULAT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STANDBY (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION TRACE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERBOSE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERSION (Init)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT OFF (command)
+1 - wsf2ex1 wsf2ex1Control ACTION OFF (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from LOADED IDLE to OFF IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT ONLINE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from OFF IDLE to ONLINE IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STANDBY (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STANDBY (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from ONLINE IDLE to STANDBY IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STOP (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT ONLINE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from STANDBY IDLE to ONLINE IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STOP (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT ONLINE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT OFF (command)
+1 - wsf2ex1 wsf2ex1Control ACTION OFF (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from ONLINE IDLE to OFF IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT ONLINE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from OFF IDLE to ONLINE IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STANDBY (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STANDBY (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from ONLINE IDLE to STANDBY IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STOP (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT ONLINE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from STANDBY IDLE to ONLINE IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STOP (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT INIT (command)
+1 - wsf2ex1 wsf2ex1Control ACTION INIT (Execute)
+1 - wsf2ex1 wsf2ex1Control ACTION DEBUG (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION EXIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION INIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION OFF (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SELFTST (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SIMULAT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STANDBY (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION TRACE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERBOSE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERSION (Init)
+1 - wsf2ex1 wsf2ex1Control STATE from ONLINE IDLE to LOADED IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT OFF (command)
+1 - wsf2ex1 wsf2ex1Control ACTION OFF (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from LOADED IDLE to OFF IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT OFF (command)
+1 - wsf2ex1 wsf2ex1Control ACTION OFF (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT ONLINE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from OFF IDLE to ONLINE IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT ONLINE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STANDBY (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STANDBY (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from ONLINE IDLE to STANDBY IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT STANDBY (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STANDBY (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STOP (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STOP (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT ONLINE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from STANDBY IDLE to ONLINE IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT ONLINE (command)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT INIT (command)
+1 - wsf2ex1 wsf2ex1Control ACTION INIT (Execute)
+1 - wsf2ex1 wsf2ex1Control ACTION DEBUG (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION EXIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION INIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION OFF (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SELFTST (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SIMULAT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STANDBY (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION TRACE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERBOSE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERSION (Init)
+1 - wsf2ex1 wsf2ex1Control STATE from ONLINE IDLE to LOADED IDLE
+1 - wsf2ex1 wsf2ex1Control EVENT INIT (command)
+1 - wsf2ex1 wsf2ex1Control ACTION INIT (Execute)
+1 - wsf2ex1 wsf2ex1Control ACTION DEBUG (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION EXIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION INIT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION OFF (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION ONLINE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SELFTST (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION SIMULAT (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STANDBY (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION STOP (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION TRACE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERBOSE (Init)
+1 - wsf2ex1 wsf2ex1Control ACTION VERSION (Init)
+1 - wsf2ex1 wsf2ex1Control EVENT STATUS (command)
+1 - wsf2ex1 wsf2ex1Control ACTION STATUS (Execute)
+1 - wsf2ex1 wsf2ex1Control EVENT EXIT (command)
+1 - wsf2ex1 wsf2ex1Control ACTION EXIT (Execute)
+1 - wsf2ex1 wsf2ex1Control STATE from LOADED IDLE to OFF IDLE
+1 - wsf2ex1 - Exiting from the main loop. Application quits.

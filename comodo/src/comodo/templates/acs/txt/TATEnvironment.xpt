@@ -1,0 +1,39 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: TATEnvironment.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«DEFINE Root FOR String»
+«FILE this + '/test/TATEnvironment'-»
+«EXPAND comodo::templates::acs::txt::Copyright::CopyrightScript FOR "" -»
+
+
+global env
+
+set ACS_TMP $env(PWD)/tmp
+set env(ACS_TMP) $ACS_TMP
+set env(ACS_LOG_STDOUT) 4
+set env(MACI_RECOVERY_FILE_NAME) $ACS_TMP/maciRecovery
+set env(ACS_BACI_RECOVERY_FILE) $ACS_TMP/baciRecovery
+set env(ACS_LOG_FILE) $ACS_TMP/log_cache.dat
+
+# ___oOo___
+«ENDFILE»
+«ENDDEFINE»

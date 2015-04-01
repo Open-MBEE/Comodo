@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="STATE">  
+  <state id="STATE"> 
+    <initial>
+      <transition target="STATE::LOADED"/>
+    </initial>  
+    <state id="STATE::ONLINE"> 
+      <initial>
+        <transition target="STATE::ONLINE::IDLE"/>
+      </initial>  
+      <state id="STATE::ONLINE::PLAYING"> 
+        <initial>
+          <transition target="STATE::ONLINE::PLAYING::SONG1"/>
+        </initial>  
+        <state id="STATE::ONLINE::PLAYING::SONG1"> 
+          <transition event="NEXT" target="STATE::ONLINE::PLAYING::SONG2"/> 
+        </state>  
+        <state id="STATE::ONLINE::PLAYING::SONG2"> 
+          <transition event="NEXT" target="STATE::ONLINE::PLAYING::SONG3"/> 
+        </state>  
+        <state id="STATE::ONLINE::PLAYING::SONG3"> 
+          <transition event="NEXT" target="STATE::ONLINE::PLAYING::SONG1"/> 
+        </state>  
+        <history id="STATE::ONLINE::PLAYING::HISTORY" type="deep"> 
+          <transition target="STATE::ONLINE::PLAYING::SONG1"/> 
+        </history>  
+        <transition event="PAUSE" target="STATE::ONLINE::PAUSE"/> 
+      </state>  
+      <state id="STATE::ONLINE::PAUSE"> 
+        <transition event="CONTINUE" target="STATE::ONLINE::PLAYING::HISTORY"/> 
+      </state>  
+      <state id="STATE::ONLINE::IDLE"> 
+        <transition event="START" target="STATE::ONLINE::PLAYING"/> 
+      </state> 
+    </state>  
+    <state id="STATE::STANDBY"> 
+      <initial>
+        <transition target="STATE::STANDBY::IDLE"/>
+      </initial>  
+      <state id="STATE::STANDBY::IDLE"></state> 
+    </state>  
+    <state id="STATE::OFF"> 
+      <initial>
+        <transition target="STATE::OFF::IDLE"/>
+      </initial>  
+      <state id="STATE::OFF::IDLE"></state> 
+    </state>  
+    <state id="STATE::LOADED"> 
+      <initial>
+        <transition target="STATE::LOADED::IDLE"/>
+      </initial>  
+      <state id="STATE::LOADED::IDLE"></state>  
+      <state id="STATE::LOADED::ERROR"></state> 
+    </state>  
+    <transition event="EXIT" target="STATE::OFF::IDLE"> 
+    </transition>  
+    <transition event="INIT" target="STATE::LOADED"> 
+    </transition>  
+    <transition event="STANDBY" target="STATE::STANDBY"> 
+    </transition>  
+    <transition event="ONLINE" target="STATE::ONLINE"> 
+    </transition>  
+    <transition event="OFF" target="STATE::OFF"> 
+    </transition>  
+    <transition event="ERROR" target="STATE::LOADED::ERROR"/>  
+    <transition event="RECOVERY" target="STATE::LOADED::IDLE"/>  
+    <transition event="DEBUG"> 
+    </transition>  
+    <transition event="SELFTST"> 
+    </transition>  
+    <transition event="SIMULAT"> 
+    </transition>  
+    <transition event="STATE"> 
+    </transition>  
+    <transition event="STATUS"> 
+    </transition>  
+    <transition event="STOP"> 
+    </transition>  
+    <transition event="STOPSIM"> 
+    </transition>  
+    <transition event="TRACE"> 
+    </transition>  
+    <transition event="VERBOSE"> 
+    </transition>  
+    <transition event="VERSION"> 
+    </transition> 
+  </state> 
+</scxml>

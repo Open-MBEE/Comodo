@@ -1,0 +1,153 @@
+«IMPORT uml»
+«EXTENSION templates::ScxmlUtil»
+
+«DEFINE Root FOR StateMachine»
+
+«REM» Generate SCXML Model «ENDREM»
+«FILE this.name+".xml"»
+	«REM» Write the headers «ENDREM»
+	«EXPAND ScxmlCode::Headers»
+
+	«REM» Select TopStates and explore «ENDREM»
+	«FOREACH listStates().select(e|e.isTopState()).sortBy(e|e.name) AS st» 
+		«EXPAND ExploreState FOR st»
+	«ENDFOREACH»	
+	
+	«REM» Outer FinalStates «ENDREM»
+	«EXPAND ScxmlCode::FinalState»
+	
+«EXPAND ScxmlCode::CloseScxml»
+«ENDFILE»
+
+«REM» JAVA Custom Actions List«ENDREM»
+«IF !(this.allOwnedElements().typeSelect(State).entry.isEmpty) ||
+	!(this.allOwnedElements().typeSelect(State).exit.isEmpty) || 
+	!(this.allOwnedElements().typeSelect(Transition).hasAction().isEmpty)»
+	«EXPAND CustomActionCode::CActionList»
+«ENDIF»
+
+
+«IF !(this.allOwnedElements().typeSelect(State).doActivity.isEmpty)»
+	«EXPAND JavaInvokerCode::JavaInvoker»
+	
+	«EXPAND ActivityThreadCode::ActivityThread»
+
+	«EXPAND ApplicationCode::Application»
+«ENDIF»
+
+«ENDDEFINE»
+
+«REM» Explore Generic States «ENDREM»
+«DEFINE ExploreState FOR State»
+	«IF this.isSimple()»
+		«EXPAND ExploreSimpleState»
+	«ELSE»
+		«IF this.isComposite()»
+			«EXPAND ExploreCompState»
+		«ENDIF»
+	«ENDIF»	
+«ENDDEFINE»
+
+«REM» Explore Simple States «ENDREM»
+«DEFINE ExploreSimpleState FOR State»
+	«IF this.isFinalState()»
+		«EXPAND ScxmlCode::SimFinalState»
+	«ELSE»	
+		«EXPAND ScxmlCode::StateName»
+		«EXPAND ExploreActions»
+		«EXPAND ExploreTransitions»
+		«EXPAND ScxmlCode::CloseState»
+	«ENDIF»
+«ENDDEFINE»
+
+«REM» Explore Complex States «ENDREM»
+«DEFINE ExploreCompState FOR State»
+	«IF this.isOrthogonal()»
+		«EXPAND ExploreOrthState»
+	«ELSEIF !this.listStates().isEmpty»
+		«EXPAND ScxmlCode::StateName»
+		<initial><transition target="«this.getInitialState().getFullName()»"/></initial>
+		«FOREACH this.listCompChilds() AS cc»
+			«EXPAND ExploreCompState FOR cc»
+		«ENDFOREACH»
+		«FOREACH this.listSimpleChilds() AS sc»
+			«EXPAND ExploreSimpleState FOR sc»
+		«ENDFOREACH»
+		«IF this.hasHistory()»
+			«EXPAND ExploreHistory»
+		«ENDIF»
+		«EXPAND ExploreActions»
+		«EXPAND ExploreTransitions»
+		«EXPAND ScxmlCode::CloseState»
+	«ELSE»
+		«EXPAND ExploreSimpleState»
+	«ENDIF»
+«ENDDEFINE»
+
+
+«REM» Explore Orthogonal States «ENDREM»
+«REM» Parallel Regions MUST have a nome in the ecore model  «ENDREM»
+«REM» Parallel Regions are mapped as Complex states: a default state is needed «ENDREM»
+«DEFINE ExploreOrthState FOR State»
+	<parallel id="«this.getFullName()»">
+		«FOREACH this.allOwnedElements().typeSelect(Region).select(e|(e.owner == this)) AS oreg»
+		<state id="«oreg.getFullName()»">
+			<initial><transition target="«oreg.getInitialState().getFullName()»"/></initial>
+		«FOREACH oreg.allOwnedElements().typeSelect(State).select(e|(e.owner == oreg)) AS ost»
+			«EXPAND ExploreState FOR ost»
+		«ENDFOREACH»
+		«EXPAND ScxmlCode::CloseState»
+	«ENDFOREACH»
+	«IF this.hasHistory()»
+		«EXPAND ExploreHistory»
+	«ENDIF»
+	«EXPAND ExploreActions»
+	«EXPAND ExploreTransitions»
+	</parallel>
+«ENDDEFINE»			
+
+
+«REM» Explore Actions and Activities «ENDREM»
+«DEFINE ExploreActions FOR State»
+	«IF this.hasOnEntry()»
+		«EXPAND ScxmlCode::CAEntry»
+		«EXPAND CustomActionCode::JCAEntry»
+	«ENDIF»
+	«IF this.hasDoActions()»
+		«EXPAND ScxmlCode::Invoke»
+		«EXPAND ActivityThreadCode::InvActivity» 
+	«ENDIF» 
+	«IF this.hasOnExit()»
+		«EXPAND ScxmlCode::CAExit»
+		«EXPAND CustomActionCode::JCAExit»
+	«ENDIF»
+«ENDDEFINE»
+
+
+«REM» Explore Transitions «ENDREM»
+«DEFINE ExploreTransitions FOR State»
+	«FOREACH this.outgoing.sortBy(e|e.name) AS tr»
+		«IF tr.isInternalTransition()»
+			«tr.getIntTransition()»
+		«ELSE»
+			«tr.getTransition()»
+		«ENDIF»
+		«IF tr.hasAction()»
+			«EXPAND CustomActionCode::JCATran FOR tr»
+		«ENDIF»
+	«ENDFOREACH»
+«ENDDEFINE»
+
+
+«REM» Explore History «ENDREM»
+«DEFINE ExploreHistory FOR State»
+	«FOREACH this.getHistory() AS hs»
+		<history id="«hs.container.getFullName()»:«hs.name»" «hs.historyType()»>
+			<transition target="«hs.outgoing.get(0).target.container.getFullName()»:«hs.outgoing.get(0).target.name»"/>
+		</history>
+	«ENDFOREACH»
+«ENDDEFINE»
+
+
+«REM» «ENDREM» 
+«REM» «ENDREM» 

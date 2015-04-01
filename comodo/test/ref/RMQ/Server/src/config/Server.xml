@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="STATE">  
+  <state id="STATE"> 
+    <initial>
+      <transition target="STATE::IDLE"/>
+    </initial>  
+    <state id="STATE::IDLE"> 
+      <transition event="cmdStart" target="STATE::BUSY"/> 
+    </state>  
+    <state id="STATE::BUSY"> 
+      <onentry> 
+        <customActionDomain:BusyStart name="BusyStart"/> 
+      </onentry>  
+      <onexit> 
+        <customActionDomain:BusyStop name="BusyStop"/> 
+      </onexit>  
+      <transition event="cmdStop" target="STATE::IDLE"/> 
+    </state> 
+  </state> 
+</scxml>

@@ -1,0 +1,78 @@
+/*******************************************************************************
+ *    ALMA - Atacama Large Millimiter Array
+ *
+ *    (c) European Southern Observatory, 2002
+ *    Copyright by ESO (in the framework of the ALMA collaboration)
+ *    and Cosylab 2002, All rights reserved
+ *  
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation; either
+ *    version 2.1 of the License, or (at your option) any later version.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ *    You should have received a copy of the GNU Lesser General Public
+ *    License along with this library; if not, write to the Free Software
+ *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ *
+ * "@(#) $Id$" 
+ *
+ * who                when       what
+ * ----------------  ----------  ----------------------------------------------
+ * COMODO                        Created.
+ * 
+ */
+
+
+#ifndef _TELESCOPE_IDL_
+#define _TELESCOPE_IDL_
+
+#include <SORTCommon.idl>
+#include <acscomponent.idl>
+ 
+
+
+#pragma prefix "alma"
+
+/** 
+ * @file Telescope.idl
+ */
+module SORT
+{
+	/**
+	 * @interface Telescope
+	 */
+	interface Telescope  :  ACS::ACSComponent
+	{  
+		
+		/**
+		 * Moves to the given position and takes an exposure of length
+		 * exposureTime (seconds). Raises and exception if the requested position is out
+		 * @param coordinates target coordinates
+		 * @param exposureTime exposure time of the current observation
+		 * @return ImageType
+		 */
+		ImageType observe(in Position coordinates, in long exposureTime)
+			raises(SORTErr::PositionOutOfLimitsEx);                             
+		
+		/**
+		 * Commands the telescope to move to the given position. Raises an
+		 * @param coordinates Requested telescope position
+		 * @return void
+		 */
+		void moveTo(in Position coordinates)
+			raises(SORTErr::PositionOutOfLimitsEx);                             
+		
+		/**
+		 * @return Position
+		 */
+		Position getCurrentPosition();                             
+		
+		
+	};
+};
+#endif /* _TELESCOPE_IDL_ */

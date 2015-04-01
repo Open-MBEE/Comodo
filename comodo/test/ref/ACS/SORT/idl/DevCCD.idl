@@ -1,0 +1,120 @@
+/*******************************************************************************
+ *    ALMA - Atacama Large Millimiter Array
+ *
+ *    (c) European Southern Observatory, 2002
+ *    Copyright by ESO (in the framework of the ALMA collaboration)
+ *    and Cosylab 2002, All rights reserved
+ *  
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation; either
+ *    version 2.1 of the License, or (at your option) any later version.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ *    You should have received a copy of the GNU Lesser General Public
+ *    License along with this library; if not, write to the Free Software
+ *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ *
+ * "@(#) $Id$" 
+ *
+ * who                when       what
+ * ----------------  ----------  ----------------------------------------------
+ * COMODO                        Created.
+ * 
+ */
+
+
+#ifndef _DEVCCD_IDL_
+#define _DEVCCD_IDL_
+
+#include <SORTCommon.idl>
+#include <baci.idl>
+ 
+
+
+#pragma prefix "alma"
+
+/** 
+ * @file DevCCD.idl
+ */
+module SORT
+{
+	/**
+	 * IDL specification for the DevCCD module interface. This interface is a
+	 * CCD device abstraction, and, thus, it should be a generalization of
+	 * a simple CCD The DecCCD interface defines a DevCCD-like ACS component
+	 * that wili be the one in charge of communicate with the
+	 * hardware itself. The main purpose of this interface is to take
+	 * @interface DevCCD
+	 */
+	interface DevCCD  :  ACS::CharacteristicComponent
+	{  
+		
+		/* Holds the last frame that has been taken */
+		readonly attribute ACS::ROlongSeq frame;
+		
+		/* Holds the device name that should be accesed  */
+		readonly attribute ACS::RW device;
+		
+		/* Set and get the red balance value */
+		readonly attribute ACS::RWlong red;
+		
+		/* Set and get the blue balance value */
+		readonly attribute ACS::RWlong blue;
+		
+		/* Set and get the green balance value */
+		readonly attribute ACS::RWlong green;
+		
+		/* Set and get the size of the pixels */
+		readonly attribute ACS::RWlong pixelBias;
+		
+		/* Set and get the reset level (black balance) */
+		readonly attribute ACS::RWlong resetLevel;
+		
+		/* Set and get the exposure time */
+		readonly attribute ACS::RWlong exposure;
+		
+		/**
+		 * Tell the camera to capture a frame with certain exposure time.
+		 * @param exposure 
+		 * @return ImageType
+		 */
+		ImageType image(in double exposure);                             
+		
+		/**
+		 * This method locks the component, so any order received from any
+		 * other component that is not CSATStatus or CSATControl will be ignored
+		 * @return void
+		 */
+		void lock();                             
+		
+		/**
+		 * Unlocks the component, so the component will follow any order that
+		 * @return void
+		 */
+		void unlock();                             
+		
+		/**
+		 * Turns the CCD on (in simple models it will only affect
+		 * @return void
+		 */
+		void on();                             
+		
+		/**
+		 * Turns the CCD off (in simple models it will only affect
+		 * @return void
+		 */
+		void off();                             
+		
+		
+		/* Locking status of the component. For further information, look at the DevTelescope component documentation */				readonly attribute boolean locking;
+		
+		/* Is the device turned on/off?  */				readonly attribute boolean powered;
+		
+	};
+};
+#endif /* _DEVCCD_IDL_ */

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import InstrumentImplSim
+	</pythonImports>
+        
+	<_corbaMethod Name="takeImage" Timeout="0">
+InstrumentImplSim.takeImage(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="cameraOn" Timeout="0">
+InstrumentImplSim.cameraOn()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="cameraOff" Timeout="0">
+InstrumentImplSim.cameraOff()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="setRGB" Timeout="0">
+InstrumentImplSim.setRGB(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="setPixelBias" Timeout="0">
+InstrumentImplSim.setPixelBias(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="setResetLevel" Timeout="0">
+InstrumentImplSim.setResetLevel(parameters[0])
+	</_corbaMethod>
+	
+</SimulatedComponent>

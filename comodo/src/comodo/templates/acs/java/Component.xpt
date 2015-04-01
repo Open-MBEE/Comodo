@@ -1,0 +1,181 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Component.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::interface»
+«EXTENSION comodo::xtend::cmdo::property»
+«EXTENSION comodo::xtend::cmdo::signal»
+«EXTENSION comodo::xtend::cmdo::langtype»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::uml::artifact»
+«EXTENSION comodo::xtend::uml::operation»
+
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«IF generateModeAll()»
+«FILE getPackageVar() + '/src/alma/' + getPackageVar() + '/' + name + '.java'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+package alma.«getPackageVar()»;
+
+import alma.ACS.*;
+import alma.ACS.ComponentStates;
+import java.util.logging.Level;
+
+«IF hasInterfacesConfigurable()-»
+import alma.ACS.jbaci.*;
+import alma.ACS.impl.*;
+
+«ENDIF-»
+import alma.ACSErrTypeCommon.CouldntPerformActionEx;
+import alma.ACSErrTypeCommon.wrappers.AcsJCouldntPerformActionEx;
+
+import alma.«getPackageVar()».*;
+
+
+«IF hasNCDefinitions()-»
+«IF hasNCPublishers()-»
+import alma.acs.nc.SimpleSupplier;«ENDIF»
+«IF hasNCSubscribers()-»
+import alma.acs.nc.Consumer;«ENDIF»
+
+
+«FOREACH getNCDefinitions() AS ncchannel -»
+import alma.«getPackageVar()».CHANNEL_«ncchannel.getContainerName().toUpperCase()»_«ncchannel.name.toUpperCase()»;
+«ENDFOREACH-»«ENDIF-»
+
+/**
+ * Developer's file to implement the ComponentAbstract
+ * @see alma.«getPackageVar()».ComponentAbstract
+ * @author ACS Component Code Generator
+ * @version «getPropSet('Id')»
+ */	
+public class «name» extends «name»Abstract
+{
+    /////////////////////////////////////////////////////////////
+	// Implementation of ComponentLifecycle
+	/////////////////////////////////////////////////////////////
+	@Override
+	public void preInitialize() {
+		// TODO
+	}
+	
+	@Override
+	public void postInitialize() {
+		// TODO
+	}
+	
+	@Override
+	public void preExecute() {
+		// TODO
+	}
+	
+	@Override
+	public void postExecute() {
+		// TODO
+	}
+	
+	@Override
+	public void preCleanUp() {
+		// TODO
+	}
+	
+	@Override
+	public void postCleanUp() {
+		// TODO
+	}
+	
+	@Override
+	public void preAboutToAbort() {
+		// TODO
+	}
+	
+	@Override
+	public void postAboutToAbort() {
+		// TODO
+	}
+
+    
+	«IF hasNCDefinitions()-»
+	/////////////////////////////////////////////////////////////
+	// Implementation of Notification Channel Operations
+	/////////////////////////////////////////////////////////////
+	
+	«IF hasNCPublishers()-»
+	@Override
+	public void sendEvent() throws CouldntPerformActionEx
+	{
+		try 
+		{
+			// TODO
+			// e.g.:
+			// myEventIDLStruct  event = new MyEventIDLStruct(Math.random(), "Event");
+			// m_supplier.publishEvent(myEventIDLStruct);
+			// m_logger.info("Now sending myEventIDLStruct event...");
+		}
+		catch(Throwable thr) 
+		{
+			m_logger.log(Level.WARNING, "failed to send event.");
+			throw (new AcsJCouldntPerformActionEx(thr)).toCouldntPerformActionEx();
+		}
+	}
+	«ENDIF-»
+	
+	«FOREACH getNCSubscribers() AS ncproperty -»
+	@Override
+	public void receive(«ncproperty.type.name» event)
+	{
+		//TODO
+	}
+	«ENDFOREACH-»«ENDIF-»
+
+	«EXPAND OperationImpl FOR this»
+} 
+«ENDFILE»
+«ENDIF»
+«ENDDEFINE»
+
+
+«REM» Implement a normal operation. «ENDREM»
+«DEFINE OperationImpl FOR Artifact»
+	«IF hasImplOperations()-»
+	/////////////////////////////////////////////////////////////
+	// Implementation of Operations
+	/////////////////////////////////////////////////////////////
+	«FOREACH getImplOperations() AS operation-»
+	@Override
+	public «operation.type.toJava()» «operation.name-»(«FOREACH operation.getParams() AS param SEPARATOR ', '-»«param.type.toJava()» «param.name»«ENDFOREACH-») 
+    {
+		«IF !operation.type.isVoid()»return «operation.type.toJavaNew()»;«ELSE»//TODO«ENDIF»
+	}
+	
+	«ENDFOREACH-»
+	«ENDIF-»
+«ENDDEFINE»

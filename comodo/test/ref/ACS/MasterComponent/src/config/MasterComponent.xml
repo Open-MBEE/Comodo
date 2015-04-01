@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="Available">  
+  <state id="Available"> 
+    <initial>
+      <transition target="Available::Offline"/>
+    </initial>  
+    <state id="Available::Offline"> 
+      <initial>
+        <transition target="Available::Offline::Shutdown"/>
+      </initial>  
+      <state id="Available::Offline::Shutdown"> 
+        <transition event="initPass1" target="Available::Offline::InitializingPass1"/> 
+      </state>  
+      <state id="Available::Offline::InitializingPass1"> 
+        <invoke targettype="java" id="initSubsysPass1" src="SMActivityinitSubsysPass1.java"/>  
+        <transition event="initSubsysPass1.done" target="Available::Offline::PreInitialized"/> 
+      </state>  
+      <state id="Available::Offline::PreInitialized"> 
+        <transition event="initPass2" target="Available::Offline::InitializingPass2"/> 
+      </state>  
+      <state id="Available::Offline::InitializingPass2"> 
+        <invoke targettype="java" id="initSubsysPass2" src="SMActivityinitSubsysPass2.java"/>  
+        <transition event="initSubsysPass2.done" target="Available::Online"/> 
+      </state>  
+      <state id="Available::Offline::Reinitializing"> 
+        <invoke targettype="java" id="reinitSubsystem" src="SMActivityreinitSubsystem.java"/>  
+        <transition event="reinitSubsystem.done" target="Available::Online"/> 
+      </state>  
+      <state id="Available::Offline::ShuttingdownPass1"> 
+        <invoke targettype="java" id="shutdownSubsysPass1" src="SMActivityshutdownSubsysPass1.java"/>  
+        <transition event="shutdownSubsysPass1.done" target="Available::Offline::Preshutdown"/> 
+      </state>  
+      <state id="Available::Offline::Preshutdown"> 
+        <transition event="shutdownPass2" target="Available::Offline::ShuttingdownPass2"/> 
+      </state>  
+      <state id="Available::Offline::ShuttingdownPass2"> 
+        <invoke targettype="java" id="shutdownSubsysPass2" src="SMActivityshutdownSubsysPass2.java"/>  
+        <transition event="shutdownSubsysPass2.done" target="Available::Offline::Shutdown"/> 
+      </state> 
+    </state>  
+    <state id="Available::Online"> 
+      <onentry> 
+        <customActionDomain:entryAction name="entryAction"/> 
+      </onentry>  
+      <transition event="stop" target="Available::Online"/>  
+      <transition event="start" target="Available::Operational"/> 
+    </state>  
+    <state id="Available::Operational"> 
+      <onexit> 
+        <customActionDomain:exitAction name="exitAction"/> 
+      </onexit>  
+      <transition event="stop" target="Available::Online"/>  
+      <transition event="start" target="Available::Operational"/> 
+    </state>  
+    <state id="Available::Error"></state>  
+    <transition event="disaster" target="Unavailable"/>  
+    <transition event="error" target="Available::Error"/>  
+    <transition event="reinit" target="Available::Offline::Reinitializing"/>  
+    <transition event="shutdownPass1" target="Available::Offline::ShuttingdownPass1"/> 
+  </state>  
+  <final id="Unavailable"/> 
+</scxml>

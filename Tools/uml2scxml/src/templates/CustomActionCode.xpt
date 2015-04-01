@@ -1,0 +1,226 @@
+«IMPORT uml»
+«EXTENSION templates::ScxmlUtil»
+
+
+«REM»List for custom actions«ENDREM»
+«DEFINE CActionList FOR StateMachine»
+«FILE this.name+"ActionList.java"»
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.scxml.model.CustomAction;
+
+
+public class «this.name»ActionList {
+
+	
+	List<CustomAction> getActions() {
+
+		List<CustomAction> customActions = new ArrayList<CustomAction>();
+		// Build the list of custom actions and map every action to a class
+		//("http://my.custom-actions.domain/CUSTOM", myCustomAction, MyCustomAction.class)
+		«FOREACH this.allOwnedElements().typeSelect(State).entry.select(e|!(e.name.toString()=="null")) AS entAct ITERATOR iter»
+		CustomAction ca«iter.counter1» = new CustomAction(
+				"http://my.custom-actions.domain/CUSTOM", "«entAct.name»", CA«entAct.name».class);
+		customActions.add(ca«iter.counter1»);
+		«ENDFOREACH»
+		«FOREACH this.allOwnedElements().typeSelect(State).exit.select(e|!(e.name.toString()=="null")) AS exAct ITERATOR iter»
+		CustomAction cae«iter.counter1» = new CustomAction(
+				"http://my.custom-actions.domain/CUSTOM", "«exAct.name»", CA«exAct.name».class);
+		customActions.add(cae«iter.counter1»);
+		«ENDFOREACH»
+		«FOREACH this.allOwnedElements().typeSelect(Transition).select(e|(e.hasAction())).ownedElement.typeSelect(Activity) AS trAct ITERATOR iter»
+		CustomAction catr«iter.counter1» = new CustomAction(
+				"http://my.custom-actions.domain/CUSTOM", "«trAct.name»", CA«trAct.name».class);
+		customActions.add(catr«iter.counter1»);
+		«ENDFOREACH»
+
+		
+		return customActions;
+	}
+}
+«ENDFILE»
+
+«FILE "CustomActionListMap.txt"»
+«FOREACH this.allOwnedElements().typeSelect(State).entry.select(e|!(e.name.toString()=="null")) AS entAct-»
+«entAct.name»		«entAct.name».class
+«ENDFOREACH-»
+«FOREACH this.allOwnedElements().typeSelect(State).exit.select(e|!(e.name.toString()=="null")) AS exAct-»
+«exAct.name»		«exAct.name».class
+«ENDFOREACH-»
+«FOREACH this.allOwnedElements().typeSelect(Transition).select(e|(e.hasAction())).ownedElement.typeSelect(Activity) AS trAct-»
+«trAct.name»		«trAct.name».class
+«ENDFOREACH-»
+«ENDFILE»
+«ENDDEFINE»
+
+
+«DEFINE JCAEntry FOR State»
+
+«FILE "CA"+this.entry.name+".java"»
+import java.util.Collection;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.scxml.ErrorReporter;
+import org.apache.commons.scxml.EventDispatcher;
+import org.apache.commons.scxml.SCInstance;
+import org.apache.commons.scxml.SCXMLExpressionException;
+import org.apache.commons.scxml.model.Action;
+import org.apache.commons.scxml.model.ModelException;
+
+public class CA«this.entry.name» extends Action {
+	
+    /** Serial version UID. */
+    private static final long serialVersionUID = 1L;
+
+	private String mName;
+	
+	public CA«this.entry.name»() {
+        super();
+    }
+ 
+   	/**
+     * Get the name.
+     *
+     * @return Returns the name.
+     */
+    public String getName() {
+        return mName;
+    }
+
+    /**
+     * Set the name.
+     *
+     * @param name The name to set.
+     */
+    public void setName(String name) {
+    	mName = name;
+    }	
+    
+    public void execute(final EventDispatcher evtDispatcher,
+            final ErrorReporter errRep, final SCInstance scInstance,
+            final Log appLog, @SuppressWarnings("rawtypes") final Collection derivedEvents)
+    throws ModelException, SCXMLExpressionException {
+        if (appLog.isInfoEnabled()) {
+            appLog.info("class: CA«this.entry.name», method: execute, attribute name: " + mName);
+        }
+    }
+
+}
+		
+	«ENDFILE»
+«ENDDEFINE»	
+
+«DEFINE JCAExit FOR State»
+
+«FILE "CA"+this.exit.name+".java"»
+import java.util.Collection;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.scxml.ErrorReporter;
+import org.apache.commons.scxml.EventDispatcher;
+import org.apache.commons.scxml.SCInstance;
+import org.apache.commons.scxml.SCXMLExpressionException;
+import org.apache.commons.scxml.model.Action;
+import org.apache.commons.scxml.model.ModelException;
+
+public class CA«this.exit.name» extends Action {
+	
+    /** Serial version UID. */
+    private static final long serialVersionUID = 1L;
+
+	private String mName;
+	
+	public CA«this.exit.name»() {
+        super();
+    }
+ 
+   	/**
+     * Get the name.
+     *
+     * @return Returns the name.
+     */
+    public String getName() {
+        return mName;
+    }
+
+    /**
+     * Set the name.
+     *
+     * @param name The name to set.
+     */
+    public void setName(String name) {
+    	mName = name;
+    }	
+    
+    public void execute(final EventDispatcher evtDispatcher,
+            final ErrorReporter errRep, final SCInstance scInstance,
+            final Log appLog, @SuppressWarnings("rawtypes") final Collection derivedEvents)
+    throws ModelException, SCXMLExpressionException {
+        if (appLog.isInfoEnabled()) {
+            appLog.info("class: CA«this.exit.name», method: execute, attribute name: " + mName);
+        }
+    }
+
+}
+		
+	«ENDFILE»
+«ENDDEFINE»	
+
+«DEFINE JCATran FOR Transition»
+«FILE "CA"+this.ownedElement.typeSelect(Activity).get(0).name+".java"»
+import java.util.Collection;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.scxml.ErrorReporter;
+import org.apache.commons.scxml.EventDispatcher;
+import org.apache.commons.scxml.SCInstance;
+import org.apache.commons.scxml.SCXMLExpressionException;
+import org.apache.commons.scxml.model.Action;
+import org.apache.commons.scxml.model.ModelException;
+
+public class CA«this.allOwnedElements().typeSelect(Activity).get(0).name» extends Action {
+	
+    /** Serial version UID. */
+    private static final long serialVersionUID = 1L;
+
+	private String mName;
+	
+	public CA«this.allOwnedElements().typeSelect(Activity).get(0).name»() {
+        super();
+    }
+ 
+   	/**
+     * Get the name.
+     *
+     * @return Returns the name.
+     */
+    public String getName() {
+        return mName;
+    }
+
+    /**
+     * Set the name.
+     *
+     * @param name The name to set.
+     */
+    public void setName(String name) {
+    	mName = name;
+    }	
+    
+    public void execute(final EventDispatcher evtDispatcher,
+            final ErrorReporter errRep, final SCInstance scInstance,
+            final Log appLog, @SuppressWarnings("rawtypes") final Collection derivedEvents)
+    throws ModelException, SCXMLExpressionException {
+        if (appLog.isInfoEnabled()) {
+            appLog.info("class: CA«this.allOwnedElements().typeSelect(Activity).get(0).name», method: execute, attribute name: " + mName);
+        }
+    }
+
+}
+		
+	«ENDFILE»
+«ENDDEFINE»	
+
+

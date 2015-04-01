@@ -1,0 +1,63 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/test/ENVIRONMENTS/wsTat/dbl/DATABASE.db'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::CDT FOR "" -»
+
+
+//****************************************************************
+//    CCS DEFINITIONS
+//****************************************************************
+
+// Loads classes definition from standard file
+#include "CCS.db"
+
+//
+// Loads points for CCS, 
+//
+//     REMEMBER: to edit the provided template to match the
+//               actual configuration
+//
+#include "USER.db"
+
+
+//****************************************************************
+//    APPLICATION DEFINITIONS
+//****************************************************************
+// include branch needed by lcustat and lcuwd applications
+#include "lcustat.db"
+
+
+//
+// Add hereafter branches defined by your applications 
+// and that you want to load
+//#include "MYBRANCH.db"
+
+
+//
+// ___oOo___
+
+
+«ENDFILE»
+«ENDDEFINE»
+

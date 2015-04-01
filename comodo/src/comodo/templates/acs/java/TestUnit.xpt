@@ -1,0 +1,125 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: TestUnit.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::langtype»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::uml::operation»
+«EXTENSION comodo::xtend::uml::artifact»
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FILE getPackageVar() + '/test/alma/' + getPackageVar() + '/Test.java'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+package alma.«getPackageVar()»;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+
+import java.util.List;
+import java.util.logging.Logger;
+
+import alma.acs.logging.ClientLogManager;
+import alma.acs.component.client.ComponentClientTestCase;
+
+import alma.«getPackageVar()».*;
+import alma.«getPackageVar()».«name»;
+
+import alma.ACS.*;
+«IF hasInterfacesConfigurable()-»
+import alma.ACS.jbaci.*;
+import alma.ACS.impl.*;
+«ENDIF-»
+
+public class «name»Test extends ComponentClientTestCase 
+{
+	private Logger logger;
+	private String componentName = "testInstance«name»";
+	private «name» component;
+	
+	/////////////////////////////////////////////////////////////
+	// Lifecycle
+	/////////////////////////////////////////////////////////////
+	
+	public «name»Test(String name) throws Exception 
+	{
+		super("«name»");
+	}//
+
+	protected void setUp() throws Exception 
+	{
+		super.setUp();
+		logger = ClientLogManager.getAcsLogManager().getLoggerForApplication(getClass().getSimpleName(), false);
+		this.component = («name») this.getContainerServices().getComponent(this.componentName);
+	}//
+
+	@Override
+	protected void tearDown() throws Exception 
+	{
+		super.tearDown();
+		this.getContainerServices().releaseComponent(this.componentName);
+	}//
+	
+	«IF hasImplOperations()-»
+	/////////////////////////////////////////////////////////////
+	// Test Methods
+	/////////////////////////////////////////////////////////////
+	
+	«FOREACH getImplOperations().select(e|e.class.package.name.toLowerCase() != "acs") AS eOperation-»
+	@org.junit.Test
+	public void test«eOperation.name.toFirstUpper()-»() throws Exception
+    {
+		«FOREACH eOperation.getParams() AS param -»
+		«param.type.toJava()» «param.name» = «param.type.toJavaNew()»;
+		«ENDFOREACH-»
+    	«IF eOperation.type.isVoid()-»
+		this.component.«eOperation.name»(«FOREACH eOperation.getParams() AS param SEPARATOR ', '-»«param.name»«ENDFOREACH-»);
+		«ELSE-»
+		«eOperation.type.toJava()» response = this.component.«eOperation.name»(«FOREACH eOperation.getParams() AS param SEPARATOR ', '-»«param.name»«ENDFOREACH-»);
+		assertNotNull(response);
+		«ENDIF-»
+    }//
+    
+	«ENDFOREACH-»
+	«IF !getImplOperations().select(e|e.class.name == "PingableResource").isEmpty-»
+	public void testPing() throws Exception
+	{
+		boolean fast = false;
+		boolean recursive = false;
+		int id = 0;
+		boolean response;
+		response = this.component.ping(fast, recursive, id);
+		assertNotNull(response);
+	}
+	«ENDIF-»
+	«ENDIF-»
+}
+«ENDFILE»
+«ENDDEFINE»

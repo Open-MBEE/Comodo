@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="IDLE">  
+  <state id="IDLE"> 
+    <transition event="Start" target="UPDATE_SETREFPOS"/>  
+    <transition event="Exit" target="OFF"/> 
+  </state>  
+  <state id="UPDATE_SETREFPOS"> 
+    <invoke targettype="java" id="UpdateRefPos" src="SMActivityUpdateRefPos.java"/>  
+    <transition event="Stop" target="IDLE"/>  
+    <transition event="UpdateRefPos.done" target="IDLE"/>  
+    <transition event="Exit" target="OFF"/> 
+  </state>  
+  <final id="OFF"/> 
+</scxml>

@@ -1,0 +1,54 @@
+#*******************************************************************************
+# ALMA - Atacama Large Millimiter Array
+# (c) UNSPECIFIED - FILL IN, 2009 
+# 
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+#
+#  "@(#) $Id$"
+#
+# who                when       what
+# ----------------  ----------  ----------------------------------------------
+# COMODO                        Created.
+# 
+
+
+SOURCE TATEnvironment
+
+PROLOGUE ./MARSTATPrologue
+
+#java test
+1001 TSJavaImpTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner MARS.TSJavaImpTest"
+1002 TRDJavaImpTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner MARS.TRDJavaImpTest"
+1003 SCJavaImpTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner MARS.SCJavaImpTest"
+1004 FDJavaImpTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner MARS.FDJavaImpTest"
+1005 OCJavaImpTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner MARS.OCJavaImpTest"
+
+#cpp test
+2001 cppUnitTestTSJavaImp "../bin/cppUnitTestTSJavaImp"
+2002 cppUnitTestTRDJavaImp "../bin/cppUnitTestTRDJavaImp"
+2003 cppUnitTestSCJavaImp "../bin/cppUnitTestSCJavaImp"
+2004 cppUnitTestFDJavaImp "../bin/cppUnitTestFDJavaImp"
+2005 cppUnitTestOCJavaImp "../bin/cppUnitTestOCJavaImp"
+
+#python test
+3001 pyUnitTestTSJavaImp "python ../bin/pyUnitTestTSJavaImp testInstanceTSJavaImp"
+3002 pyUnitTestTRDJavaImp "python ../bin/pyUnitTestTRDJavaImp testInstanceTRDJavaImp"
+3003 pyUnitTestSCJavaImp "python ../bin/pyUnitTestSCJavaImp testInstanceSCJavaImp"
+3004 pyUnitTestFDJavaImp "python ../bin/pyUnitTestFDJavaImp testInstanceFDJavaImp"
+3005 pyUnitTestOCJavaImp "python ../bin/pyUnitTestOCJavaImp testInstanceOCJavaImp"
+
+EPILOGUE ./MARSTATEpilogue
+
+# ___oOo___

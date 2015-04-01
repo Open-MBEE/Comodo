@@ -1,0 +1,89 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: artifact.ext 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+ 
+import uml;
+
+extension comodo::xtend::cmdo::stereotypes;
+extension comodo::xtend::cmdo::property;
+extension comodo::xtend::cmdo::interface;
+extension comodo::xtend::uml::interface;
+extension comodo::xtend::uml::artifact;
+
+//######################### INTERFACE ##########################################
+/**
+ * Navigate to the 1st realized interface of the artifact.
+ * This is the main interface for the component.
+ */
+
+List[Interface] getAllInterfacesConfigurable(Artifact artifact) :
+	artifact.getAllInterfaces().select(e|e.isConfigurable());
+
+boolean hasInterfacesConfigurable(Artifact artifact) :
+	 !artifact.getAllInterfacesConfigurable().isEmpty;
+
+//###################### NOTIFICATION CHANNEL ##################################
+List[Property] getNCPublishers(Artifact artifact) :
+	artifact.getFirstInterface().getAllNCPublishers();
+
+List[Property] getNCSubscribers(Artifact artifact) :
+	artifact.getFirstInterface().getAllNCSubscribers();
+
+List[Property] getNCDefinitions(Artifact artifact) :
+	artifact.getNCPublishers().addAll(artifact.getNCSubscribers());
+
+boolean hasNCPublishers(Artifact artifact) :
+	!artifact.getNCPublishers().isEmpty;
+
+boolean hasNCSubscribers(Artifact artifact) :
+	!artifact.getNCSubscribers().isEmpty;
+
+boolean hasNCDefinitions(Artifact artifact) :
+	!artifact.getNCDefinitions().isEmpty;
+
+
+//############################# PROPERTIES #####################################
+List[Property] getRWProperties(Artifact artifact) :
+	artifact.getFirstInterface().getRWProperties();
+
+List[Property] getROProperties(Artifact artifact) :
+	artifact.getFirstInterface().getROProperties();
+
+List[Property] getRORWProperties(Artifact artifact) :
+	artifact.getFirstInterface().getRORWProperties();
+
+boolean hasROProperties(Artifact artifact) :
+	!artifact.getROProperties().isEmpty;
+	
+boolean hasRWProperties(Artifact artifact) :
+	!artifact.getRWProperties().isEmpty;
+
+boolean hasRORWProperties(Artifact artifact) :
+	!artifact.getRORWProperties().isEmpty;
+
+
+//############################## TAG ###########################################
+String getLanguageTag(Artifact eElement):
+	if ((EnumerationLiteral)eElement.getPimTagValue(getPimStereotypeComponentImpl(),'language')).name.toLowerCase() =='c++'
+		then 'cpp'
+	else ((EnumerationLiteral)eElement.getPimTagValue(getPimStereotypeComponentImpl(),'language')).name.toLowerCase();
+
+
+
+

@@ -1,0 +1,91 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Component.xpt 481 2011-10-10 10:46:44Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::uml::artifact»
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FILE getPackageVar() + '/src/' + getPackageVar() + '/' + name + '.java'-»
+«EXPAND comodo::templates::rmq::txt::Copyright::Copyright FOR "" -»
+
+
+package «getPackageVar()»;
+
+
+import «getPackageVar()».«name»Abstract;
+import RMQCommons.Message;
+
+import com.rabbitmq.client.QueueingConsumer;
+
+/**
+ * Developer's file to implement the ComponentAbstract
+ * @see «getPackageVar()».«name»Abstract
+ * @author COMODO
+ * @version «getPropSet('Id')»
+ */	
+public class «name» extends «name»Abstract
+{
+	public void run() throws java.io.IOException, java.lang.InterruptedException {
+		getLogger().info("Starting ...");
+		while (isRunning()) {
+			try {
+
+				QueueingConsumer.Delivery delivery = getConsumer().nextDelivery();
+				String message = new String(delivery.getBody());
+				getLogger().debug(" [«name»] Received '" + message + "'");
+			
+				«IF hasStateMachine()-»
+				String routingKey = delivery.getEnvelope().getRoutingKey();
+				
+				if (routingKey.matches(getCmdQueueName())) {
+					// command signal
+					String[] tokens = message.split(" ");
+					String[] params = new String[tokens.length-1];
+					for (int i = 0; i<tokens.length-1; i++) {
+						params[i] = tokens[i+1];
+					}
+					smFireSignal(new Message(tokens[0], params));
+				} else {
+					// pubsub cmd/data
+					String[] params = message.split(" ");
+					smFireSignal(new Message(routingKey, params));
+				}
+				«ENDIF-»
+			} catch (Exception e) {
+				getLogger().error("Exception while processing a message: " + e.getMessage());
+				break;
+			}
+		}
+		closeConnections();
+		getLogger().info("Exiting ...");
+	}
+} 
+«ENDFILE»
+«ENDDEFINE»
+

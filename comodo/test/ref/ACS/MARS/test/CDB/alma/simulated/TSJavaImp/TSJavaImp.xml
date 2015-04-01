@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import TSJavaImpSim
+	</pythonImports>
+        
+	<_corbaMethod Name="runManualRAB" Timeout="0">
+TSJavaImpSim.runManualRAB(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="runAutoRAB" Timeout="0">
+TSJavaImpSim.runAutoRAB(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getRobotsList" Timeout="0">
+TSJavaImpSim.getRobotsList()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="getRobotStatus" Timeout="0">
+TSJavaImpSim.getRobotStatus(parameters[0])
+	</_corbaMethod>
+	
+</SimulatedComponent>

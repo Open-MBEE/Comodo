@@ -1,0 +1,124 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Component.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::interface»
+«EXTENSION comodo::xtend::cmdo::property»
+«EXTENSION comodo::xtend::cmdo::signal»
+«EXTENSION comodo::xtend::cmdo::langtype»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::uml::operation»
+«EXTENSION comodo::xtend::uml::interface»
+
+
+«DEFINE Root FOR uml::Model»
+«EXPAND IDLInterface FOREACH getModulePackage().getPimInterfaces()»
+«ENDDEFINE»
+
+«DEFINE IDLInterface FOR Interface»
+«FILE  getPackageVar()+'/idl/'+name+'.idl'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+#ifndef _«name.toUpperCase()-»_IDL_
+#define _«name.toUpperCase()-»_IDL_
+
+#include <«getModel().getModulePackage().name»Common.idl>
+«IF isConfigurable()-»
+#include <baci.idl>
+«ELSE-»
+#include <acscomponent.idl>
+«ENDIF-»
+«FOREACH getParentInterfaces().select(e|e.package.name.toLowerCase() != 'acs') AS interface»
+#include <«interface.name».idl>
+«ENDFOREACH-»
+«REM»
+Add one of the maintenance interfaces if
+ - this interface is a "first reachable" interface from a component AND
+ -  - the component has a statemachine OR
+    - the component has a statemachine AND signals.
+«ENDREM» 
+«IF hasSMMaintenance() -»
+#include <SMMaintenance.idl>
+«ENDIF-»
+
+«IF hasPimExceptions()-»
+#include <«getModel().getModulePackage().name»Err.idl>
+«ENDIF-»
+
+#pragma prefix "alma"
+
+/** 
+ * @file «name».idl
+ */
+module «getPackageVar()»
+{
+	/**«IF hasComment()»«FOREACH getComment().getCommentsWrapped() AS comment»
+	 *«comment»«ENDFOREACH»«ENDIF»
+	 * @interface «name»
+	 */
+	interface «name» «IF !composeIDLInterfaceInheritance('acs').isEmpty-» : «FOREACH composeIDLInterfaceInheritance('acs') AS interf SEPARATOR ','-» «interf-»«ENDFOREACH-»«ENDIF»
+	{  
+		«IF isConfigurable()-»
+		«FOREACH getOwnedROProperties() AS eCharacteristicProperty»
+		«IF eCharacteristicProperty.hasComment()»/* «eCharacteristicProperty.getComment()» */«ENDIF»
+		readonly attribute ACS::RO«eCharacteristicProperty.getReturnType()» «eCharacteristicProperty.name»;
+		«ENDFOREACH-»
+		«FOREACH getOwnedRWProperties() AS eCharacteristicProperty»
+		«IF eCharacteristicProperty.hasComment()»/* «eCharacteristicProperty.getComment()» */«ENDIF»
+		readonly attribute ACS::RW«eCharacteristicProperty.getReturnType()» «eCharacteristicProperty.name»;
+		«ENDFOREACH-»
+		«ENDIF-»
+		
+		«FOREACH getOperations() AS eOperation-»
+		/**«IF eOperation.hasComment()»«FOREACH eOperation.getComment().getCommentsWrapped() AS comment»
+		 *«comment»«ENDFOREACH»«ENDIF»
+		«FOREACH eOperation.getParams() AS cParam-»
+		 * @param «cParam.name» «IF cParam.hasComment()»«cParam.getComment()»«ENDIF»
+		 «ENDFOREACH-»
+		 * @return «eOperation.type.toIDL(getModel().getModulePackage())»
+		 */
+		«eOperation.type.toIDL(getModel().getModulePackage())» «eOperation.name-»(«FOREACH eOperation.getParams() AS param SEPARATOR ', '-»«param.direction.toString()-» «param.type.toIDL(getModel().getModulePackage())-» «param.name-»«ENDFOREACH-»)«IF eOperation.raisedException.isEmpty»;«ELSE»
+			raises(«FOREACH eOperation.raisedException AS eRaisedException  SEPARATOR ', '»«getModel().getModulePackage().name»Err::«eRaisedException.name»Ex«ENDFOREACH»);«ENDIF»                             
+		
+		«ENDFOREACH-»
+		«FOREACH getOwnedNonPimProperties() AS attribute»
+		«IF attribute.hasComment()»/* «attribute.getComment()» */«ENDIF-»
+		«IF attribute.isReadOnly-»
+		readonly attribute «attribute.type.name.toLowerCase()» «attribute.name»;
+		«ELSE-»«IF attribute.isStatic-»
+		const «attribute.type.name.toLowerCase()» «attribute.name» = «attribute.getDefault()»;
+		«ENDIF-»«ENDIF-»
+		«ENDFOREACH-»
+		
+		«FOREACH getOwnedSignals() AS signal-»
+		boolean «signal.name»();
+		«ENDFOREACH-»
+	};
+};
+#endif /* _«name.toUpperCase()»_IDL_ */
+«ENDFILE»
+«ENDDEFINE»

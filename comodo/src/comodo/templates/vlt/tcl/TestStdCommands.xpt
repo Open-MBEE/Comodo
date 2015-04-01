@@ -1,0 +1,219 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/test/'+this+'TestStdCommands.tcl'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::Script FOR "" -»
+#************************************************************************
+#   NAME
+#   «this»TestStdCommands - Automatic test for standard commands
+#
+#   SYNOPSIS
+#   «this»TestStdCommands <wsEnv> <dbPath> <simulationFlag>
+#
+#   DESCRIPTION
+#   This sequencer script drives the testing of standard commands for the «this»
+#   module. For every action a proper diagnostic output is produced.
+#   It performs the following steps:
+#   - Wait for the «this»Control process to be running 
+#   - Initializes «this»
+#   - Send a sequence of standard commands, for each one waiting
+#     for reply (): 
+#   - Send a sequence of standard commands, without waiting for reply ()
+#
+#   Look at the source code of the test script for the detailed sequence 
+#   of steps.
+#
+#   FILES
+#
+#   ENVIRONMENT
+#
+#   RETURN VALUES
+#
+#   CAUTIONS
+#
+#   EXAMPLES «this»TestStdCommands wat0tcs :Appl_data:«this» 1
+#
+#   SEE ALSO
+#
+#   BUGS     
+#
+#------------------------------------------------------------------------
+#
+
+global dbPathControl 
+
+testProlog 1 "Test of Standard commands" «this»Control
+
+testStepHeader "Test  standard commands one by one"
+
+testCmdNormalReply «this»Control VERSION ""
+testCmdNormalReply «this»Control STATE ""
+testCmdNormalReply «this»Control STATUS ""
+testCmdNormalReply «this»Control SELFTST ""
+
+testCmdNormalReply «this»Control VERBOSE "On"
+testDbValue "$dbPathControl.verbose"
+testCmdNormalReply «this»Control VERBOSE "Console"
+testDbValue "$dbPathControl.verbose"
+
+testCmdNormalReply «this»Control SETLOG "DEBUG"
+testDbValue "$dbPathControl.logLevel"
+testCmdNormalReply «this»Control SETLOG "INFO"
+testDbValue "$dbPathControl.logLevel"
+
+testCmdNormalReply «this»Control SIMULAT ""
+testDbValue "$dbPathControl.simulation"
+testCmdNormalReply «this»Control STOPSIM ""
+testDbValue "$dbPathControl.simulation"
+
+testCmdNormalReply «this»Control STATUS "" 
+testCmdNormalReply «this»Control STATE ""
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+testCmdNormalReply «this»Control INIT ""
+testCmdNormalReply «this»Control STATUS ""
+testCmdNormalReply «this»Control STATE ""
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+testCmdNormalReply «this»Control OFF ""
+testCmdNormalReply «this»Control STATUS ""
+testCmdNormalReply «this»Control STATE ""
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+testCmdNormalReply «this»Control ONLINE ""
+testCmdNormalReply «this»Control STATUS ""
+testCmdNormalReply «this»Control STATE ""
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+testCmdNormalReply «this»Control STANDBY ""
+testCmdNormalReply «this»Control STATUS ""
+testCmdNormalReply «this»Control STATE ""
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+testCmdNormalReply «this»Control STOP ""
+testCmdNormalReply «this»Control STATUS ""
+testCmdNormalReply «this»Control STATE ""
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+testCmdNormalReply «this»Control ONLINE ""
+testCmdNormalReply «this»Control STOP ""
+testCmdNormalReply «this»Control STATUS ""
+testCmdNormalReply «this»Control STATE ""
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+testCmdNormalReply «this»Control ONLINE ""
+testCmdNormalReply «this»Control STATUS ""
+testCmdNormalReply «this»Control STATE ""
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+testStepHeader  "Test standard commands asynchronously"
+
+set cmdId0  [testSendCommand «this»Control OFF     ""]
+set cmdId1  [testSendCommand «this»Control STATUS  ""]
+set cmdId2  [testSendCommand «this»Control ONLINE  ""]
+set cmdId3  [testSendCommand «this»Control STATUS  ""]
+set cmdId4  [testSendCommand «this»Control STANDBY ""]
+set cmdId5  [testSendCommand «this»Control STATUS  ""]
+set cmdId6  [testSendCommand «this»Control STOP    ""]
+set cmdId7  [testSendCommand «this»Control STATUS  ""]
+set cmdId8  [testSendCommand «this»Control ONLINE  ""]
+set cmdId9  [testSendCommand «this»Control STATUS  ""]
+set cmdId10 [testSendCommand «this»Control STOP    ""]
+set cmdId11 [testSendCommand «this»Control STATUS  ""]
+set cmdId12 [testSendCommand «this»Control INIT     ""]
+set cmdId13 [testSendCommand «this»Control STATUS  ""]
+
+testRecvNormalReply $cmdId0
+testRecvNormalReply $cmdId1
+testRecvNormalReply $cmdId2
+testRecvNormalReply $cmdId3
+testRecvNormalReply $cmdId4
+testRecvNormalReply $cmdId5
+testRecvNormalReply $cmdId6
+testRecvNormalReply $cmdId7
+testRecvNormalReply $cmdId8
+testRecvNormalReply $cmdId9 
+testRecvNormalReply $cmdId10 
+testRecvNormalReply $cmdId11 
+testRecvNormalReply $cmdId12 
+testRecvNormalReply $cmdId13 
+
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+set cmdId0  [testSendCommand «this»Control OFF     ""]
+set cmdId1  [testSendCommand «this»Control OFF     ""]
+set cmdId2  [testSendCommand «this»Control STATUS  ""]
+set cmdId3  [testSendCommand «this»Control ONLINE  ""]
+set cmdId4  [testSendCommand «this»Control ONLINE  ""]
+set cmdId5  [testSendCommand «this»Control STATUS  ""]
+set cmdId6  [testSendCommand «this»Control STANDBY ""]
+set cmdId7  [testSendCommand «this»Control STANDBY ""]
+set cmdId8  [testSendCommand «this»Control STATUS  ""]
+set cmdId9  [testSendCommand «this»Control STOP    ""]
+set cmdId10 [testSendCommand «this»Control STOP    ""]
+set cmdId11 [testSendCommand «this»Control STATUS  ""]
+set cmdId12 [testSendCommand «this»Control ONLINE  ""]
+set cmdId13 [testSendCommand «this»Control ONLINE  ""]
+set cmdId14 [testSendCommand «this»Control STATUS  ""]
+set cmdId15 [testSendCommand «this»Control INIT  ""]
+set cmdId16 [testSendCommand «this»Control INIT  ""]
+set cmdId17 [testSendCommand «this»Control STATUS  ""]
+
+testRecvNormalReply $cmdId0
+testRecvNormalReply $cmdId1
+testRecvNormalReply $cmdId2 
+testRecvNormalReply $cmdId3
+testRecvNormalReply $cmdId4
+testRecvNormalReply $cmdId5 
+testRecvNormalReply $cmdId6
+testRecvNormalReply $cmdId7
+testRecvNormalReply $cmdId8 
+testRecvNormalReply $cmdId9
+testRecvNormalReply $cmdId10
+testRecvNormalReply $cmdId11
+testRecvNormalReply $cmdId12
+testRecvNormalReply $cmdId13
+testRecvNormalReply $cmdId14
+testRecvNormalReply $cmdId15
+testRecvNormalReply $cmdId16
+testRecvNormalReply $cmdId17
+
+testDbValue "$dbPathControl.state"
+testDbValue "$dbPathControl.substate"
+
+testEpilog «this»Control
+
+# ___oOo___
+
+«ENDFILE»
+«ENDDEFINE»
+

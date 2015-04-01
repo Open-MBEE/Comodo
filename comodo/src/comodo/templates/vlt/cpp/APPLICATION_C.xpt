@@ -1,0 +1,315 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR String -»
+«FILE this+'/src/'+this+'APPLICATION.C'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::Source FOR "" -»
+
+#define _POSIX_SOURCE 1
+#include "vltPort.h"
+
+#include "«this».h"
+«this»WSF_RCSID("@(#) $Id: «this»APPLICATION.C 593 2012-04-22 12:12:12Z landolfa $")
+
+#include "«this»APPLICATION.h"
+#include "«this»ACTION_MGR.h"
+#include "«this»Defines.h"
+#include "«this»Errors.h"
+
+#include "wsf2libLOG.h"
+#include "wsf2libASSERT.h"
+#include "wsf2libHELPER.h"
+
+#include "eccsTestTools.h"
+
+#include "evhHANDLER.h"
+#include "evhTASK.h"
+
+
+«this»APPLICATION::«this»APPLICATION() :
+    wsf2libAPPLICATION(),
+    mActionMgr(NULL)
+{
+    wsf2libLOG_TRACE();
+    
+    /*
+     * Set the module name used by the logging
+     */
+    wsf2libLOG_SETMODNAME(«this»MOD);
+        
+    /*
+     * Check base class construction
+     */
+    if (wsf2libHELPER::ObjectOk(this, "APPLICATION") == ccsFALSE)
+	{
+	errAdd(«this»MOD, «this»ERR_CREATE, __FILE_LINE__, "wsf2libAPPLICATION");
+	ObjStatus(FAILURE);	
+	return;	
+	}
+
+    /*
+     * Command line options (see wsf2libOPTIONS class).
+     */
+    GetCmdLineOptions()->SetDescription("«this»Control arguments:");
+    // GetCmdLineOptions()->AddOption("o", "option", "short description", "long description", ..);
+}
+
+
+«this»APPLICATION::~«this»APPLICATION()
+{
+    wsf2libLOG_TRACE();
+    /*
+     * VLTSW-11081: if initialization fails, there might be 
+     * no mActionMgr created, so no need of the assertion.
+     */
+    //wsf2libASSERTPTR(mActionMgr);
+
+    delete mActionMgr;
+    mActionMgr = NULL;
+
+    // Close everything and prepare to exit
+    ccsExit();
+    errCloseStack();
+}
+
+
+ccsCOMPL_STAT «this»APPLICATION::Init(int argCount, char *arg[])
+{
+    wsf2libLOG_TRACE();
+    ErrReset();
+
+
+    // Turn off logging of warning on EXIT command
+    evhTASK::LogExitWarning(FALSE);
+
+    /*
+     * Parses the command line arguments and extract the configuration 
+     * parameters for ENV NAME, DB POINT, PROC NAME, LOG LEVEL, VERBOSE
+     * from the command line or from the enviroment variables.
+     */
+    if (EvaluateArgs(argCount, arg, «this»DB_ROOT_POINT) == FAILURE)
+	{
+	errAdd(«this»MOD, «this»ERR_INIT, __FILE_LINE__, "wrong argument(s)");
+	return FAILURE;
+	}
+
+    // In case of request for help, print it and quit silently.
+    if (GetCmdLineOptions()->HasOption("h"))
+	{
+	std::cout << *GetCmdLineOptions() << "\n";
+	SetHelpRequested(ccsTRUE);
+	return SUCCESS;
+	}
+
+    // Initialize CCS and connect to database
+    if(InitCCS() == FAILURE)
+	{
+	errAdd(«this»MOD, «this»ERR_INIT, __FILE_LINE__, "cannot init CCS");
+	return FAILURE;      
+	}
+
+    // Logs current startup configuration
+    eccsLOG_1(("%s - Application started (proc name: %s, DB root point: %s)", 
+	       GetProcName(), GetProcName(), GetDbRoot()));
+    logData(«this»MOD,"%s - Application started (proc name: %s, DB root point: %s)", 
+	    GetProcName(), GetProcName(), GetDbRoot());
+
+   /*
+    * Create factory for ACTIONS, DATA, CONFIG and CONTROL
+    */
+    wsf2libASSERT(mActionMgr == NULL);
+    mActionMgr = new «this»ACTION_MGR(GetDbRoot(), GetCmdLineOptions(), GetEventMgr());
+    if (mActionMgr == NULL)
+	{
+	errAdd(«this»MOD, «this»ERR_FATAL, __FILE_LINE__, "no memory for allocating «this»ACTION_MGR");
+	return FAILURE;
+	}
+    if (wsf2libHELPER::ObjectOk(mActionMgr, "ACTION_MGR") == ccsFALSE)
+	{
+	errAdd(«this»MOD, «this»ERR_CREATE, __FILE_LINE__, "«this»ACTION_MGR");
+	return FAILURE;	
+	}
+
+    /*
+     * Set FSM context
+     * TBD: rename method
+     */
+    SetControl(mActionMgr->GetControl());
+
+    /*
+     * Instantiate events and actions
+     */
+    if (CreateEvents(«this»EVENTS_FILENAME) == FAILURE)
+	{
+	errAdd(«this»MOD, «this»ERR_CREATE, __FILE_LINE__, "Events");
+	return FAILURE;	
+	}
+    if (mActionMgr->CreateActions() == FAILURE)
+	{
+	errAdd(«this»MOD, «this»ERR_CREATE, __FILE_LINE__, "Actions");
+	return FAILURE;	
+	}
+«IF (isVltMultiThreadedConfig() == true)-»
+    if (mActionMgr->CreateActivities(GetProcName(), GetFsm(), GetThreadsHandler()) == FAILURE)
+	{
+	errAdd(«this»MOD, «this»ERR_CREATE, __FILE_LINE__, "Activities");
+	return FAILURE;	
+	}
+«ENDIF-»
+    /*
+     * Load SCXML Model
+     */
+    if (LoadModel(«this»MODEL_FILENAME, mActionMgr->SCXMLGetActions(), mActionMgr->SCXMLGetActivities()) == FAILURE)
+	{
+	errAdd(«this»MOD, «this»ERR_FATAL, __FILE_LINE__, "cannot load SCXML model");
+	return FAILURE;
+	}
+
+    /*
+     * Initialize all events and actions and data structures
+     */
+    if (mActionMgr->Init() == FAILURE)
+	{
+	errAdd(«this»MOD, «this»ERR_FATAL, __FILE_LINE__, "initializing actions and data structures");
+	return FAILURE;
+	}
+
+    /*
+     * Start the execution of SCXML model
+     */
+    if (StartModel() == FAILURE)
+	{
+	errAdd(«this»MOD, «this»ERR_FATAL, __FILE_LINE__, "cannot start SCXML model execution");
+	return FAILURE;
+	}
+
+    return SUCCESS;
+} 
+
+
+«this»ACTION_MGR* «this»APPLICATION::GetActionMgr()
+{
+    wsf2libLOG_TRACE();
+    return mActionMgr;
+}
+
+
+ccsCOMPL_STAT «this»APPLICATION::Run()
+{
+    wsf2libLOG_TRACE();
+    ErrReset();
+
+    ccsCOMPL_STAT stat = SUCCESS;
+
+    eccsLOG_1(("«this» - Entering the main loop."));
+    while(IsRunning() == ccsTRUE)
+	{
+	// I can return on request, such as with EXIT command 
+	// (stat == SUCCESS) or because of an error (stat == FAILURE)
+	stat = evhHandler->MainLoop();
+
+	// In case of error, I try to recover before exiting
+	if (stat == FAILURE) 
+	    {
+	    eccsLOG_1(("A fatal error occurred, try to recover!"));
+#if 0
+	    wsf2libASSERTPTR(mEventMgr);
+	    if (mEventMgr->Init() == FAILURE) stat = FAILURE;
+
+	    wsf2libASSERTPTR(mActionMgr);
+	    if (mActionMgr->Init() == FAILURE) stat = FAILURE;
+
+	    wsf2libASSERTPTR(mFsm);
+	    if (mFsm->Init() ==  FAILURE) stat = FAILURE;
+#endif
+	    errAdd(«this»MOD, «this»ERR_FATAL, __FILE_LINE__, GetProcName());
+	    errCloseStack();
+
+	    if (stat == FAILURE)
+		{
+		eccsLOG_1(("Cannot recover. Application aborted!"));
+		errAdd(«this»MOD, «this»ERR_FATAL, __FILE_LINE__, GetProcName());
+		errCloseStack();
+		logData(«this»MOD, "%s - Application aborted!", GetProcName());
+		Quit();
+		}
+	    }
+	else
+	    {
+	    eccsLOG_1(("«this» - Exiting from the main loop. Application quits."));
+	    logData(«this»MOD, "%s - Application quits.", GetProcName());
+	    Quit();
+	    break;
+	    }
+	}
+
+    return stat;
+} 
+
+ccsCOMPL_STAT «this»APPLICATION::Execute(int argc, char *argv[])
+{
+    wsf2libLOG_TRACE();
+
+    eccsLogSave(FALSE);
+
+    // Create and initialize the application object
+    «this»APPLICATION app;
+    if (wsf2libHELPER::ObjectOk(&app, "APPLICATION") == ccsFALSE)
+	{
+	wsf2libLOG_DEBUG() << "Cannot create application object";
+	errAdd(«this»MOD, «this»ERR_FATAL, __FILE_LINE__, "cannot create APPLICATION object");
+        errCloseStack();
+        return FAILURE;
+	}
+    if (app.Init(argc, argv) == FAILURE)
+        {
+	wsf2libLOG_DEBUG() << "Cannot initialize application object";
+        errAdd(«this»MOD, «this»ERR_INIT, __FILE_LINE__, "cannot initialize the application");
+        errCloseStack();
+        return FAILURE;
+        } 
+    
+    // quit silently in case of request for help.
+    if (app.GetHelpRequested() == ccsTRUE)
+	{
+	return SUCCESS;
+	}
+
+    // Run the event loop
+    if (app.Run() == FAILURE)
+       {
+       wsf2libLOG_DEBUG() << "Cannot start main loop";
+       errAdd(«this»MOD, «this»ERR_INIT, __FILE_LINE__, "cannot start the application");
+       errCloseStack();
+       return FAILURE;
+       } 
+
+    return SUCCESS;
+}
+
+// __oOo__
+
+«ENDFILE»
+«ENDDEFINE»
+

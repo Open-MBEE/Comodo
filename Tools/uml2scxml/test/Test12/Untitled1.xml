@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="comp1">  
+  <state id="comp1"> 
+    <initial>
+      <transition target="comp1::comp2"/>
+    </initial>  
+    <state id="comp1::comp2"> 
+      <initial>
+        <transition target="comp1::comp2::s1"/>
+      </initial>  
+      <state id="comp1::comp2::s1"> 
+        <transition event="jump" target="comp1::comp2::s2"/> 
+      </state>  
+      <state id="comp1::comp2::s2"> 
+        <transition target="comp1::emptyComp"/> 
+      </state> 
+    </state>  
+    <state id="comp1::emptyComp"></state>  
+    <transition target="end"/> 
+  </state>  
+  <final id="end"/> 
+</scxml>

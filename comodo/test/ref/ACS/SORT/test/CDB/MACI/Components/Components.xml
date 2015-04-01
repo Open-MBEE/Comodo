@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2011-11-19 Created.	
+-->
+<Components  xmlns="urn:schemas-cosylab-com:Components:1.0"
+		xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+		xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		
+		<_ Name="console" 
+			Code="alma.SORT.ConsoleImplHelper"
+			Type="IDL:alma/SORT/Console:1.0"
+			Container="awuContainer" 
+			ImplLang="java" />
+		<_ Name="database" 
+			Code="alma.SORT.DatabaseImplHelper"
+			Type="IDL:alma/SORT/Database:1.0"
+			Container="awuContainer" 
+			ImplLang="java" />
+		<_ Name="instrument" 
+			Code="alma.SORT.InstrumentImplHelper"
+			Type="IDL:alma/SORT/Instrument:1.0"
+			Container="awuContainer" 
+			ImplLang="java" />
+		<_ Name="lego" 
+			Code="alma.SORT.LegoImplHelper"
+			Type="IDL:alma/SORT/Telescope:1.0"
+			Container="awuContainer" 
+			ImplLang="java" />
+		<_ Name="nexstar" 
+			Code="alma.SORT.NexstarImplHelper"
+			Type="IDL:alma/SORT/DevCCD:1.0"
+			Container="awuContainer" 
+			ImplLang="java" />
+		<_ Name="scheduler" 
+			Code="alma.SORT.SchedulerImplHelper"
+			Type="IDL:alma/SORT/Scheduler:1.0"
+			Container="awuContainer" 
+			ImplLang="java" />
+
+		<!-- Component Simulators -->
+		<_ Name="consoleSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/SORT/Console:1.0"
+			Container="SORTSimulator" 
+			ImplLang="py" />
+		<_ Name="databaseSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/SORT/Database:1.0"
+			Container="SORTSimulator" 
+			ImplLang="py" />
+		<_ Name="instrumentSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/SORT/Instrument:1.0"
+			Container="SORTSimulator" 
+			ImplLang="py" />
+		<_ Name="legoSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/SORT/Telescope:1.0"
+			Container="SORTSimulator" 
+			ImplLang="py" />
+		<_ Name="nexstarSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/SORT/DevCCD:1.0"
+			Container="SORTSimulator" 
+			ImplLang="py" />
+		<_ Name="schedulerSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/SORT/Scheduler:1.0"
+			Container="SORTSimulator" 
+			ImplLang="py" />
+
+	   <!-- Instance to test components -->
+	   
+	   <!-- Java Component Instances -->
+	   
+	   <_ Name="testInstanceLegoImpl" 
+			Code="alma.SORT.LegoImplHelper"
+			Type="IDL:alma/SORT/Telescope:1.0"
+			Container="SORTJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceInstrumentImpl" 
+			Code="alma.SORT.InstrumentImplHelper"
+			Type="IDL:alma/SORT/Instrument:1.0"
+			Container="SORTJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceSchedulerImpl" 
+			Code="alma.SORT.SchedulerImplHelper"
+			Type="IDL:alma/SORT/Scheduler:1.0"
+			Container="SORTJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceDatabaseImpl" 
+			Code="alma.SORT.DatabaseImplHelper"
+			Type="IDL:alma/SORT/Database:1.0"
+			Container="SORTJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceConsoleImpl" 
+			Code="alma.SORT.ConsoleImplHelper"
+			Type="IDL:alma/SORT/Console:1.0"
+			Container="SORTJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceNexstarImpl" 
+			Code="alma.SORT.NexstarImplHelper"
+			Type="IDL:alma/SORT/DevCCD:1.0"
+			Container="SORTJavaTest" 
+			ImplLang="java" />
+			
+	   
+	   
+</Components>

@@ -1,0 +1,114 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Components.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::execenv»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::uml::artifact»
+
+«DEFINE Root FOR uml::Model»
+«FILE getPackageVar() + '/test/CDB/MACI/Components/Components.xml'-»
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+   - «getPropSet('Id')»
+   -
+   - History:
+   - 	COMODO «getCommentDate()» Created.	
+-->
+<Components  xmlns="urn:schemas-cosylab-com:Components:1.0"
+		xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+		xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		
+		«FOREACH getModulePackage().getPimContainers() AS container -»
+		«FOREACH container.getAllAttributes() AS eAttribute-»
+		«FOREACH getModulePackage().getPimComponentImpls().select(e|e.name == eAttribute.type.name) AS impl -»
+		«IF impl.name == eAttribute.type.name-»
+		<_ Name="«eAttribute.name»" 
+			Code="alma.«getModulePackage().name».«impl.name»Helper"
+			Type="IDL:alma/«getModulePackage().name-»/«impl.getFirstInterface().name»:1.0"
+			Container="«container.name»" 
+			ImplLang="«container.getLanguageTag()»" />
+		«ENDIF-»
+		«ENDFOREACH-»
+		«ENDFOREACH-»
+		«ENDFOREACH-»
+
+		<!-- Component Simulators -->
+		«FOREACH getModulePackage().getPimContainers() AS container -»
+		«FOREACH container.getAllAttributes() AS eAttribute-»
+		«FOREACH getModulePackage().getPimComponentImpls().select(e|e.name == eAttribute.type.name) AS impl -»
+		<_ Name="«eAttribute.name»Simulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/«getModulePackage().name-»/«impl.getFirstInterface().name»:1.0"
+			Container="«getModulePackage().name»Simulator" 
+			ImplLang="py" />
+		«ENDFOREACH-»
+		«ENDFOREACH-»
+		«ENDFOREACH-»
+
+	   <!-- Instance to test components -->
+	   
+	   «IF getModulePackage().hasJavaImpl() -»
+	   <!-- Java Component Instances -->
+	   
+	   «FOREACH getModulePackage().getJavaImpl() AS eElement -»
+	   <_ Name="testInstance«eElement.name»" 
+			Code="alma.«getModulePackage().name».«eElement.name»Helper"
+			Type="IDL:alma/«getModulePackage().name-»/«eElement.getFirstInterface().name»:1.0"
+			Container="«getModulePackage().name»JavaTest" 
+			ImplLang="«eElement.getLanguageTag()»" />
+			
+	   «ENDFOREACH-»
+	   «ENDIF-»
+	   
+	   «IF getModulePackage().hasCppImpl() -»
+	   <!-- Cpp Component Instances -->
+	   
+	   «FOREACH getModulePackage().getCppImpl() AS eElement -»
+	   <_ Name="testInstance«eElement.name»" 
+			Code="alma.«getModulePackage().name».«eElement.name»Helper"
+			Type="IDL:alma/«getModulePackage().name-»/«eElement.getFirstInterface().name»:1.0"
+			Container="«getModulePackage().name»CppTest" 
+			ImplLang="«eElement.getLanguageTag()»" />
+			
+	   «ENDFOREACH-»
+	   «ENDIF-»
+	   
+	   «IF getModulePackage().hasPyImpl() -»
+	   <!-- Python Component Instances -->
+	   
+	   «FOREACH getModulePackage().getPyImpl() AS eElement -»
+	   <_ Name="testInstance«eElement.name»" 
+			Code="alma.«getModulePackage().name».«eElement.name»Helper"
+			Type="IDL:alma/«getModulePackage().name-»/«eElement.getFirstInterface().name»:1.0"
+			Container="«getModulePackage().name»PyTest" 
+			ImplLang="«eElement.getLanguageTag()»" />
+			
+	   «ENDFOREACH-»
+	   «ENDIF-»     
+</Components>
+«ENDFILE»
+«ENDDEFINE»

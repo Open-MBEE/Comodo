@@ -1,0 +1,129 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Summary.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::interface»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model»
+«FILE  'summary_' + getPackageVar() + '.txt'-»
+************************************************************************************
+# COMODO - Multiplatform Component Code Generator 
+# Summary of the components generated for development environment
+************************************************************************************
+
+-- License
+«EXPAND comodo::templates::acs::txt::Copyright::CopyrightScript FOR "" -»
+-- License
+
+EModule: «getModulePackage().name»
+
+TopologicalSort of Structs
+************************************************************************************
+«FOREACH  getModulePackage().getPimTopics().getTopicSorted() AS experiment-»
+	|-«experiment.name»
+«ENDFOREACH»
+
+EComponents:
+************************************************************************************
+«FOREACH getModulePackage().getPimComponents() AS eElement -»
+	|-«eElement.name»
+«ENDFOREACH»
+
+EComponentsImpl:
+************************************************************************************
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+	«eElement.name»
+	«FOREACH eElement.manifestation AS eManifestationContainer-»
+	 |_	Manifestation:
+			«FOREACH eManifestationContainer.supplier.typeSelect(InterfaceRealization) AS eManifestationClass-»
+	 |		|_«eManifestationClass.name»
+	 |			|_RealizationsImpl:
+					«FOREACH eManifestationClass.client.typeSelect(Interface) AS eInterface-»
+	 |				|_«eInterface.name»
+					«ENDFOREACH-»
+			«ENDFOREACH-»
+	«ENDFOREACH-»
+«ENDFOREACH-»
+
+EInterfaces:
+************************************************************************************
+«FOREACH getModulePackage().getPimInterfaces() AS eElement -»
+	|-«eElement.name» «IF eElement.isConfigurable()»(Characteristic)«ENDIF»
+«ENDFOREACH»
+
+EChannels:
+************************************************************************************
+	|-EPublish
+«FOREACH getModulePackage().getPimPublishers().toSet() AS eElement -»
+	|	|-«eElement.name»
+«ENDFOREACH-»
+	|
+	|-ESubscribe
+«FOREACH getModulePackage().getPimPublishers().toSet() AS eElement -»
+	|	|-«eElement.name»
+«ENDFOREACH-»
+	|
+	|-ESubscribe-EPublish non-repeated channels name
+«FOREACH getModulePackage().getNCDefinitions().toSet() AS eElement -»
+	|	|-«eElement.name»
+«ENDFOREACH»
+
+EContainers:
+************************************************************************************
+«FOREACH getModulePackage().getPimContainers() AS eElement -»
+	|-«eElement.name»
+«ENDFOREACH»
+
+EEnumerations:
+************************************************************************************
+«FOREACH getModulePackage().getPimEnumerations() AS eElement -»
+	|-«eElement.name»
+«ENDFOREACH»
+
+External Signals:
+************************************************************************************
+«FOREACH getModulePackage().getModel().allOwnedElements().typeSelect(uml::Signal) AS eElement -»
+	«IF getModulePackage().allOwnedElements().typeSelect(uml::Signal).select(e|e.name == eElement.name).isEmpty-»
+	|-«eElement.package.name»::«eElement.name»
+	«ENDIF-»
+«ENDFOREACH»
+
+StateMachines:
+************************************************************************************
+«FOREACH getModel().allOwnedElements().typeSelect(uml::StateMachine) AS eElement -»
+	|-«eElement.name»
+«ENDFOREACH»
+
+StateMachines Used:
+************************************************************************************
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+  	«FOREACH eElement.manifestation.supplier.typeSelect(uml::StateMachine) AS eManifestationClass-»
+	 |_«eManifestationClass.classifierBehavior.name» in «eManifestationClass.name»
+  	«ENDFOREACH-»
+«ENDFOREACH-»
+
+___oOo___
+«ENDFILE»
+«ENDDEFINE»

@@ -1,0 +1,51 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: property.ext 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+
+import uml;
+
+extension comodo::xtend::cmdo::stereotypes;
+
+boolean isROProperty(Property property) :
+	property.isPimReadOnlyProperty();
+
+boolean isRWProperty(Property property) :
+	property.isPimReadWriteProperty();
+
+/**
+ * Add 'Seq' to the type name if the type modifier is 'Array' ('[]')
+ */
+String getReturnType(Property property): 
+	if !property.getAppliedStereotypes().select(e|e.name == 'typeModifier').isEmpty
+		then property.type.name.toLowerCase()+'Seq'
+	else property.type.name.toLowerCase();
+
+/**
+ * Returns the name of the class containing the property
+ */
+String getContainerName(Property property):
+	((uml::NamedElement)property.eContainer).name;	
+	
+/**
+ * A property can be defined in a package and used in another one.
+ * This functions returns the name of the package containing the definition of the property.
+ */
+String getOwningPackageName(Property property):
+	property.type.package.name;	
+ 

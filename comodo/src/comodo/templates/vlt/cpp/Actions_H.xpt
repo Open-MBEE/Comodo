@@ -1,0 +1,59 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::scxmlutil»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::uml::artifact»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model -»
+«FILE getModulePackage().name+'/include/'+getModulePackage().name+'Actions.h'-»
+#ifndef «getModulePackage().name»ACTIONS_H
+#define «getModulePackage().name»ACTIONS_H
+«EXPAND comodo::templates::vlt::txt::Copyright::Source FOR "" -»
+
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C
+#endif
+
+/******************************************************************************
+ * Action Names
+ ******************************************************************************/
+
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+«EXPAND SM FOREACH eElement.getStateMachines()-»
+«ENDFOREACH-»
+
+#endif // !«getModulePackage().name»ACTIONS_H
+
+«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE SM FOR uml::StateMachine -»
+«FOREACH this.getAllActionNamePrefix().toSet().sortBy(e|e) AS e -»
+#define «this.getModel().getModulePackage().name»ACTION_STR_«e» "«e»" 
+«ENDFOREACH-»
+
+«ENDDEFINE»

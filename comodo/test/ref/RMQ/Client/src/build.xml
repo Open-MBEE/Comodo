@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+
+<project name="Client" default="run" basedir=".">
+	<property environment="env"/>
+    <property name="LIB_PATH_JAVA" value="../../../../JAVA/Libraries" />    
+    <property name="LIB_PATH_RMQ" value="../../../Libraries" />    
+	<property name="OBJ_PATH_RMQ" value="../../../Modules/RMQAdapter/bin" />
+	<property name="BIN_PATH" value="../bin" />
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.5"/>
+    <property name="source" value="1.5"/>
+
+	<!-- Clean Target !-->
+    <target name="clean">
+    	<delete dir="${BIN_PATH}" />
+    </target>
+
+	<!-- Classpath !-->
+    <path id="Client.classpath">
+    	<fileset dir="${LIB_PATH_JAVA}" includes="*.jar"/>
+    	<fileset dir="${LIB_PATH_RMQ}" includes="*.jar"/>
+    	<fileset dir="${OBJ_PATH_RMQ}" includes="*.class"/>
+    </path>
+
+	<!-- Directories Initializations !-->
+    <target name="init" depends="clean">
+    	<mkdir dir="${BIN_PATH}"/>
+    </target>
+    
+	<!-- Build Target !-->
+    <target name="build" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="${BIN_PATH}" source="${source}" target="${target}">
+            <src path="."/>
+            <src path="../../../Modules/RMQAdapter/src"/> 
+            <classpath refid="Client.classpath"/>            
+        </javac>
+        <copy todir="${BIN_PATH}/config">
+            <fileset dir="./config" />
+        </copy>
+    </target>
+
+   <target name="jar" depends="build">
+        <jar destfile="${BIN_PATH}/Client.jar" basedir="${BIN_PATH}">
+            <manifest>
+				<attribute name="Main-Class" value="Client.Appl"/>
+            </manifest>
+        </jar>
+    </target>
+
+	<!-- Run Target !-->    
+    <target name="run" depends="jar">
+    	<!-- java jar="${BIN_PATH}/Client.jar" fork="true"/ !-->
+    	<java classname="Client.Appl" fork="true" failonerror="true">
+	    	<classpath refid="Client.classpath"/>
+    		<classpath>
+	    		<path location="${BIN_PATH}/Client.jar"/>
+    		</classpath>	
+    	</java>
+    	
+    </target>
+    
+</project>
+

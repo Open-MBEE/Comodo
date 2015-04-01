@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   - Configuration Database Schema for a prsComponentJavaImpl
+   -
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2011-11-19 Created.	
+-->
+<xs:schema 
+	targetNamespace="urn:schemas-cosylab-com:prsComponentJavaImpl:1.0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="urn:schemas-cosylab-com:prsComponentJavaImpl:1.0"
+	xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+	xmlns:baci="urn:schemas-cosylab-com:BACI:1.0" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified">
+	
+	<xs:import namespace="urn:schemas-cosylab-com:CDB:1.0" schemaLocation="CDB.xsd"/>
+	<xs:import namespace="urn:schemas-cosylab-com:BACI:1.0" schemaLocation="BACI.xsd"/>
+	 
+	<xs:complexType name="prsComponentJavaImpl">
+		<xs:complexContent>
+			<xs:extension base="baci:CharacteristicComponent">
+			    <xs:sequence>
+			    	<xs:element name="status" type="baci:ROlong"/>
+			    </xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>	
+	
+	<xs:element name="prsComponentJavaImpl" type="prsComponentJavaImpl"/>
+	
+</xs:schema>

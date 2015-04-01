@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<workflow>
+	<!-- Setup URIs -->
+	<!-- property name="modelFileURI" value="./examples/Fulltest/fulltest.uml"/ -->
+	<!-- property name="ouputFolderURI" value="./src-gen" / -->
+		
+	<!-- Setup path to platform. Usually this is the workspace location. -->
+	<bean class="org.eclipse.emf.mwe.utils.StandaloneSetup">
+		 <platformUri value="." /> 
+	</bean> 
+
+    <!-- Setup UML2 support -->
+    <!-- initializes resourcemaps, urimaps, etc. -->
+    <bean class="org.eclipse.xtend.typesystem.uml2.Setup" standardUML2Setup="true"/> 
+    
+    <!-- Reads the UML model and stores it into slot named 'mymodel' -->
+	<component class="org.eclipse.emf.mwe.utils.Reader">
+		<uri value="${modelFileURI}" />
+		<modelSlot value="mymodel" />
+	</component>
+	
+	<!-- Checking model requirements-->
+	<component class="org.eclipse.xtend.check.CheckComponent">
+		<metaModel id="mm" class="org.eclipse.xtend.typesystem.uml2.UML2MetaModel"/>
+		<checkFile value="constraints"/>
+		<emfAllChildrenSlot value="mymodel"/>
+	</component> 
+	
+	<!--  Cleaning the room. Delete all the files on the output dir --> 
+	<!-- component id="dirCleaner" 
+		class="org.eclipse.emf.mwe.utils.DirectoryCleaner"
+		directory="${ouputFolderURI}"/ --> 
+
+	<!--  generate code -->
+	<component class="org.eclipse.xpand2.Generator" skipOnErrors="false">
+		<metaModel class="org.eclipse.xtend.typesystem.uml2.UML2MetaModel"/>
+		<metaModel class="org.eclipse.xtend.typesystem.emf.EmfRegistryMetaModel"/>
+		<expand value="templates::Root::Root FOR mymodel" />
+		<outlet path="${ouputFolderURI}">
+			<!-- Code beautifier -->
+			<postprocessor class="org.fornax.utilities.formatter.xml.XmlFormatter"/>
+			<postprocessor class="org.eclipse.xpand2.output.JavaBeautifier" /> 
+		</outlet>
+	</component>
+	
+</workflow>

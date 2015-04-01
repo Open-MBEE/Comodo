@@ -1,0 +1,90 @@
+/*******************************************************************************
+ *    ALMA - Atacama Large Millimiter Array
+ *
+ *    (c) European Southern Observatory, 2002
+ *    Copyright by ESO (in the framework of the ALMA collaboration)
+ *    and Cosylab 2002, All rights reserved
+ *  
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation; either
+ *    version 2.1 of the License, or (at your option) any later version.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ *    You should have received a copy of the GNU Lesser General Public
+ *    License along with this library; if not, write to the Free Software
+ *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ *
+ * "@(#) $Id$" 
+ *
+ * who                when       what
+ * ----------------  ----------  ----------------------------------------------
+ * COMODO                        Created.
+ * 
+ */
+
+
+#ifndef _MARSCOMMON_IDL_
+#define _MARSCOMMON_IDL_
+
+#pragma prefix "alma"
+
+module MARS
+{
+	enum robot_type { transporter, welding, assembly, debris };
+	enum action_type { fire, vacuum, piping };
+
+
+	const string idlcommon = "IDLCommon";
+
+	struct position 
+	{
+		long x;
+		long y;
+	};
+	typedef sequence<position> positionSequence;
+	
+	struct report 
+	{
+		boolean isSuccessful;
+		long id;
+		string errorMsg;
+	};
+	typedef sequence<report> reportSequence;
+	
+	struct command 
+	{
+		long robotId;
+		long actionId;
+	};
+	typedef sequence<command> commandSequence;
+	
+	struct sensor_status 
+	{
+		long id;
+		position pos;
+		long type;
+		boolean isEnabled;
+		boolean isAlarmActive;
+		string rabType;
+	};
+	typedef sequence<sensor_status> sensor_statusSequence;
+	
+	struct robot_status 
+	{
+		long id;
+		position pos;
+		long type;
+		boolean isOperational;
+		boolean isParked;
+	};
+	typedef sequence<robot_status> robot_statusSequence;
+	
+	
+		
+};
+#endif /* _MARSCOMMON_IDL_ */

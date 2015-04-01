@@ -1,0 +1,75 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: scxmlutil.ext 639 2012-11-07 12:17:27Z landolfa $
+ * 
+ */
+ 
+import uml;
+
+extension comodo::xtend::uml::statemachine;
+extension comodo::xtend::cmdo::helpers;
+
+
+List[String] getAllEntryActionNamePrefix(StateMachine sm):
+	sm.allOwnedElements().typeSelect(State).entry.select(e|e.name.length > 0).name.getPrefix();
+
+List[String] getAllExitActionNamePrefix(StateMachine sm):
+	sm.allOwnedElements().typeSelect(State).exit.select(e|e.name.length > 0).name.getPrefix();
+	
+List[String] getAllTransActionNamePrefix(StateMachine sm):
+	sm.allOwnedElements().typeSelect(Transition).select(e|e.hasAction()).ownedElement.typeSelect(Activity).select(e|e.name.length > 0).name.getPrefix();
+
+List[String] getAllTransGuardNamePrefix(StateMachine sm):
+	sm.allOwnedElements().typeSelect(Transition).select(e|e.hasCond()).getGuardInTransition().getPrefix();
+
+List[String] getAllActionNamePrefix(StateMachine sm):
+	sm.getAllEntryActionNamePrefix().addAll(sm.getAllExitActionNamePrefix().addAll(sm.getAllTransActionNamePrefix().addAll(sm.getAllTransGuardNamePrefix())));
+
+List[String] getAllEventsNameAndType(StateMachine sm): 
+	sm.allOwnedElements().typeSelect(Transition).select(e|e.hasEvent()).getEventRecInTransition().getSignalEventNameAndType();
+
+String historyType(Pseudostate st):
+	switch {
+		case (st.kind.toString() == "shallowHistory") : "type=\"shallow\""
+		case (st.kind.toString() == "deepHistory") : "type=\"deep\""
+		default : null
+	};
+
+					
+String getActionInTransition(Transition tr):
+	if tr.hasAction() then 
+		"<customActionDomain:"+tr.ownedElement.typeSelect(Activity).first().name+" name=\""+tr.ownedElement.typeSelect(Activity).first().name+"\" />" 
+	else 
+		"" ;
+		
+// Replace ~ in a guard expression with the name of the trigger event.
+// Note that ^ is already a special character for regexp.
+String getResolvedGuardInTransition(Transition tr) :
+	if tr.hasEvent() then
+		tr.getGuardInTransition().replaceAll("~", tr.getEventInTransition())
+	else
+		tr.getGuardInTransition();
+	
+String getSignalEventType(Event event):
+	((SignalEvent)event).signal.getAppliedStereotypes().select(e|e.name.contains("cmdo")).first().name;
+			
+String getSignalEventNameAndType(Event event):
+	event.getSignalEventName()+' '+event.getSignalEventType();
+
+
+		
+//___oOo___

@@ -1,0 +1,57 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: interface.ext 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+
+import uml;
+
+
+//###################### INTERFACE RELATIONS ###################################
+/* all parent interfaces including this one */
+List[Interface] getAllInterfaces(Interface interface) :
+	interface.getParentInterfaces().add(interface);
+
+List[Interface] getParentInterfaces(Interface interface) :
+	interface.allParents().typeSelect(Interface);
+
+List[Interface] getImmediateParents(Interface interface) :
+	interface.parents().typeSelect(Interface);
+
+boolean isFirstInterface(Interface interface) :
+	!interface.getRelationships().typeSelect(InterfaceRealization).isEmpty;
+
+
+
+//############################ SIGNALS #########################################
+List[Signal] getOwnedSignals(Interface interface) :
+	interface.allOwnedElements().typeSelect(Reception).signal;
+
+/**
+ * Returns a List of the Signals of the current interface and its parents.
+ * If there are no signals at all, an empty list is returned.
+ * In this case collect(e|..) would return a list with an empty list (={{}}),
+ * that is wrong - so remove the empty lists! 
+ */
+List[Signal] getSignals(Interface interface) :
+	interface.getOwnedSignals().addAll(
+		interface.allParents().typeSelect(Interface).collect(e|e.getOwnedSignals())
+		).removeAll({{}});
+
+boolean hasSignals(Interface interface) :
+	!interface.getSignals().isEmpty;
+

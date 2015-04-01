@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="UPDATE_POS">  
+  <state id="UPDATE_POS"> 
+    <transition event="GetActPos"> 
+      <customActionDomain:ComputeNamedPos name="ComputeNamedPos"/> 
+    </transition>  
+    <transition event="EncoderHealthSV"> 
+      <customActionDomain:ComputeNamedPos name="ComputeNamedPos"/> 
+    </transition>  
+    <transition event="Exit" target="OFF"/> 
+  </state>  
+  <final id="OFF"/> 
+</scxml>

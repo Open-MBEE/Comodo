@@ -1,0 +1,86 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: SMActivityImpl.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE SMActivityImpl FOR State»
+«IF generateModeAll()»
+«FILE getPackageVar() + "/src/alma/" + getPackageVar() + "/SMActivity" + doActivity.name + ".java"»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+package alma.«getPackageVar()»;
+
+import org.apache.commons.scxml.SCInstance;
+import org.apache.commons.scxml.TriggerEvent;
+import org.apache.commons.scxml.model.ModelException;
+
+public class SMActivity«doActivity.name» extends SMActivity {
+
+	private volatile boolean mIsRunning;
+	
+	public SMActivity«doActivity.name»(String parentStateId, SCInstance parentSCInstance) {
+		super(parentStateId, parentSCInstance);
+		mIsRunning = false;
+	}
+
+	@Override
+	//Starting the thread
+	public void run() {
+		
+		//JUST FOR TESTING
+		System.out.println("Starting with «doActivity.name»" );
+		mIsRunning = true;
+		try {
+			while (mIsRunning) {
+				// TODO: Put your implementation for the Activity
+				//JUST FOR TESTING
+				for(int i = 0; i < 20; ++i) {
+					Thread.sleep(100);
+					System.out.print(".");
+				}
+				break;
+				//JUST FOR TESTING
+			}
+			// Special *.done message for the parent state
+			System.out.println("Done with «doActivity.name»... Sending message \"«((SignalEvent)(outgoing.trigger.event.select(e|((SignalEvent)e).signal.name.endsWith(".done")).first())).signal.name»\"");
+			mParentSCInstance.getExecutor().triggerEvent(new TriggerEvent("«((SignalEvent)(outgoing.trigger.event.select(e|((SignalEvent)e).signal.name.endsWith(".done")).first())).signal.name»", TriggerEvent.SIGNAL_EVENT, null));
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
+		} catch (ModelException me) {
+			me.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void stop(Thread threadId) {
+		// Boolean used to stop the threads
+		mIsRunning = false;
+		System.out.println("Cancel threadId " + threadId.getName());
+	}
+	
+}
+«ENDFILE»
+«ENDIF»	
+«ENDDEFINE»

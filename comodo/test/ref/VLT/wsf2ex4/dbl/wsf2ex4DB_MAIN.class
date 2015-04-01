@@ -1,0 +1,34 @@
+
+#ifndef wsf2ex4DB_MAIN_CLASS
+#define wsf2ex4DB_MAIN_CLASS
+//*************************************
+//   E.S.O. - VLT project
+//
+//   "@(#) $Id$"
+//
+// who       when      what
+// --------  --------  ----------------------------------------------
+// COMDO     -         Created
+// 
+
+
+#include "wsf2libDB_CONTROL.class"
+#include "wsf2ex4DB_CONFIG.class"
+#include "wsf2ex4DB_DATA.class"
+
+
+// *
+// * Definition for the base class
+// *
+
+CLASS BASE_CLASS wsf2ex4DB_MAIN
+BEGIN
+    ATTRIBUTE wsf2libDB_CONTROL control
+    ATTRIBUTE wsf2ex4DB_CONFIG  config
+    ATTRIBUTE wsf2ex4DB_DATA    data
+END
+
+#endif // !wsf2ex4DB_MAIN_CLASS
+
+// __oOo__
+

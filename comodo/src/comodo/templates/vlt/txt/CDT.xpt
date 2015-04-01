@@ -1,0 +1,449 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/CDT/'+this+'Control.cdt'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::CDT FOR "" -»
+
+//
+// Command Definition Table for the process
+
+
+//**********************************************************************
+
+PUBLIC_COMMANDS
+
+
+//**********************************************************************
+
+MAINTENANCE_COMMANDS
+#include "wsf2lib.cdt"
+
+
+COMMAND= STOP
+
+SYNONYMS=
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    devName
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=
+    PAR_DEF_VAL= ""
+    
+REPLY_FORMAT= A   // "OK"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+@
+
+//======================================================================
+
+COMMAND= INIT
+
+SYNONYMS=
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    devName
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=
+    PAR_DEF_VAL= ""
+    
+REPLY_FORMAT= A   // "OK"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Initializes the application.
+@
+
+//======================================================================
+
+COMMAND= EXIT
+
+SYNONYMS=
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    devName
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=
+    PAR_DEF_VAL= ""
+    
+REPLY_FORMAT= A   // "OK"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Terminates the application.
+@
+
+//======================================================================
+
+COMMAND= STANDBY
+
+SYNONYMS=
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    devName
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=
+    PAR_DEF_VAL= ""
+    
+REPLY_FORMAT= A   // "OK"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Move the application to STANDBY state.
+@
+
+//======================================================================
+
+COMMAND= ONLINE
+
+SYNONYMS=
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    devName
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=
+    PAR_DEF_VAL= ""
+    
+REPLY_FORMAT= A   // "OK"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Move the application to ONLINE state.
+@
+
+//======================================================================
+
+COMMAND= OFF
+
+SYNONYMS=
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    devName
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=
+    PAR_DEF_VAL= ""
+    
+REPLY_FORMAT= A   // "OK"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Move the application to LOADED state.
+@
+
+//======================================================================
+
+COMMAND= SIMULAT
+
+SYNONYMS=
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    devName
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=
+    PAR_DEF_VAL= ""
+    
+REPLY_FORMAT= A   // "OK"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Enable simulation mode.
+@
+
+//======================================================================
+
+COMMAND= STOPSIM
+
+SYNONYMS=
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    devName
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=
+    PAR_DEF_VAL= ""
+    
+REPLY_FORMAT= A   // "OK"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Disable simulation mode.
+@
+
+//======================================================================
+
+COMMAND= SELFTST
+
+SYNONYMS=
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    devName
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=
+    PAR_DEF_VAL= ""
+    
+REPLY_FORMAT= A   // "OK"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Performs a selftest.
+@
+
+//======================================================================
+
+COMMAND= STATE
+
+SYNONYMS=
+
+FORMAT= A
+
+REPLY_FORMAT= A   // "<state>"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "ONLINE"
+
+
+HELP_TEXT=
+Returns the application state.
+@
+
+//======================================================================
+
+COMMAND= STATUS
+
+SYNONYMS=
+
+FORMAT= A
+
+REPLY_FORMAT= A
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "State: ONLINE - Default CMD reply"
+
+
+HELP_TEXT=
+Returns the status of the application. 
+@
+
+//======================================================================
+
+COMMAND= KILL
+
+SYNONYMS=
+
+FORMAT= A
+
+REPLY_FORMAT= A   // normally empty
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Kills the tif process by brutally deleting all its tasks. THIS COMMAND
+is ONLY FOR CASES WHERE THE SYSTEM IS MESSED UP. USE WITH CARE!!!
+Implemented by EVH.
+@
+
+//======================================================================
+
+COMMAND= BREAK
+
+SYNONYMS=
+
+FORMAT= A
+
+REPLY_FORMAT= A   // normally empty
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Stops the current action. Implemented by EVH.
+@
+
+//======================================================================
+
+COMMAND= PING
+
+SYNONYMS=
+
+FORMAT= A
+
+REPLY_FORMAT= A   // normally empty
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+
+HELP_TEXT=
+Get lifesign from application. Implemented by CCS.
+@
+
+
+//======================================================================
+
+COMMAND=  VERBOSE
+
+SYNONYMS= 
+
+FORMAT= A
+
+PARAMETERS=
+    PAR_NAME=    output
+    PAR_TYPE=    STRING
+    PAR_RANGE=   ENUM "On" , "Off", "LogMon", "Console"
+    PAR_DEF_VAL= "Off"
+
+REPLY_FORMAT= A
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "OK"
+
+HELP_TEXT=
+Redirect the output of the loggings:
+"Off" no output
+"On" the output is on logMonitor and console
+"LogMon" the output is on logMonitor only
+"Console" the output is on console only 
+"On" and "Off" are mantained for backward compatibility.
+@
+
+//======================================================================
+
+COMMAND= VERSION
+
+SYNONYMS=
+
+FORMAT= A
+
+REPLY_FORMAT= A   // "Version <version-id>"
+REPLY_PARAMETERS=
+    PAR_NAME=    done
+    PAR_TYPE=    STRING
+    PAR_DEF_VAL= "Version: @(#) $Id: wsf2ex1Control.cdt 139736 2006-09-13 12:06:37Z landolfa $"
+
+
+HELP_TEXT=
+Returns the module version ID as a string in the reply. This command is
+allowed in any state, it can be given as a kind of "ping" request.
+@
+
+
+//======================================================================
+
+
+COMMAND=  SETLOG
+SYNONYMS= 
+FORMAT= A
+PARAMETERS=
+    PAR_NAME=    logLevel
+    PAR_UNIT=
+    PAR_TYPE=    STRING
+    PAR_RANGE=   ENUM "ERROR", "WARNING", "STATE", "EVENT", "ACTION", "INFO", "DEBUG", "DEBUG1", "DEBUG2", "DEBUG3", "DEBUG4", "TRACE"
+    PAR_DEF_VAL= "INFO"
+REPLY_FORMAT= A
+HELP_TEXT=
+Set the logging level.
+@
+
+
+//**********************************************************************
+
+TEST_COMMANDS
+
+
+
+// __oOo__
+
+«ENDFILE»
+«ENDDEFINE»
+

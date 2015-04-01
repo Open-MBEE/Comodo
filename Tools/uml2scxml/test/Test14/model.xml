@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml
+    xmlns="http://www.w3.org/2005/07/scxml" version="1.0"
+    initial="compl">
+  <parallel id="61orth">
+    <state id="61orth:reg1">
+      <initial>
+        <transition target="61orth:reg1:2c"/>
+      </initial>
+      <state id="61orth:reg1:2c">
+        <transition event="jump" target="61orth:reg1:2d"/>
+      </state>
+      <state id="61orth:reg1:2d">
+        <transition event="jump" target="61orth:reg1:2c"/>
+      </state>
+    </state>
+    <state id="61orth:reg2">
+      <initial>
+        <transition target="61orth:reg2:2e"/>
+      </initial>
+      <state id="61orth:reg2:2e">
+        <transition event="jump" target="61orth:reg2:2e"/>
+        <transition event="back" target="compl"/>
+      </state>
+    </state>
+    <transition event="event2" target="END"/>
+    <transition event="eventHist" target="compl::deepHist"/>
+  </parallel>
+  <state id="compl">
+    <initial>
+      <transition target="compl::1b"/>
+    </initial>
+    <state id="compl::1d">
+      <initial>
+        <transition target="compl::1d::1d2"/>
+      </initial>
+      <state id="compl::1d::1d1">
+        <initial>
+          <transition target="compl::1d::1d1::1d1a"/>
+        </initial>
+        <state id="compl::1d::1d1::1d1a"> </state>
+        <state id="compl::1d::1d1::1d1b"> </state>
+      </state>
+      <state id="compl::1d::1d2"> </state>
+      <history id="compl::1d::shallHist" type="shallow">
+        <transition target="compl::1d::1d2"/>
+      </history>
+      <transition event="jump" target="compl::1c"/>
+    </state>
+    <state id="compl::1b">
+      <transition event="jump" cond="COND!=true" target="compl::1c"/>
+      <transition event="jump" cond="COND==true" target="compl::1d::shallHist">
+        <log expr="'ActInTransition'"/>
+      </transition>
+    </state>
+    <state id="compl::1c">
+      <onentry>
+        <log expr="'enter1c'"/>
+      </onentry>
+      <invoke targettype="scxml" id="do1c" src="do1c.xml"/>
+      <onexit>
+        <log expr="'exit1c'"/>
+      </onexit>
+      <transition event="jump" target="compl::1d"/>
+      <transition event="jumpIn" target="compl::1d::1d1"/>
+      <transition event="jumpDeep" target="compl::1d::1d1::1d1b"/>
+      <transition event="internal">
+        <log expr="'intActivity'"/>
+      </transition>
+    </state>
+    <history id="compl::deepHist" type="deep">
+      <transition target="compl::1c"/>
+    </history>
+    <onentry>
+      <log expr="'EnterComposite'"/>
+    </onentry>
+    <onexit>
+      <log expr="'ExitFromComposite'"/>
+    </onexit>
+    <transition event="event2" target="END"/>
+    <transition event="event1" target="61orth"/>
+  </state>
+  <final id="END"/>
+</scxml>

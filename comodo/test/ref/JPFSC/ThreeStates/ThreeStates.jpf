@@ -1,0 +1,27 @@
+#
+# Target class to analyze: the state machine
+#
+target = gov.nasa.jpf.sc.StateMachine
+
+#
+# The argument is a specific implementation of the StateMachine 
+#
+target_args = ThreeStates
+
+#
+# Specify the JPF projects to be use
+#
+@using = jpf-core
+@using = jpf-aprop
+@using = jpf-statechart
+
+#
+# Include the specific application properties
+#
+@include=${config_path}/ThreeStates.properties
+
+#
+# Specify the guidance script file with the events to be triggered
+#
+#sc.script=${config_path}/ThreeStates.es
+

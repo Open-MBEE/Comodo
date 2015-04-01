@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="STATE1">  
+  <state id="STATE1"> 
+    <onentry> 
+      <customActionDomain:DoThis name="DoThis"/> 
+    </onentry>  
+    <onexit> 
+      <customActionDomain:DoThat name="DoThat"/> 
+    </onexit>  
+    <transition target="STATE2"/> 
+  </state>  
+  <state id="STATE2"> 
+    <onentry> 
+      <customActionDomain:DoThisAgain name="DoThisAgain"/> 
+    </onentry>  
+    <onexit> 
+      <customActionDomain:DoThatAgain name="DoThatAgain"/> 
+    </onexit>  
+    <transition target="End"/> 
+  </state>  
+  <final id="End"/> 
+</scxml>

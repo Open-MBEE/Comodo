@@ -1,0 +1,409 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: ComponentAbstract.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::interface»
+«EXTENSION comodo::xtend::cmdo::property»
+«EXTENSION comodo::xtend::cmdo::signal»
+«EXTENSION comodo::xtend::cmdo::langtype»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::uml::operation»
+«EXTENSION comodo::xtend::uml::artifact»
+
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FILE getPackageVar() + '/src/alma/' + getPackageVar() + '/' + name + 'Abstract.java'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+package alma.«getPackageVar()»;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+«IF hasStateMachine()-»
+import java.util.Set;
+«ENDIF-»
+
+«IF hasStateMachine() -»
+import org.apache.commons.scxml.model.State;
+import org.apache.commons.scxml.model.ModelException;
+import org.apache.commons.scxml.TriggerEvent;
+
+«ENDIF-»
+import alma.acs.exceptions.AcsJException;
+import alma.acs.container.ContainerServices;
+import alma.acs.component.ComponentLifecycle;
+import alma.acs.component.ComponentLifecycleException;
+
+import alma.ACS.*;
+import alma.ACS.ComponentStates;
+
+«IF hasInterfacesConfigurable()-»
+import alma.ACS.jbaci.*;
+import alma.ACS.impl.*;
+
+«ENDIF-»
+import alma.ACSErrTypeCommon.CouldntPerformActionEx;
+import alma.ACSErrTypeCommon.wrappers.AcsJCouldntPerformActionEx;
+
+import alma.«getModel().getModulePackage().name».*;
+«REM» import packages of non-ACS interfaces «ENDREM»
+«FOREACH getAllInterfaces().select(e|e.package.name.toLowerCase() != 'acs') AS interface»
+import alma.«getModel().getModulePackage().name».«interface.name»;
+import alma.«getModel().getModulePackage().name».«interface.name»Operations;
+«ENDFOREACH»
+
+«IF hasStateMachine()-»
+import alma.«getModel().getModulePackage().name».SMMaintenanceOperations;
+«ENDIF-»
+
+«IF hasNCDefinitions()-»
+«IF hasNCPublishers()-»
+import alma.acs.nc.SimpleSupplier;«ENDIF»
+«IF hasNCSubscribers()-»
+import alma.acs.nc.Consumer;«ENDIF»
+
+«FOREACH getNCDefinitions().toSet() AS ncchannel -»
+import alma.«getPackageVar()».CHANNEL_«ncchannel.getContainerName().toUpperCase()»_«ncchannel.name.toUpperCase()»;
+«ENDFOREACH-»«ENDIF-»
+
+/**«IF hasComment()»«FOREACH getComment().getCommentsWrapped() AS comment»
+ *«comment»«ENDFOREACH»«ENDIF»
+ * @see alma.«getPackageVar()»Common
+«FOREACH getAllInterfaces() AS eInterface-»
+ * @see alma.«getPackageVar()».«eInterface.name»
+ * @see alma.«getPackageVar()».«eInterface.name»Operations
+«ENDFOREACH-»
+ * @see alma.acs.component.ComponentLifecycle
+ * @author ACS Component Code Generator
+ * @version «getPropSet('Id')»
+ */	
+public abstract class «name»Abstract «IF hasInterfacesConfigurable()-»extends CharacteristicComponentImpl«ENDIF-» implements ComponentLifecycle«FOREACH getAllInterfaces() AS eInterface-», «eInterface.name»Operations«ENDFOREACH-»«IF hasStateMachine()-», SMMaintenanceOperations«ENDIF-»
+{
+	private ContainerServices m_containerServices;
+	protected Logger m_logger;
+	«IF hasStateMachine()-»
+	protected SMEngine m_engine;
+	«ENDIF-»
+	«REM»properties from notification channels«ENDREM»
+	«FOREACH getNCPublishers() AS ncproperty-»
+	protected SimpleSupplier m_supplier_«ncproperty.name-» = null;
+	«ENDFOREACH-»
+	«FOREACH getNCSubscribers() AS ncproperty-»
+	protected Consumer m_consumer_«ncproperty.name-» = null;
+	«ENDFOREACH-»
+	
+	«REM»properties from realized configurable interfaces«ENDREM»
+	«EXPAND DeclareBACI FOR this-»
+
+    /////////////////////////////////////////////////////////////
+	// Implementation of ComponentLifecycle
+	/////////////////////////////////////////////////////////////
+	 
+	public void initialize(ContainerServices containerServices)«IF hasInterfacesConfigurable()-» throws ComponentLifecycleException«ENDIF»
+	{
+		preInitialize();
+		
+		m_containerServices = containerServices;
+		m_logger = m_containerServices.getLogger();
+		
+		m_logger.info("initialize() called...");
+		
+		«IF hasStateMachine()-»
+		m_engine = new SMEngine("«getStateMachines().first().name».xml", m_logger);
+		«ENDIF-»
+
+		«IF hasInterfacesConfigurable()-»
+		super.initialize(m_containerServices);
+		«ENDIF-»
+		
+		«FOREACH getNCPublishers() AS ncproperty -»
+		try 
+		{
+			m_supplier_«ncproperty.name» = new SimpleSupplier(CHANNEL_«ncproperty.getContainerName().toUpperCase()»_«ncproperty.name.toUpperCase()».value, m_containerServices);
+		} 
+		catch (AcsJException e) 
+		{
+			m_logger.info("m_supplier_«ncproperty.name» init failed..");
+		}
+		«ENDFOREACH-»
+		
+		«FOREACH getNCSubscribers() AS ncproperty -»
+		try
+		{
+			m_consumer_«ncproperty.name» = new Consumer(CHANNEL_«ncproperty.getContainerName().toUpperCase()»_«ncproperty.name.toUpperCase()».value, m_containerServices);
+			m_consumer_«ncproperty.name».addSubscription(«ncproperty.type.name».class, this);
+			m_consumer_«ncproperty.name».consumerReady();
+			m_consumer_«ncproperty.name».disconnect();
+		}
+		catch (AcsJException e)
+		{
+			m_logger.info("m_consumer_«ncproperty.name» init failed..");
+		}
+		«ENDFOREACH-»
+
+		«FOREACH getAllInterfacesConfigurable().select(e|e.hasRORWProperties()) AS interface-»
+		// try to initialize BACI properties
+		try
+		{
+			«EXPAND PropertiesConfigurableInitialize FOR interface-»
+		}
+		catch(Throwable throwable)
+		{
+			throw new ComponentLifecycleException("Failed to create properties of «interface.name»", throwable); 
+		}
+		«ENDFOREACH-»
+		
+		postInitialize();
+	}
+	
+	public void execute() 
+	{
+		preExecute();
+		
+	    m_logger.info("execute() called...");
+	    
+	    postExecute();
+	}
+	
+	public void cleanUp() 
+	{
+		preCleanUp();
+		
+	    m_logger.info("cleanUp() called...");
+	    
+	    postCleanUp();
+	}
+	
+	public void aboutToAbort() 
+	{
+		preAboutToAbort();
+	    
+	    cleanUp();
+	    m_logger.info("aboutToAbort() called...");
+	    
+	    postAboutToAbort();
+	}
+	
+	public abstract void preInitialize();
+	
+	public abstract void postInitialize();
+	
+	public abstract void preExecute();
+	
+	public abstract void postExecute();
+	
+	public abstract void preCleanUp();
+	
+	public abstract void postCleanUp();
+	
+	public abstract void preAboutToAbort();
+	
+	public abstract void postAboutToAbort();
+    
+	/////////////////////////////////////////////////////////////
+	// Implementation of ACSComponent
+	/////////////////////////////////////////////////////////////
+
+	public ComponentStates componentState() 
+	{
+	    return m_containerServices.getComponentStateManager().getCurrentState();
+	}
+	
+	public String name() 
+	{
+	    return m_containerServices.getName();
+	}
+    
+	«IF hasNCDefinitions()-»
+	/////////////////////////////////////////////////////////////
+	// Declaration of Notification Channel Operations
+	/////////////////////////////////////////////////////////////
+	
+	«IF hasNCPublishers()-»
+	public abstract void sendEvent() throws CouldntPerformActionEx;
+	«ENDIF-»
+	
+	«FOREACH getNCSubscribers() AS ncproperty -»
+	public abstract void receive(«ncproperty.type.name» event);
+	«ENDFOREACH-»«ENDIF-»
+
+	«EXPAND GettersBACI FOR this»
+
+	«EXPAND OperationImpl FOR this»
+	
+	«IF hasStateMachine()-»
+	/**
+	 * Resets the StateMachine to initial state
+	 */
+	public void SMreset() {
+		try {
+			m_engine.getEngine().reset();
+		} catch(ModelException e) {
+			m_logger.info("Could not reset the enigne: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Loads a SCXML definition file.
+	 * If given an empty string for file, it reloads the currently active file,
+	 * otherwise it loads the file from the given path.
+	 * @return true on success; false on error e.g. "file not found"
+	 */
+	public boolean SMloadDefinition(final String fileName) {
+	
+		if (fileName.isEmpty()) {
+			m_engine.loadModel("«getStateMachines().first().name».xml");
+		} else {
+			m_engine.loadModel(fileName);
+		}
+		m_engine.startExecution();
+
+		return true;
+	}
+	
+	/**
+	 * Retrieve current state as string.
+	 */
+	public String SMgetCurrentState() {
+		return m_engine.getCurrentState();
+	}
+	
+	public boolean SMfireSignal(String signal)
+	{
+		TriggerEvent evnt = new TriggerEvent(signal, TriggerEvent.SIGNAL_EVENT, null);
+		try {
+			m_engine.getEngine().triggerEvent(evnt);
+		} catch(ModelException e) {
+			m_logger.info(e.getMessage());
+		}
+		return m_engine.getEngine().getCurrentStatus().isFinal();
+	}
+	
+	«EXPAND SignalImpl FOREACH getSignals()»
+
+	«ENDIF-»
+} 
+«ENDFILE»
+«ENDDEFINE»
+
+«REM»Declare BACI property variables«ENDREM»
+«DEFINE DeclareBACI FOR Artifact»
+	«FOREACH getROProperties() AS property-»
+	«IF property.hasComment()-»/* «property.getComment()-» */«ENDIF-»
+	private DataAccess «property.name-»DataAccess;
+	private RO«property.getReturnType()-» «property.name-»;
+	private RO«property.getReturnType()-»Impl «property.name-»Impl;
+	private RO«property.getReturnType()-»POATie «property.name-»Tie;
+	
+	«ENDFOREACH-»
+	«FOREACH getRWProperties() AS property-»
+	«IF property.hasComment()-»/* «property.getComment()-» */«ENDIF-»
+	private DataAccess «property.name»DataAccess;
+	private RW«property.getReturnType()» «property.name-»;
+	private RW«property.getReturnType()»Impl «property.name-»Impl;
+	private RW«property.getReturnType()»POATie «property.name-»Tie;
+	
+	«ENDFOREACH-»
+«ENDDEFINE»
+
+«REM»getters for BACI properties (configurable)«ENDREM»
+«DEFINE GettersBACI FOR Artifact»
+	«IF hasRORWProperties()-»
+	/////////////////////////////////////////////////////////////
+	// Implementation of BACI getters
+	/////////////////////////////////////////////////////////////
+	«FOREACH getROProperties() AS property-»
+	/**
+	 * Get the «property.name»
+	 * @return RO«property.getReturnType()»
+	 */
+	public RO«property.getReturnType()» «property.name»()
+	{
+		return «property.name»;
+	}
+		
+	«ENDFOREACH-»
+	«FOREACH getRWProperties() AS property»
+	/**
+	 * Get the «property.name»
+	 * @return RW«property.getReturnType()»
+	 */
+	public RW«property.getReturnType()» «property.name»()
+	{
+		return «property.name»;
+	}
+	
+	«ENDFOREACH-»«ENDIF-»
+«ENDDEFINE»
+
+«REM»Initialize the RO and RW BACI properties of an interface«ENDREM»
+«DEFINE PropertiesConfigurableInitialize FOR Interface»
+			«FOREACH getROProperties() AS property-»
+			«property.name»DataAccess = new MemoryDataAccess();
+			«property.name»Impl = new RO«property.getReturnType()»Impl("«property.name»", this, «property.name»DataAccess); 
+			«property.name»Tie = new RO«property.getReturnType()»POATie(«property.name»Impl);
+			«property.name» = RO«property.getReturnType()»Helper.narrow(this.registerProperty(«property.name»Impl,«property.name»Tie)); 
+			 
+			«ENDFOREACH-»
+			«FOREACH getRWProperties() AS property-»
+			«property.name»DataAccess = new MemoryDataAccess();
+			«property.name»Impl = new RW«property.getReturnType()»Impl("«property.name»", this, «property.name»DataAccess); 
+			«property.name»Tie = new RW«property.getReturnType()»POATie(«property.name»Impl);
+			«property.name» = RW«property.getReturnType()»Helper.narrow(this.registerProperty(«property.name»Impl,«property.name»Tie));
+			 
+			«ENDFOREACH-»
+«ENDDEFINE»
+
+«REM» Implement a normal operation. «ENDREM»
+«DEFINE OperationImpl FOR Artifact»
+	«IF hasImplOperations()-»
+	/////////////////////////////////////////////////////////////
+	// Implementation of Operations
+	/////////////////////////////////////////////////////////////
+	«FOREACH getImplOperations() AS operation-»
+	/**«IF operation.hasComment()-»«FOREACH operation.getComment().getCommentsWrapped() AS comment-»
+	 *«comment»«ENDFOREACH»«ENDIF»
+	«FOREACH operation.getParams() AS cParam»
+	 * @param «cParam.name» «IF cParam.hasComment()-»«cParam.getComment()»«ENDIF»
+	«ENDFOREACH-»
+	 * @return «operation.type.toJava()»
+	 */	
+	public abstract «operation.type.toJava()» «operation.name-»(«FOREACH operation.getParams() AS param SEPARATOR ', '-»«param.type.toJava()» «param.name»«ENDFOREACH-»);
+	
+	«ENDFOREACH-»
+	«ENDIF-»
+«ENDDEFINE»
+
+«REM» Implement the signals: methodname and signal string is the same of the signal. «ENDREM»
+«DEFINE SignalImpl FOR Signal»
+	public boolean «name»() {
+		return SMfireSignal("«name»");
+	}
+«ENDDEFINE»

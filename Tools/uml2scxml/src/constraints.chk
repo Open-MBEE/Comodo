@@ -1,0 +1,66 @@
+import uml;
+
+
+context StateMachine ERROR "StateMachine must have a name" :
+	name.length != 0;
+
+context StateMachine ERROR "StateMachine must have an initial state." :
+	allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString() == "initial")&& (e.container.owner == this)).size > 0;
+	
+context StateMachine WARNING "StateMachine must have inner states" :
+	allOwnedElements().typeSelect(State).size > 0;
+ 
+context State ERROR "State must have a name" :
+	name.length != 0;
+
+context State if this.metaType.name == "uml::FinalState" WARNING "Final states must have a name" :
+	name.length != 0;
+		
+context State if isOrthogonal() ERROR "Orthogonal Regions must have a name" :
+	allOwnedElements().typeSelect(Region).select(e|(e.owner == this)&&(e.name.length == 0)).size == 0;
+
+context State if isOrthogonal() WARNING "Initial state is missing in orthogonal region" :
+	this.allOwnedElements().typeSelect(Pseudostate).select(e|e.kind.toString() == "initial").select(e|this.ownedElement.contains(e.container)).size == this.ownedElement.typeSelect(Region).size ;
+
+//context State if isComposite()WARNING "Composite State without substates" :
+//	allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString() == "initial")&&(e.container.owner == this )).size > 0;
+	
+context State if ( isComposite() && !allOwnedElements().typeSelect(State).select(e|!(e.name == "Unavailable") && !(e.metaType.name == "uml::FinalState") ).isEmpty ) ERROR "Composite States must have a default initial state" :
+	allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString() == "initial")&&(e.container.owner == this )).size > 0;
+	
+context State ERROR "Name of states must be unique":
+	!this.allOwnedElements().typeSelect(State).name.contains(this.name);
+
+context State if isOrthogonal() WARNING "Entry action not allowed on orthogonal states":
+	(this.entry.name.toString() == "null");
+
+context State if isOrthogonal() WARNING "Exit action not allowed on orthogonal states":
+	(this.exit.name.toString() == "null");
+	
+context State if isOrthogonal() WARNING "Transitions from orthogonal states are ignored":
+	this.outgoing.size == 0;
+	
+context Pseudostate if kind.toString().contains("History") ERROR "History state must have a name":
+	this.name.length !=0;
+	
+context Pseudostate if kind.toString().contains("History") ERROR "History state must have a default state":	
+	this.outgoing.toList().size !=0;
+
+context Pseudostate if kind.toString().contains("initial") ERROR "Every initial state must have an outgoing transition":
+	!this.outgoing.isEmpty;	
+	
+
+
+
+//context Signal ERROR "Signals must have a name" :
+//	name.length != 0;
+	
+//context Activity ERROR "Actions must have a name" :
+//	name.length != 0;
+	
+//context Transition WARNING "Guard aren't supported in this version" :
+//	guard == null;
+	
+//context State WARNING "Orthogonal states aren't supported in this version" :
+//	region.size <= 1;
+	

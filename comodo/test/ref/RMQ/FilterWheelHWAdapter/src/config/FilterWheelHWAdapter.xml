@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="STATE">  
+  <parallel id="STATE"> 
+    <state id="STATE:R0"> 
+      <initial>
+        <transition target="STATE:R0:ENCODER_HEALTH"/>
+      </initial>  
+      <state id="STATE:R0:ENCODER_HEALTH"> 
+        <initial>
+          <transition target="STATE:R0:ENCODER_HEALTH::OK"/>
+        </initial>  
+        <state id="STATE:R0:ENCODER_HEALTH::OK"> 
+          <onentry> 
+            <customActionDomain:PubEncoderHealthOk name="PubEncoderHealthOk"/> 
+          </onentry>  
+          <transition event="SimEncoderHealthNok" target="STATE:R0:ENCODER_HEALTH::NOK"/> 
+        </state>  
+        <state id="STATE:R0:ENCODER_HEALTH::NOK"> 
+          <onentry> 
+            <customActionDomain:PubEncoderHealthNok name="PubEncoderHealthNok"/> 
+          </onentry>  
+          <transition event="SimEncoderHealthOk" target="STATE:R0:ENCODER_HEALTH::OK"/> 
+        </state> 
+      </state> 
+    </state>  
+    <state id="STATE:R1"> 
+      <initial>
+        <transition target="STATE:R1:MOTOR_HEALTH"/>
+      </initial>  
+      <state id="STATE:R1:MOTOR_HEALTH"> 
+        <initial>
+          <transition target="STATE:R1:MOTOR_HEALTH::OK"/>
+        </initial>  
+        <state id="STATE:R1:MOTOR_HEALTH::OK"> 
+          <onentry> 
+            <customActionDomain:PubMotorHealthOk name="PubMotorHealthOk"/> 
+          </onentry>  
+          <transition event="SimMotorHealthNok" target="STATE:R1:MOTOR_HEALTH::NOK"/> 
+        </state>  
+        <state id="STATE:R1:MOTOR_HEALTH::NOK"> 
+          <onentry> 
+            <customActionDomain:PubMotorHealthNok name="PubMotorHealthNok"/> 
+          </onentry>  
+          <transition event="SimMotorHealthOk" target="STATE:R1:MOTOR_HEALTH::OK"/> 
+        </state> 
+      </state> 
+    </state>  
+    <state id="STATE:R2"> 
+      <initial>
+        <transition target="STATE:R2:MOTOR_POSITION"/>
+      </initial>  
+      <state id="STATE:R2:MOTOR_POSITION"> 
+        <initial>
+          <transition target="STATE:R2:MOTOR_POSITION::STATIONARY"/>
+        </initial>  
+        <state id="STATE:R2:MOTOR_POSITION::STATIONARY"> 
+          <onentry> 
+            <customActionDomain:PubEndMoving name="PubEndMoving"/> 
+          </onentry>  
+          <transition event="SetRefPos" target="STATE:R2:MOTOR_POSITION::MOVING"/> 
+        </state>  
+        <state id="STATE:R2:MOTOR_POSITION::MOVING"> 
+          <onentry> 
+            <customActionDomain:PubStartMoving name="PubStartMoving"/>  
+            <send target="" type="scxml" sendid="'STATE:R2:MOTOR_POSITION::MOVING_after_10s'" event="'after_10s'" delay="'10s'"/> 
+          </onentry>  
+          <onexit> 
+            <cancel sendid="'STATE:R2:MOTOR_POSITION::MOVING_after_10s'"/> 
+          </onexit>  
+          <transition event="SimMoveCompleted" target="STATE:R2:MOTOR_POSITION::STATIONARY"/>  
+          <transition event="after_10s" target="STATE:R2:MOTOR_POSITION::STATIONARY"/>  
+          <transition event="SetRefPos" target="STATE:R2:MOTOR_POSITION::MOVING"/> 
+        </state> 
+      </state> 
+    </state>  
+    <transition event="Exit" target="OFF"/> 
+  </parallel>  
+  <final id="OFF"/> 
+</scxml>

@@ -1,0 +1,50 @@
+#! /bin/sh -f
+#*******************************************************************************
+#    E.S.O. - VLT project
+#  
+#    "@(#) $Id$"
+#
+# who                when       what
+# ----------------  ----------  ----------------------------------------------
+# COMODO            -           Created.
+# 
+#************************************************************************
+#   NAME
+#   TestDriver - executes the modular test for the evh module
+# 
+#   SYNOPSIS
+# 
+#   DESCRIPTION
+#
+#   FILES
+#
+#   ENVIRONMENT
+#
+#   RETURN VALUES
+#
+#   CAUTIONS
+#
+#   EXAMPLES
+#
+#   SEE ALSO
+#
+#   BUGS     
+#
+#------------------------------------------------------------------------
+#
+
+RTAPENV=`grep -a wsTat .testSession | awk '{print $3}'`
+wsTat=`grep -a wsTat .testSession | awk '{print $3}'`
+TMP_RTAPENV=$RTAPENV
+
+export RTAPENV TMP_RTAPENV wsTat
+
+params=$@
+
+. wsf2ex6TestSetEnv.sh $PWD/INS_ROOT
+
+eccsTestDriver -x $params
+
+#
+# ___oOo___
+

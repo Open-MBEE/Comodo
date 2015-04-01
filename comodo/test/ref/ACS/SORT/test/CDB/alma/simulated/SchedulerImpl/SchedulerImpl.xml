@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import SchedulerImplSim
+	</pythonImports>
+        
+	<_corbaMethod Name="start" Timeout="0">
+SchedulerImplSim.start()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="stop" Timeout="0">
+SchedulerImplSim.stop()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="proposalUnderExecution" Timeout="0">
+SchedulerImplSim.proposalUnderExecution()
+	</_corbaMethod>
+	
+</SimulatedComponent>

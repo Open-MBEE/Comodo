@@ -1,0 +1,57 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::scxmlutil»
+«EXTENSION comodo::xtend::uml::statemachine»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::uml::artifact»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+
+«DEFINE Root FOR uml::Model -»
+«FILE getModulePackage().name+'/src/'+getModulePackage().name+'Makefile'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::Script FOR "" -»
+
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+«EXPAND SM FOREACH eElement.getStateMachines()-»
+«ENDFOREACH-»
+
+«ENDFILE»
+«ENDDEFINE»
+
+«DEFINE SM FOR uml::StateMachine -»
+«this.getModel().getModulePackage().name»CODE_GENERATED_OBJECTS = \
+«FOREACH this.getAllActionNamePrefix().removeDuplicates() AS e -»
+	«this.getModel().getModulePackage().name»ACTION_«e» \
+«ENDFOREACH-»
+«FOREACH this.getAllActivityName().removeDuplicates() AS e -»
+	«this.getModel().getModulePackage().name»ACTIVITY_«e» \
+«ENDFOREACH-»
+	«this.getModel().getModulePackage().name»DATA \
+	«this.getModel().getModulePackage().name»CONFIG \
+	«this.getModel().getModulePackage().name»APPLICATION \
+	«this.getModel().getModulePackage().name»ACTION_MGR 
+«ENDDEFINE»
+

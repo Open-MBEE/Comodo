@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse.ant.import?>
+<!-- 
+********************************************************************************
+* COMODO - Multiplatform Component Code Generator 
+*    (c) European Southern Observatory, 2011 
+*    Copyright by ESO 
+*    All rights reserved 
+* 
+* This library is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* $Id: build.xml 495 2011-11-09 13:16:11Z landolfa $
+*
+
+********************************************************************************
+* REMARKS
+*    None
+*
+!-->
+
+<project name="comodoTests" default="verifyAll" basedir="." >
+    <description>
+        Use COMODO to generate examples.
+    </description>	
+	
+	<!-- Poperties with default values !-->
+	<property name="COMODO_JAR_FILE" value="comodo" />
+	<property name="COMODO_PROFILE" value="../config/xmi/comodoProfile1.profile.uml" />
+	<property name="LIB_PATH" value="../lib"/>
+	<property name="BIN_PATH" value="../bin"/>	
+	<property name="OUT_PATH" value="./output" />
+	<property name="MOD_PATH" value="./models" />	
+	<property name="REF_PATH" value="./ref" />	
+	<property name="DIFF_TOOL" value="WinMergeU" />
+    <property name="debuglevel" value="source,lines,vars"/>
+
+	<!-- Poperties to be passed to ANT or set by targets in order to run!-->
+	<property name="MODEL" value=""/>
+	<property name="PLATFORM" value=""/>
+	<property name="CONFIG" value="none"/>
+	<property name="MODE" value=""/>
+	<property name="MODULES" value=""/>
+	
+	<!-- Classpath !-->
+    <path id="classpath">
+    	<fileset dir="${BIN_PATH}" includes="*.jar"/>
+    	<fileset dir="${LIB_PATH}" includes="*.jar"/>
+    </path>
+	
+	<!-- Clean Target !-->
+    <target name="clean" description="Delete all generated code" >
+    	<delete dir="${OUT_PATH}" verbose="true" />
+    </target>
+
+	<!-- Directories Initializations !-->
+    <target name="init" description="Creates output direcotry" >
+    	<tstamp/>
+    	<mkdir dir="${OUT_PATH}" />
+    </target>
+
+		
+	<!-- Generic generate Target !-->
+    <target name="generate" depends="init" description="Runs COMODO to generate code, requires: MODEL, MODULES, PLATFORM, and MODE" >
+    	<java classname="comodo.gen.COMODO" fork="true" >			
+			<arg line="-m ${MODEL} -p ${COMODO_PROFILE} -o ${OUT_PATH}/${PLATFORM} -e ${MODULES} -t ${PLATFORM} -c ${CONFIG} -g ${MODE}" />
+			<classpath>
+				 <path refid="classpath"/>
+				 <path location="${BIN_PATH}"/>
+			</classpath>
+		</java>
+    </target>
+
+	
+	<!-- SCXML platform !-->
+    <target name="scxmlStopWatchLight" description="Generates for SCXML platform the StopWatchLight example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/StopWatchLight/StopWatchLight.uml"/>
+        	<param name="PLATFORM" value="SCXML"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="StopWatchLight"/>
+    	</antcall>
+    </target>
+
+    <target name="scxmlTimeEvent" description="Generates for SCXML platform the TimeEvent example to test how UML TimeEvent can be translate into SCXML" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/TimeEvent/TimeEvent.uml"/>
+        	<param name="PLATFORM" value="SCXML"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="TimeEvent"/>
+    	</antcall>
+    </target>
+
+    <target name="scxmlFullCoverage" description="Generates for SCXML platform the FullCoverage example to test many Statecharts features" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/FullCoverage/FullCoverage.uml"/>
+        	<param name="PLATFORM" value="SCXML"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="FullCoverage"/>
+    	</antcall>
+    </target>
+	
+    <target name="scxmlGenerateAll" description="Generate all SCXML examples" depends="scxmlStopWatchLight, scxmlTimeEvent, scxmlFullCoverage">
+	</target>
+
+	<target name="scxmlCompareAll" description="Compare SCXML generated files with the reference files">
+	  <exec executable="${DIFF_TOOL}">
+	    <arg line=" /e /f SvnFilter /r /u /dl reference /dr generated ${REF_PATH}/SCXML ${OUT_PATH}/SCXML"/>
+	  </exec>
+	</target>
+
+	<target name="scxmlVerifyAll" description="Generate SCXML examples and compare them with reference files" depends="scxmlGenerateAll, scxmlCompareAll">
+	</target>
+	
+	<!-- JAVA platform !-->
+    <target name="javaStopWatch" description="Generates for JAVA platform the StopWatch example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/StopWatch/StopWatch.uml"/>
+        	<param name="PLATFORM" value="JAVA"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="StopWatch"/>
+    	</antcall>
+    </target>
+
+    <target name="javaError1" description="Generates for JAVA platform the Error1 example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/Error1/Error1.uml"/>
+        	<param name="PLATFORM" value="JAVA"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="Error1"/>
+    	</antcall>
+    </target>
+	
+    <target name="javaGenerateAll" description="Generate all JAVA examples" depends="javaStopWatch, javaError1">
+	</target>
+
+	<target name="javaCompareAll" description="Compare JAVA generated files with the reference files">
+	  <exec executable="${DIFF_TOOL}">
+	    <arg line=" /e /f SvnFilter /r /u /dl reference /dr generated ${REF_PATH}/JAVA ${OUT_PATH}/JAVA"/>
+	  </exec>
+	</target>
+	
+	<target name="javaVerifyAll" description="Generate JAVA examples and compare them with reference files" depends="javaGenerateAll, javaCompareAll">
+	</target>
+	
+	<!-- VLT platform !-->
+    <target name="vltWsf2ex1" description="Generates for VLT platform the wsf2ex1 example on a basic VLT application" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/wsf2ex1/wsf2ex1.uml"/>
+        	<param name="PLATFORM" value="VLT"/>
+    		<param name="CONFIG" value="SINGLETHREAD"/>  
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="wsf2ex1"/>
+    	</antcall>
+    </target>
+
+	<target name="vltWsf2ex2" description="Generates for VLT platform the wsf2ex2 example on command-reply" >
+	   	<antcall target="generate">
+	    	<param name="MODEL" value="${MOD_PATH}/wsf2ex2/wsf2ex2.uml"/>
+	       	<param name="PLATFORM" value="VLT"/>
+	   		<param name="CONFIG" value="MULTITHREAD"/>
+	       	<param name="MODE" value="all"/>  
+	       	<param name="MODULES" value="wsf2ex2"/>
+	   	</antcall>
+	</target>
+
+	<target name="vltWsf2ex3" description="Generates for VLT platform the wsf2ex3 example on orthogonal regions and do-activities" >
+	   	<antcall target="generate">
+	    	<param name="MODEL" value="${MOD_PATH}/wsf2ex3/wsf2ex3.uml"/>
+	       	<param name="PLATFORM" value="VLT"/>
+	   		<param name="CONFIG" value="MULTITHREAD"/>
+	       	<param name="MODE" value="all"/>  
+	       	<param name="MODULES" value="wsf2ex3"/>
+	   	</antcall>
+	</target>
+
+	<target name="vltWsf2ex4" description="Generates for VLT platform the wsf2ex4 example on timers, signals, notifications, fileio events" >
+	   	<antcall target="generate">
+	    	<param name="MODEL" value="${MOD_PATH}/wsf2ex4/wsf2ex4.uml"/>
+	       	<param name="PLATFORM" value="VLT"/>
+	   		<param name="CONFIG" value="MULTITHREAD"/>
+	       	<param name="MODE" value="all"/>  
+	       	<param name="MODULES" value="wsf2ex4"/>
+	   	</antcall>
+	</target>
+
+	<target name="vltWsf2ex5" description="Generates for VLT platform the wsf2ex5 example on guards and eventless transitions" >
+	   	<antcall target="generate">
+	    	<param name="MODEL" value="${MOD_PATH}/wsf2ex5/wsf2ex5.uml"/>
+	       	<param name="PLATFORM" value="VLT"/>
+	   		<param name="CONFIG" value="MULTITHREAD"/>
+	       	<param name="MODE" value="all"/>  
+	       	<param name="MODULES" value="wsf2ex5"/>
+	   	</antcall>
+	</target>
+
+	<target name="vltWsf2ex6" description="Generates for VLT platform the wsf2ex5 example on history state" >
+	   	<antcall target="generate">
+	    	<param name="MODEL" value="${MOD_PATH}/wsf2ex6/wsf2ex6.uml"/>
+	       	<param name="PLATFORM" value="VLT"/>
+	   		<param name="CONFIG" value="MULTITHREAD"/>
+	       	<param name="MODE" value="all"/>  
+	       	<param name="MODULES" value="wsf2ex6"/>
+	   	</antcall>
+	</target>
+
+    <target name="vltGenerateAll" description="Generate all VLT examples" depends="vltWsf2ex1, vltWsf2ex2, vltWsf2ex3, vltWsf2ex4, vltWsf2ex5, vltWsf2ex6">
+	</target>
+
+	<target name="vltCompareAll" description="Compare VLT generated files with the reference files">
+	  <exec executable="${DIFF_TOOL}">
+	    <arg line=" /e /f SvnFilter /r /u /dl reference /dr generated ${REF_PATH}/VLT ${OUT_PATH}/VLT"/>
+	  </exec>
+	</target>
+	
+	<target name="vltVerifyAll" description="Generate VLT examples and compare them with reference files" depends="vltGenerateAll, vltCompareAll">
+	</target>
+
+	
+	<!-- Examples for Java PathFinder platform !-->
+	<target name="jpfscThreeStates" description="Generates for JPFSC platform the ThreeStates example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/ThreeStates/ThreeStates.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="ThreeStates"/>
+    	</antcall>
+    </target>
+
+    <target name="jpfscOrthogonalRegions" description="Generates for JPFSC platform the OrthogonalRegions example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/OrthogonalRegions/OrthogonalRegions.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="OrthogonalRegions"/>
+    	</antcall>
+    </target>
+
+    <target name="jpfscOrthogonalRegionsFlat" description="Generates for JPFSC platform the OrthogonalRegionsFlat example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/OrthogonalRegions/OrthogonalRegionsFlat.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="OrthogonalRegionsFlat"/>
+    	</antcall>
+    </target>
+
+    <target name="jpfscVariableCurvatureMirror" description="Generates for JPFSC platform the VariableCurvatureMirror example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/VariableCurvatureMirror/VariableCurvatureMirror.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="VariableCurvatureMirror"/>
+    	</antcall>
+    </target>
+
+    <target name="jpfscFaultProtection" description="Generates for JPFSC platform the FaultProtection example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/FaultProtection/FaultProtection.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="FaultProtection"/>
+    	</antcall>
+    </target>
+
+    <target name="jpfscGuards1" description="Guards1" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/Guards1/Guards1.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="Guards1"/>
+    	</antcall>
+    </target>
+	
+    <target name="jpfscGuards2" description="Guards2" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/Guards2/Guards2.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="Guards2"/>
+    	</antcall>
+    </target>
+
+    <target name="jpfscMultiplePaths" description="MultiplePaths" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/MultiplePaths/MultiplePaths.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="MultiplePaths"/>
+    	</antcall>
+    </target>
+
+    <target name="jpfscInternalEvents" description="InternalEvents" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/InternalEvents/InternalEvents.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="InternalEvents"/>
+    	</antcall>
+    </target>
+	
+    <target name="jpfscQueuingSignals" description="Generates for JPFSC platform the QueuingSignals example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/QueuingSignals/QueuingSignals.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="QueuingSignals"/>
+    	</antcall>
+    </target>
+
+    <target name="jpfscIncrementAndGuard" description="Generates for JPFSC platform the IncrementAndGuard example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/IncrementAndGuard/IncrementAndGuard.uml"/>
+        	<param name="PLATFORM" value="JPFSC"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="IncrementAndGuard"/>
+    	</antcall>
+    </target>
+
+    <target name="jpfscGenerateAll" description="Generate all JPFSC examples" depends="jpfscThreeStates, jpfscOrthogonalRegions, jpfscVariableCurvatureMirror, jpfscFaultProtection, jpfscQueuingSignals">
+	</target>
+	
+	<target name="jpfscCompareAll" description="Compare JPFSC generated files with the reference files">
+	  <exec executable="${DIFF_TOOL}" searchpath="true">
+	    <arg line=" /e /f SvnFilter /r /u /dl reference /dr generated ${REF_PATH}/JPFSC ${OUT_PATH}/JPFSC"/>
+	  </exec>
+	</target>
+	
+	<target name="jpfscVerifyAll" description="Generate JPFSC examples and compare them with reference files" depends="jpfscGenerateAll, jpfscCompareAll">
+	</target>
+	
+	<!-- RabbitMQ platform !-->
+    <target name="rmqClientServer" description="Generates for RabbitMQ platform the Client and Server example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/ClientServer/ClientServer.uml"/>
+        	<param name="PLATFORM" value="RMQ"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="Client Server"/>
+    	</antcall>
+    </target>
+
+    <target name="rmqFilterWheel" description="Generates for RabbitMQ platform the FilterWheel example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/FilterWheel/FilterWheel.uml"/>
+        	<param name="PLATFORM" value="RMQ"/>
+        	<param name="MODE" value="all"/>  
+           	<param name="MODULES" value="Monitor FilterWheelHWAdapter NamedPositionEstimator EncoderHealthEstimator MotorHealthEstimator NamedPositionController"/>
+    	</antcall>
+    </target>
+
+	<target name="rmqWsf2ex1" description="Generates for RabbitMQ platform the wsf2ex1 example" >
+		<antcall target="generate">
+	       	<param name="MODEL" value="${MOD_PATH}/Wsf2ex1/wsf2ex1.uml"/>
+	       	<param name="PLATFORM" value="RMQ"/>
+	       	<param name="MODE" value="all"/>  
+	       	<param name="MODULES" value="wsf2ex1"/>
+	   	</antcall>
+	</target>
+	
+    <target name="rmqGenerateAll" description="Generate all RabbitMQ examples" depends="rmqClientServer, rmqFilterWheel, rmqWsf2ex1">
+	</target>
+	
+	<target name="rmqCompareAll" description="Compare RabbitMQ generated files with the reference files">
+	  <exec executable="${DIFF_TOOL}">
+	    <arg line=" /e /f SvnFilter /r /u /dl reference /dr generated ${REF_PATH}/RMQ ${OUT_PATH}/RMQ"/>
+	  </exec>
+	</target>
+	
+	<target name="rmqVerifyAll" description="Generate RabbitMQ examples and compare them with reference files" depends="rmqGenerateAll, rmqCompareAll">
+	</target>
+	
+	<!-- ACS platform !-->
+    <target name="acsStopWatchLight" description="Generates for ACS platform the StopWatchLight example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/StopWatchLight/StopWatchLight.uml"/>
+        	<param name="PLATFORM" value="ACS"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="StopWatchLight"/>
+    	</antcall>
+    </target>
+
+    <target name="acsMasterComponent" description="Generates for ACS platform the MasterComponent example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/MasterComponent/MasterComponent.uml"/>
+        	<param name="PLATFORM" value="ACS"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="MasterComponent"/>
+    	</antcall>
+    </target>
+
+    <target name="acsELTInsPrototype" description="Generates for ACS platform the ELT-InsPrototype example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/ELTInsPrototype/ELT-InsPrototype.uml"/>
+        	<param name="PLATFORM" value="ACS"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="prototype"/>
+    	</antcall>
+    </target>
+
+    <target name="acsELTInsPinger" description="Generates for the ACS platform the ELT-InsPinger example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/ELTInsPrototype/ELT-InsPrototype.uml"/>
+        	<param name="PLATFORM" value="ACS"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="pinger"/>
+    	</antcall>
+    </target>
+	
+    <target name="acsPrsModule" description="Generates for the ACS platform Preset example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/PrsModule/PRS.uml"/>
+        	<param name="PLATFORM" value="ACS"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="prsModule"/>
+    	</antcall>
+    </target>
+
+    <target name="acsMars" description="Generates for ACS platform the MARS example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/Mars/MARS.uml"/>
+        	<param name="PLATFORM" value="ACS"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="MARS"/>
+    	</antcall>
+    </target>
+
+    <target name="acsSort" description="Generates for ACS platform the SORT example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/Awu2010/exampleAwu2010.uml"/>
+        	<param name="PLATFORM" value="ACS"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="SORT"/>
+    	</antcall>
+    </target>
+
+    <target name="acsEventSubscriber" description="Generates for ACS platform the EventSubscriber example" >
+    	<antcall target="generate">
+        	<param name="MODEL" value="${MOD_PATH}/EventSubscriber/EventSubscriber.uml"/>
+        	<param name="PLATFORM" value="ACS"/>
+        	<param name="MODE" value="all"/>  
+        	<param name="MODULES" value="EventSubscriber"/>
+    	</antcall>
+    </target>
+	
+    <target name="acsGenerateAll" description="Generate ACS examples" depends="acsStopWatchLight,acsMasterComponent,acsELTInsPrototype,acsELTInsPinger,acsPrsModule,acsMars,acsSort,acsEventSubscriber">
+    </target>
+
+	<target name="acsCompareAll" description="Compare ACS generated files with the reference files">
+	  <exec executable="${DIFF_TOOL}">
+	    <arg line=" /e /f SvnFilter /r /u /dl reference /dr generated ${REF_PATH}/ACS ${OUT_PATH}/ACS"/>
+	  </exec>
+	</target>
+	
+	<target name="acsVerifyAll" description="Generate ACS examples and compare them with reference files" depends="acsGenerateAll, acsCompareAll">
+	</target>
+	
+	<!-- All platforms !-->
+    <target name="generateAll" description="Generate all examples" depends="scxmlGenerateAll, vltGenerateAll, jpfscGenerateAll">
+    </target>
+
+    <target name="compareAll" description="Compare all generated files with the reference files" depends="scxmlCompareAll, vltCompareAll, jpfscCompareAll">
+    </target>
+
+	<target name="verifyAll" description="Generate all examples and compare them with reference files" depends="generateAll, compareAll">
+	</target>
+	
+</project>
+<!--oOo!-->

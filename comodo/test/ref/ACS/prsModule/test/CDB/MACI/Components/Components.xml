@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2011-11-19 Created.	
+-->
+<Components  xmlns="urn:schemas-cosylab-com:Components:1.0"
+		xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+		xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		
+		<_ Name="myVltPrsComponent" 
+			Code="alma.prsModule.prsComponentCppImplHelper"
+			Type="IDL:alma/prsModule/PrsInterface:1.0"
+			Container="CcsEnv" 
+			ImplLang="" />
+		<_ Name="myAcsPrsComponent" 
+			Code="alma.prsModule.prsComponentJavaImplHelper"
+			Type="IDL:alma/prsModule/PrsInterface:1.0"
+			Container="AcsJavaContainer" 
+			ImplLang="java" />
+
+		<!-- Component Simulators -->
+		<_ Name="myVltPrsComponentSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prsModule/PrsInterface:1.0"
+			Container="prsModuleSimulator" 
+			ImplLang="py" />
+		<_ Name="myAcsPrsComponentSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/prsModule/PrsInterface:1.0"
+			Container="prsModuleSimulator" 
+			ImplLang="py" />
+
+	   <!-- Instance to test components -->
+	   
+	   <!-- Java Component Instances -->
+	   
+	   <_ Name="testInstanceprsComponentJavaImpl" 
+			Code="alma.prsModule.prsComponentJavaImplHelper"
+			Type="IDL:alma/prsModule/PrsInterface:1.0"
+			Container="prsModuleJavaTest" 
+			ImplLang="java" />
+			
+	   
+	   
+</Components>

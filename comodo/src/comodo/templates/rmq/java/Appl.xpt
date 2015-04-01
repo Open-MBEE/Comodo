@@ -1,0 +1,58 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Component.xpt 481 2011-10-10 10:46:44Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::package»
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ApplImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ApplImpl FOR uml::Artifact»
+«FILE getPackageVar() + '/src/' + getPackageVar() + '/Appl.java'-»
+«EXPAND comodo::templates::rmq::txt::Copyright::Copyright FOR "" -»
+
+
+package «getPackageVar()»;
+
+import «getPackageVar()».«name»;
+
+/**
+ * Developer's file to implement the Appl main
+ * @see «getPackageVar()».Appl
+ * @author COMODO
+ * @version «getPropSet('Id')»
+ */	
+public class Appl
+{
+	
+	public static void main(String[] argv) throws java.io.IOException, java.lang.InterruptedException {
+		«name» component = new «name»();
+		component.run();
+	}
+} 
+«ENDFILE»
+«ENDDEFINE»
+
+

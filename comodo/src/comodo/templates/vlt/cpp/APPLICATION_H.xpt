@@ -1,0 +1,66 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/include/'+this+'APPLICATION.h'-»
+#ifndef «this»APPLICATION_H
+#define «this»APPLICATION_H
+«EXPAND comodo::templates::vlt::txt::Copyright::Source FOR "" -»
+
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C
+#endif
+
+
+#ifndef wsf2libAPPLICATION_H
+#include "wsf2libAPPLICATION.h"
+#endif
+
+
+class «this»ACTION_MGR;
+
+class «this»APPLICATION : public wsf2libAPPLICATION
+{
+  public:
+    «this»APPLICATION();
+    virtual ~«this»APPLICATION();
+
+    ccsCOMPL_STAT Init(int argCount, char *arg[]);
+    ccsCOMPL_STAT Run();
+
+    «this»ACTION_MGR* GetActionMgr();
+
+    static ccsCOMPL_STAT Execute(int argc, char *argv[]);
+
+  private:
+    «this»ACTION_MGR* mActionMgr;
+
+    «this»APPLICATION(const «this»APPLICATION&);
+    «this»APPLICATION& operator= (const «this»APPLICATION&);
+};
+
+
+#endif // !«this»APPLICATION_H
+
+«ENDFILE»
+«ENDDEFINE»
+

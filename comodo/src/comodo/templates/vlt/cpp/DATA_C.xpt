@@ -1,0 +1,60 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+
+«DEFINE Root FOR String -»
+«FILE this+'/src/'+this+'DATA.C'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::Source FOR "" -»
+
+#define _POSIX_SOURCE 1
+#include "vltPort.h"
+
+#include "«this».h"
+«this»WSF_RCSID("@(#) $Id: «this»DATA.C 593 2012-04-22 12:12:12Z landolfa $")
+
+#include "«this»DATA.h"
+#include "«this»CONFIG.h"
+
+#include "wsf2libLOG.h"
+
+
+«this»DATA::«this»DATA(const dbSYMADDRESS& dbRoot, «this»CONFIG& config) :
+    mConfig(config)
+{
+    wsf2libLOG_TRACE();
+}
+
+«this»DATA::~«this»DATA()
+{
+    wsf2libLOG_TRACE();
+}
+
+ccsCOMPL_STAT «this»DATA::Init()
+{
+    wsf2libLOG_TRACE();
+    return SUCCESS;
+}
+
+// __oOo__
+
+«ENDFILE»
+«ENDDEFINE»
+

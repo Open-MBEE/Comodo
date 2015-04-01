@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="MONITORING">  
+  <state id="MONITORING"> 
+    <invoke targettype="java" id="VerifyGoals" src="SMActivityVerifyGoals.java"/>  
+    <transition event="Exit" target="OFF"/>  
+    <transition event="VerifyGoals.done" target="OFF"/>  
+    <transition event="Reset" target="MONITORING"/> 
+  </state>  
+  <final id="OFF"/> 
+</scxml>

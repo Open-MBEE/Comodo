@@ -1,0 +1,75 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: ComponentImpl.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FILE  getPackageVar()+'/src/'+ name+'Impl.cpp'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+static char *rcsId="@(#) «getPropSet('Id')»"; 
+static void *use_rcsId = ((void)&use_rcsId,(void *) &rcsId);
+
+#include "cdb.h"
+#include "cdbErrType.h"
+
+#include "«name»Impl.h"
+
+«name»Impl::«name»Impl(const ACE_CString &name, maci::ContainerServices *containerServices):
+  baci::CharacteristicComponentImpl::CharacteristicComponentImpl(name, containerServices)
+{
+	ACS_TRACE("::«name»Impl::«name»Impl()");
+}
+
+void «name»Impl::initialize()
+{
+	ACS_TRACE("::«name»Impl::initialize()");
+}
+
+«name»Impl::~ACSCalcImpl()
+{
+	ACS_TRACE("::«name»Impl::~«name»Impl(): destroyed");
+} 
+
+void «name»Impl::aboutToAbort()
+{
+	ACS_TRACE("::«name»Impl::aboutToAbort()");
+}
+
+void «name»Impl::cleanUp()
+{
+	ACS_TRACE("::«name»Impl::cleanUp()");
+}
+
+/*___oOo___*/
+«ENDFILE»
+«ENDDEFINE»

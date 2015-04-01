@@ -1,0 +1,76 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Common.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::stereotypes»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::langtype»
+«EXTENSION comodo::xtend::cmdo::property»
+
+«DEFINE Root FOR uml::Model»
+
+«FILE  getPackageVar()+'/idl/'+getPackageVar()+'Common.idl'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+#ifndef _«getPackageVar().toUpperCase()-»COMMON_IDL_
+#define _«getPackageVar().toUpperCase()-»COMMON_IDL_
+
+#pragma prefix "alma"
+
+module «getModulePackage().name»
+{
+	«FOREACH getModulePackage().getPimEnumerations() AS eElement -»
+	enum «eElement.name» { «FOREACH eElement.ownedLiteral AS eAttribute SEPARATOR ', '»«eAttribute.name»«ENDFOREACH» };
+	«ENDFOREACH-»
+
+	«FOREACH getModulePackage().getPimTopicSequences() AS eElement -»
+	typedef sequence<«eElement.attribute.first().type.toIDL(getModel().getModulePackage())»> «eElement.name»;
+	«ENDFOREACH-»
+
+	const string idlcommon = "IDLCommon";
+
+	«FOREACH getModulePackage().getPimTopics().getTopicSorted() AS eElement -»
+	struct «eElement.name» 
+	{
+		«FOREACH eElement.getAllAttributes() AS eAttribute-»
+		«eAttribute.type.toIDL(getModel().getModulePackage())» «eAttribute.name»;
+		«ENDFOREACH-»
+	};
+	typedef sequence<«eElement.name»> «eElement.name»Sequence;
+	
+	«ENDFOREACH-»
+	
+	«IF getModulePackage().hasNCDefinitions()-»
+	/* Notification Channels Definitions */
+	«FOREACH getModulePackage().getNCDefinitions().toSet() AS eElement -»
+	const string CHANNEL_«eElement.getContainerName().toUpperCase()»_«eElement.name.toUpperCase()» = "«eElement.getContainerName().toLowerCase()»_«eElement.type.toIDL(getModel().getModulePackage()).toLowerCase()»_«eElement.name.toLowerCase()»";
+	«ENDFOREACH-»
+	«ENDIF-»
+		
+};
+#endif /* _«getModulePackage().name.toUpperCase()»COMMON_IDL_ */
+«ENDFILE»
+
+«ENDDEFINE»

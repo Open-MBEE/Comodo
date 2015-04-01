@@ -1,0 +1,86 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: SMActionImpl.xpt 481 2011-10-10 10:46:44Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE SMActionImpl FOR Behavior»
+«IF generateModeAll()»
+«FILE getPackageVar() + "/src/" + getPackageVar() + "/SMAction" + combinePrefixPostfix(name) + ".java"»
+«EXPAND comodo::templates::rmq::txt::Copyright::Copyright FOR "" -»
+
+
+package «getPackageVar()»;
+
+import java.util.Collection;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.scxml.ErrorReporter;
+import org.apache.commons.scxml.EventDispatcher;
+import org.apache.commons.scxml.SCInstance;
+import org.apache.commons.scxml.SCXMLExpressionException;
+import org.apache.commons.scxml.model.Action;
+import org.apache.commons.scxml.model.ModelException;
+
+public class SMAction«combinePrefixPostfix(name)» extends Action {
+	
+    /** Serial version UID. */
+    private static final long serialVersionUID = 1L;
+
+	private String mName;
+	
+	public SMAction«combinePrefixPostfix(name)»() {
+        super();
+    }
+ 
+   	/**
+     * Get the name.
+     *
+     * @return Returns the name.
+     */
+    public String getName() {
+        return mName;
+    }
+
+    /**
+     * Set the name.
+     *
+     * @param name The name to set.
+     */
+    public void setName(String name) {
+    	mName = name;
+    }	
+    
+    public void execute(final EventDispatcher evtDispatcher,
+            final ErrorReporter errRep, final SCInstance scInstance,
+            final Log appLog, @SuppressWarnings("rawtypes") final Collection derivedEvents)
+    throws ModelException, SCXMLExpressionException {
+        appLog.debug("class: SMAction«combinePrefixPostfix(name)», method: execute, attribute name: " + mName);
+        
+    }
+
+}
+		
+«ENDFILE»
+«ENDIF»
+«ENDDEFINE»

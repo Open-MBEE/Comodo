@@ -1,0 +1,105 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: TestUnit.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::stereotypes»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::uml::artifact»
+
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FILE getPackageVar()+'/test/cppUnitTest'+name+'.cpp'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+#include <cppunit/TestFixture.h>
+#include <cppunit/TestCaller.h>
+#include <maciSimpleClient.h>
+
+#include "«getModel().getModulePackage().name»CommonC.h"
+«FOREACH getAllInterfaces() AS interface -»
+#include "«interface.name»C.h"
+«ENDFOREACH-»
+
+maci::SimpleClient client;
+
+class «name»Test: public CppUnit::TestFixture 
+{
+	private:
+	
+		«FOREACH getAllInterfaces() AS interface -»
+		«getModel().getModulePackage().name»::«interface.name» *«interface.name»Component;
+		«ENDFOREACH-»
+		
+	public:
+	
+		void setUp() 
+		{
+			«FOREACH getAllInterfaces() AS interface -»
+			«interface.name»Component = client.getComponent<«getModel().getModulePackage().name»::«interface.name»>("testInstance«interface.name»", 0, true);
+			«ENDFOREACH-»
+		}//
+
+		void tearDown()
+		{
+			«FOREACH getAllInterfaces() AS interface -»
+			client.releaseComponent("testInstance«interface.name»");
+			«ENDFOREACH-»
+		}//
+		
+		«IF hasImplOperations()-»
+		///////////////////////////////////////////////////////////
+		// Test methods
+		///////////////////////////////////////////////////////////
+		
+		«FOREACH getImplOperations() AS operation-»
+		void test«operation.name.toFirstUpper()»()
+		{
+			// TODO (generator autoimplementation)
+		}//
+		«ENDFOREACH-»
+		«ENDIF-»
+};
+
+int main(int argc, char *argv[]) 
+{
+	client.init(argc, argv);
+	
+	client.login();
+	
+	«FOREACH getImplOperations() AS operation-»
+	// test«operation.name.toFirstUpper()»
+	CppUnit::TestCaller<«name»Test> «operation.name.toFirstUpper()»Test ("testInstance«name»", &«name»Test::test«operation.name.toFirstUpper()»);
+	
+	«ENDFOREACH-»
+	
+	client.logout();
+}
+«ENDFILE»
+«ENDDEFINE»

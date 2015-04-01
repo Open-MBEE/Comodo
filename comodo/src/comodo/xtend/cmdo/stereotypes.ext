@@ -1,0 +1,125 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: profile.ext 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+
+import uml;
+
+/** Change these definitions when you rename the profile **/
+
+cached String getPimProfilePrefix() : 				"comodoProfile";
+cached String getPimStereotypeComponent() :			"cmdoComponent";
+cached String getPimStereotypeComponentImpl() :		"cmdoComponentImpl";
+cached String getPimStereotypeContainer() :			"cmdoContainer";
+cached String getPimStereotypeEnumeration() :		"cmdoEnumeration";
+cached String getPimStereotypeModule() :			"cmdoModule";
+cached String getPimStereotypeReadOnlyProperty() :	"cmdoReadOnlyProperty";
+cached String getPimStereotypeReadWriteProperty() :	"cmdoReadWriteProperty";
+cached String getPimStereotypePublish() :			"cmdoPublish";
+cached String getPimStereotypeSubscribe() :			"cmdoSubscribe";
+cached String getPimStereotypeTopic() :				"cmdoTopic";
+cached String getPimStereotypeTopicSequence() :		"cmdoTopicSequence";
+cached String getPimStereotypeException() :			"cmdoException";
+cached String getPimStereotypeInterface() :			"cmdoInterface";
+cached String getPimStereotypeCommand() :			"cmdoCommand";
+cached String getPimStereotypeReplyOk() :			"cmdoReplyOk";
+cached String getPimStereotypeReplyErr() :			"cmdoReplyErr";
+cached String getPimStereotypeTimer() :				"cmdoTimer";
+cached String getPimStereotypeNotification() :		"cmdoNotification";
+cached String getPimStereotypeSignal() :			"cmdoSignal";
+cached String getPimStereotypeFileio() :			"cmdoFileio";
+cached String getPimStereotypeInternal() :			"cmdoInternal";
+
+
+
+/** generic function **/
+private boolean hasStereotype(Element element, String stereotype):
+	!element.getAppliedStereotypes().select(e| e.name == stereotype).isEmpty;
+
+/** check/compare for assigned ESO PIM profile stereotypes **/
+boolean isPimComponent(Element element):
+	element.hasStereotype(getPimStereotypeComponent());
+
+boolean isPimComponentImpl(Element element):
+	element.hasStereotype(getPimStereotypeComponentImpl());
+
+boolean isPimContainer(Element element):
+	element.hasStereotype(getPimStereotypeContainer());
+
+boolean isPimEnumeration(Element element):
+	element.hasStereotype(getPimStereotypeEnumeration());
+
+boolean isPimModule(Element element):
+	element.hasStereotype(getPimStereotypeModule());
+
+boolean isPimReadOnlyProperty(Element element):
+	element.hasStereotype(getPimStereotypeReadOnlyProperty());
+
+boolean isPimReadWriteProperty(Element element):
+	element.hasStereotype(getPimStereotypeReadWriteProperty());
+
+boolean isPimPublish(Element element):
+	element.hasStereotype(getPimStereotypePublish());
+
+boolean isPimSubscribe(Element element):
+	element.hasStereotype(getPimStereotypeSubscribe());
+
+boolean isPimTopic(Element element):
+	element.hasStereotype(getPimStereotypeTopic());
+
+boolean isPimTopicSequence(Element element):
+	element.hasStereotype(getPimStereotypeTopicSequence());
+
+boolean isPimException(Element element):
+	element.hasStereotype(getPimStereotypeException());
+
+//##################   PIM INTERFACE   #########################################
+boolean isPimInterface(Element element):
+	element.hasStereotype(getPimStereotypeInterface());
+
+List[uml::Interface] getPimInterfaces(uml::Class element):
+	element.allOwnedElements().select(e|e.isPimInterface());
+//##############################################################################
+
+List[uml::Package] getPimModules(uml::Model element):
+	element.allOwnedElements().select(e|e.isPimModule());
+
+//##################   PIM PUBLISHER   #########################################
+List[uml::Property] getPimPublishers(uml::Interface element):
+	element.allOwnedElements().select(e|e.isPimPublish());
+
+
+//##############################################################################
+
+List[uml::Property] getPimSubscribers(uml::Interface element):
+	element.allOwnedElements().select(e|isPimSubscribe(e));
+
+
+
+//########################### TAG ##############################################
+/**
+ * Get the tag value from a specific applied stereotype (full qualified name)
+ * Returns null if the corresponding tag cannot be found.
+ */
+ 
+Object getPimTagValue(Element element, String stereotype, String tag):
+	let st = element.getAppliedStereotype(getPimProfilePrefix() + '::' + stereotype) : 
+	if st != null && element.hasValue(st, tag)
+		then element.getValue(st, tag)
+	else
+		null;

@@ -1,0 +1,62 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Fsms.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«DEFINE ESRoot FOR String-»
+«FILE this+"/"+this+".es"-»
+#
+# This is the guidance script file that can be used to specify
+# events to be triggered.
+# (see http://babelfish.arc.nasa.gov/trac/jpf/wiki/GuidanceScripts)
+#
+# Grammar:
+#
+#  script ::= {section | sequence}.
+#  section ::= 'SECTION' ID {',' ID} '{' {sequence} '}'.
+#  sequence ::= iteration | selection | event.
+#  iteration ::= 'REPEAT' [NUM] '{' {sequence} '}'.
+#  selection ::= 'ANY' '{' {event} '}'.
+#  event ::= ID ['(' [parameter {',' parameter}] ')'].
+#  parameter ::= STRING
+#
+#  keyword ANY preceedes a set of set of state names or an "*" means 
+#  the model checker will try all choices.
+#
+# Example:
+#  e("one"|"two", [12]) 
+# is expanded into 
+#  e("one",1), e("one",2), e("two",1), e("two",2)
+#
+# Example:
+#  SECTION s1 {
+#    a
+#    b
+#  }  
+#  SECTION s2 {
+#    ANY {e, f(true|false), g}
+#  }
+# is expanded into:
+#  if (activeState == s1) => a(), b() 
+#  if (activeState == s2) => {e(), f(true), f(false), g()}
+#
+«ENDFILE»
+«ENDDEFINE»
+

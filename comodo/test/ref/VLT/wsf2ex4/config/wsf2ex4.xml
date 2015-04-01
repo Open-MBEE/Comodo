@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="STATE">  
+  <state id="STATE"> 
+    <initial>
+      <transition target="STATE::LOADED"/>
+    </initial>  
+    <parallel id="STATE::ONLINE"> 
+      <state id="STATE::ONLINE:MONITOR"> 
+        <initial>
+          <transition target="STATE::ONLINE:MONITOR:IDLE"/>
+        </initial>  
+        <state id="STATE::ONLINE:MONITOR:IDLE"> 
+          <transition event="STRTREC" target="STATE::ONLINE:MONITOR:MONITORING"> 
+            <customActionDomain:EXPHANDLER.Execute name="EXPHANDLER.Execute"/> 
+          </transition> 
+        </state>  
+        <state id="STATE::ONLINE:MONITOR:MONITORING"> 
+          <onentry> 
+            <customActionDomain:MONITOR.Execute name="MONITOR.Execute"/> 
+          </onentry>  
+          <transition event="TIMER1" target="STATE::ONLINE:MONITOR:MONITORING"> 
+            <customActionDomain:MONITOR.Complete name="MONITOR.Complete"/> 
+          </transition>  
+          <transition event="STOPREC" target="STATE::ONLINE:MONITOR:IDLE"> 
+            <customActionDomain:EXPHANDLER.Complete name="EXPHANDLER.Complete"/> 
+          </transition> 
+        </state> 
+      </state>  
+      <state id="STATE::ONLINE:EXPOSURE"> 
+        <initial>
+          <transition target="STATE::ONLINE:EXPOSURE:EXPOSURE_READY"/>
+        </initial>  
+        <state id="STATE::ONLINE:EXPOSURE:EXPOSING"> 
+          <transition event="EXPDONE" target="STATE::ONLINE:EXPOSURE:EXPOSURE_READY"/>  
+          <transition event="STOPREC" target="STATE::ONLINE:EXPOSURE:EXPOSURE_READY"/> 
+        </state>  
+        <state id="STATE::ONLINE:EXPOSURE:EXPOSURE_READY"> 
+          <transition event="EXPSTARTED" target="STATE::ONLINE:EXPOSURE:EXPOSING"/> 
+        </state> 
+      </state>  
+      <state id="STATE::ONLINE:SENDING"> 
+        <initial>
+          <transition target="STATE::ONLINE:SENDING:NOT_SENDING"/>
+        </initial>  
+        <state id="STATE::ONLINE:SENDING:SENDING"> 
+          <onentry> 
+            <customActionDomain:WRITE.Execute name="WRITE.Execute"/> 
+          </onentry>  
+          <transition event="STOPREC" target="STATE::ONLINE:SENDING:NOT_SENDING"/>  
+          <transition event="EXPSTARTED" target="STATE::ONLINE:SENDING:NOT_SENDING"/> 
+        </state>  
+        <state id="STATE::ONLINE:SENDING:NOT_SENDING"> 
+          <transition event="EXPDONE" target="STATE::ONLINE:SENDING:SENDING"/> 
+        </state> 
+      </state>  
+      <state id="STATE::ONLINE:RECEIVING"> 
+        <initial>
+          <transition target="STATE::ONLINE:RECEIVING:NOT_RECEIVING"/>
+        </initial>  
+        <state id="STATE::ONLINE:RECEIVING:NOT_RECEIVING"> 
+          <transition event="STRTREC" target="STATE::ONLINE:RECEIVING:RECEIVING"/> 
+        </state>  
+        <state id="STATE::ONLINE:RECEIVING:RECEIVING"> 
+          <transition event="DATAIN" target="STATE::ONLINE:RECEIVING:RECEIVING"> 
+            <customActionDomain:READ.Execute name="READ.Execute"/> 
+          </transition>  
+          <transition event="STOPREC" target="STATE::ONLINE:RECEIVING:NOT_RECEIVING"> 
+            <customActionDomain:MONITOR.Init name="MONITOR.Init"/> 
+          </transition> 
+        </state> 
+      </state> 
+    </parallel>  
+    <state id="STATE::STANDBY"> 
+      <initial>
+        <transition target="STATE::STANDBY::IDLE"/>
+      </initial>  
+      <state id="STATE::STANDBY::IDLE"></state> 
+    </state>  
+    <state id="STATE::OFF"> 
+      <initial>
+        <transition target="STATE::OFF::IDLE"/>
+      </initial>  
+      <state id="STATE::OFF::IDLE"></state> 
+    </state>  
+    <state id="STATE::LOADED"> 
+      <initial>
+        <transition target="STATE::LOADED::IDLE"/>
+      </initial>  
+      <state id="STATE::LOADED::IDLE"></state>  
+      <state id="STATE::LOADED::ERROR"></state> 
+    </state>  
+    <transition event="EXIT" target="STATE::OFF::IDLE"> 
+      <customActionDomain:EXIT.Execute name="EXIT.Execute"/> 
+    </transition>  
+    <transition event="INIT" target="STATE::LOADED::IDLE"> 
+      <customActionDomain:INIT.Execute name="INIT.Execute"/> 
+    </transition>  
+    <transition event="STANDBY" target="STATE::STANDBY::IDLE"> 
+      <customActionDomain:STANDBY.Execute name="STANDBY.Execute"/> 
+    </transition>  
+    <transition event="ONLINE" target="STATE::ONLINE"> 
+      <customActionDomain:ONLINE.Execute name="ONLINE.Execute"/> 
+    </transition>  
+    <transition event="OFF" target="STATE::OFF::IDLE"> 
+      <customActionDomain:OFF.Execute name="OFF.Execute"/> 
+    </transition>  
+    <transition event="ERROR" target="STATE::LOADED::ERROR"/>  
+    <transition event="RECOVERY" target="STATE::LOADED::IDLE"/>  
+    <transition event="SIGUSR" target="STATE::LOADED::ERROR"> 
+      <customActionDomain:EXPHANDLER.Abort name="EXPHANDLER.Abort"/> 
+    </transition>  
+    <transition event="DEBUG"> 
+      <customActionDomain:DEBUG.Execute name="DEBUG.Execute"/> 
+    </transition>  
+    <transition event="SELFTST"> 
+      <customActionDomain:SELFTST.Execute name="SELFTST.Execute"/> 
+    </transition>  
+    <transition event="SIMULAT"> 
+      <customActionDomain:SIMULAT.Execute name="SIMULAT.Execute"/> 
+    </transition>  
+    <transition event="STATE"> 
+      <customActionDomain:STATE.Execute name="STATE.Execute"/> 
+    </transition>  
+    <transition event="STATUS"> 
+      <customActionDomain:STATUS.Execute name="STATUS.Execute"/> 
+    </transition>  
+    <transition event="STOP"> 
+      <customActionDomain:STOP.Execute name="STOP.Execute"/> 
+    </transition>  
+    <transition event="STOPSIM"> 
+      <customActionDomain:SIMULAT.Complete name="SIMULAT.Complete"/> 
+    </transition>  
+    <transition event="TRACE"> 
+      <customActionDomain:TRACE.Execute name="TRACE.Execute"/> 
+    </transition>  
+    <transition event="VERBOSE"> 
+      <customActionDomain:VERBOSE.Execute name="VERBOSE.Execute"/> 
+    </transition>  
+    <transition event="VERSION"> 
+      <customActionDomain:VERSION.Execute name="VERSION.Execute"/> 
+    </transition> 
+  </state> 
+</scxml>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2013-04-01 Created.	
+-->
+<Components  xmlns="urn:schemas-cosylab-com:Components:1.0"
+		xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+		xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		
+		<_ Name="eventSubscriber" 
+			Code="alma.EventSubscriber.EventSubscriberImplHelper"
+			Type="IDL:alma/EventSubscriber/EventSubscriberIF:1.0"
+			Container="EventSubscriberContainer" 
+			ImplLang="java" />
+
+		<!-- Component Simulators -->
+		<_ Name="eventSubscriberSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/EventSubscriber/EventSubscriberIF:1.0"
+			Container="EventSubscriberSimulator" 
+			ImplLang="py" />
+
+	   <!-- Instance to test components -->
+	   
+	   <!-- Java Component Instances -->
+	   
+	   <_ Name="testInstanceEventSubscriberImpl" 
+			Code="alma.EventSubscriber.EventSubscriberImplHelper"
+			Type="IDL:alma/EventSubscriber/EventSubscriberIF:1.0"
+			Container="EventSubscriberJavaTest" 
+			ImplLang="java" />
+			
+	   
+	   
+</Components>

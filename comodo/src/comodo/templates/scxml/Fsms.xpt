@@ -1,0 +1,164 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Fsms.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::scxmlutil»
+«EXTENSION comodo::xtend::uml::statemachine»
+
+«DEFINE Root FOR uml::StateMachine»
+
+«REM» Generate SCXML Model «ENDREM»
+«FILE "/"+name+".xml"»
+	«REM» Write the headers «ENDREM»
+	«EXPAND Code::Headers»
+	«REM» Select TopStates and explore «ENDREM»
+	«FOREACH listStates().select(e|e.isTopState()).sortBy(e|e.name) AS st» 
+		«EXPAND ExploreState FOR st»
+	«ENDFOREACH»	
+	«REM» Outer FinalStates «ENDREM»
+	«EXPAND Code::FinalState»
+	«EXPAND Code::CloseScxml»
+«ENDFILE»
+
+«ENDDEFINE»
+
+«REM» Explore Generic States «ENDREM»
+«DEFINE ExploreState FOR State»
+	«IF this.isSimple()»
+		«EXPAND ExploreSimpleState-»
+	«ELSE»
+		«IF this.isComposite()»
+			«EXPAND ExploreCompositeState-»
+		«ENDIF»
+	«ENDIF»	
+«ENDDEFINE»
+
+«REM» Explore Simple States «ENDREM»
+«DEFINE ExploreSimpleState FOR State»
+	«IF this.isFinalState()»
+		«EXPAND Code::SimFinalState-»
+	«ELSE»	
+		«EXPAND Code::StateName-»
+		«EXPAND ExploreActions-»
+		«EXPAND ExploreTransitions-»
+		«EXPAND Code::CloseState-»
+	«ENDIF»
+«ENDDEFINE»
+
+«REM» Explore Composite States «ENDREM»
+«DEFINE ExploreCompositeState FOR State»
+	«IF this.isOrthogonal()»
+		«EXPAND ExploreOrthogonalState»
+	«ELSEIF !this.listStates().isEmpty»
+		«EXPAND Code::StateName-»
+		<initial><transition target="«this.getInitialState().getStateName()-»"/></initial>
+		«FOREACH this.listCompChilds() AS cc-»
+			«EXPAND ExploreCompositeState FOR cc-»
+		«ENDFOREACH»
+		«FOREACH this.listSimpleChilds() AS sc-»
+			«EXPAND ExploreSimpleState FOR sc-»
+		«ENDFOREACH»
+		«IF this.hasHistory()-»
+			«EXPAND ExploreHistory-»
+		«ENDIF»
+		«EXPAND ExploreActions-»
+		«EXPAND ExploreTransitions-»
+		«EXPAND Code::CloseState-»
+	«ELSE»
+		«EXPAND ExploreSimpleState-»
+	«ENDIF»
+«ENDDEFINE»
+
+«REM» Explore Orthogonal States «ENDREM»
+«REM» Parallel Regions MUST have a nome in the ecore model  «ENDREM»
+«REM» Parallel Regions are mapped as Complex states: a default state is needed «ENDREM»
+«DEFINE ExploreOrthogonalState FOR State»
+	<parallel id="«this.getStateName()-»">
+		«FOREACH this.allOwnedElements().typeSelect(Region).select(e|(e.owner == this)) AS oreg-»
+		<state id="«oreg.getRegionName()-»">
+			<initial><transition target="«oreg.getInitialState().getStateName()-»"/></initial>
+		«FOREACH oreg.allOwnedElements().typeSelect(State).select(e|(e.owner == oreg)) AS ost-»
+			«EXPAND ExploreState FOR ost-»
+		«ENDFOREACH-»
+		«EXPAND Code::CloseState-»
+	«ENDFOREACH»
+	«IF this.hasHistory()»
+		«EXPAND ExploreHistory-»
+	«ENDIF»
+	«EXPAND ExploreActions-»
+	«EXPAND ExploreTransitions-»
+	</parallel>
+«ENDDEFINE»			
+
+«REM» Explore Actions and Activities «ENDREM»
+«DEFINE ExploreActions FOR State»
+	«IF this.hasOnEntry() || this.hasTimerTransition()»
+		«EXPAND Code::CAEntry»
+	«ENDIF»
+	«IF this.hasDoActions()»
+		«EXPAND Code::Invoke»
+	«ENDIF» 
+	«IF this.hasOnExit() || this.hasTimerTransition()»
+		«EXPAND Code::CAExit»
+	«ENDIF»
+«ENDDEFINE»
+
+«REM» Explore Transitions «ENDREM»
+«DEFINE ExploreTransitions FOR State»
+	«FOREACH this.outgoing.sortBy(e|e.name) AS tr»
+		<transition 
+		«IF tr.hasEvent()»
+			event="«tr.getEventInTransition()»" 
+		«ENDIF»
+		«IF tr.hasCond()»
+			cond="«tr.getResolvedGuardInTransition()»" 
+		«ENDIF»
+		«IF !tr.isInternalTransition()»
+			«IF tr.hasTarget()»
+				«IF !tr.target.container.isTopState()»
+					target="«tr.getFullyQualifiedTargetInTransition()»" 
+				«ELSE»
+					target="«tr.getTargetInTransition()»"				
+				«ENDIF»
+			«ENDIF»
+		«ENDIF»
+		«IF tr.hasAction()»
+			>
+			«tr.getActionInTransition()»
+			</transition>
+		«ELSE»
+			/>
+		«ENDIF»
+	«ENDFOREACH»
+«ENDDEFINE»
+
+
+«REM» Explore History «ENDREM»
+«DEFINE ExploreHistory FOR State»
+	«FOREACH this.getHistory() AS hs»
+		<history id="«hs.container.getRegionName()»:«hs.name»" «hs.historyType()»>
+			<transition target="«hs.outgoing.get(0).target.container.getRegionName()»:«hs.outgoing.get(0).target.name»"/>
+		</history>
+	«ENDFOREACH»
+«ENDDEFINE»

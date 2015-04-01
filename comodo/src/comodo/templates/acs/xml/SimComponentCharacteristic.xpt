@@ -1,0 +1,58 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: SimComponentCharacteristic.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls().select(e|e.hasInterfacesConfigurable())»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FOREACH getModel().getModulePackage().getPimContainers().getAllAttributes().select(e|e.type == this) AS compInstance»
+«FILE getPackageVar() + '/test/CDB/alma/' + compInstance.name + '/' + compInstance.name + '.xml'-»
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+   - Configuration Database Schema for a «name»
+   -
+   - «getPropSet('Id')»
+   -
+   - History:
+   - 	COMODO «getCommentDate()» Created.	
+-->
+<«name»
+	xmlns="urn:schemas-cosylab-com:«name»:1.0"
+	xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+	xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"«IF getRORWProperties().isEmpty -»/«ENDIF-»>
+	«FOREACH getRORWProperties() AS eCharacteristicProperty-»
+	<«eCharacteristicProperty.name» description="«eCharacteristicProperty.name»"/>
+	«ENDFOREACH-»
+«IF !getRORWProperties().isEmpty -»
+</«name»>
+«ENDIF-»
+«ENDFILE»
+«ENDFOREACH»
+«ENDDEFINE»

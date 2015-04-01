@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="StopWatch">  
+  <parallel id="StopWatch"> 
+    <state id="StopWatch:R2"> 
+      <initial>
+        <transition target="StopWatch:R2:Time"/>
+      </initial>  
+      <state id="StopWatch:R2:Time"> 
+        <initial>
+          <transition target="StopWatch:R2:Time::reset"/>
+        </initial>  
+        <state id="StopWatch:R2:Time::running"> 
+          <invoke targettype="java" id="Count" src="SMActivityCount.java"/>  
+          <transition event="stop" target="StopWatch:R2:Time::stopped"/> 
+        </state>  
+        <state id="StopWatch:R2:Time::stopped"> 
+          <transition event="reset" target="StopWatch:R2:Time::reset"/> 
+        </state>  
+        <state id="StopWatch:R2:Time::reset"> 
+          <onentry> 
+            <customActionDomain:ResetDisplay name="ResetDisplay"/> 
+          </onentry>  
+          <transition event="start" target="StopWatch:R2:Time::running"/> 
+        </state> 
+      </state> 
+    </state>  
+    <state id="StopWatch:R1"> 
+      <initial>
+        <transition target="StopWatch:R1:Light"/>
+      </initial>  
+      <state id="StopWatch:R1:Light"> 
+        <initial>
+          <transition target="StopWatch:R1:Light::Off"/>
+        </initial>  
+        <state id="StopWatch:R1:Light::On"> 
+          <transition event="lightOff" target="StopWatch:R1:Light::Off"/> 
+        </state>  
+        <state id="StopWatch:R1:Light::Off"> 
+          <transition event="lightOn" target="StopWatch:R1:Light::On"/> 
+        </state> 
+      </state> 
+    </state> 
+  </parallel> 
+</scxml>

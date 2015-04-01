@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="STATE">  
+  <state id="STATE"> 
+    <initial>
+      <transition target="STATE::LOADED"/>
+    </initial>  
+    <parallel id="STATE::ONLINE"> 
+      <state id="STATE::ONLINE:CONTROL"> 
+        <initial>
+          <transition target="STATE::ONLINE:CONTROL:BUSY"/>
+        </initial>  
+        <state id="STATE::ONLINE:CONTROL:BUSY"> 
+          <invoke targettype="java" id="CONTROL" src="SMActivityCONTROL.java"/>  
+          <transition event="CONTROL.DONE" target="STATE::ONLINE:CONTROL:COMPLETED"/> 
+        </state>  
+        <state id="STATE::ONLINE:CONTROL:COMPLETED"></state> 
+      </state>  
+      <state id="STATE::ONLINE:MONITOR"> 
+        <initial>
+          <transition target="STATE::ONLINE:MONITOR:MONITORING"/>
+        </initial>  
+        <state id="STATE::ONLINE:MONITOR:MONITORING"> 
+          <invoke targettype="java" id="MONITOR" src="SMActivityMONITOR.java"/>  
+          <transition event="MONITOR.DONE" target="STATE::ONLINE:MONITOR:NOTMONITORING"/> 
+        </state>  
+        <state id="STATE::ONLINE:MONITOR:NOTMONITORING"></state> 
+      </state> 
+    </parallel>  
+    <state id="STATE::OFF"> 
+      <initial>
+        <transition target="STATE::OFF::IDLE"/>
+      </initial>  
+      <state id="STATE::OFF::IDLE"></state> 
+    </state>  
+    <state id="STATE::LOADED"> 
+      <initial>
+        <transition target="STATE::LOADED::IDLE"/>
+      </initial>  
+      <state id="STATE::LOADED::IDLE"></state>  
+      <state id="STATE::LOADED::ERROR"></state> 
+    </state>  
+    <state id="STATE::STANDBY"> 
+      <initial>
+        <transition target="STATE::STANDBY::IDLE"/>
+      </initial>  
+      <state id="STATE::STANDBY::IDLE"></state> 
+    </state>  
+    <transition event="EXIT" target="STATE::OFF::IDLE"> 
+      <customActionDomain:EXIT.Execute name="EXIT.Execute"/> 
+    </transition>  
+    <transition event="INIT" target="STATE::LOADED"> 
+      <customActionDomain:INIT.Execute name="INIT.Execute"/> 
+    </transition>  
+    <transition event="STANDBY" target="STATE::STANDBY"> 
+      <customActionDomain:STANDBY.Execute name="STANDBY.Execute"/> 
+    </transition>  
+    <transition event="OFF" target="STATE::OFF"> 
+      <customActionDomain:OFF.Execute name="OFF.Execute"/> 
+    </transition>  
+    <transition event="ERROR" target="STATE::LOADED::ERROR"/>  
+    <transition event="RECOVERY" target="STATE::LOADED::IDLE"/>  
+    <transition event="ONLINE" target="STATE::ONLINE"> 
+      <customActionDomain:ONLINE.Execute name="ONLINE.Execute"/> 
+    </transition>  
+    <transition event="DEBUG"> 
+      <customActionDomain:DEBUG.Execute name="DEBUG.Execute"/> 
+    </transition>  
+    <transition event="SELFTST"> 
+      <customActionDomain:SELFTST.Execute name="SELFTST.Execute"/> 
+    </transition>  
+    <transition event="SIMULAT"> 
+      <customActionDomain:SIMULAT.Execute name="SIMULAT.Execute"/> 
+    </transition>  
+    <transition event="STATE"> 
+      <customActionDomain:STATE.Execute name="STATE.Execute"/> 
+    </transition>  
+    <transition event="STATUS"> 
+      <customActionDomain:STATUS.Execute name="STATUS.Execute"/> 
+    </transition>  
+    <transition event="STOP"> 
+      <customActionDomain:STOP.Execute name="STOP.Execute"/> 
+    </transition>  
+    <transition event="STOPSIM"> 
+      <customActionDomain:SIMULAT.Complete name="SIMULAT.Complete"/> 
+    </transition>  
+    <transition event="TRACE"> 
+      <customActionDomain:TRACE.Execute name="TRACE.Execute"/> 
+    </transition>  
+    <transition event="VERBOSE"> 
+      <customActionDomain:VERBOSE.Execute name="VERBOSE.Execute"/> 
+    </transition>  
+    <transition event="VERSION"> 
+      <customActionDomain:VERSION.Execute name="VERSION.Execute"/> 
+    </transition> 
+  </state> 
+</scxml>

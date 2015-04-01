@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml
+    xmlns="http://www.w3.org/2005/07/scxml" version="1.0"
+    initial="STATE">
+  <state id="STATE">
+    <initial>
+      <transition target="STATE::START"/>
+    </initial>
+    <state id="STATE::STANDBY">
+      <initial>
+        <transition target="STATE::STANDBY::IDLE"/>
+      </initial>
+      <state id="STATE::STANDBY::IDLE"> </state>
+    </state>
+    <state id="STATE::LOADED">
+      <initial>
+        <transition target="STATE::LOADED::IDLE"/>
+      </initial>
+      <state id="STATE::LOADED::IDLE"> </state>
+      <state id="STATE::LOADED::ERROR"> </state>
+    </state>
+    <state id="STATE::OFF">
+      <initial>
+        <transition target="STATE::OFF::IDLE"/>
+      </initial>
+      <state id="STATE::OFF::IDLE"> </state>
+    </state>
+    <state id="STATE::ONLINE">
+      <initial>
+        <transition target="STATE::ONLINE::OPENLP"/>
+      </initial>
+      <state id="STATE::ONLINE::OPENLP">
+        <initial>
+          <transition target="STATE::ONLINE::OPENLP::IDLE"/>
+        </initial>
+        <state id="STATE::ONLINE::OPENLP::ACQUIRING">
+          <initial>
+            <transition target="STATE::ONLINE::OPENLP::ACQUIRING::INIT"/>
+          </initial>
+          <state id="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP">
+            <initial>
+              <transition target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT"/>
+            </initial>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT">
+              <initial>
+                <transition target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT::STEP1BT1"/>
+              </initial>
+              <state id="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT::STEP1BT1">
+                <onentry>
+                  <log expr="'STEP1BT1.Execute'"/>
+                </onentry>
+                <transition event="SKIP1BT1" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT::STEP2BT1"/>
+                <transition event="MEASURE" target="STATE::ONLINE::OPENLP::ACQUIRING::ERROR">
+                  <log expr="'ACQUIRE.Abort'"/>
+                </transition>
+                <transition event="MEASURE" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT::STEP2BT1">
+                  <log expr="'MEASURE.Complete'"/>
+                </transition>
+              </state>
+              <state id="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT::STEP2BT1">
+                <onentry>
+                  <log expr="'STEP2BT1.Execute'"/>
+                </onentry>
+                <transition event="SKIP2BT1" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT::STEP3BT1"/>
+                <transition event="MEASURE" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT::STEP3BT1">
+                  <log expr="'MEASURE.Complete'"/>
+                </transition>
+                <transition event="MEASURE" target="STATE::ONLINE::OPENLP::ACQUIRING::ERROR">
+                  <log expr="'ACQUIRE.Abort'"/>
+                </transition>
+              </state>
+              <state id="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT::STEP3BT1">
+                <onentry>
+                  <log expr="'STEP3BT1.Execute'"/>
+                </onentry>
+              </state>
+              <transition event="SKIP1BT" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP2BT"/>
+              <transition event="EVENT1BT" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP2BT"/>
+            </state>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP2BT">
+              <onentry>
+                <log expr="'STEP2BT.Execute'"/>
+              </onentry>
+              <transition event="SKIP2BT" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP3BT"/>
+              <transition event="EVENT2BT" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP3BT"/>
+            </state>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP3BT">
+              <onentry>
+                <log expr="'STEP3BT.Execute'"/>
+              </onentry>
+              <transition event="SKIP3BT" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP4BT"/>
+              <transition event="" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP4BT"/>
+            </state>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP4BT">
+              <onentry>
+                <log expr="'STEP4BT.Execute'"/>
+              </onentry>
+              <transition event="SKIP4BT" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP5BT"/>
+              <transition event="EVENT4BT" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP5BT"/>
+            </state>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP5BT">
+              <onentry>
+                <log expr="'STEP5BT.Execute'"/>
+              </onentry>
+            </state>
+            <transition event="DOCL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP1CL"/>
+          </state>
+          <state id="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP">
+            <initial>
+              <transition target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP1CL"/>
+            </initial>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP1CL">
+              <onentry>
+                <log expr="'STEP1CL.Execute'"/>
+              </onentry>
+              <transition event="SKIP1CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP2CL"/>
+              <transition event="EVENT1CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP2CL"/>
+            </state>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP2CL">
+              <onentry>
+                <log expr="'STEP2CL.Execute'"/>
+              </onentry>
+              <transition event="SKIP2CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP3CL"/>
+              <transition event="EVENT2CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP3CL"/>
+            </state>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP3CL">
+              <onentry>
+                <log expr="'STEP3CL.Execute'"/>
+              </onentry>
+              <transition event="SKIP3CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP4CL"/>
+              <transition event="EVENT3CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP4CL"/>
+            </state>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP4CL">
+              <onentry>
+                <log expr="'STEP4CL.Execute'"/>
+              </onentry>
+              <transition event="SKIP4CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP5CL"/>
+              <transition event="EVENT4CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP5CL"/>
+            </state>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP5CL">
+              <onentry>
+                <log expr="'STEP5CL.Execute'"/>
+              </onentry>
+              <transition event="SKIP5CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP6CL"/>
+              <transition event="EVENT5CL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP6CL"/>
+            </state>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP6CL">
+              <onentry>
+                <log expr="'STEP6CL.Execute'"/>
+              </onentry>
+            </state>
+            <transition event="DONGS" target="STATE::ONLINE::OPENLP::ACQUIRING::NGS::STEP1NGS"/>
+          </state>
+          <state id="STATE::ONLINE::OPENLP::ACQUIRING::NGS">
+            <initial>
+              <transition target="STATE::ONLINE::OPENLP::ACQUIRING::NGS::STEP1NGS"/>
+            </initial>
+            <state id="STATE::ONLINE::OPENLP::ACQUIRING::NGS::STEP1NGS">
+              <onentry>
+                <log expr="'STEP1NGS'"/>
+              </onentry>
+            </state>
+          </state>
+          <state id="STATE::ONLINE::OPENLP::ACQUIRING::INIT">
+            <onentry>
+              <log expr="'PREPROC.Execute'"/>
+            </onentry>
+            <transition event="DOBT" target="STATE::ONLINE::OPENLP::ACQUIRING::BOOTSTRAP::STEP1BT"/>
+            <transition event="DOCL" target="STATE::ONLINE::OPENLP::ACQUIRING::CLOSELOOP::STEP1CL"/>
+            <transition event="DONGS" target="STATE::ONLINE::OPENLP::ACQUIRING::NGS::STEP1NGS"/>
+          </state>
+          <state id="STATE::ONLINE::OPENLP::ACQUIRING::ERROR">
+            <transition event="ACQUIRE" target="STATE::ONLINE::OPENLP::ACQUIRING::HISTORY"/>
+          </state>
+          <state id="STATE::ONLINE::OPENLP::ACQUIRING::HISTORY"> </state>
+          <transition event="ACQREADY" target="STATE::ONLINE::CLOSELP:1:IDLE">
+            <log expr="'ACQUIRE.Complete'"/>
+          </transition>
+        </state>
+        <state id="STATE::ONLINE::OPENLP::IDLE">
+          <transition event="PARK" target="STATE::ONLINE::OPENLP::PARKING">
+            <log expr="'PARK.Execute'"/>
+          </transition>
+          <transition event="ACQUIRE" target="STATE::ONLINE::OPENLP::ACQUIRING"/>
+          <transition event="OPENLP" target="STATE::ONLINE::OPENLP::IDLE">
+            <log expr="'OPENLP.Execute'"/>
+          </transition>
+        </state>
+        <state id="STATE::ONLINE::OPENLP::PARKING">
+          <transition event="PARK" target="STATE::ONLINE::OPENLP::IDLE">
+            <log expr="'PARK.Complete'"/>
+          </transition>
+          <transition event="PARK" target="STATE::ONLINE::OPENLP::IDLE">
+            <log expr="'PARK.Abort'"/>
+          </transition>
+        </state>
+      </state>
+      <state id="STATE::ONLINE::SUSPENDED">
+        <initial>
+          <transition target="STATE::ONLINE::SUSPENDED::IDLE"/>
+        </initial>
+        <state id="STATE::ONLINE::SUSPENDED::IDLE">
+          <transition event="RESUME" target="STATE::ONLINE::SUSPENDED::RESUMING">
+            <log expr="'RESUME.Execute'"/>
+          </transition>
+        </state>
+        <state id="STATE::ONLINE::SUSPENDED::RESUMING">
+          <transition event="RESUME" target="STATE::ONLINE::OPENLP::IDLE">
+            <log expr="'RESUME.Abort'"/>
+          </transition>
+          <transition event="RESUME" target="STATE::ONLINE::CLOSELP:1:IDLE">
+            <log expr="'RESUME.Complete'"/>
+          </transition>
+        </state>
+      </state>
+      <parallel id="STATE::ONLINE::CLOSELP">
+        <state id="STATE::ONLINE::CLOSELP:1">
+          <initial>
+            <transition target="STATE::ONLINE::CLOSELP:1:IDLE"/>
+          </initial>
+          <state id="STATE::ONLINE::CLOSELP:1:SUSPENDING">
+            <transition event="SUSPEND" target="STATE::ONLINE::SUSPENDED::IDLE">
+              <log expr="'SUSPEND.Complete'"/>
+            </transition>
+            <transition event="SUSPEND" target="STATE::ONLINE::OPENLP::IDLE">
+              <log expr="'SUSPEND.Abort'"/>
+            </transition>
+            <transition event="SUSPEND" target="STATE::ONLINE::CLOSELP:1:SUSPENDING">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:1:OPENING">
+            <transition event="OPENLP" target="STATE::ONLINE::OPENLP::IDLE">
+              <log expr="'OPENLP.Complete'"/>
+            </transition>
+            <transition event="OPENLP" target="STATE::ONLINE::OPENLP::IDLE">
+              <log expr="'OPENLP.Abort'"/>
+            </transition>
+            <transition event="OPENLP" target="STATE::ONLINE::CLOSELP:1:OPENING">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:1:IDLE">
+            <transition event="OPENLP" target="STATE::ONLINE::CLOSELP:1:OPENING">
+              <log expr="'OPENLP.Execute'"/>
+            </transition>
+            <transition event="SUSPEND" target="STATE::ONLINE::CLOSELP:1:SUSPENDING">
+              <log expr="'SUSPEND.Execute'"/>
+            </transition>
+          </state>
+        </state>
+        <state id="STATE::ONLINE::CLOSELP:2">
+          <initial>
+            <transition target="STATE::ONLINE::CLOSELP:2:SL1"/>
+          </initial>
+          <state id="STATE::ONLINE::CLOSELP:2:SL1CYCLE">
+            <initial>
+              <transition target="STATE::ONLINE::CLOSELP:2:SL1CYCLE::IDLE"/>
+            </initial>
+            <state id="STATE::ONLINE::CLOSELP:2:SL1CYCLE::IDLE">
+              <transition event="OFFSGP" target="STATE::ONLINE::CLOSELP:2:SL1"/>
+              <transition event="OFFSGP" target="STATE::ONLINE::CLOSELP:2:SL1">
+                <log expr="'SL1.Complete'"/>
+              </transition>
+            </state>
+            <transition event="TRIGGER1" target="STATE::ONLINE::CLOSELP:2:SL1CYCLE">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:2:SL1">
+            <transition event="TRIGGER1" target="STATE::ONLINE::CLOSELP:2:SL1CYCLE">
+              <log expr="'SL1.Execute'"/>
+            </transition>
+          </state>
+        </state>
+        <state id="STATE::ONLINE::CLOSELP:3">
+          <initial>
+            <transition target="STATE::ONLINE::CLOSELP:3:SL2"/>
+          </initial>
+          <state id="STATE::ONLINE::CLOSELP:3:SL2">
+            <transition event="TRIGGER2" target="STATE::ONLINE::CLOSELP:3:SL2CYCLE">
+              <log expr="'SL2.Execute'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:3:SL2CYCLE">
+            <initial>
+              <transition target="STATE::ONLINE::CLOSELP:3:SL2CYCLE::IDLE"/>
+            </initial>
+            <state id="STATE::ONLINE::CLOSELP:3:SL2CYCLE::IDLE">
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:3:SL2">
+                <log expr="'SL2.Complete'"/>
+              </transition>
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:3:SL2"/>
+            </state>
+            <transition event="TRIGGER2" target="STATE::ONLINE::CLOSELP:3:SL2CYCLE">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+        </state>
+        <state id="STATE::ONLINE::CLOSELP:4">
+          <initial>
+            <transition target="STATE::ONLINE::CLOSELP:4:SL3"/>
+          </initial>
+          <state id="STATE::ONLINE::CLOSELP:4:SL3">
+            <transition event="TRIGGER3" target="STATE::ONLINE::CLOSELP:4:SL3CYCLE">
+              <log expr="'SL3.Execute'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:4:SL3CYCLE">
+            <initial>
+              <transition target="STATE::ONLINE::CLOSELP:4:SL3CYCLE::IDLE"/>
+            </initial>
+            <state id="STATE::ONLINE::CLOSELP:4:SL3CYCLE::IDLE">
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:4:SL3"/>
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:4:SL3">
+                <log expr="'SL3.Complete'"/>
+              </transition>
+            </state>
+            <transition event="TRIGGER3" target="STATE::ONLINE::CLOSELP:4:SL3CYCLE">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+        </state>
+        <state id="STATE::ONLINE::CLOSELP:5">
+          <initial>
+            <transition target="STATE::ONLINE::CLOSELP:5:SL4"/>
+          </initial>
+          <state id="STATE::ONLINE::CLOSELP:5:SL4">
+            <transition event="TRIGGER4" target="STATE::ONLINE::CLOSELP:5:SL4CYCLE">
+              <log expr="'SL4.Execute'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:5:SL4CYCLE">
+            <initial>
+              <transition target="STATE::ONLINE::CLOSELP:5:SL4CYCLE::IDLE"/>
+            </initial>
+            <state id="STATE::ONLINE::CLOSELP:5:SL4CYCLE::IDLE">
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:5:SL4"/>
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:5:SL4">
+                <log expr="'SL4.Complete'"/>
+              </transition>
+            </state>
+            <transition event="TRIGGER4" target="STATE::ONLINE::CLOSELP:5:SL4CYCLE">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+        </state>
+        <state id="STATE::ONLINE::CLOSELP:6">
+          <initial>
+            <transition target="STATE::ONLINE::CLOSELP:6:SL5"/>
+          </initial>
+          <state id="STATE::ONLINE::CLOSELP:6:SL5">
+            <transition event="TRIGGER5" target="STATE::ONLINE::CLOSELP:6:SL5CYCLE">
+              <log expr="'SL5.Execute'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:6:SL5CYCLE">
+            <initial>
+              <transition target="STATE::ONLINE::CLOSELP:6:SL5CYCLE::IDLE"/>
+            </initial>
+            <state id="STATE::ONLINE::CLOSELP:6:SL5CYCLE::IDLE">
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:6:SL5"/>
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:6:SL5">
+                <log expr="'SL5.Complete'"/>
+              </transition>
+            </state>
+            <transition event="TRIGGER5" target="STATE::ONLINE::CLOSELP:6:SL5CYCLE">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+        </state>
+        <state id="STATE::ONLINE::CLOSELP:7">
+          <initial>
+            <transition target="STATE::ONLINE::CLOSELP:7:SL6"/>
+          </initial>
+          <state id="STATE::ONLINE::CLOSELP:7:SL6">
+            <transition event="TRIGGER6" target="STATE::ONLINE::CLOSELP:7:SL6CYCLE">
+              <log expr="'SL6.Execute'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:7:SL6CYCLE">
+            <initial>
+              <transition target="STATE::ONLINE::CLOSELP:7:SL6CYCLE::IDLE"/>
+            </initial>
+            <state id="STATE::ONLINE::CLOSELP:7:SL6CYCLE::IDLE">
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:7:SL6"/>
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:7:SL6">
+                <log expr="'SL6.Complete'"/>
+              </transition>
+            </state>
+            <transition event="TRIGGER6" target="STATE::ONLINE::CLOSELP:7:SL6CYCLE">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+        </state>
+        <state id="STATE::ONLINE::CLOSELP:8">
+          <initial>
+            <transition target="STATE::ONLINE::CLOSELP:8:SL7"/>
+          </initial>
+          <state id="STATE::ONLINE::CLOSELP:8:SL7">
+            <transition event="TRIGGER7" target="STATE::ONLINE::CLOSELP:8:SL7CYCLE">
+              <log expr="'SL7.Execute'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:8:SL7CYCLE">
+            <initial>
+              <transition target="STATE::ONLINE::CLOSELP:8:SL7CYCLE::IDLE"/>
+            </initial>
+            <state id="STATE::ONLINE::CLOSELP:8:SL7CYCLE::IDLE">
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:8:SL7"/>
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:8:SL7">
+                <log expr="'SL7.Complete'"/>
+              </transition>
+            </state>
+            <transition event="TRIGGER7" target="STATE::ONLINE::CLOSELP:8:SL7CYCLE">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+        </state>
+        <state id="STATE::ONLINE::CLOSELP:9">
+          <initial>
+            <transition target="STATE::ONLINE::CLOSELP:9:SL8"/>
+          </initial>
+          <state id="STATE::ONLINE::CLOSELP:9:SL8">
+            <transition event="TRIGGER8" target="STATE::ONLINE::CLOSELP:9:SL8CYCLE">
+              <log expr="'SL8.Execute'"/>
+            </transition>
+          </state>
+          <state id="STATE::ONLINE::CLOSELP:9:SL8CYCLE">
+            <initial>
+              <transition target="STATE::ONLINE::CLOSELP:9:SL8CYCLE::IDLE"/>
+            </initial>
+            <state id="STATE::ONLINE::CLOSELP:9:SL8CYCLE::IDLE">
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:9:SL8"/>
+              <transition event="SETUP" target="STATE::ONLINE::CLOSELP:9:SL8">
+                <log expr="'SL8.Complete'"/>
+              </transition>
+            </state>
+            <transition event="TRIGGER8" target="STATE::ONLINE::CLOSELP:9:SL8CYCLE">
+              <log expr="'ERROR.Reject'"/>
+            </transition>
+          </state>
+        </state>
+        <onentry>
+          <log expr="'SLOOPS.Execute'"/>
+        </onentry>
+        <onexit>
+          <log expr="'SLOOPS.Abort'"/>
+        </onexit>
+      </parallel>
+    </state>
+    <state id="STATE::START">
+      <transition event="STARTUP" target="STATE::LOADED::IDLE"/>
+    </state>
+    <state id="STATE::HISTORY"> </state>
+    <transition event="ONLINE" target="STATE::ONLINE::OPENLP::IDLE">
+      <log expr="'ONLINE.Execute'"/>
+    </transition>
+    <transition event="STANDBY" target="STATE::STANDBY::IDLE">
+      <log expr="'STANDBY.Execute'"/>
+    </transition>
+    <transition event="EXIT" target="STATE::OFF::IDLE">
+      <log expr="'EXIT.Execute'"/>
+    </transition>
+    <transition event="OFF" target="STATE::LOADED::IDLE">
+      <log expr="'OFF.Execute'"/>
+    </transition>
+    <transition event="INIT" target="STATE::LOADED::IDLE">
+      <log expr="'INIT.Execute'"/>
+    </transition>
+    <transition event="RECOVERY" target="STATE::LOADED::IDLE"/>
+    <transition event="STOP" target="STATE">
+      <log expr="'STOP.Execute'"/>
+    </transition>
+    <transition event="TRACE" target="STATE">
+      <log expr="'TRACE.Execute'"/>
+    </transition>
+    <transition event="STATUS" target="STATE">
+      <log expr="'STATUS.Execute'"/>
+    </transition>
+    <transition event="STATE" target="STATE">
+      <log expr="'STATE.Execute'"/>
+    </transition>
+    <transition event="VERSION" target="STATE">
+      <log expr="'VERSION.Execute'"/>
+    </transition>
+    <transition event="STOPSIM" target="STATE">
+      <log expr="'SIMULAT.Complete'"/>
+    </transition>
+    <transition event="SIMULAT" target="STATE">
+      <log expr="'SIMULAT.Execute'"/>
+    </transition>
+    <transition event="VERBOSE" target="STATE">
+      <log expr="'VERBOSE.Execute'"/>
+    </transition>
+    <transition event="SELFTST" target="STATE">
+      <log expr="'SELFTST.Execute'"/>
+    </transition>
+    <transition event="DEBUG" target="STATE">
+      <log expr="'DEBUG.Execute'"/>
+    </transition>
+    <transition event="TRIGGER1" target="STATE"/>
+    <transition event="TRIGGER2" target="STATE"/>
+    <transition event="TRIGGER3" target="STATE"/>
+    <transition event="TRIGGER4" target="STATE"/>
+    <transition event="TRIGGER5" target="STATE"/>
+    <transition event="TRIGGER6" target="STATE"/>
+    <transition event="TRIGGER7" target="STATE"/>
+    <transition event="TRIGGER8" target="STATE"/>
+    <transition event="TRIGGER9" target="STATE"/>
+    <transition event="DOCL" target="STATE"/>
+    <transition event="SUSPEND" target="STATE"/>
+    <transition event="OPENLP" target="STATE"/>
+    <transition event="ACQUIRE" target="STATE"/>
+    <transition event="DOCL" target="STATE"/>
+    <transition event="DOBT" target="STATE"/>
+    <transition event="SKIP1BT" target="STATE"/>
+    <transition event="SKIP2BT" target="STATE"/>
+    <transition event="SKIP3BT" target="STATE"/>
+    <transition event="SKIP4BT" target="STATE"/>
+    <transition event="ACQREADY" target="STATE"/>
+    <transition event="RESUME" target="STATE"/>
+    <transition event="SKIP2BT1" target="STATE"/>
+    <transition event="MEASURE" target="STATE"/>
+    <transition event="OFFSGP" target="STATE"/>
+    <transition event="ERROR" target="STATE::LOADED::ERROR"/>
+  </state>
+</scxml>

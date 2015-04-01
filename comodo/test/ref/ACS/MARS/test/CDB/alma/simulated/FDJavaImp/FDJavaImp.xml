@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import FDJavaImpSim
+	</pythonImports>
+        
+	<_corbaMethod Name="getSensorsList" Timeout="0">
+FDJavaImpSim.getSensorsList()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="sensorStatus" Timeout="0">
+FDJavaImpSim.sensorStatus(parameters[0])
+	</_corbaMethod>
+	
+	<_corbaMethod Name="resetSensor" Timeout="0">
+FDJavaImpSim.resetSensor(parameters[0])
+	</_corbaMethod>
+	
+</SimulatedComponent>

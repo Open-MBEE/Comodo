@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="A">  
+  <state id="A"> 
+    <initial>
+      <transition target="A::B"/>
+    </initial>  
+    <state id="A::B"> 
+      <onentry> 
+        <send target="" type="scxml" sendid="'A::B_after_10s'" event="'after_10s'" delay="'10s'"/> 
+      </onentry>  
+      <onexit> 
+        <cancel sendid="'A::B_after_10s'"/> 
+      </onexit>  
+      <transition event="after_10s" target="A::C"/> 
+    </state>  
+    <state id="A::C"> 
+      <onentry> 
+        <customActionDomain:C_Entry name="C_Entry"/>  
+        <send target="" type="scxml" sendid="'A::C_after_20s'" event="'after_20s'" delay="'20s'"/> 
+      </onentry>  
+      <onexit> 
+        <customActionDomain:C_Exit name="C_Exit"/>  
+        <cancel sendid="'A::C_after_20s'"/> 
+      </onexit>  
+      <transition event="after_20s" target="A::D"/> 
+    </state>  
+    <state id="A::D"> 
+      <onentry> 
+        <send target="" type="scxml" sendid="'A::D_after_30s'" event="'after_30s'" delay="'30s'"/> 
+      </onentry>  
+      <onexit> 
+        <cancel sendid="'A::D_after_30s'"/> 
+      </onexit>  
+      <transition event="after_30s" target="A::D"/> 
+    </state>  
+    <transition event="quit" target="end"/> 
+  </state>  
+  <final id="end"/> 
+</scxml>

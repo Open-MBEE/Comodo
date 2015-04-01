@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="null" initial="Context">
+ <!-- http://commons.apache.org/scxml -->
+ <parallel id="Context">
+  <state id="regionReg1">
+   <initial>
+    <transition target="SwitchPosSV">
+    </transition>
+   </initial>
+   <parallel id="SwitchPosSV">
+    <state id="regionPredictionReg">
+     <initial>
+      <transition target="CommandAndStateModels">
+      </transition>
+     </initial>
+     <state id="CommandAndStateModels">
+      <initial>
+       <transition target="Open">
+       </transition>
+      </initial>
+      <transition event="OpenCmd" cond="In(&quot;SwitchHealthSVStuckClosed&quot;)" target="Closed">
+      </transition>
+      <transition event="CloseCmd" cond="In(&quot;SwitchHealthSVStuckOpen&quot;)" target="Open">
+      </transition>
+      <transition event="OpenCmd" cond="In(&quot;SwitchHealthSVStuckOpen&quot;)" target="Open">
+      </transition>
+      <transition event="OpenCmd" cond="In(&quot;SwitchHealthSVStuckTrippedOpen&quot;)" target="TrippedOpen">
+      </transition>
+      <transition event="CloseCmd" cond="In(&quot;SwitchHealthSVStuckTrippedOpen&quot;)" target="TrippedOpen">
+      </transition>
+      <transition event="CloseCmd" cond="In(&quot;SwitchHealthSVStuckClosed&quot;)" target="Closed">
+      </transition>
+      <state id="Open">
+       <transition event="CloseCmd" cond="In(&quot;SwitchHealthSVOK&quot;)" target="Closed">
+       </transition>
+      </state>
+      <state id="Closed">
+       <transition event="OpenCmd" cond="In(&quot;SwitchHealthSVOK&quot;)" target="Open">
+       </transition>
+       <transition event="LoadOvercurrent" cond="In(&quot;SwitchHealthSVOK&quot;)" target="TrippedOpen">
+       </transition>
+      </state>
+      <state id="TrippedOpen">
+       <transition event="OpenCmd" cond="In(&quot;SwitchHealthSVOK&quot;)" target="Open">
+       </transition>
+      </state>
+     </state>
+    </state>
+    <state id="regionEstimatorReg">
+     <initial>
+      <transition target="MeasurementModelAndEstimator">
+      </transition>
+     </initial>
+     <state id="MeasurementModelAndEstimator">
+      <initial>
+       <transition target="EUnknown">
+       </transition>
+      </initial>
+      <transition event="Open" cond="In(&quot;Open&quot;) &amp;&amp; In(&quot;SwitchPosSensorHealthSVOK&quot;)" target="EOpen">
+      </transition>
+      <transition event="Close" cond="In(&quot;Closed&quot;) &amp;&amp; In(&quot;SwitchPosSensorHealthSVOK&quot;)" target="EClosed">
+      </transition>
+      <transition event="TrippedOpen" cond="In(&quot;TrippedOpen&quot;) &amp;&amp; In(&quot;SwitchPosSensorHealthSVOK&quot;)" target="ETrippedOpen">
+      </transition>
+      <transition event="Close" cond="((In(&quot;Open&quot;) || In(&quot;TrippedOpen&quot;)) &amp;&amp; In(&quot;SwitchPosSensorHealthSVOK&quot;))" target="EFailedClosed">
+      </transition>
+      <transition event="Open" cond="((In(&quot;Closed&quot;) || In(&quot;TrippedOpen&quot;)) &amp;&amp; In(&quot;SwitchPosSensorHealthSVOK&quot;))" target="EFailedOpen">
+      </transition>
+      <transition event="TrippedOpen" cond="((In(&quot;Open&quot;) || In(&quot;Closed&quot;)) &amp;&amp; In(&quot;SwitchPosSensorHealthSVOK&quot;))" target="ETrippedOpen">
+      </transition>
+      <transition event="Open" cond="In(&quot;Open&quot;) &amp;&amp; In(&quot;SwitchPosSensorHealthSVNOK&quot;)" target="EUnknown">
+      </transition>
+      <transition event="Close" cond="In(&quot;Closed&quot;) &amp;&amp; In(&quot;SwitchPosSensorHealthSVNOK&quot;)" target="EUnknown">
+      </transition>
+      <transition event="TrippedOpen" cond="In(&quot;TrippedOpen&quot;) &amp;&amp; In(&quot;SwitchPosSensorHealthSVNOK&quot;)" target="EUnknown">
+      </transition>
+      <transition event="Open" cond="(In(&quot;Closed&quot;) || In(&quot;TrippedOpen&quot;)) and In(&quot;SwitchPosSensorHealthSVNOK&quot;)" target="EUnknown">
+      </transition>
+      <transition event="Close" cond="((In(&quot;Open&quot;) || In(&quot;TrippedOpen&quot;)) &amp;&amp; In(&quot;SwitchPosSensorHealthSVNOK&quot;))" target="EUnknown">
+      </transition>
+      <transition event="TrippedOpen" cond="((In(&quot;Open&quot;) || In(&quot;Closed&quot;)) &amp;&amp; In(&quot;SwitchPosSensorHealthSVNOK&quot;))" target="EUnknown">
+      </transition>
+      <state id="EOpen">
+      </state>
+      <state id="EFailedClosed">
+      </state>
+      <state id="EClosed">
+      </state>
+      <state id="EFailedOpen">
+      </state>
+      <state id="ETrippedOpen">
+      </state>
+      <state id="EUnknown">
+      </state>
+     </state>
+    </state>
+   </parallel>
+  </state>
+  <state id="regionReg3">
+   <initial>
+    <transition target="SwitchHealthSV">
+    </transition>
+   </initial>
+   <state id="SwitchHealthSV">
+    <initial>
+     <transition target="SwitchHealthSVOK">
+     </transition>
+    </initial>
+    <transition event="SwitchHealthStuckOpen" target="SwitchHealthSVStuckOpen">
+    </transition>
+    <transition event="SwitchHealthStuckClosed" target="SwitchHealthSVStuckClosed">
+    </transition>
+    <transition event="SwitchHealthStuckTrippedOpen" target="SwitchHealthSVStuckTrippedOpen">
+    </transition>
+    <transition event="SwitchHealthOk" target="SwitchHealthSVOK">
+    </transition>
+    <state id="SwitchHealthSVOK">
+    </state>
+    <state id="SwitchHealthSVNOK">
+     <initial>
+      <transition target="SwitchHealthSVStuckOpen">
+      </transition>
+     </initial>
+     <state id="SwitchHealthSVStuckClosed">
+     </state>
+     <state id="SwitchHealthSVStuckTrippedOpen">
+     </state>
+     <state id="SwitchHealthSVStuckOpen">
+     </state>
+    </state>
+   </state>
+  </state>
+  <state id="regionReg2">
+   <initial>
+    <transition target="SwitchPosSensorHealthSV">
+    </transition>
+   </initial>
+   <state id="SwitchPosSensorHealthSV">
+    <initial>
+     <transition target="SwitchPosSensorHealthSVOK">
+     </transition>
+    </initial>
+    <transition event="SwitchPosSensorOk" target="SwitchPosSensorHealthSVOK">
+    </transition>
+    <transition event="SwitchPosSensorNok" target="SwitchPosSensorHealthSVNOK">
+    </transition>
+    <state id="SwitchPosSensorHealthSVOK">
+    </state>
+    <state id="SwitchPosSensorHealthSVNOK">
+    </state>
+   </state>
+  </state>
+ </parallel>
+</scxml>

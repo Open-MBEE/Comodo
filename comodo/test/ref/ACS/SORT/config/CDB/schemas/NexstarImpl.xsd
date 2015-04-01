@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   - Configuration Database Schema for a NexstarImpl
+   -
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2011-11-19 Created.	
+-->
+<xs:schema 
+	targetNamespace="urn:schemas-cosylab-com:NexstarImpl:1.0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="urn:schemas-cosylab-com:NexstarImpl:1.0"
+	xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+	xmlns:baci="urn:schemas-cosylab-com:BACI:1.0" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified">
+	
+	<xs:import namespace="urn:schemas-cosylab-com:CDB:1.0" schemaLocation="CDB.xsd"/>
+	<xs:import namespace="urn:schemas-cosylab-com:BACI:1.0" schemaLocation="BACI.xsd"/>
+	 
+	<xs:complexType name="NexstarImpl">
+		<xs:complexContent>
+			<xs:extension base="baci:CharacteristicComponent">
+			    <xs:sequence>
+			    	<xs:element name="frame" type="baci:ROlongSeq"/>
+			    	<xs:element name="device" type="baci:RW"/>
+			    	<xs:element name="red" type="baci:RWlong"/>
+			    	<xs:element name="blue" type="baci:RWlong"/>
+			    	<xs:element name="green" type="baci:RWlong"/>
+			    	<xs:element name="pixelBias" type="baci:RWlong"/>
+			    	<xs:element name="resetLevel" type="baci:RWlong"/>
+			    	<xs:element name="exposure" type="baci:RWlong"/>
+			    </xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>	
+	
+	<xs:element name="NexstarImpl" type="NexstarImpl"/>
+	
+</xs:schema>

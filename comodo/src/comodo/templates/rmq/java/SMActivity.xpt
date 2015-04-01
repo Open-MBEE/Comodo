@@ -1,0 +1,237 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: SMActivity.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::interface»
+«EXTENSION comodo::xtend::cmdo::property»
+
+«DEFINE SMActivity FOR StateMachine»
+
+«FILE getPackageVar() + "/src/" + getPackageVar() + "/SMActivity.java"»
+«EXPAND comodo::templates::rmq::txt::Copyright::Copyright FOR "" -»
+
+
+package «getPackageVar()»;
+
+import RMQCommons.Message;
+import RMQCommons.Topic;
+«FOREACH getModel().getModulePackage().getPimComponentImpls().getNCSubscribers() AS prop -»
+import «prop.getOwningPackageName()».«prop.type.name»;
+«ENDFOREACH»
+«FOREACH getModel().getModulePackage().getPimComponentImpls().getNCPublishers() AS prop -»
+import «prop.getOwningPackageName()».«prop.type.name»;
+«ENDFOREACH»
+
+import java.io.IOException;
+
+import org.apache.commons.scxml.SCInstance;
+import org.apache.commons.scxml.TriggerEvent;
+import org.apache.commons.scxml.model.ModelException;
+
+import org.apache.log4j.Logger;
+
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.QueueingConsumer;
+import com.rabbitmq.client.MessageProperties;
+
+
+// Generic class for activity threads 
+
+public abstract class SMActivity implements Runnable {
+	
+	private String mName;
+	private String mParentStateId;
+	private SCInstance mParentSCInstance;
+	private Logger mLogger;
+	private volatile boolean mIsRunning = false;
+	
+	private final static String DATA_EXCHANGE_NAME = "DATA";
+	private ConnectionFactory mFactory = null;
+	private Connection mConnection = null;
+	private Channel mChannel = null;
+	private QueueingConsumer mConsumer = null;
+
+	«FOREACH getModel().getModulePackage().getPimComponentImpls().getNCSubscribers() AS prop -»
+	protected «prop.type.name» m«prop.type.name» = new «prop.type.name»(); // subscribing
+	«ENDFOREACH»
+	«FOREACH getModel().getModulePackage().getPimComponentImpls().getNCPublishers() AS prop -»
+	protected «prop.type.name» m«prop.type.name» = new «prop.type.name»(); // publishing
+	«ENDFOREACH»
+	
+	public SMActivity(final String name, final String parentStateId, SCInstance parentSCInstance, Logger logger) {
+		mName = name;
+		mParentStateId = parentStateId;
+		mParentSCInstance = parentSCInstance;
+		mLogger = logger;
+	}
+	
+	
+	public String getName() {
+		return mName;
+	}
+	
+	public String getParentStateId() {
+		return mParentStateId;
+	}
+	
+	public SCInstance getParentSCInstance() {
+		return mParentSCInstance;
+	}
+	
+	public Logger getLogger() {
+		return mLogger;
+	}
+
+	public QueueingConsumer getConsumer() {
+		return mConsumer;
+	}
+	
+	public boolean isRunning() {
+		return mIsRunning;
+	}
+
+	public void startRunning() {
+		mIsRunning = true;
+		mLogger.debug("Starting activity: " + getName());	
+	}
+
+	public void stopRunning() {
+		mIsRunning = false;
+	}
+	
+	public abstract void run();
+
+	public void stop(Thread threadId) {
+		mIsRunning = false;
+		mLogger.debug("Stopping activity: " + getName() + " (threadId: " + threadId.getName() + ")");
+	}
+	
+	public void openConnection() {
+		try {
+			boolean durable = true; // for data we want persistance
+			boolean autoAck = true;
+			
+			mFactory = new ConnectionFactory();
+			mFactory.setHost("localhost");
+			mConnection = mFactory.newConnection();
+			mChannel = mConnection.createChannel();
+			
+			// data pub/sub
+			mChannel.exchangeDeclare(DATA_EXCHANGE_NAME, "topic", durable);
+        	String pubsubQueueName = mChannel.queueDeclare().getQueue();
+        	
+			«FOREACH getModel().getModulePackage().getPimComponentImpls().getNCSubscribers() AS prop -»
+			mChannel.queueBind(pubsubQueueName, DATA_EXCHANGE_NAME, "«prop.type.name»");
+			«ENDFOREACH»
+        				
+			mConsumer = new QueueingConsumer(mChannel);
+			mChannel.basicConsume(pubsubQueueName, autoAck, mConsumer);		
+
+		} catch (IOException e) {
+			getLogger().error("Could not create RMQ channel: " + e.getMessage());
+			stopRunning();
+		}		
+	}
+	
+
+	public void closeConnection() {
+		try {
+			mChannel.close();
+			mConnection.close();
+			mLogger.debug("Closed RMQ connections");
+		} catch (IOException e) {
+			mLogger.error("Could not close RMQ connection: " + e.getMessage());
+		}
+	}
+
+	public Message nextMessage(long timeout) throws java.lang.InterruptedException, com.rabbitmq.client.ShutdownSignalException {
+	
+		Message msg = null;	
+		QueueingConsumer.Delivery delivery;
+		
+		if (timeout == 0) {
+			delivery = mConsumer.nextDelivery();
+		} else {
+			delivery = mConsumer.nextDelivery(timeout);
+		}
+		if (delivery != null) {
+			String routingKey = delivery.getEnvelope().getRoutingKey();
+			String payload = new String(delivery.getBody());
+			getLogger().debug(" [" + getName() + "] Received routingKey '" + routingKey + "' payload '" + payload + "'");
+							
+			if (routingKey.isEmpty()) {
+			}
+«FOREACH getModel().getModulePackage().getPimComponentImpls().getNCSubscribers() AS prop -»
+			else if (routingKey.matches("«prop.type.name»")) {
+				 m«prop.type.name».setPayload(payload);
+			}
+«ENDFOREACH»	
+			msg = new Message(routingKey, payload.split(" "));		
+		}
+		
+		return msg;
+	}
+	
+	public void publish(final String exchangeName, final String routingKey, final String msg) {
+		try {
+			mChannel.basicPublish(exchangeName, routingKey,
+					MessageProperties.PERSISTENT_TEXT_PLAIN, msg.getBytes());
+			mLogger.debug(" [" + getName() + "] Sent '" + routingKey + "':'"
+					+ msg + "'");
+		} catch (IOException e) {
+			mLogger.error("Failure sending '" + routingKey + "':'" + msg
+					+ "' (" + e.toString() + ")");
+		}
+	}
+	
+	public void publish(final String routingKey, final String msg) {
+        try {
+            mChannel.basicPublish(DATA_EXCHANGE_NAME, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, msg.getBytes());
+            mLogger.debug(" ["+getName()+"] Sent '" + routingKey + "':'" + msg + "'");
+        } catch (IOException e) {
+            mLogger.error("Failure sending '" + routingKey + "':'" + msg + "' (" + e.toString() + ")");
+        }
+	}
+	
+	public void publish(final Topic t) {
+		publish(t.getName(), t.getPayload());
+	}
+	
+	public void triggerEvent(final String eventName) {
+		try {
+			// Trigger an event
+			mParentSCInstance.getExecutor().triggerEvent(new TriggerEvent(eventName, TriggerEvent.SIGNAL_EVENT, null));
+			mLogger.debug("Generate " + eventName + " signal");
+		} catch (ModelException e) {
+			mLogger.error("Cannot trigger " + eventName + " signal: " + e.getMessage());		
+		}
+	}
+}
+ 
+«ENDFILE» 
+«ENDDEFINE»

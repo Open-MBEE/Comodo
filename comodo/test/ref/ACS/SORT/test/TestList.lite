@@ -1,0 +1,57 @@
+#*******************************************************************************
+# ALMA - Atacama Large Millimiter Array
+# (c) UNSPECIFIED - FILL IN, 2009 
+# 
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+# 
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+# 
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+#
+#  "@(#) $Id$"
+#
+# who                when       what
+# ----------------  ----------  ----------------------------------------------
+# COMODO                        Created.
+# 
+
+
+SOURCE TATEnvironment
+
+PROLOGUE ./SORTTATPrologue
+
+#java test
+1001 LegoImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner SORT.LegoImplTest"
+1002 InstrumentImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner SORT.InstrumentImplTest"
+1003 SchedulerImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner SORT.SchedulerImplTest"
+1004 DatabaseImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner SORT.DatabaseImplTest"
+1005 ConsoleImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner SORT.ConsoleImplTest"
+1006 NexstarImplTest "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner SORT.NexstarImplTest"
+
+#cpp test
+2001 cppUnitTestLegoImpl "../bin/cppUnitTestLegoImpl"
+2002 cppUnitTestInstrumentImpl "../bin/cppUnitTestInstrumentImpl"
+2003 cppUnitTestSchedulerImpl "../bin/cppUnitTestSchedulerImpl"
+2004 cppUnitTestDatabaseImpl "../bin/cppUnitTestDatabaseImpl"
+2005 cppUnitTestConsoleImpl "../bin/cppUnitTestConsoleImpl"
+2006 cppUnitTestNexstarImpl "../bin/cppUnitTestNexstarImpl"
+
+#python test
+3001 pyUnitTestLegoImpl "python ../bin/pyUnitTestLegoImpl testInstanceLegoImpl"
+3002 pyUnitTestInstrumentImpl "python ../bin/pyUnitTestInstrumentImpl testInstanceInstrumentImpl"
+3003 pyUnitTestSchedulerImpl "python ../bin/pyUnitTestSchedulerImpl testInstanceSchedulerImpl"
+3004 pyUnitTestDatabaseImpl "python ../bin/pyUnitTestDatabaseImpl testInstanceDatabaseImpl"
+3005 pyUnitTestConsoleImpl "python ../bin/pyUnitTestConsoleImpl testInstanceConsoleImpl"
+3006 pyUnitTestNexstarImpl "python ../bin/pyUnitTestNexstarImpl testInstanceNexstarImpl"
+
+EPILOGUE ./SORTTATEpilogue
+
+# ___oOo___

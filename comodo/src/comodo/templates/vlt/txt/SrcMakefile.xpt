@@ -1,0 +1,239 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+ «EXTENSION comodo::xtend::cmdo::helpers»
+ 
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/src/Makefile'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::Script FOR "" -»
+
+#******************************************************************************
+# This Makefile follows VLT Standards (see Makefile(5) for more).
+#******************************************************************************
+# REMARKS
+#    None
+#------------------------------------------------------------------------------
+
+
+#
+# INCLUDE CODE GENERATED MAKEFILE
+# -----------------
+include «this»Makefile
+
+#
+# user definable C-compilation flags
+«IF (isVltMultiThreadedConfig() == true)-»
+USER_CFLAGS = -std=gnu++11 -DCCS_PTHREADS=1 -DeccsLOG_LEVEL=3 -I$(INTROOT)/include/scxml4cpp -I$(VLTROOT)/include/scxml4cpp
+«ELSE-»
+USER_CFLAGS = -std=gnu++11 -DeccsLOG_LEVEL=3 -I$(INTROOT)/include/scxml4cpp -I$(VLTROOT)/include/scxml4cpp
+«ENDIF»	
+
+#
+# additional include and library search paths
+#USER_INC =
+#USER_LIB = 
+
+#
+# MODULE CODE DESCRIPTION:
+# ------------------------
+# As a general rule:  public files are "cleaned" and "installed"  
+#                     local (_L) are not "installed".
+
+#
+# C programs (public and local)
+# -----------------------------
+EXECUTABLES     = «this»Control
+EXECUTABLES_L   = 
+
+#
+# list of object files 
+«this»_CONTROL_OBJECTS = 
+«this»Control_OBJECTS  = «this»Control ${«this»_CONTROL_OBJECTS}
+
+#
+# linker flags and libraries to be linked to wsf2ex1Control program
+«this»Control_LDFLAGS  =
+«IF (isVltMultiThreadedConfig() == true)-»
+«this»Control_LIBS     = «this»Lib wsf2lib_P evh_P eccs_P fnd misc C++ CCS_P scxml4cppeng scxml4cpppar xerces-c
+«ELSE-»
+«this»Control_LIBS     = «this»Lib wsf2lib evh eccs fnd misc C++ CCS scxml4cppeng scxml4cpppar xerces-c
+«ENDIF»	
+
+
+#
+# man-pages for «this»Control commands
+«this»Control_MAN      = $(basename $(wildcard *.doc))
+
+#
+# special compilation flags for single c sources
+#yyyyy_CFLAGS   = 
+
+#
+# Includes (.h) files (public only)
+# ---------------------------------
+INCLUDES        = «this»Defines.h
+
+#
+# Libraries (public and local)
+# ----------------------------
+LIBRARIES       = «this»Lib
+LIBRARIES_L     =
+
+#
+# <brief description of lllll library>
+«this»Lib_OBJECTS   = ${«this»CODE_GENERATED_OBJECTS}
+
+		      
+#
+# Scripts (public and local)
+# ----------------------------
+SCRIPTS         =
+SCRIPTS_L       =
+
+#
+# TCL scripts (public and local)
+# ------------------------------
+TCL_SCRIPTS     =
+TCL_SCRIPTS_L   =
+
+#
+# <brief description of tttttt tcl-script>
+tttttt_OBJECTS  =
+tttttt_TCLSH    = 
+tttttt_LIBS     = 
+
+#
+# TCL libraries (public and local)
+# ------------------------------
+TCL_LIBRARIES   =
+TCL_LIBRARIES_L =
+
+#
+# <brief description of tttlll library>
+tttlll_OBJECTS  = 
+
+#
+# UIF panels (public and local)
+# ----------------------------
+PANELS   =
+PANELS_L = 
+
+#
+# On-Line Database Files
+# ----------------------
+DBL_CLASSES = «this»DB_MAIN    \
+              «this»DB_CONFIG  \
+              «this»DB_DATA
+
+DBL_BCF =     
+DBL_FLAGS =   $(I_PATH) -a 500
+xxxx_DBL_FLAGS =
+
+#
+# man pages to be done
+# --------------------
+MANSECTIONS = 1
+MAN1 = $(addsuffix .C, $(EXECUTABLES)) $(addsuffix .doc, $(«this»Control_MAN))
+MAN4 = $(addsuffix .C, $(«this»_CONTROL_OBJECTS))
+
+#
+# local man pages
+# ---------------
+MANl = $(addprefix ../dbl/, $(addsuffix .class, $(DBL_CLASSES)))
+
+#
+# ASCII file to be converted into Framemaker-MIF
+# --------------------
+ASCII_TO_MIF = ../include/«this»Defines.h \
+               ../include/«this»Errors.h  \
+               ../ERRORS/«this»_ERRORS    \
+               ../CDT/«this»Control.cdt
+
+#
+# other files to be installed
+#----------------------------
+INSTALL_FILES = ../config/«this»Events.txt ../config/«this».xml
+
+#
+# list of all possible C-sources (used to create automatic dependencies)
+# ------------------------------
+CSOURCENAMES = \
+	$(foreach exe, $(EXECUTABLES) $(EXECUTABLES_L), $($(exe)_OBJECTS)) \
+	$(foreach lib, $(LIBRARIES) $(LIBRARIES_L), $($(lib)_OBJECTS))
+
+#
+#>>>>> END OF standard rules
+
+#
+# CHOSE PLATFORM
+# --------------
+# Default is UNIX, for VxVorks application next line MUST BE UNCOMMENTED
+#MAKE_VXWORKS = on   
+
+#
+# INCLUDE STANDARDS
+# -----------------
+DEBUG=on
+NOOPTIMIZE=on
+#MAKE_PURIFY=on
+MAKEDIR = $(VLTROOT)/include
+include $(MAKEDIR)/vltMakefile
+
+#
+# TARGETS
+# -------
+all:	do_all
+	$(AT) touch ../config/«this»Events.txt ../config/«this».xml
+	@echo " . . . 'all' done" 
+
+clean : clean_all 
+	$(RM) ../doc/*.pcode ../*/*~ ../*~ ../*/#* ../*/core
+	@echo " . . . clean done"
+
+man   : do_man
+	@echo " . . . man page(s) done"
+
+doxy  :
+	$(AT) cp ../config/«this»Doxyfile.api $(INTROOT)/config
+	$(AT) chmod 644 $(INTROOT)/config/«this»Doxyfile.*
+	$(AT) if [ ! -d $(INTROOT)/man/man3/include ];\
+	    then mkdir $(INTROOT)/man/man3/include; fi 
+	$(AT) if [ ! -d $(INTROOT)/man/man3/dbl ];\
+	    then mkdir $(INTROOT)/man/man3/dbl; fi 
+	$(AT) if [ ! -d $(INTROOT)/man/man3/vw ];\
+	    then mkdir $(INTROOT)/man/man3/vw; mkdir $(INTROOT)/man/man3/vw/include;\
+		 mkdir $(INTROOT)/man/man3/vw/dbl; fi 
+	@echo "Generating API documentation"
+	cd $(INTROOT); doxygen config/«this»Doxyfile.api
+
+install : install_all
+	@echo " . . . installation done"
+
+db : db_all
+	@echo " . . . ../DB done"
+
+#___oOo___
+
+«ENDFILE»
+«ENDDEFINE»
+

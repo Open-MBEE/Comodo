@@ -1,0 +1,325 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: scxmlutil.ext 639 2012-11-07 12:17:27Z landolfa $
+ * 
+ */
+ 
+import uml;
+
+extension comodo::xtend::cmdo::helpers;
+
+
+/**
+ * 
+ */
+String getFullName(Void v) :
+	 v.toString() ;
+	 
+	 
+/**
+ * State Machine related functions
+ */
+ 
+String getName(StateMachine sm): 
+	sm.name;
+
+String getFullName(StateMachine sm) : 
+	sm.name;
+	
+State getTopState(StateMachine sm):
+	sm.region.state.first();
+
+List[State] listStates(StateMachine sm): 
+	sm.allOwnedElements().typeSelect(State).select(e|!(e.name == "Unavailable") && !(e.metaType.name == "uml::FinalState"));
+
+List[Region] listRegions(StateMachine sm): 
+	sm.allOwnedElements().typeSelect(Region).select(e|!(e.name == "Unavailable") && !(e.name.length == 0));
+
+State getInitialState(StateMachine sm): 
+	if (sm.allOwnedElements().typeSelect(Pseudostate).select(e|e.kind.toString() == "initial").isEmpty) then 
+		null 
+	else 
+		sm.allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString() == "initial") && (e.isTopState())).first().outgoing.target.first();
+
+List[State] listCompChilds(StateMachine sm):
+	sm.allOwnedElements().typeSelect(State).select(e|(e.isComposite() && (e.parentState() == sm)));	
+
+List[State] listSimpleChilds(StateMachine sm): 
+	sm.allOwnedElements().typeSelect(State).select(e|(!e.isComposite) && (e.parentState() == sm)).removeAll(sm.allOwnedElements().typeSelect(State).select(e|e.metaType == "uml::FinalState"));
+
+// The following functions retrieve all actions and activities names used in the state machine.
+// Note that DUPLICATES are not removed here, it has to be done by the caller	
+List[String] getAllEntryActionName(StateMachine sm):
+	sm.allOwnedElements().typeSelect(State).entry.select(e|e.name.length > 0).name;
+
+List[String] getAllExitActionName(StateMachine sm):
+	sm.allOwnedElements().typeSelect(State).exit.select(e|e.name.length > 0).name;
+	
+List[String] getAllTransActionName(StateMachine sm):
+	sm.allOwnedElements().typeSelect(Transition).select(e|e.hasAction()).ownedElement.typeSelect(Activity).select(e|e.name.length > 0).name;
+
+List[String] getAllActionName(StateMachine sm):
+	sm.getAllEntryActionName().addAll(sm.getAllExitActionName().addAll(sm.getAllTransActionName()));
+
+List[String] getAllActivityName(StateMachine sm):
+	sm.allOwnedElements().typeSelect(State).doActivity.select(e|e.name.length > 0).name;
+
+List[String] getAllEventsName(StateMachine sm): 
+	sm.allOwnedElements().typeSelect(Transition).select(e|e.hasEvent()).getEventInTransition();
+
+List[Event] getAllEvents(StateMachine sm): 
+	sm.allOwnedElements().typeSelect(Transition).select(e|e.hasEvent()).getEventRecInTransition();	
+
+
+/**
+ * State related functions
+ */
+
+// this function returns full qualified name if configured
+String getStateName(State st):
+	if (isAbsoluteQualifierScope() == true)
+		then st.getFullName()
+	else
+		st.name;
+	 
+// Get the State that contains this state. In case of the topmost, returns null
+State parentState(State st): 
+	st.container.state;
+
+Region parentRegion(State st): 
+	st.owner;
+
+// Lists States, NOT including final
+List[State] listStates(State st): 
+	st.allOwnedElements().typeSelect(State).select(e|!(e.name == "Unavailable") && !(e.metaType.name == "uml::FinalState") );
+
+// Get the first Initial state, that is inside this state.
+State getInitialState(State st): 
+	if !st.isComposite() then 
+		null 
+	else 
+		if (st.allOwnedElements().typeSelect(Pseudostate).select(e|e.kind.toString() == "initial").isEmpty) then 
+			null 
+		else 
+			st.allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString() == "initial") && (e.parentState() == st)).first().outgoing.target.first();
+
+// Get full qualified name: every state is inside a region, every region is inside a state
+String getFullName(State st) : 
+	if !st.isTopState() then 
+		(st.owner == null ? st.name : getFullName(st.parentRegion())+':'+st.name)
+	else 
+		st.name;
+
+// Get the name for the superContext class
+String getContextName(State st): 
+	st.parentState().name;
+
+// Check if State is a FinalState
+boolean isFinalState(State st):
+	if st.isComposite then 
+		false
+	else
+		(st.metaType.name == "uml::FinalState");
+
+// If this State is the topmost, returns true.
+boolean isTopState(State st): 
+	(st.container.owner == st.containingStateMachine());
+
+List[State] listCompChilds(State st):
+	st.allOwnedElements().typeSelect(State).select(e|(e.isComposite() && (e.parentState() == st)));	
+
+List[State] listSimpleChilds(State st): 
+	st.allOwnedElements().typeSelect(State).select(e|(!e.isComposite) && (e.parentState() == st)).removeAll(st.allOwnedElements().typeSelect(State).select(e|e.metaType == "uml::FinalState"));
+
+List[Transition] getTransitions(State st): 
+	st.allOwnedElements().typeSelect(Transition);
+
+List[String] getAllEventsName(State st): 
+	st.outgoing.select(tr|tr.hasEvent()).getEventInTransition();
+
+boolean hasOnEntry(State st):
+	!(st.entry.name.toString() == "null");
+
+boolean hasOnExit(State st):
+	!(st.exit.name.toString() == "null");
+
+boolean hasDoActions(State st):
+	!(st.doActivity.name.toString() == "null" );
+
+List[Pseudostate] getHistory(State st): 
+	if !st.isComposite() then 
+		null 
+	else 
+		if (st.allOwnedElements().typeSelect(Pseudostate).select(e|e.kind.toString().contains("History")).isEmpty ) then 
+			null 
+		else 
+			st.allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString().contains("History")) && (e.parentState() == st));
+
+boolean hasHistory(State st): 
+	if !st.isComposite() then 
+		false 
+	else
+		if (st.ownedElement.typeSelect(Region).ownedElement.typeSelect(Pseudostate).select(e|e.kind.toString().contains("History")).isEmpty) then 
+			false
+		else 
+			true;	
+
+// transitions are owned by the parent state and not by the state they starts from
+boolean hasTimerTransition(State st):
+	if (st.parentState() != null) then
+		!st.parentState().allOwnedElements().typeSelect(Transition).select(e|e.isTimerTransition() && e.source.name.matches(st.name)).isEmpty
+	else
+		false; // @ToBeDone
+
+/**
+ * Pseudostate related functions
+ */
+
+State parentState(Pseudostate ps):
+	ps.container.state;  
+
+String getContextName(Pseudostate ps): 
+	ps.parentState().name;
+	
+boolean isTopState(Pseudostate ps): 
+	(ps.container.owner == ps.containingStateMachine());
+
+String historyType(Pseudostate st):
+	switch {
+		case (st.kind.toString() == "shallowHistory") : "type=\"shallow\""
+		case (st.kind.toString() == "deepHistory") : "type=\"deep\""
+		default : null
+	};
+
+	
+/**
+ * Region related functions
+ */
+
+State parentState(Region rg):
+	rg.owner;
+
+State getInitialState(Region rg): 
+	if (rg.allOwnedElements().typeSelect(Pseudostate).select(e|e.kind.toString() == "initial").isEmpty) then 
+		null 
+	else 
+		rg.allOwnedElements().typeSelect(Pseudostate).select(e|(e.kind.toString() == "initial") && (e.parentState() == rg.parentState())).first().outgoing.target.first();
+
+String getFullName(Region rg) :
+	if !rg.isTopState() then 
+		(rg.owner == null ? rg.name : getFullName(rg.parentState())+':'+rg.name)
+	else 
+		rg.name;
+
+String getRegionName(Region rg) :
+	if (isAbsoluteQualifierScope() == true)
+		then rg.getFullName()
+	else
+		rg.name;
+	
+boolean isTopState(Region rg): 
+	(rg.owner == rg.containingStateMachine());
+
+
+
+/**
+ * Transition related functions
+ */
+
+boolean hasCond(Transition tr):
+	!(tr.guard.name.toString() == "null");
+
+boolean hasEvent(Transition tr):
+	!(tr.trigger.isEmpty);
+
+boolean hasTarget(Transition tr):
+	!(tr.target.name.toString() == "null");
+
+boolean hasAction(Transition tr):
+	!(tr.ownedElement.typeSelect(Activity).isEmpty);
+
+String getTimeEventDuration(Transition tr):
+	if (tr.hasEvent() && tr.trigger.first().event.isTimeEvent()) then
+		((TimeEvent)tr.trigger.first().event).when.expr.stringValue()
+	else
+		"";
+
+String getEventInTransition(Transition tr):
+	if !tr.hasEvent() then
+		""
+	else
+		if tr.trigger.first().event.isSignalEvent() then
+			tr.trigger.first().event.getSignalEventName()
+		else
+			tr.trigger.first().event.getTimeEventName();
+
+Event getEventRecInTransition(Transition tr) :
+	tr.trigger.first().event;
+				
+String getGuardInTransition(Transition tr):
+	if tr.hasCond() then
+		tr.guard.ownedElement.typeSelect(OpaqueExpression).body.first().toString()
+	else 
+		"";	
+
+String getTargetInTransition(Transition tr) :
+	if tr.hasTarget() then
+		tr.target.name
+	else
+		"";
+
+// This function does not work with Modelio!!!
+String getFullyQualifiedTargetInTransition(Transition tr) :
+	if tr.hasTarget() then
+		tr.target.container.getFullName()+":"+tr.target.name
+	else
+		"";
+
+boolean isInternalTransition(Transition tr):
+	(tr.kind.toString() == "internal");
+	
+boolean isTimerTransition(Transition tr):
+	if !tr.hasEvent() then
+		false
+	else
+		tr.trigger.first().event.isTimeEvent();
+
+boolean isTransitionToEndState(Transition tr):
+	(tr.target.metaType.name == "uml::FinalState");
+	
+/**
+ * Event related functions
+ */
+
+boolean isTimeEvent(Event event):
+	event.metaType.name == "uml::TimeEvent";
+	
+boolean isSignalEvent(Event event):
+	event.metaType.name == "uml::SignalEvent";
+
+		
+String getSignalEventName(Event event):
+	((SignalEvent)event).signal.name;
+
+String getTimeEventName(uml::Event event):
+	if (((TimeEvent)event).isRelative) then
+		"after_"+((TimeEvent)event).when.expr.stringValue()
+	else
+		"at_"+((TimeEvent)event).when.expr.stringValue();
+
+		
+//___oOo___

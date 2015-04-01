@@ -1,0 +1,121 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: TestUnit.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::langtype»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::uml::artifact»
+«EXTENSION comodo::xtend::uml::operation»
+
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FILE getPackageVar() + '/test/pyUnitTest' + name + '.py'-»
+«EXPAND comodo::templates::acs::txt::Copyright::CopyrightScript FOR "" -»
+
+
+#/usr/bin/env python
+'''
+DESCRIPTION
+«name»TestPy Class.
+«IF hasImplOperations()-»
+Test Methods:
+«FOREACH getImplOperations().select(e|e.class.package.name.toLowerCase() != 'acs') AS eOperation-»
+	-	test«eOperation.name.toFirstUpper()»()
+«ENDFOREACH-»
+«ENDIF-»
+'''
+
+import unittest
+from Acspy.Clients.SimpleClient import PySimpleClient
+
+from «getModel().getModulePackage().name»Common *
+«FOREACH package.getPimInterfaces() AS interface -»
+from «interface.name» import *
+«ENDFOREACH-»
+
+class «name»TestPy(unittest.TestCase):
+
+	################################################
+	# lifecycle
+	################################################
+	
+	def setUp(self):
+		self.simpleClient = PySimpleClient()
+		self.componentName = "testInstance«name»"
+		self.simpleClient.getLogger().logInfo("pyUnitTest«name».«name»TestPy.setUp()...")
+        self.simpleClient.getLogger().logInfo("Get component " + self.componentName)
+        self.component = self.simpleClient.getComponent(self.componentName)
+	#__pPp__	    	           
+	
+	def tearDown(self):
+		self.simpleClient.getLogger().logInfo("pyUnitTest«name».«name»TestPy.tearDown()...")
+		self.simpleClient.getLogger().logInfo("Releasing component " + self.componentName)
+		self.simpleClient.releaseComponent(self.componentName)
+		self.simpleClient.disconnect()
+	#__pPp__       
+        
+	«IF hasImplOperations()-»
+	################################################
+	# test methods
+	################################################
+	
+	«FOREACH getImplOperations().select(e|e.class.package.name.toLowerCase() != 'acs') AS eOperation-»
+	def test«eOperation.name.toFirstUpper()»(self):
+		self.simpleClient.getLogger().logInfo("pyUnitTest«name».«name»TestPy.test«eOperation.name.toFirstUpper()»()...")
+		response = None
+		«FOREACH eOperation.getParams() AS param -»
+		«param.name» = «param.type.toPythonNew()»
+		«ENDFOREACH-»
+		response = self.component.«eOperation.name»(«FOREACH eOperation.getParams() AS param SEPARATOR ', '-»«param.name»«ENDFOREACH-»)
+		«IF eOperation.type.isVoid()-»
+		# no return is expected, response should be None
+		assert response is None
+		«ELSE-»
+		# a return is expected, response should be not None
+		assert response is not None
+		«ENDIF-»
+	#__pPp__
+			    
+	«ENDFOREACH-»
+	«IF !getImplOperations().select(e|e.class.name == 'PingableResource').isEmpty-»	
+	def testPing(self):
+		self.simpleClient.getLogger().logInfo("pyUnitTest«name».«name»TestPy.testPing()...")
+		fast = False
+		recursive = False
+		id = 0
+		response = self.componentping(fast, recursive, id)
+		assert response is not None
+	«ENDIF-»
+	«ENDIF-»	
+
+if __name__ == "__main__":
+	unittest.main()
+	print "End of «name»TestPy test __oOo__"
+«ENDFILE»
+«ENDDEFINE»

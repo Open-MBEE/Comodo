@@ -1,0 +1,633 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/test/'+this+'TestStdCommands.ref'-»
+1 - «this»Control - Application started (proc name: «this»Control, DB root point: :Appl_data:«this»)
+1 - «this» «this»Control ACTION EXIT (Init)
+1 - «this» «this»Control ACTION INIT (Init)
+1 - «this» «this»Control ACTION OFF (Init)
+1 - «this» «this»Control ACTION ONLINE (Init)
+1 - «this» «this»Control ACTION SELFTST (Init)
+1 - «this» «this»Control ACTION SETLOG (Init)
+1 - «this» «this»Control ACTION SIMULAT (Init)
+1 - «this» «this»Control ACTION STANDBY (Init)
+1 - «this» «this»Control ACTION STATE (Init)
+1 - «this» «this»Control ACTION STATUS (Init)
+1 - «this» «this»Control ACTION STOP (Init)
+1 - «this» «this»Control ACTION VERBOSE (Init)
+1 - «this» «this»Control ACTION VERSION (Init)
+1 - «this» «this»Control STATE from   to LOADED IDLE
+1 - «this» - Entering the main loop.
+2 - «this»TestLog: #####################################################################
+2 - «this»TestLog: 
+2 - «this»TestLog: TEST 1: Test of Standard commands
+2 - «this»TestLog: 
+2 - «this»TestLog: #####################################################################
+2 - «this»TestLog: 
+2 - «this»TestLog: STEP 0: Inializing the test environment
+2 - «this»TestLog: 
+2 - «this»TestLog: Waiting for the «this»Control process to be ready
+2 - «this»TestLog: #####################################################################
+2 - «this»TestLog: 
+2 - «this»TestLog: STEP 1: Test  standard commands one by one
+2 - «this»TestLog: 
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: VERSION {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: «this» @(#) $Id
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: LOADED
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATUS {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: Process status LOADED IDLE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: SELFTST {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: VERBOSE On
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.verbose: ON
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: VERBOSE Console
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.verbose: CONSOLE
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: SETLOG DEBUG
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.logLevel: DEBUG
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: SETLOG INFO
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.logLevel: INFO
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: SIMULAT {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.simulation: 1
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STOPSIM {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.simulation: 0
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATUS {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: Process status LOADED IDLE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: LOADED
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 2
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: INIT {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATUS {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: Process status LOADED IDLE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: LOADED
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 2
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: OFF {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATUS {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: Process status OFF IDLE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OFF
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 1
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: ONLINE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATUS {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: Process status ONLINE IDLE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: ONLINE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 4
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STANDBY {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATUS {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: Process status STANDBY IDLE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: STANDBY
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 3
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STOP {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATUS {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: Process status STANDBY IDLE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: STANDBY
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 3
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: ONLINE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STOP {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATUS {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: Process status ONLINE IDLE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: ONLINE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 4
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: ONLINE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATUS {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: Process status ONLINE IDLE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: STATE {}
+2 - «this»TestLog: (cmd0) Normal reply.
+2 - «this»TestLog: (cmd0) Reply: ONLINE
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 4
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: 
+2 - «this»TestLog: #####################################################################
+2 - «this»TestLog: 
+2 - «this»TestLog: STEP 2: Test standard commands asynchronously
+2 - «this»TestLog: 
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: OFF {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd1) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd2) Command to «this»Control: ONLINE {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd3) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd4) Command to «this»Control: STANDBY {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd5) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd6) Command to «this»Control: STOP {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd7) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd8) Command to «this»Control: ONLINE {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd9) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd10) Command to «this»Control: STOP {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd11) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd12) Command to «this»Control: INIT {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd13) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd1) Reply: Process status OFF IDLE
+2 - «this»TestLog: (cmd1) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd2) Reply: OK
+2 - «this»TestLog: (cmd2) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd3) Reply: Process status ONLINE IDLE
+2 - «this»TestLog: (cmd3) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd4) Reply: OK
+2 - «this»TestLog: (cmd4) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd5) Reply: Process status STANDBY IDLE
+2 - «this»TestLog: (cmd5) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd6) Reply: OK
+2 - «this»TestLog: (cmd6) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd7) Reply: Process status STANDBY IDLE
+2 - «this»TestLog: (cmd7) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd8) Reply: OK
+2 - «this»TestLog: (cmd8) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd9) Reply: Process status ONLINE IDLE
+2 - «this»TestLog: (cmd9) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd10) Reply: OK
+2 - «this»TestLog: (cmd10) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd11) Reply: Process status ONLINE IDLE
+2 - «this»TestLog: (cmd11) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd12) Reply: OK
+2 - «this»TestLog: (cmd12) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd13) Reply: Process status LOADED IDLE
+2 - «this»TestLog: (cmd13) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 2
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd13) Command to «this»Control: OFF {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd12) Command to «this»Control: OFF {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd11) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd10) Command to «this»Control: ONLINE {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd9) Command to «this»Control: ONLINE {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd8) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd7) Command to «this»Control: STANDBY {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd6) Command to «this»Control: STANDBY {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd5) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd4) Command to «this»Control: STOP {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd3) Command to «this»Control: STOP {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd2) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd1) Command to «this»Control: ONLINE {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Command to «this»Control: ONLINE {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd14) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd15) Command to «this»Control: INIT {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd16) Command to «this»Control: INIT {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd17) Command to «this»Control: STATUS {}
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd13) Reply: OK
+2 - «this»TestLog: (cmd13) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd12) Reply: OK
+2 - «this»TestLog: (cmd12) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd11) Reply: Process status OFF IDLE
+2 - «this»TestLog: (cmd11) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd10) Reply: OK
+2 - «this»TestLog: (cmd10) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd9) Reply: OK
+2 - «this»TestLog: (cmd9) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd8) Reply: Process status ONLINE IDLE
+2 - «this»TestLog: (cmd8) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd7) Reply: OK
+2 - «this»TestLog: (cmd7) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd6) Reply: OK
+2 - «this»TestLog: (cmd6) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd5) Reply: Process status STANDBY IDLE
+2 - «this»TestLog: (cmd5) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd4) Reply: OK
+2 - «this»TestLog: (cmd4) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd3) Reply: OK
+2 - «this»TestLog: (cmd3) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd2) Reply: Process status STANDBY IDLE
+2 - «this»TestLog: (cmd2) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd1) Reply: OK
+2 - «this»TestLog: (cmd1) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd0) Reply: OK
+2 - «this»TestLog: (cmd0) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd14) Reply: Process status ONLINE IDLE
+2 - «this»TestLog: (cmd14) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd15) Reply: OK
+2 - «this»TestLog: (cmd15) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd16) Reply: OK
+2 - «this»TestLog: (cmd16) Normal reply expected --> test OK.
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd17) Reply: Process status LOADED IDLE
+2 - «this»TestLog: (cmd17) Normal reply expected --> test OK.
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.state: 2
+2 - «this»TestLog: DB Value for Appl_data:«this»:control.substate: 7
+2 - «this»TestLog: 
+2 - «this»TestLog: #####################################################################
+2 - «this»TestLog: 
+2 - «this»TestLog: Test completed !!!
+2 - «this»TestLog: 
+2 - «this»TestLog: #####################################################################
+2 - «this»TestLog: -------------
+2 - «this»TestLog: (cmd17) Command to «this»Control: EXIT {}
+2 - «this»TestLog: (cmd17) Normal reply.
+2 - «this»TestLog: (cmd17) Reply: OK
+2 - «this»TestLog: (cmd17) Normal reply expected --> test OK.
+1 - «this» «this»Control EVENT VERSION (command)
+1 - «this» «this»Control ACTION VERSION (Execute)
+1 - «this» «this»Control EVENT STATE (command)
+1 - «this» «this»Control ACTION STATE (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT SELFTST (command)
+1 - «this» «this»Control ACTION SELFTST (Execute)
+1 - «this» «this»Control EVENT VERBOSE (command)
+1 - «this» «this»Control ACTION VERBOSE (Execute)
+1 - «this» «this»Control EVENT VERBOSE (command)
+1 - «this» «this»Control ACTION VERBOSE (Execute)
+1 - «this» «this»Control EVENT SETLOG (command)
+1 - «this» «this»Control ACTION SETLOG (Execute)
+1 - «this» «this»Control DEBUG wsf2libCONTROL.C:---- EVENT SETLOG processed
+1 - «this» «this»Control DEBUG wsf2libCONTROL.C:---- STATE <LOADED> <IDLE>
+1 - «this» «this»Control EVENT SETLOG (command)
+1 - «this» «this»Control DEBUG wsf2libCMDH_IN.C:---- Received command SETLOG from @-------:seq_--- (buffer: <INFO>)
+1 - «this» «this»Control ACTION SETLOG (Execute)
+1 - «this» «this»Control EVENT SIMULAT (command)
+1 - «this» «this»Control ACTION SIMULAT (Execute)
+1 - «this» «this»Control EVENT STOPSIM (command)
+1 - «this» «this»Control ACTION SIMULAT (Complete)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STATE (command)
+1 - «this» «this»Control ACTION STATE (Execute)
+1 - «this» «this»Control EVENT INIT (command)
+1 - «this» «this»Control ACTION INIT (Execute)
+1 - «this» «this»Control ACTION EXIT (Init)
+1 - «this» «this»Control ACTION INIT (Init)
+1 - «this» «this»Control ACTION OFF (Init)
+1 - «this» «this»Control ACTION ONLINE (Init)
+1 - «this» «this»Control ACTION SELFTST (Init)
+1 - «this» «this»Control ACTION SETLOG (Init)
+1 - «this» «this»Control ACTION SIMULAT (Init)
+1 - «this» «this»Control ACTION STANDBY (Init)
+1 - «this» «this»Control ACTION STATE (Init)
+1 - «this» «this»Control ACTION STATUS (Init)
+1 - «this» «this»Control ACTION STOP (Init)
+1 - «this» «this»Control ACTION VERBOSE (Init)
+1 - «this» «this»Control ACTION VERSION (Init)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STATE (command)
+1 - «this» «this»Control ACTION STATE (Execute)
+1 - «this» «this»Control EVENT OFF (command)
+1 - «this» «this»Control ACTION OFF (Execute)
+1 - «this» «this»Control STATE from LOADED IDLE to OFF IDLE
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STATE (command)
+1 - «this» «this»Control ACTION STATE (Execute)
+1 - «this» «this»Control EVENT ONLINE (command)
+1 - «this» «this»Control ACTION ONLINE (Execute)
+1 - «this» «this»Control STATE from OFF IDLE to ONLINE IDLE
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STATE (command)
+1 - «this» «this»Control ACTION STATE (Execute)
+1 - «this» «this»Control EVENT STANDBY (command)
+1 - «this» «this»Control ACTION STANDBY (Execute)
+1 - «this» «this»Control STATE from ONLINE IDLE to STANDBY IDLE
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STATE (command)
+1 - «this» «this»Control ACTION STATE (Execute)
+1 - «this» «this»Control EVENT STOP (command)
+1 - «this» «this»Control ACTION STOP (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STATE (command)
+1 - «this» «this»Control ACTION STATE (Execute)
+1 - «this» «this»Control EVENT ONLINE (command)
+1 - «this» «this»Control ACTION ONLINE (Execute)
+1 - «this» «this»Control STATE from STANDBY IDLE to ONLINE IDLE
+1 - «this» «this»Control EVENT STOP (command)
+1 - «this» «this»Control ACTION STOP (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STATE (command)
+1 - «this» «this»Control ACTION STATE (Execute)
+1 - «this» «this»Control EVENT ONLINE (command)
+1 - «this» «this»Control ACTION ONLINE (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STATE (command)
+1 - «this» «this»Control ACTION STATE (Execute)
+1 - «this» «this»Control EVENT OFF (command)
+1 - «this» «this»Control ACTION OFF (Execute)
+1 - «this» «this»Control STATE from ONLINE IDLE to OFF IDLE
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT ONLINE (command)
+1 - «this» «this»Control ACTION ONLINE (Execute)
+1 - «this» «this»Control STATE from OFF IDLE to ONLINE IDLE
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STANDBY (command)
+1 - «this» «this»Control ACTION STANDBY (Execute)
+1 - «this» «this»Control STATE from ONLINE IDLE to STANDBY IDLE
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STOP (command)
+1 - «this» «this»Control ACTION STOP (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT ONLINE (command)
+1 - «this» «this»Control ACTION ONLINE (Execute)
+1 - «this» «this»Control STATE from STANDBY IDLE to ONLINE IDLE
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STOP (command)
+1 - «this» «this»Control ACTION STOP (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT INIT (command)
+1 - «this» «this»Control ACTION INIT (Execute)
+1 - «this» «this»Control ACTION EXIT (Init)
+1 - «this» «this»Control ACTION INIT (Init)
+1 - «this» «this»Control ACTION OFF (Init)
+1 - «this» «this»Control ACTION ONLINE (Init)
+1 - «this» «this»Control ACTION SELFTST (Init)
+1 - «this» «this»Control ACTION SETLOG (Init)
+1 - «this» «this»Control ACTION SIMULAT (Init)
+1 - «this» «this»Control ACTION STANDBY (Init)
+1 - «this» «this»Control ACTION STATE (Init)
+1 - «this» «this»Control ACTION STATUS (Init)
+1 - «this» «this»Control ACTION STOP (Init)
+1 - «this» «this»Control ACTION VERBOSE (Init)
+1 - «this» «this»Control ACTION VERSION (Init)
+1 - «this» «this»Control STATE from ONLINE IDLE to LOADED IDLE
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT OFF (command)
+1 - «this» «this»Control ACTION OFF (Execute)
+1 - «this» «this»Control STATE from LOADED IDLE to OFF IDLE
+1 - «this» «this»Control EVENT OFF (command)
+1 - «this» «this»Control ACTION OFF (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT ONLINE (command)
+1 - «this» «this»Control ACTION ONLINE (Execute)
+1 - «this» «this»Control STATE from OFF IDLE to ONLINE IDLE
+1 - «this» «this»Control EVENT ONLINE (command)
+1 - «this» «this»Control ACTION ONLINE (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STANDBY (command)
+1 - «this» «this»Control ACTION STANDBY (Execute)
+1 - «this» «this»Control STATE from ONLINE IDLE to STANDBY IDLE
+1 - «this» «this»Control EVENT STANDBY (command)
+1 - «this» «this»Control ACTION STANDBY (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT STOP (command)
+1 - «this» «this»Control ACTION STOP (Execute)
+1 - «this» «this»Control EVENT STOP (command)
+1 - «this» «this»Control ACTION STOP (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT ONLINE (command)
+1 - «this» «this»Control ACTION ONLINE (Execute)
+1 - «this» «this»Control STATE from STANDBY IDLE to ONLINE IDLE
+1 - «this» «this»Control EVENT ONLINE (command)
+1 - «this» «this»Control ACTION ONLINE (Execute)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT INIT (command)
+1 - «this» «this»Control ACTION INIT (Execute)
+1 - «this» «this»Control ACTION EXIT (Init)
+1 - «this» «this»Control ACTION INIT (Init)
+1 - «this» «this»Control ACTION OFF (Init)
+1 - «this» «this»Control ACTION ONLINE (Init)
+1 - «this» «this»Control ACTION SELFTST (Init)
+1 - «this» «this»Control ACTION SETLOG (Init)
+1 - «this» «this»Control ACTION SIMULAT (Init)
+1 - «this» «this»Control ACTION STANDBY (Init)
+1 - «this» «this»Control ACTION STATE (Init)
+1 - «this» «this»Control ACTION STATUS (Init)
+1 - «this» «this»Control ACTION STOP (Init)
+1 - «this» «this»Control ACTION VERBOSE (Init)
+1 - «this» «this»Control ACTION VERSION (Init)
+1 - «this» «this»Control STATE from ONLINE IDLE to LOADED IDLE
+1 - «this» «this»Control EVENT INIT (command)
+1 - «this» «this»Control ACTION INIT (Execute)
+1 - «this» «this»Control ACTION EXIT (Init)
+1 - «this» «this»Control ACTION INIT (Init)
+1 - «this» «this»Control ACTION OFF (Init)
+1 - «this» «this»Control ACTION ONLINE (Init)
+1 - «this» «this»Control ACTION SELFTST (Init)
+1 - «this» «this»Control ACTION SETLOG (Init)
+1 - «this» «this»Control ACTION SIMULAT (Init)
+1 - «this» «this»Control ACTION STANDBY (Init)
+1 - «this» «this»Control ACTION STATE (Init)
+1 - «this» «this»Control ACTION STATUS (Init)
+1 - «this» «this»Control ACTION STOP (Init)
+1 - «this» «this»Control ACTION VERBOSE (Init)
+1 - «this» «this»Control ACTION VERSION (Init)
+1 - «this» «this»Control EVENT STATUS (command)
+1 - «this» «this»Control ACTION STATUS (Execute)
+1 - «this» «this»Control EVENT EXIT (command)
+1 - «this» «this»Control ACTION EXIT (Execute)
+1 - «this» «this»Control STATE from LOADED IDLE to OFF IDLE
+1 - «this» - Exiting from the main loop. Application quits.
+«ENDFILE»
+«ENDDEFINE»
+

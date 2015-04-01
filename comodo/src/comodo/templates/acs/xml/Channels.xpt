@@ -1,0 +1,42 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Channels.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::package»
+
+«DEFINE Root FOR uml::Model»
+
+«IF getModulePackage().hasNCDefinitions()-»
+«FOREACH getModulePackage().getNCDefinitions().toSet() AS eElement -»
+«FILE getPackageVar() + '/test/CDB/MACI/Channels/CHANNEL_' + eElement.type.name.toUpperCase() + '/CHANNEL_' + eElement.type.name.toUpperCase() + '.xsd'-»
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Channels xmlns="urn:schemas-cosylab-com:Channels:1.0"
+       xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+</Channels>
+«ENDFILE»
+«ENDFOREACH-»
+«ENDIF-»
+«ENDDEFINE»

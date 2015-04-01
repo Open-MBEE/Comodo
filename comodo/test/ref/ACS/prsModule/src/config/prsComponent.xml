@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="Reset">  
+  <state id="Presetting"> 
+    <transition event="Init" target="Reset"/> 
+  </state>  
+  <state id="Reset"> 
+    <transition event="Preset" target="Presetting"/> 
+  </state> 
+</scxml>

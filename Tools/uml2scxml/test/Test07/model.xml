@@ -1,0 +1,51 @@
+<!-- Working on Apache -->
+<scxml 	xmlns="http://www.w3.org/2005/07/scxml" 
+		version="1.0" 
+		initial="PROCESS">
+
+	<state id="PROCESS" initial="S1">
+		<history id="h">
+			<transition target="S1" />
+		</history>
+		<state id="S1"> 
+			<onentry>
+				<log expr="'EnterS1'" />
+			</onentry>
+			<onexit>
+				<log expr="'ExitS1'"/>
+			</onexit>
+			<transition event="E1" target="S2"/>
+		</state>
+		
+		<state id="S2"> 
+			<onentry>
+				<log expr="'EnterS2'"/>
+			</onentry>
+			<onexit>
+				<log expr="'ExitS2'"/>
+			</onexit>
+			<transition event="E2" target="S1"/>
+		</state>
+
+		<onentry>
+			<log expr="'EnterProcess'"/>
+		</onentry>
+		<onexit>
+			<log expr="'ExitProcess'"/>
+		</onexit>
+		<transition event="EPause" target="INTERRUPTED"/>
+		<transition event="ETerminate" target="TERMINATED"/>
+	</state>
+
+	<state id="INTERRUPTED">
+		<onentry>
+			<log expr="'EnterInterrupted'"/>
+		</onentry>
+		<onexit>
+			<log expr="'ExitInterrupted'"/>
+		</onexit>
+		<transition event="ETerminate" target="TERMINATED"/>
+		<transition event="EResume" target="h"/>
+	</state>
+	<final id="TERMINATED"/>
+</scxml>

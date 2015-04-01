@@ -1,0 +1,86 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Code.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::scxmlutil»
+«EXTENSION comodo::xtend::uml::statemachine»
+
+
+«REM» Write headers for SCXML «ENDREM»
+«DEFINE Headers FOR StateMachine»
+<scxml xmlns="http://www.w3.org/2005/07/scxml" 
+xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM"
+version="1.0" initial="«getInitialState().getStateName()»">
+«ENDDEFINE»
+ 
+«DEFINE CloseScxml FOR StateMachine»
+</scxml>
+«ENDDEFINE»
+
+«DEFINE FinalState FOR StateMachine»
+«FOREACH this.allOwnedElements().typeSelect(FinalState).select(e|e.parentState().name.toString() == "null") AS st»
+<final id="«st.getStateName()»"/>
+«ENDFOREACH»
+«ENDDEFINE»
+
+«DEFINE SimFinalState FOR State»
+<final id="«this.getStateName()»"/>
+«ENDDEFINE»
+
+«DEFINE StateName FOR State»
+<state id="«this.getStateName()»">
+«ENDDEFINE»
+
+«DEFINE CloseState FOR State»
+</state>
+«ENDDEFINE»
+
+«DEFINE CAEntry FOR State»
+<onentry>
+	«IF this.hasOnEntry()»
+	<customActionDomain:«this.entry.name» name="«this.entry.name»" />
+	«ENDIF»
+	«FOREACH this.outgoing.sortBy(e|e.name) AS tr»
+		«IF tr.isTimerTransition()»
+		<send target="" type="scxml" sendid="'«this.getStateName()»_«tr.getEventInTransition()»'" event="'«tr.getEventInTransition()»'" delay="'«tr.getTimeEventDuration()»'"/>
+		«ENDIF»
+	«ENDFOREACH»
+</onentry>
+«ENDDEFINE»
+
+«DEFINE CAExit FOR State»
+<onexit>
+	«IF this.hasOnExit()»
+	<customActionDomain:«this.exit.name» name="«this.exit.name»" />
+	«ENDIF»
+	«FOREACH this.outgoing.sortBy(e|e.name) AS tr»
+		«IF tr.isTimerTransition()»
+		<cancel sendid="'«this.getStateName()»_«tr.getEventInTransition()»'"/>
+		«ENDIF»
+	«ENDFOREACH»
+</onexit>
+«ENDDEFINE»
+
+«DEFINE Invoke FOR State»
+<invoke targettype="java" id="«this.doActivity.name»" src="SMActivity«this.doActivity.name».java"/>
+«ENDDEFINE»

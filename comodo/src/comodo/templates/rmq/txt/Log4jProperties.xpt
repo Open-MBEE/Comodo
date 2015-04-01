@@ -1,0 +1,50 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: EclipseProject.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+ 
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+
+«DEFINE Root FOR uml::Model»
+«IF !getModulePackage().getPimComponentImpls().isEmpty»
+«FILE getPackageVar() + '/src/log4j.properties'-»
+
+# general config
+log4j.rootLogger=WARN, A1
+log4j.appender.A1=org.apache.log4j.ConsoleAppender
+log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+
+# Print the date in ISO 8601 format
+log4j.appender.A1.layout.ConversionPattern=%d [%t] %-5p %c - %m%n
+
+# Print only messages of level INFO or above in the package «getPackageVar()»
+log4j.logger.«getPackageVar()»=INFO
+
+#log4j.logger.org.apache.commons.scxml.Context=DEBUG
+#log4j.logger.org.apache.commons.scxml.env.SimpleSCXMLListener=DEBUG
+log4j.logger.org.apache.commons.scxml.SCXMLSemantics=INFO
+
+«ENDFILE»
+«ENDIF»
+«ENDDEFINE»

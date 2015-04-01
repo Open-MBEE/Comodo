@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="S1">  
+  <state id="S1"> 
+    <onentry> 
+      <customActionDomain:EnterS1 name="EnterS1"/> 
+    </onentry>  
+    <invoke targettype="java" id="Something" src="SMActivitySomething.java"/>  
+    <onexit> 
+      <customActionDomain:ExitS1 name="ExitS1"/> 
+    </onexit>  
+    <transition event="" target="S2"/> 
+  </state>  
+  <state id="S2"> 
+    <initial>
+      <transition target="S2::S2a"/>
+    </initial>  
+    <state id="S2::S2b"> 
+      <initial>
+        <transition target="S2::S2b::S2b2"/>
+      </initial>  
+      <state id="S2::S2b::S2b1"> 
+        <transition target="S2::S2b::F1"/> 
+      </state>  
+      <final id="S2::S2b::F1"/>  
+      <state id="S2::S2b::S2b2"></state>  
+      <transition event="" target="S2::S2b::S2b1"/> 
+    </state>  
+    <state id="S2::S2a"> 
+      <transition event="" target="S2::S2b"/> 
+    </state>  
+    <transition event="" target="S2a"/>  
+    <transition event="" target="S3t"/> 
+  </state>  
+  <state id="S2a"> 
+    <onexit> 
+      <customActionDomain:ExitS2a name="ExitS2a"/> 
+    </onexit>  
+    <transition event=""/>  
+    <transition event="" target="S2a"/>  
+    <transition event="" target="S4"/>  
+    <transition event="" target="S3t"/> 
+  </state>  
+  <state id="S3t"> 
+    <initial>
+      <transition target="S3t::S3"/>
+    </initial>  
+    <parallel id="S3t::S3"> 
+      <state id="S3t::S3:Reg1"> 
+        <initial>
+          <transition target="S3t::S3:Reg1:S3a"/>
+        </initial>  
+        <state id="S3t::S3:Reg1:S3a"> 
+          <transition event="" target="S3t::S3:Reg1:S3b"/> 
+        </state>  
+        <parallel id="S3t::S3:Reg1:S3b"> 
+          <state id="S3t::S3:Reg1:S3b:RegA"> 
+            <initial>
+              <transition target="S3t::S3:Reg1:S3b:RegA:S3b1"/>
+            </initial>  
+            <state id="S3t::S3:Reg1:S3b:RegA:S3b1"> 
+              <invoke targettype="java" id="Act1" src="SMActivityAct1.java"/> 
+            </state> 
+          </state>  
+          <state id="S3t::S3:Reg1:S3b:RegB"> 
+            <initial>
+              <transition target="S3t::S3:Reg1:S3b:RegB:S3b2"/>
+            </initial>  
+            <state id="S3t::S3:Reg1:S3b:RegB:S3b2"> 
+              <invoke targettype="java" id="Act2" src="SMActivityAct2.java"/> 
+            </state> 
+          </state> 
+        </parallel> 
+      </state>  
+      <state id="S3t::S3:Reg2"> 
+        <initial>
+          <transition target="S3t::S3:Reg2:S3c"/>
+        </initial>  
+        <state id="S3t::S3:Reg2:S3c"> 
+          <transition event="" target="S3t::S3:Reg2:S3d"/> 
+        </state>  
+        <state id="S3t::S3:Reg2:S3d"> 
+          <initial>
+            <transition target="S3t::S3:Reg2:S3d::A"/>
+          </initial>  
+          <state id="S3t::S3:Reg2:S3d::A"> 
+            <transition event="" target="S3t::S3:Reg2:S3d::B"/> 
+          </state>  
+          <state id="S3t::S3:Reg2:S3d::B"> 
+            <transition event="" target="S3t::S3:Reg2:S3d::F2"/>  
+            <transition event="" target="S3t::S3:Reg2:S3d::A"/> 
+          </state>  
+          <final id="S3t::S3:Reg2:S3d::F2"/> 
+        </state> 
+      </state> 
+    </parallel>  
+    <transition event="" target="S4::history"/>  
+    <transition event="" target="S4"/> 
+  </state>  
+  <state id="S4"> 
+    <initial>
+      <transition target="S4::S4a"/>
+    </initial>  
+    <state id="S4::S4b"> 
+      <initial>
+        <transition target="S4::S4b::S4b1"/>
+      </initial>  
+      <state id="S4::S4b::S4b2"> 
+        <initial>
+          <transition target="S4::S4b::S4b2::S4i"/>
+        </initial>  
+        <state id="S4::S4b::S4b2::S4i"></state>  
+        <transition event="" target="S4::S4b::S4b1"/> 
+      </state>  
+      <state id="S4::S4b::S4b1"> 
+        <transition event="" target="S4::S4b::S4b2"/> 
+      </state> 
+    </state>  
+    <state id="S4::S4a"> 
+      <transition event="" target="S4::S4b::S4b2"/>  
+      <transition event="" target="S4::S4b"/> 
+    </state>  
+    <history id="S4::history" type="deep"> 
+      <transition target="S4::S4a"/> 
+    </history>  
+    <transition event="" target="S3t"/>  
+    <transition event="TESTEVENT" cond="In('S4:S4b:S4b1')" target="S2a"/>  
+    <transition event="at_null" cond="In('S4:S4b:S4b2')" target="S3t"/> 
+  </state> 
+</scxml>

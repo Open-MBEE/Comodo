@@ -1,0 +1,35 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Root.xpt 489 2011-10-21 10:58:44Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model -»
+	«EXPAND txt::EclipseClasspath::Root FOR getPackageVar() -»
+	«EXPAND txt::EclipseProject::Root FOR getPackageVar() -»
+	«EXPAND java::Fsms::Root FOR this -»
+	«EXPAND txt::ConfigJpf::JPFRoot FOR getPackageVar()-»
+	«EXPAND txt::ConfigEs::ESRoot FOR getPackageVar()-»
+	«EXPAND txt::ConfigProperties::PropertiesRoot FOR getPackageVar()-»
+	«EXPAND xml::Build::BuildRoot FOR getPackageVar()-»
+«ENDDEFINE»

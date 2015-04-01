@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:DSLCustomization="http:///schemas/DSLCustomization/_YlNGNuWCEeK9xen8TMS1ng/0" xmlns:MagicDrawProfile="http:///schemas/MagicDrawProfile/_Yk6LQOWCEeK9xen8TMS1ng/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.0.0/UML" xsi:schemaLocation="http:///schemas/DSLCustomization/_YlNGNuWCEeK9xen8TMS1ng/0 UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_YlW88uWCEeK9xen8TMS1ng http:///schemas/MagicDrawProfile/_Yk6LQOWCEeK9xen8TMS1ng/0 UML_Standard_Profile.MagicDraw_Profile.profile.uml#_YlgyWOWCEeK9xen8TMS1ng">
+  <uml:Profile xmi:id="_16_8beta_2104050f_1267611143468_569866_21917" name="customizations for traceability" metamodelReference="_16_8beta_2104050f_1267611143530_995508_21918">
+    <eAnnotations xmi:id="_Ylg2COWCEeK9xen8TMS1ng" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <contents xmi:type="ecore:EPackage" xmi:id="_Ylg2CeWCEeK9xen8TMS1ng" name="customizationsfortraceability" nsURI="http:///schemas/customizationsfortraceability/_YlNGNeWCEeK9xen8TMS1ng/0" nsPrefix="customizationsfortraceability"/>
+    </eAnnotations>
+    <packageImport xmi:id="_16_8beta_2104050f_1267611143530_995508_21918">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0primitiveTypescustomizations_for_traceability">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypescustomizations_for_traceability">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_16_8beta_2104050f_1267611187304_217363_21929" name="Properties descriptors">
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_8beta_2104050f_1267611215031_537683_21953" name="Specification">
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267670563207_795209_23290" name="Requirement Specifying Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267670563209_129384_23291" name="SpecifyingRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267670563213_640569_23295" body="More specific Requirements in one higher level of abstraction showing why the Requirement exists. Requirements are connected through one of the relations: Refine, DeriveReqt, Copy." annotatedElement="_16_8beta_2104050f_1267670563209_129384_23291"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267670563213_474810_23294" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267670563214_383212_23296" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267670563211_111967_23292" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267670563214_578340_23298" name="Specification" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267676557995_835573_24202" name="Requirement Derived from Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267676557998_713693_24204" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267676558001_304302_24210" name="Specification" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267762203470_329022_24673" name="Requirement All Specifying Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267762203473_923294_24674" name="AllSpecifyingRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267762203476_85451_24677" body="More specific Requirements in all higher levels of abstraction showing why the Requirement exists. Requirements are connected through one of the relations: Refine, DeriveReqt, Copy." annotatedElement="_16_8beta_2104050f_1267762203473_923294_24674"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267762203476_394551_24676" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267762203477_217777_24678" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_2104050f_1270702026261_848253_24732" name="Requirement All Specifying Elements">
+          <ownedAttribute xmi:id="_16_8_2104050f_1270702026262_498956_24733" name="AllSpecifyingElements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8_2104050f_1270702026263_759529_24736" body="Specifying elements of this Requirement in ALL higher levels of abstraction thus validating the existence of the Requirement." annotatedElement="_16_8_2104050f_1270702026262_498956_24733"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_2104050f_1270702026263_588993_24735" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_2104050f_1270702026263_448959_24737" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267679579860_860017_23210" name="Requirement Traced to Elements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267679579864_505929_23212" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267679579866_199425_23218" name="Specification" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267763895865_360755_25124" name="Element Satisfies Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267763895869_652431_25126" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267763895872_684499_25132" name="Specification" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267680262374_270251_24100" name="Element Refine Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267680262377_416147_24102" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267680262379_235214_24108" name="Specification" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267755946997_639343_22798" name="Requirement All Refine Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267755946999_884614_22799" name="RefineRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267755947004_951521_22803" body="All requirements which the requirement refines them, directly and indirectly." annotatedElement="_16_8beta_2104050f_1267755946999_884614_22799"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267755947003_87752_22802" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267755947004_459494_22804" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1268795829857_913788_25418" name="ReqRefines" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1268795829860_644502_25420" body="All requirements which the requirement directly refines them." annotatedElement="_16_8beta_2104050f_1268795829857_913788_25418"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1268795829860_274206_25419" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1268795829861_88441_25421" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267611868018_308371_25271" name="Requirement Specifying Elements">
+          <ownedAttribute xmi:id="_16_8_2104050f_1270701888109_426812_24375" name="SpecifyingElements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8_2104050f_1270701888113_572998_24377" body="Specifying elements of this Requirement in one-step higher level of abstraction thus directly validating the existence of the Requirement." annotatedElement="_16_8_2104050f_1270701888109_426812_24375"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_2104050f_1270701888112_268297_24376" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_2104050f_1270701888113_2366_24378" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267611868022_200839_25273" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267611868025_26473_25279" name="Specification" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267698193679_898951_22756" name="Requirement All Derived from Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267698193682_216550_22757" name="DerivedFromRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267698193688_80185_22761" body="All requirements which the requirement are derived from, directly and indirectly." annotatedElement="_16_8beta_2104050f_1267698193682_216550_22757"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267698193687_577165_22760" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267698193689_504569_22762" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_2104050f_1271840373596_966098_25264" name="ReqDerivedFrom" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8_2104050f_1271840373597_778085_25266" body="All requirements which the requirement directly refines them." annotatedElement="_16_8_2104050f_1271840373596_966098_25264"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_2104050f_1271840373596_476843_25265" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_2104050f_1271840373597_232247_25267" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267699644535_941943_22818" name="Requirement All Traced to Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267699644537_637639_22819" name="TracedToRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267699644540_49294_22823" body="All requirements which the requirement is traced to, directly and indirectly." annotatedElement="_16_8beta_2104050f_1267699644537_637639_22819"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267699644540_872211_22822" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267699644540_196304_22824" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_2104050f_1271840424919_73657_25908" name="ReqTracedTo" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8_2104050f_1271840424920_929296_25910" body="All requirements which the requirement directly refines them." annotatedElement="_16_8_2104050f_1271840424919_73657_25908"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_2104050f_1271840424920_306744_25909" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_2104050f_1271840424920_984041_25911" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267758713459_369018_22795" name="Element All AllocatedTo Elements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267758713461_716556_22796" name="AllocatedToElements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267758713465_589295_22800" body="Derived from all elements directly and indirectly this element is allocated to." annotatedElement="_16_8beta_2104050f_1267758713461_716556_22796"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267758713465_305853_22799" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267758713465_452976_22801" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267758713463_67814_22797" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267758713466_147537_22803" name="Specification" visibility="private"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_9beta_2104050f_1277377537185_698557_24486" name="AllocatedToAllo" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_9beta_2104050f_1277377537187_560873_24488" body="All requirements which the requirement is directly traced from." annotatedElement="_16_9beta_2104050f_1277377537185_698557_24486"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9beta_2104050f_1277377537187_712213_24487" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9beta_2104050f_1277377537188_466258_24489" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_8beta_2104050f_1267611206319_826288_21942" name="Realization">
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267611862218_948865_25217" name="Requirement Realizing Elements">
+          <ownedAttribute xmi:id="_16_8_2104050f_1270698819419_770641_23685" name="RealizingElements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8_2104050f_1270698819424_786307_23687" body="Realizing elements in lower level of abstraction of this Requirement thus demonstrating how the Requirement is implemented." annotatedElement="_16_8_2104050f_1270698819419_770641_23685"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_2104050f_1270698819420_866784_23686" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_2104050f_1270698819425_707300_23688" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267611862221_835845_25220" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267611862224_133223_25226" name="Realization" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_2104050f_1270695922613_29895_23575" name="Requirement All Realizing Elements">
+          <ownedAttribute xmi:id="_16_8_2104050f_1270699046911_596671_24677" name="AllRealizingElements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8_2104050f_1270699046912_105210_24679" body="Realizing elements in ALL lower levels of abstraction of this Requirement thus demonstrating how the Requirement is implemented." annotatedElement="_16_8_2104050f_1270699046911_596671_24677"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_2104050f_1270699046912_316601_24678" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_2104050f_1270699046912_1275_24680" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267755132762_870367_23040" name="Requirement All Refined by Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267755132764_349639_23041" name="RefinedByRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267755132768_388942_23045" body="All requirements which the requirement is refined by." annotatedElement="_16_8beta_2104050f_1267755132764_349639_23041"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267755132768_748455_23044" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267755132768_825238_23046" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_2104050f_1271840264494_3183_23690" name="ReqRefineBy" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8_2104050f_1271840264495_164488_23692" body="All requirements which the requirement is directly traced from." annotatedElement="_16_8_2104050f_1271840264494_3183_23690"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_2104050f_1271840264495_784964_23691" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_2104050f_1271840264495_429842_23693" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267680538850_188162_24865" name="Element All AllocatedFrom Elements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267680538851_338376_24866" name="AllocatedFromElements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267680538856_455335_24870" body="Derived from all elements directly and indirectly this element is allocated from." annotatedElement="_16_8beta_2104050f_1267680538851_338376_24866"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267680538856_331231_24869" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267680538857_557387_24871" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267680538853_477471_24867" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267680538857_198954_24873" name="Realization" visibility="private"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_9beta_2104050f_1277377377950_387114_23484" name="AllocatedFromAllo" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_9beta_2104050f_1277377378002_537458_23486" body="All requirements which the requirement is directly traced from." annotatedElement="_16_9beta_2104050f_1277377377950_387114_23484"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9beta_2104050f_1277377378002_652625_23485" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9beta_2104050f_1277377378003_32682_23487" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267671072912_986069_23744" name="Requirement Derive Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267671072916_965444_23746" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267671072919_490267_23752" name="Realization" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267676986027_186512_24597" name="Requirement All Derive Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267676986031_200250_24598" name="DerivedRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267676986036_413481_24602" body="All requirements which are derived from the requirement, directly and indirectly." annotatedElement="_16_8beta_2104050f_1267676986031_200250_24598"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267676986036_690173_24601" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267676986037_579465_24603" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_2104050f_1271840067515_124071_22739" name="ReqDerive" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8_2104050f_1271840067518_669529_22741" body="All requirements which the requirement is directly traced from." annotatedElement="_16_8_2104050f_1271840067515_124071_22739"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_2104050f_1271840067517_871631_22740" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_2104050f_1271840067518_475840_22742" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267763326798_655327_23587" name="Requirement Satisfied by Elements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267763326806_474209_23589" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267763326809_229995_23595" name="Realization" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267698963017_337396_22712" name="Requirement All Traced from Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267698963020_987128_22713" name="TracedFromRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267698963025_785778_22717" body="All requirements which the requirement is traced from, directly and indirectly." annotatedElement="_16_8beta_2104050f_1267698963020_987128_22713"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267698963024_198784_22716" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267698963025_571588_22718" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1268795514720_85364_22783" name="ReqTracedFrom" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1268795514723_880185_22785" body="All requirements which the requirement is directly traced from." annotatedElement="_16_8beta_2104050f_1268795514720_85364_22783"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1268795514723_498278_22784" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1268795514724_176782_22786" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267680083830_654368_23723" name="Requirement Refined by Elements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267680083835_644671_23725" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267680083839_352996_23731" name="Realization" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267679334769_520622_22007" name="Element Traced from Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267679334775_957006_22009" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267679334778_976460_22015" name="Realization" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267612471167_776620_27830" name="Requirement Realizing Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267612471169_334189_27831" name="RealizingRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267612471174_52131_27835" body="Realizing Requirements in one lower level of abstraction showing how the Requirement is realized. Requirements are connected through one of the relations: Refine, DeriveReqt, Copy." annotatedElement="_16_8beta_2104050f_1267612471169_334189_27831"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267612471173_754653_27834" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267612471174_976119_27836" name=""/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267612471171_870381_27832" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267612471174_864199_27838" name="Realization" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267678430457_117270_22332" name="Requirement All Realizing Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267678430459_174910_22333" name="AllRealizingRequirements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267678430462_764930_22337" body="Realizing Requirements in all lower levels of abstraction showing how the Requirement is realized. Requirements are connected through one of the relations: Refine, DeriveReqt, Copy." annotatedElement="_16_8beta_2104050f_1267678430459_174910_22333"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267678430462_676985_22336" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267678430462_717009_22338" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_9_2104050f_1281344809199_688623_25187" name="Other">
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267763526650_16632_23979" name="Element Verify Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267763526654_240513_23981" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267763526657_144069_23987" name="Other" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267763670242_228915_24368" name="Test Case Verify Requirements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267763670244_655238_24369" name="VerifiesRequirement" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267763670249_213195_24373" body="The property gathers Requirements which are verified by the current Test Case." annotatedElement="_16_8beta_2104050f_1267763670244_655238_24369"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267763670249_331584_24372" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267763670249_350525_24374" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267762653248_139082_22280" name="Requirement Verified by Elements">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267762653251_721626_22282" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267762653255_158122_22288" name="Other" visibility="private"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267762817043_827724_23205" name="Requirement Verified by Test Cases">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267762817045_560634_23206" name="VerifiedByTestCase" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267762817050_237235_23210" body="The property gathers Test Cases which verify current Requirement. " annotatedElement="_16_8beta_2104050f_1267762817045_560634_23206"/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#NamedElement"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267762817049_881999_23209" name="" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267762817050_598502_23211" name=""/>
+          </ownedAttribute>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_be00301_1073394351331_445580_2profileApplicationcustomizations_for_traceability">
+      <eAnnotations xmi:id="_YuwEA-WCEeK9xen8TMS1ng" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_YlgyWOWCEeK9xen8TMS1ng"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
+    </profileApplication>
+    <profileApplication xmi:id="_11_5_be00301_1153310565718_226811_161profileApplicationcustomizations_for_traceability">
+      <eAnnotations xmi:id="_Yu5N8uWCEeK9xen8TMS1ng" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_YlW88uWCEeK9xen8TMS1ng"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_11_5_be00301_1153310565718_226811_161"/>
+    </profileApplication>
+  </uml:Profile>
+  <MagicDrawProfile:ED xmi:id="_YuwEBOWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267762817043_827724_23205" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267762817043_827724_23205"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEBeWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267755946997_639343_22798" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267755946997_639343_22798"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEBuWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267612471167_776620_27830" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267612471167_776620_27830"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEB-WCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267680262374_270251_24100" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267680262374_270251_24100"/>
+  <MagicDrawProfile:ED xmi:id="_YuwECOWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267762203470_329022_24673" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267762203470_329022_24673"/>
+  <MagicDrawProfile:ED xmi:id="_YuwECeWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267611862218_948865_25217" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267611862218_948865_25217"/>
+  <MagicDrawProfile:ED xmi:id="_YuwECuWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267762653248_139082_22280" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267762653248_139082_22280"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEC-WCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267698193679_898951_22756" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267698193679_898951_22756"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEDOWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267698963017_337396_22712" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267698963017_337396_22712"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEDeWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267676986027_186512_24597" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267676986027_186512_24597"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEDuWCEeK9xen8TMS1ng" base_Element="_16_8_2104050f_1270695922613_29895_23575" ed="Architect, Enterprise" base_Class="_16_8_2104050f_1270695922613_29895_23575"/>
+  <MagicDrawProfile:ED xmi:id="_YuwED-WCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267670563207_795209_23290" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267670563207_795209_23290"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEEOWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267611868018_308371_25271" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267611868018_308371_25271"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEEeWCEeK9xen8TMS1ng" base_Element="_16_8_2104050f_1270702026261_848253_24732" ed="Architect, Enterprise" base_Class="_16_8_2104050f_1270702026261_848253_24732"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEEuWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267678430457_117270_22332" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267678430457_117270_22332"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEE-WCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267671072912_986069_23744" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267671072912_986069_23744"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEFOWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267679334769_520622_22007" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267679334769_520622_22007"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEFeWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267763895865_360755_25124" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267763895865_360755_25124"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEFuWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267676557995_835573_24202" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267676557995_835573_24202"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEF-WCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267679579860_860017_23210" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267679579860_860017_23210"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEGOWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267763326798_655327_23587" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267763326798_655327_23587"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEGeWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267763526650_16632_23979" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267763526650_16632_23979"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEGuWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267699644535_941943_22818" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267699644535_941943_22818"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEG-WCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267680538850_188162_24865" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267680538850_188162_24865"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEHOWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267758713459_369018_22795" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267758713459_369018_22795"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEHeWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267755132762_870367_23040" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267755132762_870367_23040"/>
+  <MagicDrawProfile:ED xmi:id="_YuwEHuWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267763670242_228915_24368" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267763670242_228915_24368"/>
+  <MagicDrawProfile:ED xmi:id="_Yu5NsOWCEeK9xen8TMS1ng" base_Element="_16_8beta_2104050f_1267680083830_654368_23723" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267680083830_654368_23723"/>
+  <DSLCustomization:propertyGroup xmi:id="_Yu5N8-WCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267763326809_229995_23595">
+    <properties>SatisfiedBy</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_Yu5N9OWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267679579866_199425_23218">
+    <properties>TracedTo</properties>
+    <properties>TracedToRequirements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-suWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267762653251_721626_22282" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-s-WCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267679334775_957006_22009" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-tOWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267611868025_26473_25279">
+    <properties>AllSpecifyingElements</properties>
+    <properties>SpecifyingElements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-tuWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267612471171_870381_27832" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-t-WCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267670563211_111967_23292" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-uOWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267680538853_477471_24867" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-ueWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267676557998_713693_24204" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-u-WCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267671072919_490267_23752">
+    <properties>Derived</properties>
+    <properties>DerivedRequirements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-vOWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267758713463_67814_22797" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-vuWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267763895869_652431_25126" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-wOWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267762653255_158122_22288">
+    <properties>VerifiedBy</properties>
+    <properties>VerifiedByTestCase</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-weWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267763526654_240513_23981" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-wuWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267680083835_644671_23725" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-xOWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267611862224_133223_25226">
+    <properties>AllRealizingElements</properties>
+    <properties>RealizingElements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-x-WCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267671072916_965444_23746" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-yeWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267612471174_864199_27838">
+    <properties>AllRealizingRequirements</properties>
+    <properties>RealizingRequirements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-yuWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267680262379_235214_24108">
+    <properties>RefineRequirements</properties>
+    <properties>Refines</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-y-WCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267763326806_474209_23589" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-zeWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267679579864_505929_23212" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-zuWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267758713466_147537_22803">
+    <properties>AllocatedToElements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-z-WCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267680538857_198954_24873">
+    <properties>AllocatedFromElements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-0OWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267763895872_684499_25132">
+    <properties>Satisfies</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-0eWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267680083839_352996_23731">
+    <properties>RefinedBy</properties>
+    <properties>RefinedByRequirements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-0uWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267670563214_578340_23298">
+    <properties>AllSpecifyingRequirements</properties>
+    <properties>SpecifyingRequirements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-0-WCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267763526657_144069_23987">
+    <properties>Verifies</properties>
+    <properties>VerifiesRequirement</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-1OWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267611868022_200839_25273" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-1eWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267676558001_304302_24210">
+    <properties>DerivedFrom</properties>
+    <properties>DerivedFromRequirements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-1-WCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267611862221_835845_25220" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-2uWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267679334778_976460_22015">
+    <properties>TracedFrom</properties>
+    <properties>TracedFromRequirements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_YvC-3OWCEeK9xen8TMS1ng" base_Property="_16_8beta_2104050f_1267680262377_416147_24102" useAsNode="true"/>
+  <DSLCustomization:Customization xmi:id="_YvMv2uWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267762817043_827724_23205">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv3eWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267755946997_639343_22798">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv4eWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267612471167_776620_27830">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv5OWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267680262374_270251_24100">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147937995745_366126_2645"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv5uWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267762203470_329022_24673">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv5-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267611862218_948865_25217">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv6uWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267762653248_139082_22280">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv6-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267698193679_898951_22756">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv7OWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267698963017_337396_22712">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv7-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267676986027_186512_24597">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv9-WCEeK9xen8TMS1ng" base_Class="_16_8_2104050f_1270695922613_29895_23575">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvMv-OWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267670563207_795209_23290">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5o-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267611868018_308371_25271">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5p-WCEeK9xen8TMS1ng" base_Class="_16_8_2104050f_1270702026261_848253_24732">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5qeWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267678430457_117270_22332">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5quWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267671072912_986069_23744">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5rOWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267679334769_520622_22007">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147937995745_366126_2645"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5sOWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267763895865_360755_25124">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147937995745_366126_2645"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5s-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267676557995_835573_24202">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5teWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267679579860_860017_23210">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5t-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267763326798_655327_23587">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5ueWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267763526650_16632_23979">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147937995745_366126_2645"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5vOWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267699644535_941943_22818">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5w-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267680538850_188162_24865">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147866677244_999655_1628"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5xOWCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267758713459_369018_22795">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147866677244_999655_1628"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5x-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267755132762_870367_23040">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5y-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267763670242_228915_24368">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147937772815_210871_2448"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_YvV5z-WCEeK9xen8TMS1ng" base_Class="_16_8beta_2104050f_1267680083830_654368_23723">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq5OWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1268795829857_913788_25418">
+    <expression>Abstraction;Relation;Abstraction;Source to target;Requirements::Requirement;APPLIED_STEREOTYPES=magicdraw_1046861421236_260147_44;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq5eWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267698963020_987128_22713">
+    <expression>Traced From Requirements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.ReqTracedFrom, Requirements::Requirement.TracedFromRequirements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq5uWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8_2104050f_1271840067515_124071_22739">
+    <expression>Abstraction;Relation;Abstraction;Target to source;Requirements::Requirement;APPLIED_STEREOTYPES=_11_5EAPbeta_be00301_1147872860786_209724_1848;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq5-WCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267699644537_637639_22819">
+    <expression>Traced To Requirements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.ReqTracedTo, Requirements::Requirement.TracedToRequirements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq6OWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8_2104050f_1271840264494_3183_23690">
+    <expression>Abstraction;Relation;Abstraction;Target to source;Requirements::Requirement;APPLIED_STEREOTYPES=magicdraw_1046861421236_260147_44;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq6eWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267612471169_334189_27831">
+    <expression>Abstraction;Relation;Abstraction;Target to source;Requirements::Requirement;APPLIED_STEREOTYPES=_11_5EAPbeta_be00301_1147873127229_923575_2046;</expression>
+    <expression>Abstraction;Relation;Abstraction;Target to source;Requirements::Requirement;APPLIED_STEREOTYPES=magicdraw_1046861421236_260147_44;</expression>
+    <expression>Abstraction;Relation;Abstraction;Target to source;Requirements::Requirement;APPLIED_STEREOTYPES=_11_5EAPbeta_be00301_1147872860786_209724_1848;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq6uWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267762817045_560634_23206">
+    <expression>Verified By;Tag;Requirements::Requirement.VerifiedBy;Source to target;Requirements::TestCase;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq6-WCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267678430459_174910_22333">
+    <expression>All Realizing Requirements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.RealizingRequirements, Requirements::Requirement.AllRealizingRequirements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq7OWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_9beta_2104050f_1277377377950_387114_23484">
+    <expression>Allocated To;Tag;Allocations::Allocated.allocatedTo;Target to source;Allocations::Allocated;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq7eWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267676986031_200250_24598">
+    <expression>Derived Requirements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.ReqDerive, Requirements::Requirement.DerivedRequirements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq7uWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267758713461_716556_22796">
+    <expression>Allocated To Elements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Allocations::Allocated.AllocatedToAllo,Allocations::Allocated.AllocatedToElements);NamedElement</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq7-WCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267763670244_655238_24369">
+    <expression>Verifies;Tag;Requirements::RequirementRelated.Verifies;Source to target;Requirements::Requirement;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq8OWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267698193682_216550_22757">
+    <expression>Derived From Requirements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.ReqDerivedFrom, Requirements::Requirement.DerivedFromRequirements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq8eWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267755946999_884614_22799">
+    <expression>Refine Requirements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.ReqRefines, Requirements::Requirement.RefineRequirements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq8uWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8_2104050f_1270699046911_596671_24677">
+    <expression>Abstraction;Relation;Abstraction;Target to source;NamedElement;</expression>
+    <expression>All Realizing Elements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.RealizingRequirements, Requirements::Requirement.AllRealizingElements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq8-WCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267680538851_338376_24866">
+    <expression>Allocated From Elements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Allocations::Allocated.AllocatedFromAllo,Allocations::Allocated.AllocatedFromElements);NamedElement</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq9OWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8_2104050f_1271840424919_73657_25908">
+    <expression>Abstraction;Relation;Abstraction;Source to target;Requirements::Requirement;APPLIED_STEREOTYPES=magicdraw_1046861421246_733231_63;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq9eWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_9beta_2104050f_1277377537185_698557_24486">
+    <expression>Allocated From;Tag;Allocations::Allocated.allocatedFrom;Target to source;Allocations::Allocated;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq9uWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8_2104050f_1270698819419_770641_23685">
+    <expression>Abstraction;Relation;Abstraction;Target to source;NamedElement;</expression>
+    <expression>Owned Member;Property;Namespace.ownedMember;Source to target;Requirements::Requirement;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq9-WCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267670563209_129384_23291">
+    <expression>Abstraction;Relation;Abstraction;Source to target;Requirements::Requirement;APPLIED_STEREOTYPES=_11_5EAPbeta_be00301_1147873127229_923575_2046;</expression>
+    <expression>Abstraction;Relation;Abstraction;Source to target;Requirements::Requirement;APPLIED_STEREOTYPES=magicdraw_1046861421236_260147_44;</expression>
+    <expression>Abstraction;Relation;Abstraction;Source to target;Requirements::Requirement;APPLIED_STEREOTYPES=_11_5EAPbeta_be00301_1147872860786_209724_1848;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq-OWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8_2104050f_1271840373596_966098_25264">
+    <expression>Abstraction;Relation;Abstraction;Source to target;Requirements::Requirement;APPLIED_STEREOTYPES=_11_5EAPbeta_be00301_1147872860786_209724_1848;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq-eWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8_2104050f_1270701888109_426812_24375">
+    <expression>Abstraction;Relation;Abstraction;Source to target;NamedElement;</expression>
+    <expression>Class;Property;Classifier.UMLClass;Source to target;NamedElement;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq-uWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267762203473_923294_24674">
+    <expression>All Specifying Requirements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.SpecifyingRequirements, Requirements::Requirement.AllSpecifyingRequirements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq--WCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8_2104050f_1270702026262_498956_24733">
+    <expression>Abstraction;Relation;Abstraction;Source to target;NamedElement;</expression>
+    <expression>All Specifying Elements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.SpecifyingRequirements, Requirements::Requirement.AllSpecifyingElements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvfq_OWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1268795514720_85364_22783">
+    <expression>Abstraction;Relation;Abstraction;Target to source;Requirements::Requirement;APPLIED_STEREOTYPES=magicdraw_1046861421246_733231_63;</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_Yvo0kOWCEeK9xen8TMS1ng" isReadOnly="true" base_Property="_16_8beta_2104050f_1267755132764_349639_23041">
+    <expression>Refined By Requirements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Requirements::Requirement.ReqRefineBy, Requirements::Requirement.RefinedByRequirements);</expression>
+  </DSLCustomization:derivedPropertySpecification>
+</xmi:XMI>

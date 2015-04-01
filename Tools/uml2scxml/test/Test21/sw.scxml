@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" version="null" initial="reset">
+ <!-- http://commons.apache.org/scxml -->
+ <state id="reset">
+  <transition target="running">
+  </transition>
+ </state>
+ <state id="running">
+  <initial>
+   <transition target="r1">
+   </transition>
+  </initial>
+  <transition target="paused">
+  </transition>
+  <transition target="stopped">
+  </transition>
+  <state id="r1">
+   <transition target="r2">
+   </transition>
+  </state>
+  <state id="r2">
+   <transition target="r1">
+   </transition>
+  </state>
+ </state>
+ <state id="stopped">
+  <transition target="reset">
+  </transition>
+ </state>
+ <state id="paused">
+  <transition target="running">
+  </transition>
+  <transition target="stopped">
+  </transition>
+ </state>
+</scxml>

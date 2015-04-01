@@ -1,0 +1,209 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/test/Makefile'-»
+«EXPAND comodo::templates::vlt::txt::Copyright::Script FOR "" -»
+
+#*******************************************************************************
+# This Makefile follows VLT Standards (see Makefile(5) for more).
+#*******************************************************************************
+# REMARKS
+#    None
+#------------------------------------------------------------------------
+
+
+#
+# user definable C-compilation flags
+
+USER_CFLAGS =  -DeccsLOG_LEVEL=3
+
+
+#
+# MODULE CODE DESCRIPTION:
+# ------------------------
+# As a general rule:  public file are "cleaned" and "installed"  
+#                     local (_L) are not "installed".
+TESTLIBS = evhEt misc evh eccs fnd C++
+
+#
+# MODULE CODE DESCRIPTION:
+# ------------------------
+# As a general rule:  public file are "cleaned" and "installed"  
+#                     local (_L) are not "installed".
+
+#
+# C programs (public and local)
+# -----------------------------
+EXECUTABLES     =
+EXECUTABLES_L   = 
+
+#
+# <brief description of xxxxx program>
+xxxxx_OBJECTS = 
+xxxxx_LIBS = 
+
+#
+# special compilation flags for single c sources
+#yyyyy_CFLAGS   = 
+
+#
+# Includes (.h) files (public only)
+# ---------------------------------
+INCLUDES        =
+
+#
+# Libraries (public and local)
+# ----------------------------
+LIBRARIES       =
+LIBRARIES_L     =
+
+#
+# <brief description of lllll library>
+lllll_OBJECTS   =
+
+#
+# Source files to be linked here in order to be tested
+# -----------------------------------------------------
+
+
+#
+# Scripts (public and local)
+# ----------------------------
+SCRIPTS         = TestDriver «this»TestSetEnv.sh «this»TestStart.sh
+SCRIPTS_L       =
+
+#
+# TCL scripts (public and local)
+# ------------------------------
+GLOBAL_TCLSH = seqSh 
+
+TCL_SCRIPTS     = «this»TestStdCommands 
+TCL_SCRIPTS_L   =
+
+#
+# <brief description of tttttt tcl-script>
+«this»TestStdCommands_OBJECTS  = «this»TestStdCommands
+«this»TestStdCommands_TCLSH    = $(GLOBAL_TCLSH)
+«this»TestStdCommands_LIBS     = «this»TestSupportLib
+
+
+#
+# TCL libraries (public and local)
+# ------------------------------
+TCL_LIBRARIES   = «this»TestSupportLib
+TCL_LIBRARIES_L =
+
+#
+# <brief description of tttlll library>
+«this»TestSupportLib_OBJECTS = «this»TestSupport
+
+#
+# UIF panels (public and local)
+# ----------------------------
+PANELS   = 
+PANELS_L = 
+
+#
+# On-Line Database Files
+# ----------------------
+DBL_CLASSES = 
+DBL_BCF = 
+DBL_LOAD = «this»TestDb
+DBL_FLAGS =  $(I_PATH) -a 1000 
+xxxx_DBL_FLAGS =
+
+#
+# Dictionary and Alias Files
+# --------------------------
+
+#
+# man pages to be done
+# --------------------
+MANSECTIONS =
+MAN1 =
+MAN3 =
+MAN5 =
+MAN7 =
+MAN8 =
+
+#
+# local man pages
+# ---------------
+MANl =
+
+#
+# ASCII file to be converted into Framemaker-MIF
+# --------------------
+ASCII_TO_MIF = 
+
+
+#
+# list of all possible C-sources (used to create automatic dependencies)
+# ------------------------------
+CSOURCENAMES = \
+	$(foreach exe, $(EXECUTABLES) $(EXECUTABLES_L), $($(exe)_OBJECTS)) \
+	$(foreach lib, $(LIBRARIES) $(LIBRARIES_L), $($(lib)_OBJECTS))
+
+#
+#>>>>> END OF standard rules
+
+#
+# CHOSE PLATFORM
+# --------------
+# Default is UNIX, for VxVorks application next line MUST BE UNCOMMENTED
+#MAKE_VXWORKS = on   
+
+#
+# INCLUDE STANDARDS
+# -----------------
+MAKEDIR = $(VLTROOT)/include
+include $(MAKEDIR)/vltMakefile
+
+#
+# Test files (produced during tests and to be deleted)
+# ----------------------------------------------------
+
+#
+# TARGETS
+# -------
+all:	do_all 
+	@echo " . . . 'all' done" 
+
+clean : clean_all 
+	$(AT) $(RM) *~ *.diff *.rep ../dbl/*~ core out/*.out out/*.diff sed.scan *.log .gdb* ENVIRONMENTS/wsTat/log/*.log «this»TestDb.dat
+	@echo " . . . clean done"
+
+man   : do_man 
+	@echo " . . . man page(s) done"
+
+install : install_all
+	@echo " . . . installation done"
+
+db : db_all
+	@echo " . . . ../DB done"
+
+#___oOo___
+
+«ENDFILE»
+«ENDDEFINE»
+

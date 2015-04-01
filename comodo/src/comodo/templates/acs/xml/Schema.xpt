@@ -1,0 +1,81 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Schema.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::interface»
+«EXTENSION comodo::xtend::cmdo::property»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::uml::artifact»
+
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls().select(e|e.hasInterfacesConfigurable())»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FILE getPackageVar() + '/config/CDB/schemas/' + name + '.xsd'-»
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   - Configuration Database Schema for a «name»
+   -
+   - «getPropSet('Id')»
+   -
+   - History:
+   - 	COMODO «getCommentDate()» Created.	
+-->
+<xs:schema 
+	targetNamespace="urn:schemas-cosylab-com:«name»:1.0"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="urn:schemas-cosylab-com:«name»:1.0"
+	xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+	xmlns:baci="urn:schemas-cosylab-com:BACI:1.0" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified">
+	
+	<xs:import namespace="urn:schemas-cosylab-com:CDB:1.0" schemaLocation="CDB.xsd"/>
+	<xs:import namespace="urn:schemas-cosylab-com:BACI:1.0" schemaLocation="BACI.xsd"/>
+	 
+	<xs:complexType name="«name»">
+		<xs:complexContent>
+			<xs:extension base="baci:CharacteristicComponent">
+			«FOREACH getAllInterfaces().select(e|e.hasOwnedRORWProperties()) AS eInterface-»
+			    <xs:sequence>
+			    «FOREACH eInterface.getOwnedROProperties() AS eCharacteristicProperty-»
+			    	<xs:element name="«eCharacteristicProperty.name»" type="baci:RO«eCharacteristicProperty.getReturnType()»"/>
+			    «ENDFOREACH-»
+			    «FOREACH eInterface.getOwnedRWProperties() AS eCharacteristicProperty-»
+			    	<xs:element name="«eCharacteristicProperty.name»" type="baci:RW«eCharacteristicProperty.getReturnType()»"/>
+			    «ENDFOREACH-»	
+			    </xs:sequence>
+			«ENDFOREACH-»
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>	
+	
+	<xs:element name="«name»" type="«name»"/>
+	
+</xs:schema>
+«ENDFILE»
+«ENDDEFINE»

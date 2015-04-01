@@ -1,0 +1,61 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: SMMaintenance.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::stereotypes»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::uml::artifact»
+
+«DEFINE Root FOR uml::Model»
+
+«IF !getModulePackage().getPimComponentImpls().select(e|e.hasStateMachine()).isEmpty»
+«FILE  getPackageVar()+'/idl/'+'SMMaintenance.idl'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+#ifndef _SMMAINTENANCE_IDL_
+#define _SMMAINTENANCE_IDL_
+
+#pragma prefix "alma"
+
+module «getModulePackage().name»
+{
+	/**
+	 * Provides maintenance methods for the State Machine engine
+	 * @interface SMMaintenance
+	 */
+	interface SMMaintenance
+	{
+		void SMreset();
+		boolean SMloadDefinition(in string file);
+		string SMgetCurrentState();
+		boolean SMfireSignal(in string signal);
+	};
+};
+#endif /* _SMMAINTENANCE_IDL_ */
+«ENDFILE»
+«ENDIF»
+
+«ENDDEFINE»

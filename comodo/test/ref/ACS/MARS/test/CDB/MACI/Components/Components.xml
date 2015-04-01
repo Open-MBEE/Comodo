@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2011-11-19 Created.	
+-->
+<Components  xmlns="urn:schemas-cosylab-com:Components:1.0"
+		xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+		xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		
+		<_ Name="fd" 
+			Code="alma.MARS.FDJavaImpHelper"
+			Type="IDL:alma/MARS/FDInterface:1.0"
+			Container="MARSContainer" 
+			ImplLang="java" />
+		<_ Name="oc" 
+			Code="alma.MARS.OCJavaImpHelper"
+			Type="IDL:alma/MARS/OCInterface:1.0"
+			Container="MARSContainer" 
+			ImplLang="java" />
+		<_ Name="sc" 
+			Code="alma.MARS.SCJavaImpHelper"
+			Type="IDL:alma/MARS/SCInterface:1.0"
+			Container="MARSContainer" 
+			ImplLang="java" />
+		<_ Name="trd" 
+			Code="alma.MARS.TRDJavaImpHelper"
+			Type="IDL:alma/MARS/TRDInterface:1.0"
+			Container="MARSContainer" 
+			ImplLang="java" />
+		<_ Name="ts" 
+			Code="alma.MARS.TSJavaImpHelper"
+			Type="IDL:alma/MARS/TSInterface:1.0"
+			Container="MARSContainer" 
+			ImplLang="java" />
+
+		<!-- Component Simulators -->
+		<_ Name="fdSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/MARS/FDInterface:1.0"
+			Container="MARSSimulator" 
+			ImplLang="py" />
+		<_ Name="ocSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/MARS/OCInterface:1.0"
+			Container="MARSSimulator" 
+			ImplLang="py" />
+		<_ Name="scSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/MARS/SCInterface:1.0"
+			Container="MARSSimulator" 
+			ImplLang="py" />
+		<_ Name="trdSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/MARS/TRDInterface:1.0"
+			Container="MARSSimulator" 
+			ImplLang="py" />
+		<_ Name="tsSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/MARS/TSInterface:1.0"
+			Container="MARSSimulator" 
+			ImplLang="py" />
+
+	   <!-- Instance to test components -->
+	   
+	   <!-- Java Component Instances -->
+	   
+	   <_ Name="testInstanceTSJavaImp" 
+			Code="alma.MARS.TSJavaImpHelper"
+			Type="IDL:alma/MARS/TSInterface:1.0"
+			Container="MARSJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceTRDJavaImp" 
+			Code="alma.MARS.TRDJavaImpHelper"
+			Type="IDL:alma/MARS/TRDInterface:1.0"
+			Container="MARSJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceSCJavaImp" 
+			Code="alma.MARS.SCJavaImpHelper"
+			Type="IDL:alma/MARS/SCInterface:1.0"
+			Container="MARSJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceFDJavaImp" 
+			Code="alma.MARS.FDJavaImpHelper"
+			Type="IDL:alma/MARS/FDInterface:1.0"
+			Container="MARSJavaTest" 
+			ImplLang="java" />
+			
+	   <_ Name="testInstanceOCJavaImp" 
+			Code="alma.MARS.OCJavaImpHelper"
+			Type="IDL:alma/MARS/OCInterface:1.0"
+			Container="MARSJavaTest" 
+			ImplLang="java" />
+			
+	   
+	   
+</Components>

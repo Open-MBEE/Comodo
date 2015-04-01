@@ -1,0 +1,64 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Fsms.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«DEFINE PropertiesRoot FOR String-»
+«FILE this+"/"+this+".properties"-»
+
+#
+# Setting the path to .java and .class
+#
+jpf-statechart.classpath+=;${config_path}/object
+jpf-statechart.sourcepath+=;${config_path}/src
+
+
+#
+# Setting the log and reporting configuration
+#
+log.info=gov.nasa.jpf.sc
+
+report.class=gov.nasa.jpf.report.Reporter
+report.publisher=console
+#report.publisher=console,html
+report.console.class=gov.nasa.jpf.report.ConsolePublisher
+report.console.property_violation=error
+report.html.class=gov.nasa.jpf.report.HTMLPublisher
+report.html.property_violation=error
+#report.html.transition=trace
+#report.html.start=error,trace,snapshot,output,statistics
+report.html.finished=result,output,statistics
+report.html.path=${config_path}/report
+
+#
+# Configure JPF to use the statechart event generator
+#
+choice.class=.jvm.choice.sc.SCEventGenerator
+choice.exclude=completion
+
+#
+# Add to JPF a listener that reports on statechart choice
+# and on the number of times a state has been visitited.
+#
+#listener=.listener.ChoiceTracker
+listener = gov.nasa.jpf.listener.ChoiceTracker,gov.nasa.jpf.tools.sc.Coverage
+
+«ENDFILE»
+«ENDDEFINE»

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="UPDATE_MOTORHEALTH">  
+  <state id="UPDATE_MOTORHEALTH"> 
+    <transition event="GetMotorHealthFlag"> 
+      <customActionDomain:ComputeMotorHealth name="ComputeMotorHealth"/> 
+    </transition>  
+    <transition event="Exit" target="OFF"/> 
+  </state>  
+  <final id="OFF"/> 
+</scxml>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<SimulatedComponent 
+	xmlns="urn:schemas-cosylab-com:SimulatedComponent:1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	
+	<pythonImports>
+import TYPES
+import Lamp1ImplSim
+	</pythonImports>
+        
+	<_corbaMethod Name="switchOn" Timeout="0">
+Lamp1ImplSim.switchOn()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="switchOff" Timeout="0">
+Lamp1ImplSim.switchOff()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="standby" Timeout="0">
+Lamp1ImplSim.standby()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="online" Timeout="0">
+Lamp1ImplSim.online()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="off" Timeout="0">
+Lamp1ImplSim.off()
+	</_corbaMethod>
+	
+	<_corbaMethod Name="setup" Timeout="0">
+Lamp1ImplSim.setup(parameters[0])
+	</_corbaMethod>
+	
+</SimulatedComponent>

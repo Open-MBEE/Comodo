@@ -1,0 +1,160 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: helpers.ext 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+
+import uml;
+
+
+//################## GLOBAL VARS ##########################################
+
+/**
+ * Return the mode of code generation (i.e. which files to generate).
+ */ 
+String getGenerationMode():
+	((String)GLOBALVAR GenerationMode);
+
+boolean generateModeAll():
+	getGenerationMode().toUpperCase().matches("ALL");
+	
+boolean generateModeNormal():
+	getGenerationMode().toUpperCase().matches("NORMAL");
+
+boolean generateModeUpdate():
+	getGenerationMode().toUpperCase().matches("UPDATE");
+	
+/**
+ * Returns the paltform configuration.
+ */ 
+String getPlatformConfig():
+	((String)GLOBALVAR PlatformConfig);
+		
+/**
+ * Returns the name of the module to generate.
+ */ 
+String getPackageVar():
+	((String)GLOBALVAR ModuleName);
+
+/**
+ * The package that is the PIM module we are generating.
+ */
+Package getModulePackage(Model model):
+	model.allOwnedElements().typeSelect(uml::Package).select(e|e.name == getPackageVar()).first();	
+	
+/**
+ * Returns the name of output directory.
+ */ 
+String getOutputDirectory():
+	((String)GLOBALVAR OutputDirectory);
+	
+//################## TOPOLOGICAL SORT ##########################################
+/**
+ * Sort the etopics using topological sort
+ * @param List
+ * @return List
+ */
+List[Signal] getTopicSorted(List[Signal] list):
+	JAVA comodo.util.TopologicalSort.getTopicSorted(java.util.List);
+
+//########################### COMMENT ##########################################
+String getComment(Element eElement): 
+	eElement.ownedComment.first().body;
+
+boolean hasComment(Element eElement): 
+	!eElement.ownedComment.isEmpty;
+
+List[String] getCommentsWrapped(String comments): 
+	JAVA comodo.util.JavaExtension.getCommentsWrapped(java.lang.String);
+
+//################################# DATE #######################################
+cached String getFullActualDate(): 
+	JAVA comodo.util.JavaExtension.getFullActualDate();
+
+cached String getCommentDate(): 
+	JAVA comodo.util.JavaExtension.getCommentDate();	
+
+//################################ FILE ##########################################
+boolean fileExists(String filename):
+	JAVA comodo.util.JavaExtension.fileExists(java.lang.String);
+	
+//################################### SVN ########################################
+/**
+ * Get the version control (SVN, ...) string for a propset.
+ */
+cached String getPropSet(String propset): 
+	JAVA comodo.util.JavaExtension.getPropSet(java.lang.String);
+	
+	
+//################################ LIST ##########################################
+
+List[String] removeDuplicates(List[String] list):
+	JAVA comodo.util.JavaExtension.removeDuplicates(java.util.List);
+
+//################################ STRING ##########################################
+	
+String getPrefix(String s):
+	JAVA comodo.util.JavaExtension.getPrefix(java.lang.String);
+	
+String combinePrefixPostfix(String s):	
+	JAVA comodo.util.JavaExtension.combinePrefixPostfix(java.lang.String);
+
+//################################ QUALIFIERS ########################
+cached String getAbsoluteQualifierId() :			"absolute";
+cached String getRelativeQualifierId() :			"relative";
+
+String getQualifierScope():
+	((String)GLOBALVAR QualifierScope);
+
+boolean isAbsoluteQualifierScope():
+	if getQualifierScope() == null 
+		then true
+	else if getQualifierScope().toLowerCase().matches(getAbsoluteQualifierId()) == true	
+		then true
+	else
+		false;		
+
+boolean isRelativeQualifierScope():
+	if isAbsoluteQualifierScope() == true 
+		then false
+	else
+		true;
+	
+
+	
+//################################ PLATFORM SPECIFIC HELPERS ########################
+boolean isVltStandardAction(String s):
+	if (s.matches("EXIT") ||
+		s.matches("INIT") ||
+		s.matches("OFF") ||
+		s.matches("ONLINE") ||
+		s.matches("SELFTST") ||
+		s.matches("SETLOG") ||
+		s.matches("SIMULAT") ||
+		s.matches("STANDBY") ||
+		s.matches("STATE") ||
+		s.matches("STATUS") ||
+		s.matches("STOP") ||
+		s.matches("VERBOSE") ||
+		s.matches("VERSION")) then
+		true
+	else
+		false;
+		
+boolean isVltMultiThreadedConfig():
+	getPlatformConfig().toUpperCase().contains("MULTITHREAD");
+			

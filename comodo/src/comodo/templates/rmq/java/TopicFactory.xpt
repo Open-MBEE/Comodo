@@ -1,0 +1,95 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: SMEngine.xpt 473 2011-10-06 14:44:21Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::stereotypes»
+«EXTENSION comodo::xtend::cmdo::langtype»
+
+
+«DEFINE Root FOR uml::Model»
+«IF !getModulePackage().getPimTopics().isEmpty»
+«FILE getPackageVar() + "/src/" + getPackageVar() + "/TopicFactory.java"»
+«EXPAND comodo::templates::rmq::txt::Copyright::Copyright FOR "" -»
+
+package «getModulePackage().name»;
+
+import java.util.HashMap;
+
+import RMQCommons.Topic;
+
+public class TopicFactory {
+	private static TopicFactory mInstance = null;
+	
+	/*
+	 * Make sure it is created only via getInstance method
+	 * by defining private the constructor.
+	 */
+	private TopicFactory() {
+	}
+	
+	public static TopicFactory getInstance() {
+		if (mInstance == null) {
+			mInstance = new TopicFactory();
+		}
+		return mInstance;
+	}
+	
+	public Topic createTopic(final String topicName, final String payload) {
+	
+		Topic t = null;
+		
+		if (topicName.isEmpty()) {
+			/* error */
+		}
+«FOREACH getModulePackage().getPimTopics() AS el -»
+		else if (topicName.matches("«el.name»")) {
+			t = new «el.name»(payload);
+		}
+«ENDFOREACH-»			
+		else {
+			/* error */
+		}
+		
+		return t;
+	}
+	
+	public HashMap<String, Topic> createAllTopics() {
+		HashMap<String, Topic> map = new HashMap<String, Topic>();
+		Topic t = null;
+		
+«FOREACH getModulePackage().getPimTopics() AS el -»
+		t = new «el.name»();
+		map.put("«el.name»", t);
+«ENDFOREACH-»				
+
+		return map;
+	}
+}
+«ENDFILE»
+«ENDIF»
+«ENDDEFINE»
+
+

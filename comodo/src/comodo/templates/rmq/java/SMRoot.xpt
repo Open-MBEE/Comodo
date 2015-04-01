@@ -1,0 +1,137 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: Fsms.xpt 386 2011-08-20 13:07:57Z nbenes $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::uml::artifact»
+«EXTENSION comodo::xtend::uml::statemachine»
+
+«DEFINE Root FOR uml::Model»
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+  	«EXPAND SM FOREACH eElement.getStateMachines()-»
+«ENDFOREACH-»
+«ENDDEFINE»
+
+«DEFINE SM FOR uml::StateMachine»
+	«FOREACH listStates().select(e|e.isTopState()).sortBy(e|e.name) AS st» 
+		«EXPAND ExploreState FOR st»
+	«ENDFOREACH»	
+
+
+«REM» JAVA Custom Actions List«ENDREM»
+«IF !(this.allOwnedElements().typeSelect(State).entry.isEmpty) ||
+	!(this.allOwnedElements().typeSelect(State).exit.isEmpty) || 
+	!(this.allOwnedElements().typeSelect(Transition).hasAction().isEmpty)»
+	«EXPAND comodo::templates::rmq::txt::SMActionMap::SMActionMap»
+«ENDIF»
+«IF !(this.allOwnedElements().typeSelect(State).doActivity.isEmpty)»
+	«EXPAND SMJavaInvoker::SMJavaInvoker»
+	«EXPAND comodo::templates::rmq::txt::SMActivityMap::SMActivityMap»
+	
+	«EXPAND SMActivity::SMActivity»
+
+«ENDIF»
+«ENDDEFINE»
+
+«REM» Explore Generic States «ENDREM»
+«DEFINE ExploreState FOR State»
+	«IF this.isSimple()»
+		«EXPAND ExploreSimpleState-»
+	«ELSE»
+		«IF this.isComposite()»
+			«EXPAND ExploreCompState-»
+		«ENDIF»
+	«ENDIF»	
+«ENDDEFINE»
+
+«REM» Explore Simple States «ENDREM»
+«DEFINE ExploreSimpleState FOR State»
+	«IF this.isFinalState()»
+	«ELSE»	
+		«EXPAND ExploreActions-»
+		«EXPAND ExploreTransitions-»
+	«ENDIF»
+«ENDDEFINE»
+
+«REM» Explore Complex States «ENDREM»
+«DEFINE ExploreCompState FOR State»
+	«IF this.isOrthogonal()»
+		«EXPAND ExploreOrthState»
+	«ELSEIF !this.listStates().isEmpty»
+		<initial><transition target="«this.getInitialState().getFullName()-»"/></initial>
+		«FOREACH this.listCompChilds() AS cc-»
+			«EXPAND ExploreCompState FOR cc-»
+		«ENDFOREACH»
+		«FOREACH this.listSimpleChilds() AS sc-»
+			«EXPAND ExploreSimpleState FOR sc-»
+		«ENDFOREACH»
+
+		«EXPAND ExploreActions-»
+		«EXPAND ExploreTransitions-»
+	«ELSE»
+		«EXPAND ExploreSimpleState-»
+	«ENDIF»
+«ENDDEFINE»
+
+«REM» Explore Orthogonal States «ENDREM»
+«REM» Parallel Regions MUST have a name in the ecore model  «ENDREM»
+«REM» Parallel Regions are mapped as Complex states: a default state is needed «ENDREM»
+«DEFINE ExploreOrthState FOR State»
+	<parallel id="«this.getFullName()-»">
+		«FOREACH this.allOwnedElements().typeSelect(Region).select(e|(e.owner == this)) AS oreg-»
+		<state id="«oreg.getFullName()-»">
+			<initial><transition target="«oreg.getInitialState().getFullName()-»"/></initial>
+		«FOREACH oreg.allOwnedElements().typeSelect(State).select(e|(e.owner == oreg)) AS ost-»
+			«EXPAND ExploreState FOR ost-»
+		«ENDFOREACH-»
+	«ENDFOREACH»
+
+	«EXPAND ExploreActions-»
+	«EXPAND ExploreTransitions-»
+	</parallel>
+«ENDDEFINE»			
+
+«REM» Explore Actions and Activities «ENDREM»
+«DEFINE ExploreActions FOR State»
+	«IF this.hasOnEntry()»
+		«EXPAND SMActionImpl::SMActionImpl FOR this.entry»
+	«ENDIF»
+	«IF this.hasDoActions()»
+		«EXPAND SMActivityImpl::SMActivityImpl» 
+	«ENDIF» 
+	«IF this.hasOnExit()»
+		«EXPAND SMActionImpl::SMActionImpl FOR this.exit»
+	«ENDIF»
+«ENDDEFINE»
+
+«REM» Explore Transitions «ENDREM»
+«DEFINE ExploreTransitions FOR State»
+	«FOREACH this.outgoing.sortBy(e|e.name) AS tr»
+		«IF tr.hasAction()»
+			«EXPAND SMActionImpl::SMActionImpl FOR tr.allOwnedElements().typeSelect(Behavior).get(0)»
+		«ENDIF»
+	«ENDFOREACH»
+«ENDDEFINE»
+
+

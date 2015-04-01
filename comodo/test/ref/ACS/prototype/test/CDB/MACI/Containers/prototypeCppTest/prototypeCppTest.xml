@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Container 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="urn:schemas-cosylab-com:Container:1.0" 
+	xmlns:log="urn:schemas-cosylab-com:LoggingConfig:1.0"
+	Timeout="20.0" UseIFR="1" 
+	ManagerRetry="10" 
+	DALtype="DAL" 
+	ServerThreads="5" 
+	Recovery="false"  
+	ImplLang="cpp">
+	
+	<Autoload>
+	</Autoload>
+	
+	<LoggingConfig 
+		centralizedLogger="Log" 
+		minLogLevel="2" 
+		dispatchPacketSize="0" 
+		immediateDispatchLevel="99" 
+		flushPeriodSeconds="10" 
+		maxLogQueueSize="1000" 
+		maxLogsPerSecond="-1" 
+		minLogLevelLocal="2">
+  </LoggingConfig>  
+    
+</Container>

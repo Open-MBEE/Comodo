@@ -1,0 +1,56 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: TATlistlite.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model»
+«FILE getPackageVar() + '/test/TestList.lite'-»
+«EXPAND comodo::templates::acs::txt::Copyright::CopyrightScript FOR "" -»
+
+
+SOURCE TATEnvironment
+
+PROLOGUE ./«getPackageVar()»TATPrologue
+
+#java test
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement ITERATOR iterator -»
+«1000+iterator.counter1» «eElement.name»Test "acsStartJava -endorsed  alma.acs.testsupport.tat.TATJUnitRunner «getModulePackage().name».«eElement.name»Test"
+«ENDFOREACH-»
+
+#cpp test
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement ITERATOR iterator -»
+«2000+iterator.counter1» cppUnitTest«eElement.name» "../bin/cppUnitTest«eElement.name»"
+«ENDFOREACH-»
+
+#python test
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement ITERATOR iterator -»
+«3000+iterator.counter1» pyUnitTest«eElement.name» "python ../bin/pyUnitTest«eElement.name» testInstance«eElement.name»"
+«ENDFOREACH-»
+
+EPILOGUE ./«getPackageVar()»TATEpilogue
+
+# ___oOo___
+«ENDFILE»
+«ENDDEFINE»

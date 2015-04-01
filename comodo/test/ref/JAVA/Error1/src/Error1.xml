@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="TopLevel">  
+  <parallel id="TopLevel"> 
+    <state id="R1"> 
+      <initial>
+        <transition target="R1_1"/>
+      </initial>  
+      <state id="R1_1"> 
+        <initial>
+          <transition target="R1_1_1"/>
+        </initial>  
+        <state id="R1_1_1"> 
+          <invoke targettype="java" id="TestR1_1_1" src="SMActivityTestR1_1_1.java"/> 
+        </state>  
+        <invoke targettype="java" id="TestR1_1" src="SMActivityTestR1_1.java"/> 
+      </state> 
+    </state>  
+    <state id="R2"> 
+      <initial>
+        <transition target="R2_1"/>
+      </initial>  
+      <state id="R2_1"> 
+        <invoke targettype="java" id="TestR2_1" src="SMActivityTestR2_1.java"/> 
+      </state> 
+    </state>  
+    <invoke targettype="java" id="TestTopLevel" src="SMActivityTestTopLevel.java"/> 
+  </parallel> 
+</scxml>

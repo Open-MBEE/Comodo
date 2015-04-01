@@ -1,0 +1,40 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/test/'+this+'TestStart.sh'-»
+#! /bin/sh
+«EXPAND comodo::templates::vlt::txt::Copyright::Script FOR "" -»
+
+# Processes are re-created for each test (i.e. they are not in the CcsEnvTable).
+# At the end of the test the processes are deleted by «this»TestStop.sh script.
+# Make sure log output in on CONSOLE to allow TAT test checking behaviour.
+dbWrite ":Appl_data:«this»:control.verbose" "CONSOLE"
+«this»Control -r :Appl_data:«this» &
+
+# valgrind --tool=memcheck --leak-check=yes -v --trace-children=yes --show-reachable=yes --num-callers=50 --log-file=./«this»_valgrind.log «this»Control -r :Appl_data:«this» &
+
+# ___oOo___
+
+«ENDFILE»
+«ENDDEFINE»
+

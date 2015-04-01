@@ -1,0 +1,97 @@
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: package.ext 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+
+import uml;
+
+extension comodo::xtend::cmdo::stereotypes;
+extension comodo::xtend::cmdo::artifact;
+
+
+//############################ PIM #############################################
+List[uml::Artifact] getPimComponentImpls(Package element):
+	element.allOwnedElements().select(e|isPimComponentImpl(e));
+
+List[Signal] getPimTopicSequences(Package element):
+	element.allOwnedElements().select(e|isPimTopicSequence(e));
+
+List[Signal] getPimExceptions(Package element):
+	element.allOwnedElements().select(e|isPimException(e));
+	
+boolean hasPimExceptions(Package element) :
+	!element.getPimExceptions().isEmpty;
+
+List[Interface] getPimInterfaces(Package element):
+	element.allOwnedElements().select(e|isPimInterface(e));
+
+List[Signal] getPimTopics(Package element):
+	element.allOwnedElements().select(e|isPimTopic(e));
+
+List[Class] getPimComponents(Package element):
+	element.allOwnedElements().select(e|isPimComponent(e));
+
+List[Property] getPimPublishers(Package element):
+	element.allOwnedElements().select(e|isPimPublish(e));
+
+List[Property] getPimSubscribers(Package element):
+	element.allOwnedElements().select(e|isPimSubscribe(e));
+
+List[ExecutionEnvironment] getPimContainers(Package element):
+	element.allOwnedElements().select(e|isPimContainer(e));
+
+List[Enumeration] getPimEnumerations(Package element):
+	element.allOwnedElements().select(e|isPimEnumeration(e));
+
+//###################### NOTIFICATION CHANNEL ##################################
+List[Property] getNCDefinitions(Package element) :
+	element.allOwnedElements().select(e|e.isPimPublish() || e.isPimSubscribe());
+
+boolean hasNCDefinitions(Package element) :
+	!element.getNCDefinitions().isEmpty;
+
+
+//############################### ARTIFACTS ####################################
+/**
+ * Get the ComponentImpls with the Java language assigned.
+ */
+List[Artifact] getJavaImpl(Package package):
+	package.getPimComponentImpls().select(e|e.getLanguageTag() == 'java');
+
+boolean hasJavaImpl(Package package):
+	!package.getJavaImpl().isEmpty;
+
+/**
+ * Get the ComponentImpls with the C++ language assigned.
+ */
+List[Artifact] getCppImpl(Package package):
+	package.getPimComponentImpls().select(e|e.getLanguageTag() == 'cpp');
+
+boolean hasCppImpl(Package package):
+	!package.getCppImpl().isEmpty;
+
+/**
+ * Get the ComponentImpls with the Python language assigned.
+ */
+List[Artifact] getPyImpl(Package package):
+	package.getPimComponentImpls().select(e|e.getLanguageTag() == 'py');
+
+boolean hasPyImpl(Package package):
+	!package.getPyImpl().isEmpty;
+
+

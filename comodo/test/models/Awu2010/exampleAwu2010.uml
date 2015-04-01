@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MagicDrawProfile="http:///schemas/MagicDrawProfile/__obssMpOEeCvb87hIvpXdw/0" xmlns:comodoProfile="http:///schemas/comodoProfile/__oR7tMpOEeCvb87hIvpXdw/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.0.0/UML" xsi:schemaLocation="http:///schemas/MagicDrawProfile/__obssMpOEeCvb87hIvpXdw/0 UML_Standard_Profile.MagicDraw_Profile.profile.uml#__zwRNspOEeCvb87hIvpXdw http:///schemas/comodoProfile/__oR7tMpOEeCvb87hIvpXdw/0 comodoProfile.profile.uml#__zwP98pOEeCvb87hIvpXdw">
+  <uml:Model xmi:id="eee_1045467100313_135436_1" name="Data" viewpoint="">
+    <ownedComment xmi:id="_16_8_b5f02cf_1290026647882_565334_1265" body="Author:atejeda.&#xA;Created:11/17/10 5:44 PM.&#xA;Title:.&#xA;Comment:.&#xA;" annotatedElement="eee_1045467100313_135436_1"/>
+    <packageImport xmi:id="_0primitiveTypesData">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypesData">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_16_8_b5f02cf_1290026936289_301038_1451" name="awu2010">
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_8_b5f02cf_1290026948721_661763_1452" name="SORT">
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_8_b5f02cf_1290045790772_457150_1829" name="LegoImpl" clientDependency="_16_8_b5f02cf_1290045927189_479608_1926" fileName="">
+          <manifestation xmi:id="_16_8_b5f02cf_1290045927189_479608_1926" name="" supplier="_16_8_b5f02cf_1290045325668_193985_1684" client="_16_8_b5f02cf_1290045790772_457150_1829" utilizedElement="_16_8_b5f02cf_1290045325668_193985_1684"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481952043_266091_1809" name="CannotOpenDevice"/>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481123202_746150_1426" name="PositionOutOfLimits"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_b5f02cf_1290045466703_629895_1730" name="Scheduler" clientDependency="_16_8_b5f02cf_1290049511347_884814_2474">
+          <interfaceRealization xmi:id="_16_8_b5f02cf_1290049511347_884814_2474" name="" supplier="_16_8_b5f02cf_1290047682040_994244_2147" client="_16_8_b5f02cf_1290045466703_629895_1730" contract="_16_8_b5f02cf_1290047682040_994244_2147"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481782754_673358_1734" name="SchedulerAlreadyRunning"/>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_8_b5f02cf_1290045789426_941203_1811" name="InstrumentImpl" clientDependency="_16_8_b5f02cf_1290045924245_713193_1920" fileName="">
+          <manifestation xmi:id="_16_8_b5f02cf_1290045924245_713193_1920" name="" supplier="_16_8_b5f02cf_1290045324363_442302_1664" client="_16_8_b5f02cf_1290045789426_941203_1811" utilizedElement="_16_8_b5f02cf_1290045324363_442302_1664"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290048890042_167415_2382" name="Proposal">
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290048938419_756805_2399" name="pid" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290048942975_443997_2401" name="status" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290048947352_638049_2403" name="targets" type="_16_8_b5f02cf_1290048805040_181975_2357"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_b5f02cf_1290047636798_557978_2109" name="Database">
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290399703537_423516_1414" name="STATUS_QUEUED" visibility="public" isStatic="true">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            <defaultValue xmi:type="uml:LiteralString" xmi:id="_16_8_b5f02cf_1290399844172_363772_1556" name="" value="0"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290399709980_496013_1416" name="STATUS_RUNNING" visibility="public" isStatic="true">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            <defaultValue xmi:type="uml:LiteralString" xmi:id="_16_8_b5f02cf_1290399849607_567025_1557" name="" value="1"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290399760034_234440_1418" name="STATUS_READY" visibility="public" isStatic="true">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            <defaultValue xmi:type="uml:LiteralString" xmi:id="_16_8_b5f02cf_1290399856516_174534_1558" name="" value="2"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290399800726_329159_1420" name="STATUS_NO_SUCH_PROPOSAL" visibility="public" isStatic="true">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            <defaultValue xmi:type="uml:LiteralString" xmi:id="_16_8_b5f02cf_1290399809713_889342_1422" name="" value="-999"/>
+          </ownedAttribute>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048019440_869854_2279" name="storeProposal" visibility="public">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104378963_628666_3162" name="targets" visibility="public" type="_16_8_b5f02cf_1290048805040_181975_2357"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290466284863_340474_1646" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048057969_300751_2286" name="removeProposal" visibility="public">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104456109_711194_3167" name="pid" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104456116_553721_3168" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048089762_456338_2292" name="getProposals" visibility="public">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290374154526_181725_1422" name="" visibility="public" type="_16_8_b5f02cf_1290048890042_167415_2382" direction="return"/>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048103321_648519_2295" name="getProposalStatus" visibility="public">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104432884_672172_3165" name="pid" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104432893_96288_3166" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048116397_196472_2298" name="storeImage" visibility="public" raisedException="_16_8_b5f02cf_1290481659352_582269_1684 _16_8_b5f02cf_1290481248291_780257_1609 _16_8_b5f02cf_1290481340188_778304_1634">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104844273_273004_3543" name="pid" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104844282_870448_3544" name="image" visibility="public" type="_16_8_b5f02cf_1290104063542_72620_2172"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104844283_130384_3545" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048122234_858200_2301" name="clean" visibility="public">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104799540_98401_3540" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290104743521_416924_3534" name="setProposalStatus" visibility="public" raisedException="_16_8_b5f02cf_1290481513111_850937_1659">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104771129_150283_3536" name="pid" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104771136_600404_3537" name="status" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104791176_173870_3538" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290484845370_741789_1857" name="getProposalObservations" visibility="public" raisedException="_16_8_b5f02cf_1290481175012_92644_1451">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290484876068_591831_1859" name="pid" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290484938359_839312_1862" name="" visibility="public" type="_16_8_b5f02cf_1290104474464_805692_3171" direction="return"/>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290104063542_72620_2172" name="ImageType">
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290115122416_611919_1532" name="" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_8_b5f02cf_1290045796106_348481_1883" name="SchedulerImpl" clientDependency="_16_8_b5f02cf_1290045933253_74236_1938" fileName="">
+          <manifestation xmi:id="_16_8_b5f02cf_1290045933253_74236_1938" name="" supplier="_16_8_b5f02cf_1290045466703_629895_1730" client="_16_8_b5f02cf_1290045796106_348481_1883" utilizedElement="_16_8_b5f02cf_1290045466703_629895_1730"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290048805040_181975_2357" name="Target">
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290048829059_300666_2374" name="tid" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290048834236_295084_2376" name="coordinates" visibility="private" type="_16_8_b5f02cf_1290048641054_479757_2333"/>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290048863868_767434_2378" name="expTime" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_b5f02cf_1290045324363_442302_1664" name="Instrument" clientDependency="_16_8_b5f02cf_1290049490601_922587_2469">
+          <interfaceRealization xmi:id="_16_8_b5f02cf_1290049490601_922587_2469" name="" supplier="_16_8_b5f02cf_1290027784876_24241_1522" client="_16_8_b5f02cf_1290045324363_442302_1664" contract="_16_8_b5f02cf_1290027784876_24241_1522"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481900307_511851_1784" name="NoProposalExecuting"/>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290048641054_479757_2333" name="Position">
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290048684551_379662_2351" name="az" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#double"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290048688576_521021_2353" name="el" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#double"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_b5f02cf_1290027787940_238017_1560" name="Telescope">
+          <ownedComment xmi:id="_16_8_b5f02cf_1290485458068_710385_1864" body="High level interface to communicate with the hardware related component." annotatedElement="_16_8_b5f02cf_1290027787940_238017_1560"/>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290047433886_523511_2079" name="observe" visibility="public" raisedException="_16_8_b5f02cf_1290481123202_746150_1426">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290485577807_716880_1867" body="Moves to the given position and takes an exposure of length exposureTime (seconds). Raises and exception if the requested position is out of limits." annotatedElement="_16_8_b5f02cf_1290047433886_523511_2079"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290105550330_172661_3558" name="coordinates" visibility="public" type="_16_8_b5f02cf_1290048641054_479757_2333">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290488436428_929454_1884" body="target coordinates" annotatedElement="_16_8_b5f02cf_1290105550330_172661_3558"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290105550338_752190_3559" name="exposureTime" visibility="public">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290488449084_645006_1885" body="exposure time of the current observation" annotatedElement="_16_8_b5f02cf_1290105550338_752190_3559"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290105550339_754173_3560" name="" visibility="public" type="_16_8_b5f02cf_1290104063542_72620_2172" direction="return"/>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290047446157_65942_2082" name="moveTo" visibility="public" raisedException="_16_8_b5f02cf_1290481123202_746150_1426">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290488000074_773576_1880" body="Commands the telescope to move to the given position. Raises an exception if the requested position is out of limits." annotatedElement="_16_8_b5f02cf_1290047446157_65942_2082"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290105584420_110767_3561" name="coordinates" visibility="public" type="_16_8_b5f02cf_1290048641054_479757_2333">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290488473006_643716_1886" body="Requested telescope position" annotatedElement="_16_8_b5f02cf_1290105584420_110767_3561"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290105584426_665991_3562" name="" visibility="public" direction="return">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290488540326_770741_1887" body="current telescope position" annotatedElement="_16_8_b5f02cf_1290105584426_665991_3562"/>
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290047455202_713945_2085" name="getCurrentPosition" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290488010321_261646_1881" body="Get the current telescope position." annotatedElement="_16_8_b5f02cf_1290047455202_713945_2085"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290105593900_952796_3564" name="" visibility="public" type="_16_8_b5f02cf_1290048641054_479757_2333" direction="return"/>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_8_b5f02cf_1290045792667_60694_1847" name="DatabaseImpl" clientDependency="_16_8_b5f02cf_1290045921573_313460_1914" fileName="">
+          <manifestation xmi:id="_16_8_b5f02cf_1290045921573_313460_1914" name="" supplier="_16_8_b5f02cf_1290045323100_296264_1644" client="_16_8_b5f02cf_1290045792667_60694_1847" utilizedElement="_16_8_b5f02cf_1290045323100_296264_1644"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290049017307_67930_2407" name="RGB">
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290049040606_156979_2424" name="red" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290049053977_910244_2426" name="green" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290049057676_142263_2428" name="blue" visibility="private">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481830954_179194_1759" name="SchedulerAlreadyStopped"/>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_b5f02cf_1290047652192_510022_2128" name="DevCCD">
+          <ownedComment xmi:id="_16_8_b5f02cf_1290491608551_536390_1910" body="IDL specification for the DevCCD module interface. This interface is a CCD device abstraction, and, thus, it should be a generalization of a simple CCD The DecCCD interface defines a DevCCD-like ACS component that wili be the one in charge of communicate with the hardware itself. The main purpose of this interface is to take images from the camera with a certain exposure time." annotatedElement="_16_8_b5f02cf_1290047652192_510022_2128"/>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116630678_602963_4564" name="frame" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491697204_572702_1911" body="Holds the last frame that has been taken" annotatedElement="_16_8_b5f02cf_1290116630678_602963_4564"/>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116637030_729525_4566" name="device" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491708617_501611_1912" body="Holds the device name that should be accesed " annotatedElement="_16_8_b5f02cf_1290116637030_729525_4566"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116640057_110815_4568" name="red" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491719177_45960_1913" body="Set and get the red balance value" annotatedElement="_16_8_b5f02cf_1290116640057_110815_4568"/>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116648561_369422_4570" name="blue" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491730049_645013_1914" body="Set and get the blue balance value" annotatedElement="_16_8_b5f02cf_1290116648561_369422_4570"/>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116651661_570220_4572" name="green" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491745152_618686_1915" body="Set and get the green balance value" annotatedElement="_16_8_b5f02cf_1290116651661_570220_4572"/>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116653341_661115_4574" name="pixelBias" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491761258_139695_1916" body="Set and get the size of the pixels" annotatedElement="_16_8_b5f02cf_1290116653341_661115_4574"/>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116657245_979138_4576" name="resetLevel" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491773074_26900_1917" body="Set and get the reset level (black balance)" annotatedElement="_16_8_b5f02cf_1290116657245_979138_4576"/>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116659393_43069_4578" name="exposure" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491791210_329885_1918" body="Set and get the exposure time" annotatedElement="_16_8_b5f02cf_1290116659393_43069_4578"/>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116673718_770138_4580" name="locking" visibility="public" isReadOnly="true">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491809290_277962_1919" body="Locking status of the component. For further information, look at the DevTelescope component documentation" annotatedElement="_16_8_b5f02cf_1290116673718_770138_4580"/>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290116681352_703340_4582" name="powered" visibility="public" isReadOnly="true">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491817570_287237_1920" body="Is the device turned on/off? " annotatedElement="_16_8_b5f02cf_1290116681352_703340_4582"/>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+          </ownedAttribute>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048248909_672940_2307" name="image" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491835972_212354_1921" body="Tell the camera to capture a frame with certain exposure time. This is the main function of this component." annotatedElement="_16_8_b5f02cf_1290048248909_672940_2307"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290115848172_913668_2072" name="exposure" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#double"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290115876508_533679_2898" name="" visibility="public" type="_16_8_b5f02cf_1290104063542_72620_2172" direction="return"/>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048257210_187002_2316" name="lock" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491876812_241037_1922" body="This method locks the component, so any order received from any other component that is not CSATStatus or CSATControl will be ignored" annotatedElement="_16_8_b5f02cf_1290048257210_187002_2316"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290115897525_725767_2900" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048259841_930254_2319" name="unlock" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491891460_710858_1923" body="Unlocks the component, so the component will follow any order that an external component may give it" annotatedElement="_16_8_b5f02cf_1290048259841_930254_2319"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290115902070_534743_2902" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048251890_415303_2310" name="on" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491908731_782753_1924" body="Turns the CCD on (in simple models it will only affect the local variable" annotatedElement="_16_8_b5f02cf_1290048251890_415303_2310"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290115909750_599503_2904" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048254290_950884_2313" name="off" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491926645_977132_1925" body="Turns the CCD off (in simple models it will only affect the local variable" annotatedElement="_16_8_b5f02cf_1290048254290_950884_2313"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290115914724_434976_2906" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_8_b5f02cf_1290045787642_763230_1793" name="ConsoleImpl" clientDependency="_16_8_b5f02cf_1290045914055_791243_1908" fileName="">
+          <manifestation xmi:id="_16_8_b5f02cf_1290045914055_791243_1908" name="" supplier="_16_8_b5f02cf_1290045187140_146928_1598" client="_16_8_b5f02cf_1290045787642_763230_1793" utilizedElement="_16_8_b5f02cf_1290045187140_146928_1598"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481340188_778304_1634" name="InvalidTargetId"/>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290104474464_805692_3171" name="ImageList">
+          <ownedAttribute xmi:id="_16_8_b5f02cf_1290115276803_622606_1540" name="" visibility="private" type="_16_8_b5f02cf_1290104063542_72620_2172"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_16_8_b5f02cf_1290049360014_916686_2460" name="Deployment">
+          <packagedElement xmi:type="uml:ExecutionEnvironment" xmi:id="_16_8_b5f02cf_1290045594999_6172_1757" name="awuContainer">
+            <ownedAttribute xmi:id="_16_8_b5f02cf_1290049149866_637543_2432" name="console" visibility="private" type="_16_8_b5f02cf_1290045787642_763230_1793"/>
+            <ownedAttribute xmi:id="_16_8_b5f02cf_1290049268765_821957_2447" name="database" visibility="private" type="_16_8_b5f02cf_1290045792667_60694_1847"/>
+            <ownedAttribute xmi:id="_16_8_b5f02cf_1290049282119_432809_2449" name="instrument" visibility="private" type="_16_8_b5f02cf_1290045789426_941203_1811"/>
+            <ownedAttribute xmi:id="_16_8_b5f02cf_1290049291286_378404_2451" name="lego" visibility="private" type="_16_8_b5f02cf_1290045790772_457150_1829"/>
+            <ownedAttribute xmi:id="_16_8_b5f02cf_1290049297782_922937_2453" name="nexstar" visibility="private" type="_16_8_b5f02cf_1290045794386_47627_1865"/>
+            <ownedAttribute xmi:id="_16_8_b5f02cf_1290049309464_689851_2455" name="scheduler" visibility="private" type="_16_8_b5f02cf_1290045796106_348481_1883"/>
+          </packagedElement>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_b5f02cf_1290047682040_994244_2147" name="Scheduler">
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048355349_344441_2322" name="start" visibility="public" raisedException="_16_8_b5f02cf_1290481782754_673358_1734">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290105468764_873529_3549" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048357737_221694_2325" name="stop" visibility="public" raisedException="_16_8_b5f02cf_1290481830954_179194_1759">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290105478546_590487_3551" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290048359962_103027_2328" name="proposalUnderExecution" visibility="public" raisedException="_16_8_b5f02cf_1290481900307_511851_1784">
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290105493194_785768_3553" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481659352_582269_1684" name="ImageAlreadyStored"/>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481248291_780257_1609" name="InvalidProposalId"/>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_b5f02cf_1290027784876_24241_1522" name="Instrument">
+          <ownedComment xmi:id="_16_8_b5f02cf_1290491522022_764274_1907" body="This is the Webcam interface for the 50mm telescope." annotatedElement="_16_8_b5f02cf_1290027784876_24241_1522"/>
+          <generalization xmi:id="_16_8_b5f02cf_1290050059650_152729_2524" isSubstitutable="true" general="_16_8_b5f02cf_1290049772236_558324_2477"/>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290047095042_280902_2064" name="takeImage" visibility="public" raisedException="_16_8_b5f02cf_1290481729128_190721_1709">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491556144_11633_1908" body="Retrieve image from the Instrument. Raises an exception if the camera is not on." annotatedElement="_16_8_b5f02cf_1290047095042_280902_2064"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104944274_74997_3546" name="exposureTime" visibility="public">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104973643_217390_3547" name="" visibility="public" type="_16_8_b5f02cf_1290104063542_72620_2172" direction="return">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290491577197_340871_1909" body="array of longs containing the image pixels" annotatedElement="_16_8_b5f02cf_1290104973643_217390_3547"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_b5f02cf_1290049772236_558324_2477" name="CommonOperations">
+          <ownedComment xmi:id="_16_8_b5f02cf_1290485409772_484760_1863" body="This interface provides the common operations for console and instrument operations." annotatedElement="_16_8_b5f02cf_1290049772236_558324_2477"/>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290049875905_242120_2504" name="cameraOn" visibility="public" raisedException="_16_8_b5f02cf_1290481953619_433687_1827">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491226940_385762_1893" body="Set the camera on." annotatedElement="_16_8_b5f02cf_1290049875905_242120_2504"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290103958267_360759_1932" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290049892628_760293_2513" name="cameraOff" visibility="public" raisedException="_16_8_b5f02cf_1290481953619_433687_1827">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491238108_656975_1894" body="Set the camera off." annotatedElement="_16_8_b5f02cf_1290049892628_760293_2513"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290103962920_285783_1934" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290049824843_776696_2495" name="setRGB" visibility="public" raisedException="_16_8_b5f02cf_1290481729128_190721_1709">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491371878_905784_1901" body="Set the RGB configuration of the camera " annotatedElement="_16_8_b5f02cf_1290049824843_776696_2495"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104270962_661754_3156" name="rgbConfig" visibility="public" type="_16_8_b5f02cf_1290049017307_67930_2407">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290491406499_987948_1902" body="the RGB configuration" annotatedElement="_16_8_b5f02cf_1290104270962_661754_3156"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104270972_396454_3157" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290049830127_915109_2498" name="setPixelBias" visibility="public" raisedException="_16_8_b5f02cf_1290481729128_190721_1709">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491416366_417252_1903" body="Set the pixel bias configuration of the camera " annotatedElement="_16_8_b5f02cf_1290049830127_915109_2498"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104284866_449042_3158" name="bias" visibility="public">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290491464755_708764_1906" body="the pixel bias configuration" annotatedElement="_16_8_b5f02cf_1290104284866_449042_3158"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104284875_37892_3159" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290049837351_657338_2501" name="setResetLevel" visibility="public" raisedException="_16_8_b5f02cf_1290481729128_190721_1709">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491426517_990763_1904" body="Set the reset level configuration of the camera " annotatedElement="_16_8_b5f02cf_1290049837351_657338_2501"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104304026_532917_3160" name="resetLevel" visibility="public">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290491444750_194852_1905" body="ResetLevel the reset level configuration" annotatedElement="_16_8_b5f02cf_1290104304026_532917_3160"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#long"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104304035_214724_3161" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_b5f02cf_1290045325668_193985_1684" name="Lego" clientDependency="_16_8_b5f02cf_1290115969116_867442_3206">
+          <interfaceRealization xmi:id="_16_8_b5f02cf_1290115969116_867442_3206" name="" supplier="_16_8_b5f02cf_1290027787940_238017_1560" client="_16_8_b5f02cf_1290045325668_193985_1684" contract="_16_8_b5f02cf_1290027787940_238017_1560"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_b5f02cf_1290045323100_296264_1644" name="Database" clientDependency="_16_8_b5f02cf_1290049402177_300374_2463">
+          <interfaceRealization xmi:id="_16_8_b5f02cf_1290049402177_300374_2463" name="" supplier="_16_8_b5f02cf_1290047636798_557978_2109" client="_16_8_b5f02cf_1290045323100_296264_1644" contract="_16_8_b5f02cf_1290047636798_557978_2109"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Artifact" xmi:id="_16_8_b5f02cf_1290045794386_47627_1865" name="NexstarImpl" clientDependency="_16_8_b5f02cf_1290045929965_566910_1932" fileName="">
+          <manifestation xmi:id="_16_8_b5f02cf_1290045929965_566910_1932" name="" supplier="_16_8_b5f02cf_1290045327269_762928_1704" client="_16_8_b5f02cf_1290045794386_47627_1865" utilizedElement="_16_8_b5f02cf_1290045327269_762928_1704"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481513111_850937_1659" name="InvalidProposalStatusTransition"/>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290480752927_977298_1420" name="AlreadyInAutomatic"/>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481953619_433687_1827" name="SystemInAutoMode"/>
+        <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_b5f02cf_1290047629728_105845_2090" name="Console">
+          <ownedComment xmi:id="_16_8_b5f02cf_1290491068002_702532_1888" body="Operator's interface to set automatic and manual modes. Grants manual access to low level components." annotatedElement="_16_8_b5f02cf_1290047629728_105845_2090"/>
+          <generalization xmi:id="_16_8_b5f02cf_1290050047618_529582_2518" isSubstitutable="true" general="_16_8_b5f02cf_1290049772236_558324_2477"/>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290047817008_318215_2243" name="setMode" visibility="public" raisedException="_16_8_b5f02cf_1290480752927_977298_1420">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491114767_328998_1889" body="et the automatic manual mode for the operator. Raises an exception if the automatic mode is asked twice. " annotatedElement="_16_8_b5f02cf_1290047817008_318215_2243"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290103936923_948823_1929" name="mode" visibility="public">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290491164518_998020_1890" body="if true then automatic mode otherwise manual mode." annotatedElement="_16_8_b5f02cf_1290103936923_948823_1929"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290103936943_682984_1930" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290047834138_223255_2248" name="getMode" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491189409_910149_1891" body="Get the current operator's mode. " annotatedElement="_16_8_b5f02cf_1290047834138_223255_2248"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290047842708_328081_2251" name="" visibility="public" direction="return">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290491202511_517102_1892" body="current operator's mode" annotatedElement="_16_8_b5f02cf_1290047842708_328081_2251"/>
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290047869278_486802_2261" name="moveTelescope" visibility="public" raisedException="_16_8_b5f02cf_1290481123202_746150_1426 _16_8_b5f02cf_1290481953619_433687_1827">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491270755_344919_1895" body="Move telescope in synchronous mode. Raises an exception if the requested position is out of limits." annotatedElement="_16_8_b5f02cf_1290047869278_486802_2261"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290103989542_103328_1935" name="coordinates" visibility="public" type="_16_8_b5f02cf_1290048641054_479757_2333">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290491286515_46045_1896" body="az, el coordinates" annotatedElement="_16_8_b5f02cf_1290103989542_103328_1935"/>
+            </ownedParameter>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104018746_859334_2167" name="" visibility="public" direction="return">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290491323345_881318_1898" body="Telescope position" annotatedElement="_16_8_b5f02cf_1290104018746_859334_2167"/>
+              <type xmi:type="uml:PrimitiveType" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#eee_1045467100323_249638_60"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290047883382_859208_2264" name="getTelescopePosition" visibility="public">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491300516_459343_1897" body="Current telescope position. " annotatedElement="_16_8_b5f02cf_1290047883382_859208_2264"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104002335_281379_1937" name="" visibility="public" type="_16_8_b5f02cf_1290048641054_479757_2333" direction="return"/>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_b5f02cf_1290047888176_179832_2267" name="getCameraImage" visibility="public" raisedException="_16_8_b5f02cf_1290481953619_433687_1827 _16_8_b5f02cf_1290481729128_190721_1709">
+            <ownedComment xmi:id="_16_8_b5f02cf_1290491339708_570169_1899" body="Get an image from the camera (from actual position of telescope)." annotatedElement="_16_8_b5f02cf_1290047888176_179832_2267"/>
+            <ownedParameter xmi:id="_16_8_b5f02cf_1290104193269_244987_3155" name="" visibility="public" type="_16_8_b5f02cf_1290104063542_72620_2172" direction="return">
+              <ownedComment xmi:id="_16_8_b5f02cf_1290491357882_232969_1900" body="Image from the camera" annotatedElement="_16_8_b5f02cf_1290104193269_244987_3155"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_b5f02cf_1290045327269_762928_1704" name="Nexstar" clientDependency="_16_8_b5f02cf_1290115757865_846268_2070">
+          <interfaceRealization xmi:id="_16_8_b5f02cf_1290115757865_846268_2070" name="" supplier="_16_8_b5f02cf_1290047652192_510022_2128" client="_16_8_b5f02cf_1290045327269_762928_1704" contract="_16_8_b5f02cf_1290047652192_510022_2128"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_b5f02cf_1290045187140_146928_1598" name="Console" clientDependency="_16_8_b5f02cf_1290049442114_274754_2466">
+          <interfaceRealization xmi:id="_16_8_b5f02cf_1290049442114_274754_2466" name="" supplier="_16_8_b5f02cf_1290047629728_105845_2090" client="_16_8_b5f02cf_1290045187140_146928_1598" contract="_16_8_b5f02cf_1290047629728_105845_2090"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481175012_92644_1451" name="ProposalNotYetReady"/>
+        <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_b5f02cf_1290481729128_190721_1709" name="CameraIsOff"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="magicdraw_uml_standard_profile_v_0001" name="UML Standard Profile">
+      <ownedComment xmi:id="_be00301_1078843546940_242228_131" body="UML Standard Profile contains UML metamodel (metaclasses without properties and associations), StandardProfileL2 and StandardProfileL3 from UML specification, Standard UML stereotypes defined in annex C of UML specification.&#xA;Profile also includes validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally." annotatedElement="magicdraw_uml_standard_profile_v_0001"/>
+    </packagedElement>
+    <profileApplication xmi:id="_9_0_be00301_1108050582343_527400_10847profileApplicationData">
+      <eAnnotations xmi:id="__zwVbMpOEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.StandardProfileL2.profile.uml#__zwUhMpOEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.StandardProfileL2.profile.uml#_9_0_be00301_1108050582343_527400_10847"/>
+    </profileApplication>
+    <profileApplication xmi:id="_16_8beta_62a020a_1256807755193_508228_378profileApplicationData">
+      <eAnnotations xmi:id="__zwVbspOEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.StandardProfileL3.profile.uml#__zwP8cpOEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.StandardProfileL3.profile.uml#_16_8beta_62a020a_1256807755193_508228_378"/>
+    </profileApplication>
+    <profileApplication xmi:id="_11_5_be00301_1153310565718_226811_161profileApplicationData">
+      <eAnnotations xmi:id="__z584cpOEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#__zwO0spOEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_11_5_be00301_1153310565718_226811_161"/>
+    </profileApplication>
+    <profileApplication xmi:id="_11_5_f720368_1159529670215_231387_1profileApplicationData">
+      <eAnnotations xmi:id="__z5848pOEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#__zwMwspOEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml#_11_5_f720368_1159529670215_231387_1"/>
+    </profileApplication>
+    <profileApplication xmi:id="_16_6_1_ec40342_1279695659847_608236_478profileApplicationData">
+      <eAnnotations xmi:id="__z585cpOEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="comodoProfile.profile.uml#__zwP98pOEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="comodoProfile.profile.uml#_16_6_1_ec40342_1279695659847_608236_478"/>
+    </profileApplication>
+    <profileApplication xmi:id="_be00301_1073394351331_445580_2profileApplicationData">
+      <eAnnotations xmi:id="__z5858pOEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#__zwRNspOEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
+    </profileApplication>
+    <profileApplication xmi:id="_16_6_8f90291_1254846042821_86742_517profileApplicationData">
+      <eAnnotations xmi:id="__z586cpOEeCvb87hIvpXdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#__zwUucpOEeCvb87hIvpXdw"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_16_6_8f90291_1254846042821_86742_517"/>
+    </profileApplication>
+  </uml:Model>
+  <comodoProfile:cmdoTopic xmi:id="__2SihcpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290048641054_479757_2333"/>
+  <comodoProfile:cmdoTopic xmi:id="__2SihspOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290049017307_67930_2407"/>
+  <comodoProfile:cmdoTopic xmi:id="__2Sih8pOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290048805040_181975_2357"/>
+  <comodoProfile:cmdoTopic xmi:id="__2SiiMpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290048890042_167415_2382"/>
+  <comodoProfile:cmdoTopicSequence xmi:id="__2SiicpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290104063542_72620_2172"/>
+  <comodoProfile:cmdoTopicSequence xmi:id="__2SiispOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290104474464_805692_3171"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="__2Sii8pOEeCvb87hIvpXdw" base_Artifact="_16_8_b5f02cf_1290045792667_60694_1847" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="__2SijMpOEeCvb87hIvpXdw" base_Artifact="_16_8_b5f02cf_1290045790772_457150_1829" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="__2SijcpOEeCvb87hIvpXdw" base_Artifact="_16_8_b5f02cf_1290045796106_348481_1883" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="__2SijspOEeCvb87hIvpXdw" base_Artifact="_16_8_b5f02cf_1290045787642_763230_1793" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="__2Sij8pOEeCvb87hIvpXdw" base_Artifact="_16_8_b5f02cf_1290045794386_47627_1865" language="Java"/>
+  <comodoProfile:cmdoComponentImpl xmi:id="__2SikMpOEeCvb87hIvpXdw" base_Artifact="_16_8_b5f02cf_1290045789426_941203_1811" language="Java"/>
+  <comodoProfile:cmdoReadWriteProperty xmi:id="__2SikcpOEeCvb87hIvpXdw" base_Property="_16_8_b5f02cf_1290116637030_729525_4566"/>
+  <comodoProfile:cmdoReadWriteProperty xmi:id="__2SikspOEeCvb87hIvpXdw" base_Property="_16_8_b5f02cf_1290116651661_570220_4572"/>
+  <comodoProfile:cmdoReadWriteProperty xmi:id="__2Sik8pOEeCvb87hIvpXdw" base_Property="_16_8_b5f02cf_1290116659393_43069_4578"/>
+  <comodoProfile:cmdoReadWriteProperty xmi:id="__2SilMpOEeCvb87hIvpXdw" base_Property="_16_8_b5f02cf_1290116653341_661115_4574"/>
+  <comodoProfile:cmdoReadWriteProperty xmi:id="__2SilcpOEeCvb87hIvpXdw" base_Property="_16_8_b5f02cf_1290116648561_369422_4570"/>
+  <comodoProfile:cmdoReadWriteProperty xmi:id="__2SilspOEeCvb87hIvpXdw" base_Property="_16_8_b5f02cf_1290116640057_110815_4568"/>
+  <comodoProfile:cmdoReadWriteProperty xmi:id="__2Sil8pOEeCvb87hIvpXdw" base_Property="_16_8_b5f02cf_1290116657245_979138_4576"/>
+  <comodoProfile:cmdoModule xmi:id="__2SimMpOEeCvb87hIvpXdw" base_Package="_16_8_b5f02cf_1290026948721_661763_1452"/>
+  <comodoProfile:cmdoContainer xmi:id="__2SimcpOEeCvb87hIvpXdw" language="Java" base_ExecutionEnvironment="_16_8_b5f02cf_1290045594999_6172_1757"/>
+  <comodoProfile:cmdoComponent xmi:id="__2SimspOEeCvb87hIvpXdw" base_Class="_16_8_b5f02cf_1290045327269_762928_1704"/>
+  <comodoProfile:cmdoComponent xmi:id="__2Sim8pOEeCvb87hIvpXdw" base_Class="_16_8_b5f02cf_1290045466703_629895_1730"/>
+  <comodoProfile:cmdoComponent xmi:id="__2SinMpOEeCvb87hIvpXdw" base_Class="_16_8_b5f02cf_1290045187140_146928_1598"/>
+  <comodoProfile:cmdoComponent xmi:id="__2SincpOEeCvb87hIvpXdw" base_Class="_16_8_b5f02cf_1290045325668_193985_1684"/>
+  <comodoProfile:cmdoComponent xmi:id="__2SinspOEeCvb87hIvpXdw" base_Class="_16_8_b5f02cf_1290045323100_296264_1644"/>
+  <comodoProfile:cmdoComponent xmi:id="__2Sin8pOEeCvb87hIvpXdw" base_Class="_16_8_b5f02cf_1290045324363_442302_1664"/>
+  <comodoProfile:cmdoReadOnlyProperty xmi:id="__2SioMpOEeCvb87hIvpXdw" base_Property="_16_8_b5f02cf_1290116630678_602963_4564"/>
+  <comodoProfile:cmdoException xmi:id="__2SiocpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481248291_780257_1609" shortDescription="Proposal ID does not exist." description="A request contained a proposal ID that does not exist in the database."/>
+  <comodoProfile:cmdoException xmi:id="__2SiospOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481782754_673358_1734" shortDescription="Scheduler is already running" description="Trying to start scheduler, but is already has been started."/>
+  <comodoProfile:cmdoException xmi:id="__2Sio8pOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481900307_511851_1784" shortDescription="No proposal is executing" description="Trying to retrieve an executing proposal, but no proposal is executing."/>
+  <comodoProfile:cmdoException xmi:id="__2SipMpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481729128_190721_1709" shortDescription="camera is off" description="Trying to take exposure with camera off."/>
+  <comodoProfile:cmdoException xmi:id="__2SipcpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481513111_850937_1659" shortDescription="Database: Invalid proposal status" description="Trying to set an invalid status for the proposal."/>
+  <comodoProfile:cmdoException xmi:id="__2SipspOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481340188_778304_1634" shortDescription="Target ID is invalid" description="A request contained a target ID that is invalid in the database."/>
+  <comodoProfile:cmdoException xmi:id="__2Sip8pOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481175012_92644_1451" shortDescription="Proposal is not ready" description="Proposal is not ready"/>
+  <comodoProfile:cmdoException xmi:id="__2SiqMpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290480752927_977298_1420" shortDescription="Already in automatic mode" description="Trying to set automatic mode, failed. It has already been set"/>
+  <comodoProfile:cmdoException xmi:id="__2SiqcpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481123202_746150_1426" shortDescription="Position out of limits" description="Command tries to move the telescope out of limits"/>
+  <comodoProfile:cmdoException xmi:id="__2SiqspOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481830954_179194_1759" shortDescription="" description="Trying to stop scheduler, but is already has been stopped."/>
+  <comodoProfile:cmdoException xmi:id="__2Siq8pOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481953619_433687_1827" shortDescription="System is in automatic mode" description="Trying to execute a command in console while the system is in automatic mode."/>
+  <comodoProfile:cmdoException xmi:id="__2SirMpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481659352_582269_1684" shortDescription="Image already stored" description="Image has already been stored in the database."/>
+  <comodoProfile:cmdoException xmi:id="__2SircpOEeCvb87hIvpXdw" base_Signal="_16_8_b5f02cf_1290481952043_266091_1809" shortDescription="Can't open device" description="Can't open THE device."/>
+  <comodoProfile:cmdoInterface xmi:id="__2SirspOEeCvb87hIvpXdw" base_Interface="_16_8_b5f02cf_1290027784876_24241_1522"/>
+  <comodoProfile:cmdoInterface xmi:id="__2Sir8pOEeCvb87hIvpXdw" base_Interface="_16_8_b5f02cf_1290047629728_105845_2090"/>
+  <comodoProfile:cmdoInterface xmi:id="__2SisMpOEeCvb87hIvpXdw" base_Interface="_16_8_b5f02cf_1290027787940_238017_1560"/>
+  <comodoProfile:cmdoInterface xmi:id="__2SiscpOEeCvb87hIvpXdw" base_Interface="_16_8_b5f02cf_1290047652192_510022_2128" configurable="true"/>
+  <comodoProfile:cmdoInterface xmi:id="__2SisspOEeCvb87hIvpXdw" base_Interface="_16_8_b5f02cf_1290049772236_558324_2477"/>
+  <comodoProfile:cmdoInterface xmi:id="__2Sis8pOEeCvb87hIvpXdw" base_Interface="_16_8_b5f02cf_1290047636798_557978_2109"/>
+  <MagicDrawProfile:typeModifier xmi:id="__2cTqMpOEeCvb87hIvpXdw" base_Element="_16_8_b5f02cf_1290048947352_638049_2403" typeModifier="[]"/>
+  <MagicDrawProfile:typeModifier xmi:id="__2cTqcpOEeCvb87hIvpXdw" base_Element="_16_8_b5f02cf_1290374154526_181725_1422" typeModifier="[]"/>
+  <MagicDrawProfile:typeModifier xmi:id="__2cTqspOEeCvb87hIvpXdw" base_Element="_16_8_b5f02cf_1290104378963_628666_3162" typeModifier="[]"/>
+  <MagicDrawProfile:typeModifier xmi:id="__2cTq8pOEeCvb87hIvpXdw" base_Element="_16_8_b5f02cf_1290116630678_602963_4564" typeModifier="[]"/>
+  <MagicDrawProfile:auxiliaryResource xmi:id="__2cTrMpOEeCvb87hIvpXdw" base_Element="magicdraw_uml_standard_profile_v_0001" base_Package="magicdraw_uml_standard_profile_v_0001"/>
+</xmi:XMI>

@@ -1,0 +1,89 @@
+/*******************************************************************************
+ *    ALMA - Atacama Large Millimiter Array
+ *
+ *    (c) European Southern Observatory, 2002
+ *    Copyright by ESO (in the framework of the ALMA collaboration)
+ *    and Cosylab 2002, All rights reserved
+ *  
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation; either
+ *    version 2.1 of the License, or (at your option) any later version.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ *    You should have received a copy of the GNU Lesser General Public
+ *    License along with this library; if not, write to the Free Software
+ *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ *
+ * "@(#) $Id$" 
+ *
+ * who                when       what
+ * ----------------  ----------  ----------------------------------------------
+ * COMODO                        Created.
+ * 
+ */
+
+
+#ifndef _COMMONOPERATIONS_IDL_
+#define _COMMONOPERATIONS_IDL_
+
+#include <SORTCommon.idl>
+#include <acscomponent.idl>
+ 
+
+
+#pragma prefix "alma"
+
+/** 
+ * @file CommonOperations.idl
+ */
+module SORT
+{
+	/**
+	 * This interface provides the common operations for console and instrument operations.
+	 * @interface CommonOperations
+	 */
+	interface CommonOperations  :  ACS::ACSComponent
+	{  
+		
+		/**
+		 * @return void
+		 */
+		void cameraOn()
+			raises(SORTErr::SystemInAutoModeEx);                             
+		
+		/**
+		 * @return void
+		 */
+		void cameraOff()
+			raises(SORTErr::SystemInAutoModeEx);                             
+		
+		/**
+		 * @param rgbConfig the RGB configuration
+		 * @return void
+		 */
+		void setRGB(in RGB rgbConfig)
+			raises(SORTErr::CameraIsOffEx);                             
+		
+		/**
+		 * @param bias the pixel bias configuration
+		 * @return void
+		 */
+		void setPixelBias(in long bias)
+			raises(SORTErr::CameraIsOffEx);                             
+		
+		/**
+		 * @param resetLevel ResetLevel the reset level configuration
+		 * @return void
+		 */
+		void setResetLevel(in long resetLevel)
+			raises(SORTErr::CameraIsOffEx);                             
+		
+		
+	};
+};
+#endif /* _COMMONOPERATIONS_IDL_ */

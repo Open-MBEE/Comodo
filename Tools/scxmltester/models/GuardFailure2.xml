@@ -1,0 +1,40 @@
+<scxml xmlns="http://www.w3.org/2005/07/scxml"
+              version="1.0"
+              initialstate="A">
+
+ <state id="A">
+   <onentry>
+    <log expr="'entry A'" />
+   </onentry>
+   <onexit>
+    <log expr="'exit A'" />
+   </onexit>
+
+  <initial>
+   <transition target="B" />
+  </initial>    
+  <transition event="e1" target="C" />
+  
+  <state id="B">
+   <onentry>
+    <log expr="'entry B'" />
+   </onentry>
+   <onexit>
+    <log expr="'exit B'" />
+   </onexit>
+   <transition event="e2" cond="'1' eq '1'" target="C" />
+  </state>
+  
+  <state id="C">
+   <onentry>
+    <log expr="'entry C'" />
+   </onentry>
+   <onexit>
+    <log expr="'exit C'" />
+   </onexit>
+   <transition event="e3" target="B" />
+  </state>
+  
+ </state>
+
+</scxml>

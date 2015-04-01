@@ -1,0 +1,80 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: HeaderComponent.xpt 625 2012-07-31 11:28:49Z landolfa $
+ * 
+ */
+«ENDREM»
+
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::stereotypes»
+«EXTENSION comodo::xtend::cmdo::helpers»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+
+«DEFINE Root FOR uml::Model»
+«EXPAND ComponentImpl FOREACH getModulePackage().getPimComponentImpls()»
+«ENDDEFINE»
+
+«DEFINE ComponentImpl FOR uml::Artifact»
+«FILE  getPackageVar()+'/include/'+name+'Impl.h'-»
+«EXPAND comodo::templates::acs::txt::Copyright::Copyright FOR "" -»
+
+
+#ifndef «name»Impl_H
+#define «name»Impl_H
+
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C
+#endif
+
+#include <baciCharacteristicComponentImpl.h>
+#include <«name»S.h>
+
+class «name»: public virtual baci::CharacteristicComponentImpl, public POA_CALC::AcsCalc {
+	
+		private:
+		
+		public:
+		
+		/**
+     	 * Constructor
+     	 * 
+     	 * @param name component name
+     	 * @param containerService A pointer to the container services
+     	 */
+		«name»mpl(const ACE_CString &name,
+				maci::ContainerServices *containerServices);
+				
+		/**
+     	 * Destructor
+     	 */
+		~«name»Impl();
+
+		// Life cycle methods
+		virtual void initialize();
+		virtual void cleanUp();
+		virtual void aboutToAbort();
+};
+#include<maciACSComponentDefines.h>
+MACI_DLL_SUPPORT_FUNCTIONS(ACSCalc::«name»Impl)
+
+
+/*___oOo___*/
+«ENDFILE»
+«ENDDEFINE»

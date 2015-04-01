@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+   - $Id$
+   -
+   - History:
+   - 	COMODO 2011-11-19 Created.	
+-->
+<Components  xmlns="urn:schemas-cosylab-com:Components:1.0"
+		xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0"
+		xmlns:baci="urn:schemas-cosylab-com:BACI:1.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		
+		<_ Name="stopWatchLightInstance" 
+			Code="alma.StopWatchLight.StopWatchLightImplHelper"
+			Type="IDL:alma/StopWatchLight/StopWatchLightIF:1.0"
+			Container="JavaTestContainer" 
+			ImplLang="java" />
+
+		<!-- Component Simulators -->
+		<_ Name="stopWatchLightInstanceSimulator" 
+			Code="Acssim.Servants.GUISimulator"
+			Type="IDL:alma/StopWatchLight/StopWatchLightIF:1.0"
+			Container="StopWatchLightSimulator" 
+			ImplLang="py" />
+
+	   <!-- Instance to test components -->
+	   
+	   <!-- Java Component Instances -->
+	   
+	   <_ Name="testInstanceStopWatchLightImpl" 
+			Code="alma.StopWatchLight.StopWatchLightImplHelper"
+			Type="IDL:alma/StopWatchLight/StopWatchLightIF:1.0"
+			Container="StopWatchLightJavaTest" 
+			ImplLang="java" />
+			
+	   
+	   
+</Components>

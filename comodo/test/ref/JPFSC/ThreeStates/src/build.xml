@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+
+<project name="ThreeStates" default="build" basedir=".">
+    <property name="LIBRARIES_JPF_SC" value="../../../Modules/jpf-statechart/build"/>
+    <property name="LIBRARIES_JPF_CORE" value="../../../Modules/jpf-core/build"/>
+    <property name="LIBRARIES_JPF_APROP" value="../../../Modules/jpf-aprop/build"/>
+	<property name="OBJECT_PATH" value="../object" />
+	<property name="BIN_PATH" value="../bin" />
+	<property name="REPORT_PATH" value="../report" />		
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.5"/>
+    <property name="source" value="1.5"/>
+
+	<!-- Classpath !-->
+    <path id="ThreeStates.classpath">
+    	<fileset dir="${LIBRARIES_JPF_SC}" includes="*.jar"/>
+    	<fileset dir="${LIBRARIES_JPF_CORE}" includes="*.jar"/>
+        <fileset dir="${LIBRARIES_JPF_APROP}" includes="*.jar"/>    	
+    </path>
+
+	<!-- Directories Initializations !-->
+    <target name="init">
+        <mkdir dir="${OBJECT_PATH}"/>
+    	<mkdir dir="${BIN_PATH}"/>
+    </target>
+    
+	<!-- Build Target !-->
+    <target name="build" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="${OBJECT_PATH}" source="${source}" target="${target}">
+            <src path="."/>
+            <classpath refid="ThreeStates.classpath"/>            
+        </javac>
+    </target>
+
+	<!-- Run Target !-->    
+    <target name="verify" description="Invoke Java Pathfinder model checker to verify the StateMachine">
+    	<java jar="../../../Modules/jpf-core/build/RunJPF.jar" fork="true">
+            <classpath refid="ThreeStates.classpath"/>            
+    		<arg value="+shell.port=4242"/>
+    		<arg value="../ThreeStates.jpf"/>
+    		<arg value="-show"/>
+    		<arg value="-log"/>
+    	</java>    	
+    </target>
+
+	<!-- Clean Target !-->
+    <target name="clean">
+    	<delete dir="${OBJECT_PATH}"/>
+    	<delete dir="${BIN_PATH}" />
+    	<delete dir="${REPORT_PATH}" />    	    	
+    </target>
+
+</project>
+

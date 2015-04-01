@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+ *
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: COMODOWorkflow.mwe 395 2011-08-30 17:07:05Z landolfa $
+ * 
+!-->
+<workflow>
+	
+	<bean class="org.eclipse.emf.mwe.utils.StandaloneSetup" platformUri="." />
+	
+	<bean class="org.eclipse.xtend.typesystem.uml2.Setup" standardUML2Setup="true"/>
+		
+    <!-- Register UML2 profile - metamodel -->
+	<bean id="default_profile" class="org.eclipse.xtend.typesystem.uml2.profile.ProfileMetaModel">
+		<profile value="${profileFileURI}"/>
+	</bean>
+    
+	<!-- load uml model -->
+    <component class="org.eclipse.emf.mwe.utils.Reader">
+        <uri value="${modelFileURI}" />
+        <modelSlot value="model" />
+    </component>
+	
+	<!-- Model Validation -->
+	<component class="org.eclipse.xtend.check.CheckComponent">
+		<metaModel idRef="default_profile"/>
+		<globalVarDef name="ModuleName" value="'${moduleName}'"/>
+		<checkFile value="comodo/constraints/ModuleConstraints"/>
+		<emfAllChildrenSlot value="model"/>
+	</component> 
+
+	<component class="org.eclipse.xtend.check.CheckComponent">
+		<metaModel idRef="default_profile"/>
+		<checkFile value="comodo/constraints/StateMachineConstraints"/>
+		<emfAllChildrenSlot value="model"/>
+	</component> 
+	
+	
+	<!-- Generators -->
+	<component id="VLT" class="org.eclipse.xpand2.Generator" skipOnErrors="false">
+		<fileEncoding value="UTF-8" />
+		<metaModel idRef="default_profile"/>
+		<expand value="comodo::templates::rmq::Root::Root FOR model"/>
+		<globalVarDef name="QualifierScope" value="'absolute'"/>
+		<globalVarDef name="ModuleName" value="'${moduleName}'"/>
+		<globalVarDef name="GenerationMode" value="'${generationMode}'"/>
+		<globalVarDef name="OutputDirectory" value="'${ouputFolderURI}'"/>
+		<outlet path="${ouputFolderURI}">
+			<postprocessor class="org.eclipse.xpand2.output.JavaBeautifier" />
+		</outlet>
+	</component>
+		
+	<component id="SCXML" class="org.eclipse.xpand2.Generator" skipOnErrors="false">
+		<fileEncoding value="UTF-8" />
+		<metaModel idRef="default_profile"/>
+		<expand value="comodo::templates::scxml::Root::Root FOR model" />
+		<globalVarDef name="QualifierScope" value="'absolute'"/>
+		<globalVarDef name="ModuleName" value="'${moduleName}'"/>
+		<globalVarDef name="GenerationMode" value="'${generationMode}'"/>
+		<outlet path="${ouputFolderURI}/${moduleName}/src/config">
+			<postprocessor class="org.fornax.utilities.formatter.xml.XmlFormatter" />
+		</outlet>
+	</component>
+		
+</workflow>

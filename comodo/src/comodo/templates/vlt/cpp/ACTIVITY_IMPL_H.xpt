@@ -1,0 +1,98 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *  
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«IMPORT uml»
+
+«EXTENSION comodo::xtend::cmdo::scxmlutil»
+«EXTENSION comodo::xtend::uml::statemachine»
+«EXTENSION comodo::xtend::cmdo::package»
+«EXTENSION comodo::xtend::cmdo::artifact»
+«EXTENSION comodo::xtend::uml::artifact»
+«EXTENSION comodo::xtend::cmdo::helpers»
+
+«DEFINE Root FOR uml::Model -»
+«FOREACH getModulePackage().getPimComponentImpls() AS eElement -»
+«EXPAND SM FOREACH eElement.getStateMachines()-»
+«ENDFOREACH-»
+«ENDDEFINE»
+
+«DEFINE SM FOR uml::StateMachine -»
+«FOREACH this.getAllActivityName().removeDuplicates() AS activityName -»
+«LET fileExists(getOutputDirectory()+'/'+this.getModel().getModulePackage().name+'/include/'+this.getModel().getModulePackage().name+'ACTIVITY_'+activityName+'.h') AS alreadyThere -»
+«IF generateModeAll() || (alreadyThere == false && generateModeUpdate())»
+
+«FILE this.getModel().getModulePackage().name+'/include/'+this.getModel().getModulePackage().name+'ACTIVITY_'+activityName+'.h'-»
+#ifndef «this.getModel().getModulePackage().name+'ACTIVITY_'+activityName+'_H'»
+#define «this.getModel().getModulePackage().name+'ACTIVITY_'+activityName+'_H'»
+«EXPAND comodo::templates::vlt::txt::Copyright::Source FOR "" -»
+
+#ifndef __cplusplus
+#error This is a C++ include file and cannot be used from plain C
+#endif
+
+#ifndef wsf2libSCXML_ACTIVITY_H
+#include "wsf2libSCXML_ACTIVITY.h"
+#endif
+
+#ifndef eccsErr_H
+#include "eccsErr.h"
+#endif
+
+class wsf2libFSM;
+class evhTHREADS;
+class wsf2libCONTROL;
+class «this.getModel().getModulePackage().name»CONFIG;
+class «this.getModel().getModulePackage().name»DATA;
+
+
+/** 
+ * «activityName» activity class.    
+ */
+class «this.getModel().getModulePackage().name»ACTIVITY_«activityName» : public wsf2libSCXML_ACTIVITY, public eccsERROR_CLASS
+{
+  public:
+    «this.getModel().getModulePackage().name»ACTIVITY_«activityName»(const std::string& procName, wsf2libFSM* fsm, 
+    evhTHREADS& threadsHandler, wsf2libCONTROL& control,
+    «this.getModel().getModulePackage().name»CONFIG& config, «this.getModel().getModulePackage().name»DATA& data);
+    virtual ~«this.getModel().getModulePackage().name»ACTIVITY_«activityName»();
+
+    virtual void run();
+   
+  private:
+    wsf2libFSM* mFsm;
+	wsf2libCONTROL& mControl;
+	«this.getModel().getModulePackage().name»CONFIG& mConfig;
+	«this.getModel().getModulePackage().name»DATA& mData;
+	
+    «this.getModel().getModulePackage().name»ACTIVITY_«activityName»(const «this.getModel().getModulePackage().name»ACTIVITY_«activityName»&);
+    «this.getModel().getModulePackage().name»ACTIVITY_«activityName»& operator= (const «this.getModel().getModulePackage().name»ACTIVITY_«activityName»&);
+};
+
+#endif // !«this.getModel().getModulePackage().name»ACTIVITY_«activityName»_H
+
+
+«ENDFILE»
+«ENDIF»
+«ENDLET»
+«ENDFOREACH»
+«ENDDEFINE»
+

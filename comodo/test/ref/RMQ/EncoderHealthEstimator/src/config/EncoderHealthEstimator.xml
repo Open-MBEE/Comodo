@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="ENCODER_HEALTH_OK">  
+  <state id="ENCODER_HEALTH_NOK"> 
+    <onentry> 
+      <customActionDomain:PubEncHealthNok name="PubEncHealthNok"/> 
+    </onentry>  
+    <transition event="GetEncHealthFlag" cond="GetEncHealthFlag.f == true" target="ENCODER_HEALTH_OK"/>  
+    <transition event="Exit" target="OFF"/> 
+  </state>  
+  <state id="ENCODER_HEALTH_OK"> 
+    <onentry> 
+      <customActionDomain:PubEncHealthOk name="PubEncHealthOk"/> 
+    </onentry>  
+    <transition event="GetEncHealthFlag" cond="GetEncHealthFlag.f == false" target="ENCODER_HEALTH_NOK"/>  
+    <transition event="Exit" target="OFF"/> 
+  </state>  
+  <state id="UPDATE_ENCODERHEALTH"> 
+    <transition event="GetEncHealthFlag"> 
+      <customActionDomain:ComputeEncHealth name="ComputeEncHealth"/> 
+    </transition> 
+  </state>  
+  <final id="OFF"/> 
+</scxml>

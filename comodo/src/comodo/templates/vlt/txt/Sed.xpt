@@ -1,0 +1,35 @@
+«REM»
+/** 
+ * COMODO - Multiplatform Component Code Generator 
+ *    (c) European Southern Observatory, 2011 
+ *    Copyright by ESO 
+ *    All rights reserved 
+ * 
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * $Id: $
+ *
+ */
+«ENDREM»
+ 
+«DEFINE Root FOR String -»
+«FILE this+'/test/TestDriver.sed'-»
+s/Environment  : .* StackId  : [ 0-9][ 0-9][ 0-9][ 0-9][ 0-9][ 0-9]/Environment  : -------  StackId  : ------/g
+s/Sequence : *[ 0-9][ 0-9]/Sequence : --  /g
+s/signal: [ 0-9][ 0-9]/signal: --/g
+s/@(#) $Id.*/@(#) $Id/g
+s/[lw][pt][le0-9][a-z0-9A-Z]\{2,4\}/-------/g
+s/seq_.* (buffer/seq_--- (buffer/
+s/[0-9]*-[0-9]*-[0-9]*T[0-9]*:[0-9]*:[0-9]*.[0-9]* //g
+s/.C:[0-9]* /.C:---- /g
+«ENDFILE»
+«ENDDEFINE»
+
