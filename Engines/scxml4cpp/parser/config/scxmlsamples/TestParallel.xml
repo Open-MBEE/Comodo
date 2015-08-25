@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml"
+       version="1.0"
+       initial="online"
+       name="TestParallel"
+       profile="ecmascript">
+       
+  <parallel id="online">
+
+    <onentry> 
+      <action name="onlineEntry"/>
+    </onentry>
+    <onexit> 
+      <action name="onlineExit"/>
+    </onexit>
+    <initial>
+      <transition target="acquisition"/>
+      <transition target="mode"/>
+    </initial>
+
+    <state id="acquisition">  
+      <onentry> 
+        <action name="acquisitionEntry"/>
+      </onentry>
+      <onexit> 
+        <action name="acquisitionExit"/>
+      </onexit>
+      <initial>
+        <transition target="idle"/>
+      </initial>
+
+      <state id="idle">  
+        <onentry>
+          <action name="idleEntry"/>
+        </onentry>       
+        <onexit>
+          <action name="idleExit"/>
+        </onexit>       
+        <transition event="startRec" target="recording"/>
+      </state>
+
+      <state id="recording">      
+        <onentry>
+          <action name="recordingEntry"/>
+        </onentry>     
+        <onexit>
+          <action name="recordingExit"/>
+        </onexit>       
+        <transition event="stopRec" target="idle"/>
+      </state>
+     </state>
+
+    <state id="mode">
+      <onentry> 
+        <action name="modeEntry"/>
+      </onentry>
+      <onexit> 
+        <action name="modeExit"/>
+      </onexit>
+      <initial>
+        <transition target="normal"/>
+      </initial>
+
+      <state id="normal">   
+        <onentry>
+          <action name="normalEntry"/>
+        </onentry>      
+        <onexit>
+          <action name="normalExit"/>
+        </onexit>
+        <transition event="startSim" target="simulation"/>
+      </state>
+
+      <state id="simulation">
+        <onentry>
+          <action name="simulationEntry"/>
+        </onentry>
+        <onexit>
+          <action name="simulationExit"/>
+        </onexit>
+        <transition event="stopSim" target="normal"/>
+      </state>
+
+     </state>
+ 
+  </parallel>
+</scxml>

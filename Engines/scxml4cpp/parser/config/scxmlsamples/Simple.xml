@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!-- very simple example --> 
+<scxml xmlns="http://www.w3.org/2005/07/scxml"
+       version="1.0"
+       initial="Main"
+       profile="ecmascript">
+       
+  <state id="S0">
+
+      <onentry> 
+        <action name="S0Entry"/>
+      </onentry>
+
+    <initial>
+      <transition target="S1"/>
+    </initial>
+
+    <state id="S1">
+    
+      <initial>
+        <transition target="S11"/>
+      </initial>
+
+      <onentry> 
+        <action name="S1Entry"/>
+      </onentry>
+
+      <state id="S11">
+      
+        <onentry>
+          <action name="S11Entry"/>
+        </onentry>
+        
+        <onexit>
+          <action name="S11Exit"/>
+        </onexit>
+        
+        <transition event="Event1" target="S12"/>
+      </state>
+
+      <final id="S12"/>
+      <transition event="S1.done" target="S2"/>
+
+      <onexit>
+        <action name="S1Exit"/>
+      </onexit>
+    </state>
+
+    <state id="S2">
+      <initial>
+        <transition target="S21"/>
+      </initial>
+
+      <state id="S21"/>
+  
+      <final id="S22"/>
+
+      <transition event="Test2.done" next="S3"/>
+    </state>
+
+    <final id="S3"/>
+ 
+  </state>
+</scxml>

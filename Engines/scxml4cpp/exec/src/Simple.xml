@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!-- very simple example --> 
+<scxml xmlns="http://www.w3.org/2005/07/scxml"
+       version="1.0"
+       initial="S1"
+       profile="ecmascript">
+       
+  <state id="S0">
+    <onentry> 
+      <action name="LogEntryS0"/>
+    </onentry>
+    <onexit> 
+      <action name="LogExitS0"/>
+    </onexit>
+  
+    <initial>
+      <transition target="S1"/>
+    </initial>
+
+    <state id="S1">   
+	    <onentry> 
+	      <action name="LogEntryS1"/>
+	    </onentry>
+	    <onexit> 
+	      <action name="LogExitS1"/>
+	    </onexit>
+
+      <initial>
+        <transition target="S11"/>
+      </initial>
+
+      <state id="S11">
+	    <onentry> 
+	      <action name="LogEntryS11"/>
+	    </onentry>
+	    <onexit> 
+	      <action name="LogExitS11"/>
+	    </onexit>
+	      
+        <transition event="Event1" target="S12"/>
+      </state>
+
+      <final id="S12"/>
+      
+      <transition event="Event2" target="S2"/>
+    </state>
+
+    <state id="S2">
+	    <onentry> 
+	      <action name="LogEntryS2"/>
+	    </onentry>
+	    <onexit> 
+	      <action name="LogExitS2"/>
+	    </onexit>
+    
+      <initial>
+        <transition target="S21"/>
+      </initial>
+
+      <state id="S21">
+	    <onentry> 
+	      <action name="LogEntryS21"/>
+	    </onentry>
+	    <onexit> 
+	      <action name="LogExitS21"/>
+	    </onexit>
+      
+        <transition event="Event3" target="S22"/>
+      </state>
+  
+      <state id="S22">
+      </state>
+      
+      <transition event="Event4" target="S3"/>
+    </state>
+
+    <state id="S3">
+      <transition event="Event5" target="S4"/>
+    </state>
+
+    <final id="S4"/>
+ 
+  </state>
+</scxml>

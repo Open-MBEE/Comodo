@@ -1,0 +1,53 @@
+/*
+ *    scampl4cpp
+ *
+ *    Copyright by European Southern Observatory, 2012
+ *    All rights reserved
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation; either
+ *    version 2.1 of the License, or (at your option) any later version.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ *    You should have received a copy of the GNU Lesser General Public
+ *    License along with this library; if not, write to the Free Software
+ *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 
+ *    02111-1307 USA.
+ */
+
+DESCRIPTION
+scxml4cpp is a C++ library to interpret SCXML models. 
+Only a subset of the standard SCXML features are implemented.
+
+scxml4cpp is composed of 2 libraries:
+- scxml4cpp/engine which is the SCXML interpreter 
+- scxml4cpp/parser which is the SCXML parser
+There is also a test application scxml4cpp/exec.
+
+DEPENDENCIES
+The scxml4cpp/parser requires scxml4cpp/engine and xerces-c 
+ver. 3.1.1.
+The test application scxml4cpp/exec requires the engine and 
+the parser.
+
+INSTALLATION
+In order compile scxml4cpp you need to have first installed 
+xerces-c ver. 3.1.1 libraries. 
+
+You can specify in which directory to install the headers, 
+libraries, and binaries by defining:
+INSTALL_INC (default is /usr/local/include)
+INSTALL_LIB (default is /usr/local/lib)
+INSTALL_BIN (default is /usr/local/bin)
+
+For example to compile the scxml4cpp/engine:
+cd scxml4cpp/engine/src
+make INSTALL_INC=myInstallPathForHeaders/include \
+     INSTALL_LIB=myInstallPathForLibraries/lib \
+     INSTALL_BIN=myInstallPathForBinaries/bin \ 
+     clean all install
