@@ -10,5 +10,5 @@ Currently, the supported targets are:
 * VLTSW: transform the input model into C++ application for the Very Large Telescope SW Platform
 * ACS: transform the input model into Java application for the ALMA Common SW platform
 * RMQ: transform the input model into Java application using RabbitMQ middleware
-* JPF: transform the input model into Java application that can be model checked by Java Pathfinder
+* JPF: transform the input model (limited to State Machines) into Java application that can be model checked by Java Pathfinder
 
