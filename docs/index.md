@@ -2,7 +2,7 @@
 
 COMODO is a model transformation tool based on Xpand/Xtend that takes as input a UML model and transform it different artifacts depending on the selected target.
 
-The toolkit has been deleveloped by the European Southern Observatory (ESO) to develop Telescope and Instrument control and supervisor applications for different software platforms. 
+The toolkit has been deleveloped by the European Southern Observatory (ESO) to build Telescope and Instrument control and supervisor applications for different software platforms. 
 
 The input model must be in the EMF UML XMI format and use COMODO profile.
 
