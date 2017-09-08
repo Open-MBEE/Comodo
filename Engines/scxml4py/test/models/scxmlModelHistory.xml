@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM"
+       version="1.0"
+       initial="IDLE">
+
+  <state id="IDLE">
+  	<transition event="Play" target="SONG1"/>
+  </state>
+
+  <state id="PAUSE">
+  	<transition event="Play" target="HISTORY"/>
+  	<transition event="Stop" target="IDLE"/>  	
+  </state>
+
+  <state id="PLAYING">
+	<initial>
+      <transition target="SONG1"/>
+    </initial>
+  
+    <state id="SONG1">
+      <transition event="Next" target="SONG2"/>
+    </state>
+
+    <state id="SONG2">
+      <transition event="Next" target="SONG3"/>
+    </state>
+
+    <state id="SONG3">
+      <transition event="Next" target="SONG1"/>
+    </state>
+
+    <history id="HISTORY" type="DEEP">
+    </history>
+
+    <transition event="Stop" target="IDLE"/>
+    <transition event="Pause" target="PAUSE"/>
+  </state>
+ 
+</scxml>

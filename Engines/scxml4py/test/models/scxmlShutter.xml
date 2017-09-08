@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="STATE">  
+  <state id="STATE"> 
+    <initial>
+      <transition target="STATE::STANDBY"/>
+    </initial>  
+    <state id="STATE::OPERATIONAL"> 
+      <initial>
+        <transition target="STATE::OPERATIONAL::CLOSED"/>
+      </initial>  
+      <state id="STATE::OPERATIONAL::FAILURE"> 
+        <transition event="CLOSE" target="STATE::OPERATIONAL::CLOSING"> 
+          <customActionDomain:CLOSE.Execute name="CLOSE.Execute"/> 
+        </transition>  
+        <transition event="OPEN" target="STATE::OPERATIONAL::OPENING"> 
+          <customActionDomain:OPEN.Execute name="OPEN.Execute"/> 
+        </transition>  
+        <transition event="DISABLE" target="STATE::OPERATIONAL::DISABLING"/>  
+        <transition event="ISCLOSED" target="STATE::OPERATIONAL::CLOSED"/>  
+        <transition event="ISOPEN" target="STATE::OPERATIONAL::OPEN"/> 
+      </state>  
+      <state id="STATE::OPERATIONAL::OPEN"> 
+        <transition event="CLOSE" target="STATE::OPERATIONAL::CLOSING"> 
+          <customActionDomain:CLOSE.Execute name="CLOSE.Execute"/> 
+        </transition>  
+        <transition event="DISABLE" target="STATE::OPERATIONAL::DISABLING"> 
+          <customActionDomain:DISABLE.Execute name="DISABLE.Execute"/> 
+        </transition>  
+        <transition event="ISCLOSED" target="STATE::OPERATIONAL::CLOSED"> 
+          <customActionDomain:UNEXP.Execute name="UNEXP.Execute"/> 
+        </transition>  
+        <transition event="ERRFAULT" target="STATE::OPERATIONAL::FAILURE"> 
+          <customActionDomain:ERR.Execute name="ERR.Execute"/> 
+        </transition>  
+        <transition event="ERRALLACTIVE" target="STATE::OPERATIONAL::FAILURE"> 
+          <customActionDomain:ERR.Execute name="ERR.Execute"/> 
+        </transition>  
+        <transition event="ERRNONEACTIVE" target="STATE::OPERATIONAL::FAILURE"> 
+          <customActionDomain:ERR.Execute name="ERR.Execute"/> 
+        </transition> 
+      </state>  
+      <state id="STATE::OPERATIONAL::OPENING"> 
+        <invoke targettype="java" id="Opening" src="SMActivityOpening.java"/>  
+        <transition event="ISOPEN" target="STATE::OPERATIONAL::OPEN"/>  
+        <transition event="ERRFAULT" target="STATE::OPERATIONAL::FAILURE"/>  
+        <transition event="STOP" target="STATE::OPERATIONAL::FAILURE"/>  
+        <transition event="ISCLOSED" target="STATE::OPERATIONAL::FAILURE"/>  
+        <transition event="ERRALLACTIVE" target="STATE::OPERATIONAL::FAILURE"> 
+          <customActionDomain:ERR.Execute name="ERR.Execute"/> 
+        </transition> 
+      </state>  
+      <state id="STATE::OPERATIONAL::CLOSING"> 
+        <invoke targettype="java" id="Closing" src="SMActivityClosing.java"/>  
+        <transition event="ISCLOSED" target="STATE::OPERATIONAL::CLOSED"/>  
+        <transition event="ERRFAULT" target="STATE::OPERATIONAL::FAILURE"/>  
+        <transition event="STOP" target="STATE::OPERATIONAL::FAILURE"/>  
+        <transition event="ISOPEN" target="STATE::OPERATIONAL::FAILURE"/>  
+        <transition event="ERRALLACTIVE" target="STATE::OPERATIONAL::FAILURE"> 
+          <customActionDomain:ERR.Execute name="ERR.Execute"/> 
+        </transition> 
+      </state>  
+      <state id="STATE::OPERATIONAL::CLOSED"> 
+        <transition event="OPEN" target="STATE::OPERATIONAL::OPENING"> 
+          <customActionDomain:OPEN.Execute name="OPEN.Execute"/> 
+        </transition>  
+        <transition event="DISABLE" target="STATE::OPERATIONAL::DISABLING"> 
+          <customActionDomain:DISABLE.Execute name="DISABLE.Execute"/> 
+        </transition>  
+        <transition event="ISOPEN" target="STATE::OPERATIONAL::OPEN"> 
+          <customActionDomain:UNEXP.Execute name="UNEXP.Execute"/> 
+        </transition>  
+        <transition event="ERRFAULT" target="STATE::OPERATIONAL::FAILURE"> 
+          <customActionDomain:ERR.Execute name="ERR.Execute"/> 
+        </transition>  
+        <transition event="ERRALLACTIVE" target="STATE::OPERATIONAL::FAILURE"> 
+          <customActionDomain:ERR.Execute name="ERR.Execute"/> 
+        </transition>  
+        <transition event="ERRNONEACTIVE" target="STATE::OPERATIONAL::FAILURE"> 
+          <customActionDomain:ERR.Execute name="ERR.Execute"/> 
+        </transition> 
+      </state>  
+      <state id="STATE::OPERATIONAL::DISABLING"> 
+        <invoke targettype="java" id="Disabling" src="SMActivityDisabling.java"/>  
+        <transition event="DISABLEOPEN" target="STATE::STANDBY::READY::OPEN"/>  
+        <transition event="DISABLECLOSED" target="STATE::STANDBY::READY::CLOSED"/>  
+        <transition event="ERRDISABLE" target="STATE::STANDBY::NOTREADY"/> 
+      </state>  
+      <transition event="RESET" target="STATE::STANDBY"> 
+        <customActionDomain:RESET.Execute name="RESET.Execute"/> 
+      </transition>  
+      <transition event="HWERR" target="STATE::OPERATIONAL::FAILURE"/> 
+    </state>  
+    <state id="STATE::STANDBY"> 
+      <initial>
+        <transition target="STATE::STANDBY::NOTREADY"/>
+      </initial>  
+      <state id="STATE::STANDBY::NOTREADY"> 
+        <transition event="INIT" target="STATE::STANDBY::INITIALIZING"> 
+          <customActionDomain:INIT.Execute name="INIT.Execute"/> 
+        </transition>  
+        <transition event="RESET"/> 
+      </state>  
+      <state id="STATE::STANDBY::INITIALIZING"> 
+        <invoke targettype="java" id="Initializing" src="SMActivityInitializing.java"/>  
+        <transition event="INITOPEN" target="STATE::STANDBY::READY::OPEN"> 
+          <customActionDomain:INIT.Complete name="INIT.Complete"/> 
+        </transition>  
+        <transition event="ERRINIT" target="STATE::STANDBY::NOTREADY"/>  
+        <transition event="STOP" target="STATE::STANDBY::NOTREADY"> 
+          <customActionDomain:INIT.Abort name="INIT.Abort"/> 
+        </transition>  
+        <transition event="RESET" target="STATE::STANDBY::NOTREADY"> 
+          <customActionDomain:INIT.Abort name="INIT.Abort"/> 
+        </transition>  
+        <transition event="INITCLOSED" target="STATE::STANDBY::READY::CLOSED"> 
+          <customActionDomain:INIT.Complete name="INIT.Complete"/> 
+        </transition> 
+      </state>  
+      <state id="STATE::STANDBY::READY"> 
+        <initial>
+          <transition target="STATE::STANDBY::READY::CLOSED"/>
+        </initial>  
+        <state id="STATE::STANDBY::READY::OPEN"> 
+          <transition event="ISCLOSED" target="STATE::STANDBY::READY::CLOSED"> 
+            <customActionDomain:UNEXP.Execute name="UNEXP.Execute"/> 
+          </transition>  
+          <transition event="ENABLE" target="STATE::OPERATIONAL::OPEN"> 
+            <customActionDomain:ENABLE.Complete name="ENABLE.Complete"/> 
+          </transition> 
+        </state>  
+        <state id="STATE::STANDBY::READY::CLOSED"> 
+          <transition event="ISOPEN" target="STATE::STANDBY::READY::OPEN"> 
+            <customActionDomain:UNEXP.Execute name="UNEXP.Execute"/> 
+          </transition>  
+          <transition event="ENABLE" target="STATE::OPERATIONAL::CLOSED"> 
+            <customActionDomain:ENABLE.Complete name="ENABLE.Complete"/> 
+          </transition> 
+        </state>  
+        <transition event="RESET" target="STATE::STANDBY::NOTREADY"/>  
+        <transition event="ERRFAULT" target="STATE::STANDBY::NOTREADY"/> 
+      </state>  
+      <state id="STATE::STANDBY::FAILURE"> 
+        <transition event="HWOK" target="STATE::STANDBY::NOTREADY"/> 
+      </state>  
+      <transition event="HWERR" target="STATE::STANDBY::FAILURE"/> 
+    </state>  
+    <transition event="POWEROFF" target="OFF"/>  
+    <transition event="STOP"> 
+      <customActionDomain:STOP.Execute name="STOP.Execute"/> 
+    </transition> 
+    <transition event="STATUS"> 
+      <customActionDomain:STATUS.Execute name="STATUS.Execute"/> 
+    </transition> 
+  </state>  
+  <final id="OFF"/> 
+</scxml>

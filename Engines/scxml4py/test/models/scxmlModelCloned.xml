@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" 
+	   xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" 
+       version="1.0"
+       initial="online"
+       name="TestCloned">
+       
+  <parallel id="online">
+
+    <onentry> 
+    </onentry>
+    <onexit> 
+    </onexit>
+    <initial>
+      <transition target="acquisition"/>
+    </initial>
+
+    <state id="acquisition">  
+      <onentry> 
+      </onentry>
+      <onexit> 
+      </onexit>
+      <initial>
+        <transition target="idle"/>
+      </initial>
+
+      <state id="idle">  
+        <onentry>
+          <customActionDomain:myEntryAction name="myEntryAction"/>
+        </onentry>       
+        <onexit>
+          <customActionDomain:myExitAction name="myExitAction"/>
+        </onexit>       
+        <transition event="startRec" cond="myGuard" target="recording">
+        	<customActionDomain:myTransAction name="myTransAction"/>
+        </transition>
+      </state>
+
+      <state id="recording">      
+        <onentry>
+        </onentry>     
+        <onexit>
+        </onexit>       
+        <transition event="stopRec" target="idle"/>
+        <invoke id="myRecordingActivity"/>  
+      </state>
+     </state>
+ 
+  </parallel>
+</scxml>

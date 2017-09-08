@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!-- very simple example based on EELT SM --> 
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM"
+       version="1.0"
+       initial="STATE">
+
+  <state id="STATE">
+    <initial>
+       <transition target="IDLE"/>
+    </initial>
+    <transition event="STATUS">
+      <customActionDomain:ActionStatus name="ActionStatus"/>
+    </transition>
+      <transition event="EXIT">
+        <customActionDomain:ActionExit name="ActionExit"/>
+      </transition>
+  	<state id="IDLE">
+      <transition target="BUSY" event="START"/>
+      <transition target="CONFIGURING" event="SETUP"/>
+    </state>
+  	<state id="BUSY">
+      <transition target="IDLE" event="STOP"/>
+      <invoke id="ActivityBusy"/>  	
+    </state>
+  	<state id="CONFIGURING">
+  	  <onentry>
+        <customActionDomain:ActionStatus name="ActionSetup"/>	  
+  	  </onentry>
+      <transition target="IDLE" event="DONE"/>
+    </state>
+
+  </state>
+ 
+</scxml>

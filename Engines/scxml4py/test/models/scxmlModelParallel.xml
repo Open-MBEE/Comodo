@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml"
+       version="1.0"
+       initial="online"
+       name="TestParallel"
+       profile="ecmascript">
+       
+  <parallel id="online">
+
+    <onentry> 
+    </onentry>
+    <onexit> 
+    </onexit>
+    <initial>
+      <transition target="acquisition"/>
+      <transition target="mode"/>
+    </initial>
+
+    <state id="acquisition">  
+      <onentry> 
+      </onentry>
+      <onexit> 
+      </onexit>
+      <initial>
+        <transition target="idle"/>
+      </initial>
+
+      <state id="idle">  
+        <onentry>
+        </onentry>       
+        <onexit>
+        </onexit>       
+        <transition event="startRec" target="recording"/>
+      </state>
+
+      <state id="recording">      
+        <onentry>
+        </onentry>     
+        <onexit>
+        </onexit>       
+        <transition event="stopRec" target="idle"/>
+      </state>
+     </state>
+
+    <state id="mode">
+      <onentry> 
+      </onentry>
+      <onexit> 
+      </onexit>
+      <initial>
+        <transition target="normal"/>
+      </initial>
+
+      <state id="normal">   
+        <onentry>
+        </onentry>      
+        <onexit>
+        </onexit>
+        <transition event="startSim" target="simulation"/>
+      </state>
+
+      <state id="simulation">
+        <onentry>
+        </onentry>
+        <onexit>
+        </onexit>
+        <transition event="stopSim" target="normal"/>
+      </state>
+
+     </state>
+ 
+  </parallel>
+</scxml>

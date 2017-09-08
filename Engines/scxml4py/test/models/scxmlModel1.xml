@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<!-- very simple example based on EELT SM --> 
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM"
+       version="1.0"
+       initial="STATE">
+
+  <state id="STATE">
+    <initial>
+      <transition target="STANDBY"/>
+    </initial>
+       
+    <state id="STANDBY">
+      <onentry> 
+        <customActionDomain:logEntry name="logEntry"/>
+      </onentry>
+      <onexit> 
+        <customActionDomain:logExit name="logExit"/>
+      </onexit>
+      <initial>
+        <transition target="NOTREADY"/>
+      </initial>
+  
+      <state id="NOTREADY">   
+        <onentry> 
+          <customActionDomain:logEntry name="logEntry"/>
+        </onentry>
+        <onexit> 
+          <customActionDomain:logExit name="logExit"/>
+        </onexit>	      
+        <transition event="INIT" cond="logGuard" target="READY">
+          <customActionDomain:logTrans name="logTrans"/>
+        </transition>
+      </state>
+
+      <state id="READY">   
+        <onentry> 
+          <customActionDomain:logEntry name="logEntry"/>
+        </onentry>
+        <onexit> 
+          <customActionDomain:logExit name="logExit"/>
+        </onexit>	      
+        <transition event="ENABLE" target="IDLE">
+          <customActionDomain:logTrans name="logTrans"/>
+        </transition>
+      </state>
+
+    </state>
+
+    <state id="OPERATIONAL">
+      <onentry> 
+        <customActionDomain:logEntry name="logEntry"/>
+      </onentry>
+      <onexit> 
+        <customActionDomain:logExit name="logExit"/>
+      </onexit>
+    
+      <initial>
+        <transition target="IDLE"/>
+      </initial>
+
+      <state id="IDLE">
+        <onentry> 
+          <customActionDomain:logEntry name="logEntry"/>
+        </onentry>
+        <onexit> 
+          <customActionDomain:logExit name="logExit"/>
+        </onexit>
+	<transition event="START" target="BUSY">
+          <customActionDomain:logTrans name="logTrans"/>
+	</transition>
+      </state>
+
+      <state id="BUSY">
+        <onentry> 
+          <customActionDomain:logEntry name="logEntry"/>
+        </onentry>
+	<invoke id="activityTest"/>  
+        <onexit> 
+          <customActionDomain:logExit name="logExit"/>
+        </onexit>
+	<transition event="STOP" target="IDLE">
+          <customActionDomain:logTrans name="logTrans"/>
+	</transition>
+      </state>
+
+      <transition event="RESET" target="NOTREADY">
+        <customActionDomain:logTrans name="logTrans"/>
+      </transition>
+      <transition event="DISABLE" target="READY">
+        <customActionDomain:logTrans name="logTrans"/>
+      </transition>
+
+    </state>
+  </state>
+ 
+</scxml>
