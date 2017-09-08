@@ -20,5 +20,5 @@ The repository is organized in the following directories:
 * Tools/uml2scxml/ Prototype test utility to convert .uml models in SCXML.
 * Engines/scxml4cpp/ SCXML intepreter developed at ESO for C++. It does NOT implement the full W3C SCXML reccomandation.
 * Engines/scxml4py/ SCXML intepreter developed at ESO for Python. It does NOT implement the full W3C SCXML reccomandation.
-
+* doc/ COMODO documentation.
 
