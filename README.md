@@ -14,10 +14,11 @@ Currently, the supported targets are:
 * JPF: transform the input model (limited to State Machines) into Java application that can be verified by Java Pathfinder model checker.
 
 The repository is organized in the following directories:
-* comodo/ COMODO toolkit sources and the libraries
-* comodogui/ GUI front-end application for the COMODO toolkit in .jar and .exe format. The application allows to execute the supported model transformations and to load and run the SCXML model. The SCXML interpreter is based on Apache Commons SCXML.
-* Tools/scxmltester/ prototype test utility to load and run SCXML models based on Apache Commons SCXML.
-* Tools/uml2scxml/ prototype test utility to convert .uml models in SCXML.
-* Engines/scxml4cpp/ SCXML intepreter developed at ESO for C++. It does not implement the full W3C SCXML reccomandation.
+* comodo/ COMODO toolkit sources and the libraries. The config subdirectory contains the comodoProfile in MagicDraw and .uml format.
+* comodogui/ Prototype GUI front-end application for the COMODO toolkit. The application allows to execute the supported model transformations and to load and run the SCXML model. The SCXML interpreter is based on Apache Commons SCXML.
+* Tools/scxmltester/ Prototype test utility to load and run SCXML models based on Apache Commons SCXML.
+* Tools/uml2scxml/ Prototype test utility to convert .uml models in SCXML.
+* Engines/scxml4cpp/ SCXML intepreter developed at ESO for C++. It does NOT implement the full W3C SCXML reccomandation.
+* Engines/scxml4py/ SCXML intepreter developed at ESO for Python. It does NOT implement the full W3C SCXML reccomandation.
 
 
