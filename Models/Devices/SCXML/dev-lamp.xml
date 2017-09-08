@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="ROOT">  
+  <state id="ROOT"> 
+    <initial>
+      <transition target="ROOT::STANDBY"/>
+    </initial>  
+    <state id="ROOT::OPERATIONAL"> 
+      <initial>
+        <transition target="ROOT::OPERATIONAL::OFF"/>
+      </initial>  
+      <state id="ROOT::OPERATIONAL::ON"> 
+        <transition event="DISABLE_CMD" target="ROOT::STANDBY::READY::ON"/>  
+        <transition event="OFF_CMD" target="ROOT::OPERATIONAL::SWITCHING_OFF"/>  
+        <transition event="ISOFF_SIG" target="ROOT::OPERATIONAL::OFF"/>  
+        <transition event="ON_CMD"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::OFF"> 
+        <transition event="DISABLE_CMD" target="ROOT::STANDBY::READY::OFF"/>  
+        <transition event="ON_CMD" target="ROOT::OPERATIONAL::SWITCHING_ON"/>  
+        <transition event="ISON_SIG" target="ROOT::OPERATIONAL::ON"/>  
+        <transition event="OFF_CMD"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::FAILURE"> 
+        <transition event="ISON_SIG" target="ROOT::OPERATIONAL::ON"/>  
+        <transition event="ISOFF_SIG" target="ROOT::OPERATIONAL::OFF"/>  
+        <transition event="OFF_CMD" target="ROOT::OPERATIONAL::SWITCHING_OFF"/>  
+        <transition event="ON_CMD" target="ROOT::OPERATIONAL::SWITCHING_ON"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::SWITCHING_ON"> 
+        <invoke targettype="java" id="DoSwitchOn" src="SMActivityDoSwitchOn.java"/>  
+        <transition event="ISON_SIG" target="ROOT::OPERATIONAL::WARMING"/>  
+        <transition event="ISWARM_INT" target="ROOT::OPERATIONAL::ON"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::SWITCHING_OFF"> 
+        <invoke targettype="java" id="DoSwitchOff" src="SMActivityDoSwitchOff.java"/>  
+        <transition event="ISOFF_SIG" target="ROOT::OPERATIONAL::COOLING"/>  
+        <transition event="ISCOOL_INT" target="ROOT::OPERATIONAL::OFF"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::WARMING"> 
+        <invoke targettype="java" id="DoWarmUp" src="SMActivityDoWarmUp.java"/>  
+        <transition event="ISWARM_INT" target="ROOT::OPERATIONAL::ON"/>  
+        <transition event="OFF_CMD" target="ROOT::OPERATIONAL::SWITCHING_OFF"/>  
+        <transition event="STOP_CMD" target="ROOT::OPERATIONAL::SWITCHING_OFF"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::COOLING"> 
+        <invoke targettype="java" id="DoCoolDown" src="SMActivityDoCoolDown.java"/>  
+        <transition event="ISCOOL_INT" target="ROOT::OPERATIONAL::OFF"/> 
+      </state>  
+      <transition event="RESET_CMD" target="ROOT::STANDBY"> 
+        <customActionDomain:ResetHandler name="ResetHandler"/> 
+      </transition>  
+      <transition event="ERRHW_SIG" target="ROOT::OPERATIONAL::FAILURE"/>  
+      <transition event="ERR_INT" target="ROOT::OPERATIONAL::FAILURE"/> 
+    </state>  
+    <state id="ROOT::STANDBY"> 
+      <initial>
+        <transition target="ROOT::STANDBY::NOTREADY"/>
+      </initial>  
+      <state id="ROOT::STANDBY::NOTREADY"> 
+        <transition event="INIT_CMD" target="ROOT::STANDBY::INITIALIZING"/> 
+      </state>  
+      <state id="ROOT::STANDBY::INITIALIZING"> 
+        <onentry> 
+          <customActionDomain:InitStart name="InitStart"/> 
+        </onentry>  
+        <invoke targettype="java" id="DoInit" src="SMActivityDoInit.java"/>  
+        <transition event="INITOFF_INT" target="ROOT::STANDBY::READY::OFF"> 
+          <customActionDomain:InitComplete name="InitComplete"/> 
+        </transition>  
+        <transition event="ERRINIT_INT" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:InitAbort name="InitAbort"/> 
+        </transition>  
+        <transition event="STOP_CMD" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:InitAbort name="InitAbort"/> 
+        </transition>  
+        <transition event="RESET_CMD" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:InitAbort name="InitAbort"/> 
+        </transition>  
+        <transition event="INIT_CMD" target="ROOT::STANDBY::INITIALIZING"/>  
+        <transition event="INITON_INT" target="ROOT::STANDBY::READY::ON"> 
+          <customActionDomain:InitComplete name="InitComplete"/> 
+        </transition> 
+      </state>  
+      <state id="ROOT::STANDBY::READY"> 
+        <initial>
+          <transition target="ROOT::STANDBY::READY::OFF"/>
+        </initial>  
+        <state id="ROOT::STANDBY::READY::OFF"> 
+          <transition event="ISON_SIG" target="ROOT::STANDBY::READY::ON"/>  
+          <transition event="ENABLE_CMD" target="ROOT::OPERATIONAL::OFF"/> 
+        </state>  
+        <state id="ROOT::STANDBY::READY::ON"> 
+          <transition event="ISOFF_SIG" target="ROOT::STANDBY::READY::OFF"/>  
+          <transition event="ENABLE_CMD" target="ROOT::OPERATIONAL::ON"/> 
+        </state>  
+        <transition event="RESET_CMD" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:ResetHandler name="ResetHandler"/> 
+        </transition>  
+        <transition event="INIT_CMD" target="ROOT::STANDBY::INITIALIZING"/> 
+      </state>  
+      <state id="ROOT::STANDBY::FAILURE"> 
+        <transition event="HWOK_SIG" target="ROOT::STANDBY::NOTREADY"/> 
+      </state>  
+      <transition event="ERRHW_SIG" target="ROOT::STANDBY::FAILURE"> 
+        <customActionDomain:ErrorHandler name="ErrorHandler"/> 
+      </transition> 
+    </state>  
+    <transition event="EXIT_CMD" target="OFF"/>  
+    <transition event="RESET_CMD"> 
+      <customActionDomain:ResetHandler name="ResetHandler"/> 
+    </transition>  
+    <transition event="STATUS_CMD"> 
+      <customActionDomain:StatusHandler name="StatusHandler"/> 
+    </transition>  
+    <transition event="STOP_CMD"> 
+      <customActionDomain:StopHandler name="StopHandler"/> 
+    </transition> 
+  </state>  
+  <final id="OFF"/> 
+</scxml>

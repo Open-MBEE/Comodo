@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="ROOT">  
+  <state id="ROOT"> 
+    <initial>
+      <transition target="ROOT::STANDBY"/>
+    </initial>  
+    <state id="ROOT::OPERATIONAL"> 
+      <initial>
+        <transition target="ROOT::OPERATIONAL::STANDSTILL"/>
+      </initial>  
+      <state id="ROOT::OPERATIONAL::STANDSTILL"> 
+        <transition event="DISABLE_CMD" target="ROOT::STANDBY::READY"/>  
+        <transition event="SETPOS_CMD" target="ROOT::OPERATIONAL::SETTINGPOS"/>  
+        <transition event="MOVE_CMD" target="ROOT::OPERATIONAL::MOVING"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::STOPPING"> 
+        <invoke targettype="java" id="DoStop" src="SMActivityDoStop.java"/>  
+        <transition event="ERR_INT" target="ROOT::OPERATIONAL::FAILURE"/>  
+        <transition event="STOPDONE_INT" target="ROOT::OPERATIONAL::STANDSTILL"/>  
+        <transition event="STOP_CMD"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::FAILURE"> 
+        <transition event="MOVE_CMD" target="ROOT::OPERATIONAL::MOVING"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::SETTINGPOS"> 
+        <invoke targettype="java" id="DoSetPos" src="SMActivityDoSetPos.java"/>  
+        <transition event="SETPOSDONE_INT" target="ROOT::OPERATIONAL::STANDSTILL"/>  
+        <transition event="ERR_INT" target="ROOT::OPERATIONAL::STANDSTILL"/>  
+        <transition event="STOP_CMD" target="ROOT::OPERATIONAL::STOPPING"/>  
+        <transition event="SETPOS_CMD" target="ROOT::OPERATIONAL::SETTINGPOS"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::MOVING"> 
+        <onentry> 
+          <customActionDomain:MoveStart name="MoveStart"/> 
+        </onentry>  
+        <invoke targettype="java" id="DoMove" src="SMActivityDoMove.java"/>  
+        <transition event="MOVEDONE_INT" target="ROOT::OPERATIONAL::STANDSTILL"/>  
+        <transition event="ERRBRAKE_INT" target="ROOT::OPERATIONAL::STANDSTILL"/>  
+        <transition event="TIMEOUT_INT" target="ROOT::OPERATIONAL::FAILURE"/>  
+        <transition event="ERR_INT" target="ROOT::OPERATIONAL::FAILURE"/>  
+        <transition event="STOP_CMD" target="ROOT::OPERATIONAL::STOPPING"/>  
+        <transition event="MOVE_CMD" target="ROOT::OPERATIONAL::MOVING"/> 
+      </state>  
+      <transition event="RESET_CMD" target="ROOT::STANDBY"> 
+        <customActionDomain:ResetHandler name="ResetHandler"/> 
+      </transition>  
+      <transition event="ERRHW_SIG" target="ROOT::OPERATIONAL::FAILURE"/> 
+    </state>  
+    <state id="ROOT::STANDBY"> 
+      <initial>
+        <transition target="ROOT::STANDBY::NOTREADY"/>
+      </initial>  
+      <state id="ROOT::STANDBY::NOTREADY"> 
+        <transition event="INIT_CMD" target="ROOT::STANDBY::INITIALIZING"/> 
+      </state>  
+      <state id="ROOT::STANDBY::INITIALIZING"> 
+        <onentry> 
+          <customActionDomain:InitStart name="InitStart"/> 
+        </onentry>  
+        <invoke targettype="java" id="DoInit" src="SMActivityDoInit.java"/>  
+        <transition event="INITDONE_INT" target="ROOT::STANDBY::READY"> 
+          <customActionDomain:InitComplete name="InitComplete"/> 
+        </transition>  
+        <transition event="ERRINIT_INT" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:InitAbort name="InitAbort"/> 
+        </transition>  
+        <transition event="STOP_CMD" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:InitAbort name="InitAbort"/> 
+        </transition>  
+        <transition event="RESET_CMD" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:InitAbort name="InitAbort"/> 
+        </transition>  
+        <transition event="INIT_CMD" target="ROOT::STANDBY::INITIALIZING"/> 
+      </state>  
+      <state id="ROOT::STANDBY::READY"> 
+        <transition event="RESET_CMD" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:ResetHandler name="ResetHandler"/> 
+        </transition>  
+        <transition event="ENABLE_CMD" target="ROOT::OPERATIONAL"/>  
+        <transition event="INIT_CMD" target="ROOT::STANDBY::INITIALIZING"/> 
+      </state>  
+      <state id="ROOT::STANDBY::FAILURE"> 
+        <transition event="HWOK_SIG" target="ROOT::STANDBY::NOTREADY"/> 
+      </state>  
+      <transition event="ERRHW_SIG" target="ROOT::STANDBY::FAILURE"> 
+        <customActionDomain:ErrorHandler name="ErrorHandler"/> 
+      </transition> 
+    </state>  
+    <transition event="EXIT_CMD" target="OFF"/>  
+    <transition event="RESET_CMD"> 
+      <customActionDomain:ResetHandler name="ResetHandler"/> 
+    </transition>  
+    <transition event="STATUS_CMD"> 
+      <customActionDomain:StatusHandler name="StatusHandler"/> 
+    </transition>  
+    <transition event="STOP_CMD"> 
+      <customActionDomain:StopHandler name="StopHandler"/> 
+    </transition> 
+  </state>  
+  <final id="OFF"/> 
+</scxml>

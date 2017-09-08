@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="ROOT">  
+  <state id="ROOT"> 
+    <initial>
+      <transition target="ROOT::STANDBY"/>
+    </initial>  
+    <state id="ROOT::OPERATIONAL"> 
+      <initial>
+        <transition target="ROOT::OPERATIONAL::CLOSED"/>
+      </initial>  
+      <state id="ROOT::OPERATIONAL::OPEN"> 
+        <transition event="DISABLE_CMD" target="ROOT::STANDBY::READY::OPEN"/>  
+        <transition event="CLOSE_CMD" target="ROOT::OPERATIONAL::CLOSING"/>  
+        <transition event="ISCLOSED_SIG" target="ROOT::OPERATIONAL::CLOSED"/>  
+        <transition event="OPEN_CMD"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::CLOSED"> 
+        <transition event="DISABLE_CMD" target="ROOT::STANDBY::READY::CLOSED"/>  
+        <transition event="OPEN_CMD" target="ROOT::OPERATIONAL::OPENING"/>  
+        <transition event="ISOPEN_SIG" target="ROOT::OPERATIONAL::OPEN"/>  
+        <transition event="CLOSE_CMD"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::OPENING"> 
+        <invoke targettype="java" id="DoOpen" src="SMActivityDoOpen.java"/>  
+        <transition event="ISOPEN_SIG" target="ROOT::OPERATIONAL::OPEN"/>  
+        <transition event="STOP_CMD" target="ROOT::OPERATIONAL::FAILURE"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::CLOSING"> 
+        <invoke targettype="java" id="DoClose" src="SMActivityDoClose.java"/>  
+        <transition event="ISCLOSED_SIG" target="ROOT::OPERATIONAL::CLOSED"/>  
+        <transition event="STOP_CMD" target="ROOT::OPERATIONAL::FAILURE"/> 
+      </state>  
+      <state id="ROOT::OPERATIONAL::FAILURE"> 
+        <transition event="ISCLOSED_SIG" target="ROOT::OPERATIONAL::CLOSED"/>  
+        <transition event="ISOPEN_SIG" target="ROOT::OPERATIONAL::OPEN"/>  
+        <transition event="CLOSE_CMD" target="ROOT::OPERATIONAL::CLOSING"/>  
+        <transition event="OPEN_CMD" target="ROOT::OPERATIONAL::OPENING"/> 
+      </state>  
+      <transition event="RESET_CMD" target="ROOT::STANDBY"> 
+        <customActionDomain:ResetHandler name="ResetHandler"/> 
+      </transition>  
+      <transition event="ERRHW_SIG" target="ROOT::OPERATIONAL::FAILURE"/>  
+      <transition event="ERR_INT" target="ROOT::OPERATIONAL::FAILURE"/> 
+    </state>  
+    <state id="ROOT::STANDBY"> 
+      <initial>
+        <transition target="ROOT::STANDBY::NOTREADY"/>
+      </initial>  
+      <state id="ROOT::STANDBY::NOTREADY"> 
+        <transition event="INIT_CMD" target="ROOT::STANDBY::INITIALIZING"/> 
+      </state>  
+      <state id="ROOT::STANDBY::INITIALIZING"> 
+        <onentry> 
+          <customActionDomain:InitStart name="InitStart"/> 
+        </onentry>  
+        <invoke targettype="java" id="DoInit" src="SMActivityDoInit.java"/>  
+        <transition event="INITOPEN_INT" target="ROOT::STANDBY::READY::OPEN"> 
+          <customActionDomain:InitComplete name="InitComplete"/> 
+        </transition>  
+        <transition event="ERRINIT_INT" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:InitAbort name="InitAbort"/> 
+        </transition>  
+        <transition event="STOP_CMD" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:InitAbort name="InitAbort"/> 
+        </transition>  
+        <transition event="RESET_CMD" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:InitAbort name="InitAbort"/> 
+        </transition>  
+        <transition event="INIT_CMD" target="ROOT::STANDBY::INITIALIZING"/>  
+        <transition event="INITCLOSED_INT" target="ROOT::STANDBY::READY::CLOSED"> 
+          <customActionDomain:InitComplete name="InitComplete"/> 
+        </transition> 
+      </state>  
+      <state id="ROOT::STANDBY::READY"> 
+        <initial>
+          <transition target="ROOT::STANDBY::READY::CLOSED"/>
+        </initial>  
+        <state id="ROOT::STANDBY::READY::OPEN"> 
+          <transition event="ENABLE_CMD" target="ROOT::OPERATIONAL::OPEN"/>  
+          <transition event="ISCLOSED_SIG" target="ROOT::STANDBY::READY::CLOSED"/> 
+        </state>  
+        <state id="ROOT::STANDBY::READY::CLOSED"> 
+          <transition event="ENABLE_CMD" target="ROOT::OPERATIONAL::CLOSED"/>  
+          <transition event="ISOPEN_SIG" target="ROOT::STANDBY::READY::OPEN"/> 
+        </state>  
+        <transition event="RESET_CMD" target="ROOT::STANDBY::NOTREADY"> 
+          <customActionDomain:ResetHandler name="ResetHandler"/> 
+        </transition>  
+        <transition event="INIT_CMD" target="ROOT::STANDBY::INITIALIZING"/> 
+      </state>  
+      <state id="ROOT::STANDBY::FAILURE"> 
+        <transition event="HWOK_SIG" target="ROOT::STANDBY::NOTREADY"/> 
+      </state>  
+      <transition event="ERRHW_SIG" target="ROOT::STANDBY::FAILURE"> 
+        <customActionDomain:ErrorHandler name="ErrorHandler"/> 
+      </transition> 
+    </state>  
+    <transition event="EXIT_CMD" target="OFF"/>  
+    <transition event="RESET_CMD"> 
+      <customActionDomain:ResetHandler name="ResetHandler"/> 
+    </transition>  
+    <transition event="STATUS_CMD"> 
+      <customActionDomain:StatusHandler name="StatusHandler"/> 
+    </transition>  
+    <transition event="STOP_CMD"> 
+      <customActionDomain:StopHandler name="StopHandler"/> 
+    </transition> 
+  </state>  
+  <final id="OFF"/> 
+</scxml>
