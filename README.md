@@ -21,4 +21,4 @@ The repository is organized in the following directories:
 * _Engines/scxml4cpp/_ SCXML intepreter developed at ESO for C++. It does NOT implement the full W3C SCXML reccomandation.
 * _Engines/scxml4py/_ SCXML intepreter developed at ESO for Python. It does NOT implement the full W3C SCXML reccomandation.
 * _doc/_ COMODO documentation.
-
+* _Models/_ Collection of models that can be re-used.
