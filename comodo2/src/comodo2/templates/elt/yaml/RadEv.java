@@ -174,26 +174,20 @@ public class RadEv implements IGenerator {
 		String str = "rad::cii::Request<";
 		if (!Objects.equal(replyTypeName, "")) {
 			if (isReplyTypePrimitive) {
-				String _str = str;
-				str = (_str + replyTypeName);
+				str += replyTypeName;
 			} else {
-				String _str_1 = str;
-				str = (_str_1 + (((("std::shared_ptr<" + ifModName) + "::") + replyTypeName) + ">"));
+				str += "std::shared_ptr<" + ifModName + "::" + replyTypeName + ">";
 			}
 		}
 		if (!Objects.equal(paramTypeName, "")) {
-			String _str_2 = str;
-			str = (_str_2 + ", ");
+			str += ", ";
 			if (isParamTypePrimitive) {
-				String _str_3 = str;
-				str = (_str_3 + paramTypeName);
+				str += paramTypeName;
 			} else {
-				String _str_4 = str;
-				str = (_str_4 + (((("std::shared_ptr<" + ifModName) + "::") + paramTypeName) + ">"));
+				str += "std::shared_ptr<" + ifModName + "::" + paramTypeName + ">";
 			}
 		}
-		String _str_5 = str;
-		str = (_str_5 + ">");
+		str += ">";
 		return str;
 	}
 }

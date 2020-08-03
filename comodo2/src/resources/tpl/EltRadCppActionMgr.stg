@@ -1,0 +1,179 @@
+delimiters "%", "%"
+
+ActionMgrHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className, classNameUpperCase) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% header file.
+ */
+#ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+#define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+#include <yaml-cpp/yaml.h>
+
+#include <string>
+
+namespace %moduleNameLowerCase% {
+
+#include <rad/dbAdapter.hpp>
+
+#include <string>
+
+namespace %moduleName.toLowerCase% {
+
+const std::string KEY_CONTROL_STATE = "ctr.state";
+
+const std::string KEY_CONFIG_REQ_ENDPOINT = "cfg.req.endpoint";
+const std::string KEY_CONFIG_DB_ENDPOINT = "cfg.db.endpoint";
+const std::string KEY_CONFIG_DB_TIMEOUT_SEC = "cfg.db.timeout.sec";
+const std::string KEY_CONFIG_SM_SCXML = "cfg.sm.scxml";
+const std::string KEY_CONFIG_FILENAME = "cfg.filename";
+const std::string KEY_CONFIG_LOG_LEVEL = "cfg.log.level";
+const std::string KEY_CONFIG_LOG_PROPERTIES = "cfg.log.properties";
+
+class Config;
+
+
+/**
+ * This class is the interface to the in-memory DB.
+ */
+class DbInterface {
+ public:
+    /**
+     * Constructor.
+     *
+     * @param[in] prefix String used as prefix when building the keys.
+     * @param[in] runtime_db Reference to the in-memory DB adapter.
+     */
+    DbInterface(const std::string& prefix, rad::DbAdapter& runtime_db);
+
+    /**
+     * Destructor
+     */
+    virtual ~DbInterface();
+
+    /**
+     * @return The current state of the application stored in the DB.
+     */
+    std::string GetControlState();
+
+    /**
+     * @param[in] key Key in the DB.
+     * @return The value stored in the DB associated to the given key.
+     */
+    std::string Get(const std::string& key);
+
+    /**
+     * @param[in] value State to be stored in the DB.
+     */
+    void SetControlState(const std::string& value);
+
+    /**
+     * Set the application configuration information in the DB.
+     *
+     * @param[in] cfg Application configuration.
+     */
+    void SetConfig(Config& cfg);
+
+    /**
+     * @param[in] key Key to be written in the DB.
+     * @param[in] value Value, associated to the given key, to be written in the DB.
+     */
+    void Set(const std::string& key, const std::string& value);
+
+    DbInterface(const DbInterface&) = delete;       //! Disable copy constructor
+    DbInterface& operator=(const DbInterface&) = delete;  //! Disable assignment operator
+
+ private:
+    std::string m_prefix;
+    rad::DbAdapter& m_runtime_db;
+};
+
+}  // namespace %moduleNameLowerCase%
+
+#endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+>>
+
+ActionMgrSource(moduleName, moduleNameLowerCase, className) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% source file.
+ */
+
+#include <%moduleName%/dbInterface.hpp>
+#include <%moduleName%/config.hpp>
+#include <%moduleName%/logger.hpp>
+
+#include <rad/assert.hpp>
+#include <rad/exceptions.hpp>
+
+namespace %moduleName.toLowerCase% {
+
+DbInterface::DbInterface(const std::string& prefix, rad::DbAdapter& runtime_db)
+                : m_prefix(prefix),
+                  m_runtime_db(runtime_db) {
+    RAD_TRACE(GetLogger());
+
+    if (prefix.size() > 0) {
+        m_prefix = prefix + ".";
+    }
+}
+
+DbInterface::~DbInterface() {
+    RAD_TRACE(GetLogger());
+}
+
+std::string DbInterface::GetControlState() {
+    RAD_TRACE(GetLogger());
+    return m_runtime_db.Get(m_prefix + KEY_CONTROL_STATE);
+}
+
+std::string DbInterface::Get(const std::string& key) {
+    RAD_TRACE(GetLogger());
+    return m_runtime_db.Get(m_prefix + key);
+}
+
+void DbInterface::SetControlState(const std::string& value) {
+    RAD_TRACE(GetLogger());
+    m_runtime_db.Set(m_prefix + KEY_CONTROL_STATE, value);
+}
+
+void DbInterface::SetConfig(Config& cfg) {
+    RAD_TRACE(GetLogger());
+
+    // @TODO avoid copying strings
+    std::vector < std::string > kvs;
+    kvs.push_back(m_prefix + KEY_CONFIG_REQ_ENDPOINT);
+    kvs.push_back(cfg.GetMsgReplierEndpoint());
+    kvs.push_back(m_prefix + KEY_CONFIG_DB_ENDPOINT);
+    kvs.push_back(cfg.GetDbEndpoint());
+    kvs.push_back(m_prefix + KEY_CONFIG_DB_TIMEOUT_SEC);
+    kvs.push_back(std::to_string(cfg.GetDbTimeout().tv_sec));
+    kvs.push_back(m_prefix + KEY_CONFIG_SM_SCXML);
+    kvs.push_back(cfg.GetSmScxmlFilename());
+    kvs.push_back(m_prefix + KEY_CONFIG_FILENAME);
+    kvs.push_back(cfg.GetConfigFilename());
+    kvs.push_back(m_prefix + KEY_CONFIG_LOG_LEVEL);
+    kvs.push_back(cfg.GetLogLevel());
+    kvs.push_back(m_prefix + KEY_CONFIG_LOG_PROPERTIES);
+    kvs.push_back(cfg.GetLogProperties());
+
+    m_runtime_db.MultiSet(kvs);
+}
+
+void DbInterface::Set(const std::string& key, const std::string& value) {
+    RAD_TRACE(GetLogger());
+    m_runtime_db.Set(m_prefix + key, value);
+}
+
+}  // namespace %moduleNameLowerCase%
+
+>>
+

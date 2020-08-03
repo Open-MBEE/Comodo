@@ -1,0 +1,133 @@
+delimiters "%", "%"
+
+DataContextHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className, classNameUpperCase) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% header file.
+ */
+#ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+#define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+#include <%moduleName%/config.hpp>
+#include <%moduleName%/dbInterface.hpp>
+
+namespace %moduleNameLowerCase% {
+
+/**
+ * This class provide access to the application run-time data including
+ * the in-memory DB.
+ */
+class DataContext {
+ public:
+    /**
+     * This constructor uses the application configuration to initialize the
+     * adapter object to the in-memory DB.
+     * The DB adapter is then used to initialize the DB interface object that
+     * can be used to access the DB key-value pairs.
+     *
+     * @param[in] config Reference to the application configuration.
+     */
+
+    DataContext(Config& config, rad::DbAdapter& db_adapter);
+
+    /**
+     * Destructor
+     */
+    virtual ~DataContext();
+
+    /**
+     * Reload the configuration from file and reconnect to the in-memory DB.
+     */
+    void ReloadConfig();
+
+    /**
+     * Try to connect to the DB and update the application configuration.
+     */
+    void UpdateDb();
+
+    /**
+     * @return A reference to the DB interface object.
+     */
+    DbInterface& GetDbInterface();
+
+    DataContext(const DataContext&) = delete;       //! Disable copy constructor
+    DataContext& operator=(const DataContext&) = delete;  //! Disable assignment operator
+
+ private:
+    Config&            m_config;
+    rad::DbAdapter&    m_runtime_db;
+    DbInterface        m_db_interface;
+};
+
+}  // namespace %moduleNameLowerCase%
+
+#endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+>>
+
+DataContextSource(moduleName, moduleNameLowerCase, className) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% source file.
+ */
+
+#include <%moduleName%/dataContext.hpp>
+#include <%moduleName%/logger.hpp>
+
+#include <rad/assert.hpp>
+#include <rad/exceptions.hpp>
+
+namespace %moduleNameLowerCase% {
+
+DataContext::DataContext(Config& config, rad::DbAdapter& db_adapter)
+: m_config(config),
+  m_runtime_db(db_adapter),
+  m_db_interface(m_config.GetProcName(), m_runtime_db) {
+    RAD_TRACE(GetLogger());
+    UpdateDb();
+}
+
+DataContext::~DataContext() {
+    RAD_TRACE(GetLogger());
+}
+
+void DataContext::ReloadConfig() {
+    RAD_TRACE(GetLogger());
+
+    m_config.LoadConfig(m_config.GetConfigFilename());
+    UpdateDb();
+}
+
+void DataContext::UpdateDb() {
+    RAD_TRACE(GetLogger());
+
+    try {
+        m_runtime_db.Disconnect();
+        m_runtime_db.Config(m_config.GetDbEndpoint(), m_config.GetDbTimeout());
+        m_runtime_db.Connect();
+        RAD_ASSERT(m_runtime_db.IsConnected());
+        m_db_interface.SetConfig(m_config);
+    } catch (rad::RuntimeDbException& e) {
+        /*
+         * Log error but do not terminate, DB could be temporarily unavailable.
+         */
+        LOG4CPLUS_ERROR(GetLogger(), e.what());
+    }
+}
+
+DbInterface& DataContext::GetDbInterface() {
+    RAD_TRACE(GetLogger());
+    return m_db_interface;
+}
+
+}  // namespace %moduleNameLowerCase%
+
+>>
+

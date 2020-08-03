@@ -1,16 +1,19 @@
 package comodo2.templates.elt.txt;
 
 import com.google.common.collect.Iterables;
+
 import comodo2.queries.QClass;
 import comodo2.utils.FilesHelper;
 import javax.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
 
 public class RadLog implements IGenerator {
 	@Inject
@@ -38,15 +41,63 @@ public class RadLog implements IGenerator {
 	}
 
 	public CharSequence generate(final String modName) {
+		try {
+			STGroup g = new STGroupFile("resources/tpl/EltRadTxtLog.stg");
+			ST st = g.getInstanceOf("LogProperties");
+			st.add("moduleName", modName);
+			return st.render();
+		} catch(Throwable throwable) {
+			System.out.println("===>>>ERROR " + throwable.getMessage());
+		}
+		return "";
+/*
+ * Xtend2		
+ */
+/*
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("log4cplus.rootLogger=INFO, console");
+    _builder.newLine();
+    _builder.append("log4cplus.logger.rootLogger.rad=INFO, console");
+    _builder.newLine();
+    _builder.append("log4cplus.logger.rootLogger.rad.sm=INFO, console");
+    _builder.newLine();
+    _builder.append("log4cplus.logger.rootLogger.");
+    _builder.append(modName);
+    _builder.append("=INFO, console");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("log4cplus.appender.console=log4cplus::ConsoleAppender");
+    _builder.newLine();
+    _builder.append("log4cplus.appender.console.layout=log4cplus::PatternLayout");
+    _builder.newLine();
+    _builder.append("log4cplus.appender.console.layout.ConversionPattern=[%D{%H:%M:%S:%q}][%-5p][%c] %m%n");
+    _builder.newLine();
+    return _builder;
+		
+ */
+/*
+ * Java		
+ */
+/*		
+		return 
+		"log4cplus.rootLogger=INFO, console\n" +
+		"log4cplus.logger.rootLogger.rad=INFO, console\n" + 
+		"log4cplus.logger.rootLogger.rad.sm=INFO, console\n" +
+		"log4cplus.logger.rootLogger." + modName + "=INFO, console\n" +
+		"log4cplus.appender.console=log4cplus::ConsoleAppender\n" +
+		"log4cplus.appender.console.layout=log4cplus::PatternLayout\n" +
+		"log4cplus.appender.console.layout.ConversionPattern=[%D{%H:%M:%S:%q}][%-5p][%c] %m%n\n";
+*/		
+/*
 		StringConcatenation str = new StringConcatenation();
 		str.append("log4cplus.rootLogger=INFO, console" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		str.append("log4cplus.logger.rootLogger.rad=INFO, console" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		str.append("log4cplus.logger.rootLogger.rad.sm=INFO, console" + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("log4cplus.logger.rootLogger." + modName  + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("=INFO, console" + StringConcatenation.DEFAULT_LINE_DELIMITER);
+		str.append("log4cplus.logger.rootLogger." + modName  + "=INFO, console" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		str.append("log4cplus.appender.console=log4cplus::ConsoleAppender" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		str.append("log4cplus.appender.console.layout=log4cplus::PatternLayout" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		str.append("log4cplus.appender.console.layout.ConversionPattern=[%D{%H:%M:%S:%q}][%-5p][%c] %m%n" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		return str;
+*/		
 	}
 }
