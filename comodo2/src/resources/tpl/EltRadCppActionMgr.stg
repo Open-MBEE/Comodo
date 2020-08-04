@@ -12,84 +12,50 @@ ActionMgrHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className,
 #ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
 #define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
 
-#include <yaml-cpp/yaml.h>
+#include <rad/actionMgr.hpp>
+#include <rad/smAdapter.hpp>
 
-#include <string>
+#include <boost/asio.hpp>
 
 namespace %moduleNameLowerCase% {
 
-#include <rad/dbAdapter.hpp>
-
-#include <string>
-
-namespace %moduleName.toLowerCase% {
-
-const std::string KEY_CONTROL_STATE = "ctr.state";
-
-const std::string KEY_CONFIG_REQ_ENDPOINT = "cfg.req.endpoint";
-const std::string KEY_CONFIG_DB_ENDPOINT = "cfg.db.endpoint";
-const std::string KEY_CONFIG_DB_TIMEOUT_SEC = "cfg.db.timeout.sec";
-const std::string KEY_CONFIG_SM_SCXML = "cfg.sm.scxml";
-const std::string KEY_CONFIG_FILENAME = "cfg.filename";
-const std::string KEY_CONFIG_LOG_LEVEL = "cfg.log.level";
-const std::string KEY_CONFIG_LOG_PROPERTIES = "cfg.log.properties";
-
-class Config;
-
+class DataContext;
 
 /**
- * This class is the interface to the in-memory DB.
+ * This class is responsible for the life-cycle management of
+ * actions and activities.
  */
-class DbInterface {
- public:
+class ActionMgr : public rad::ActionMgr {
+   public:
     /**
-     * Constructor.
+     * Default constructor.
+     */
+    ActionMgr();
+
+    /**
+     * Default destructor.
+     */
+    virtual ~ActionMgr();
+
+    /**
+     * Method to instantiate the action objects.
      *
-     * @param[in] prefix String used as prefix when building the keys.
-     * @param[in] runtime_db Reference to the in-memory DB adapter.
+     * @param[in] ios Event loop.
+     * @param[in] sm SM adapter used to inject internal events.
+     * @param[in] the_data Data shared within the application among actions and activities.
      */
-    DbInterface(const std::string& prefix, rad::DbAdapter& runtime_db);
+    void CreateActions(boost::asio::io_service& ios, rad::SMAdapter& sm, DataContext& the_data);
 
     /**
-     * Destructor
-     */
-    virtual ~DbInterface();
-
-    /**
-     * @return The current state of the application stored in the DB.
-     */
-    std::string GetControlState();
-
-    /**
-     * @param[in] key Key in the DB.
-     * @return The value stored in the DB associated to the given key.
-     */
-    std::string Get(const std::string& key);
-
-    /**
-     * @param[in] value State to be stored in the DB.
-     */
-    void SetControlState(const std::string& value);
-
-    /**
-     * Set the application configuration information in the DB.
+     * Method to instantiate activity objects.
      *
-     * @param[in] cfg Application configuration.
+     * @param[in] the_data Data shared within the application.
+     * @param[in] sm Reference to the State Machine adapter needed to trigger internal events.
      */
-    void SetConfig(Config& cfg);
+    void CreateActivities(rad::SMAdapter& sm, DataContext& the_data);
 
-    /**
-     * @param[in] key Key to be written in the DB.
-     * @param[in] value Value, associated to the given key, to be written in the DB.
-     */
-    void Set(const std::string& key, const std::string& value);
-
-    DbInterface(const DbInterface&) = delete;       //! Disable copy constructor
-    DbInterface& operator=(const DbInterface&) = delete;  //! Disable assignment operator
-
- private:
-    std::string m_prefix;
-    rad::DbAdapter& m_runtime_db;
+    ActionMgr(const ActionMgr&) = delete;             //! Disable copy constructor
+    ActionMgr& operator=(const ActionMgr&) = delete;  //! Disable assignment operator
 };
 
 }  // namespace %moduleNameLowerCase%
@@ -97,7 +63,7 @@ class DbInterface {
 #endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
 >>
 
-ActionMgrSource(moduleName, moduleNameLowerCase, className) ::= <<
+ActionMgrSource(moduleName, moduleNameLowerCase, className, classNameFilename, actionsInclude, activitiesInclude, createActions, createActivities) ::= <<
 /**
  * @file
  * @ingroup %moduleName%
@@ -107,70 +73,37 @@ ActionMgrSource(moduleName, moduleNameLowerCase, className) ::= <<
  * @brief %className% source file.
  */
 
-#include <%moduleName%/dbInterface.hpp>
-#include <%moduleName%/config.hpp>
+#include <%moduleName%/%className.toFileName%.hpp>
+%actionsInclude%
+%activitiesInclude%
+#include <%moduleName%/dataContext.hpp>
 #include <%moduleName%/logger.hpp>
 
+#include <rad/actionCallback.hpp>
+#include <rad/actionGroup.hpp>
 #include <rad/assert.hpp>
-#include <rad/exceptions.hpp>
 
-namespace %moduleName.toLowerCase% {
+#include <functional>
 
-DbInterface::DbInterface(const std::string& prefix, rad::DbAdapter& runtime_db)
-                : m_prefix(prefix),
-                  m_runtime_db(runtime_db) {
+namespace %moduleNameLowerCase% {
+
+ActionMgr::ActionMgr() { RAD_TRACE(GetLogger()); }
+
+ActionMgr::~ActionMgr() { RAD_TRACE(GetLogger()); }
+
+void ActionMgr::CreateActions(boost::asio::io_service& ios, rad::SMAdapter& sm,
+                              DataContext& the_data) {
     RAD_TRACE(GetLogger());
-
-    if (prefix.size() > 0) {
-        m_prefix = prefix + ".";
-    }
+    
+    scxml4cpp::Action* the_action = nullptr;    
+    using std::placeholders::_1;
+    %createActions%
 }
 
-DbInterface::~DbInterface() {
-    RAD_TRACE(GetLogger());
-}
-
-std::string DbInterface::GetControlState() {
-    RAD_TRACE(GetLogger());
-    return m_runtime_db.Get(m_prefix + KEY_CONTROL_STATE);
-}
-
-std::string DbInterface::Get(const std::string& key) {
-    RAD_TRACE(GetLogger());
-    return m_runtime_db.Get(m_prefix + key);
-}
-
-void DbInterface::SetControlState(const std::string& value) {
-    RAD_TRACE(GetLogger());
-    m_runtime_db.Set(m_prefix + KEY_CONTROL_STATE, value);
-}
-
-void DbInterface::SetConfig(Config& cfg) {
+void ActionMgr::CreateActivities(rad::SMAdapter& sm, DataContext& the_data) {
     RAD_TRACE(GetLogger());
 
-    // @TODO avoid copying strings
-    std::vector < std::string > kvs;
-    kvs.push_back(m_prefix + KEY_CONFIG_REQ_ENDPOINT);
-    kvs.push_back(cfg.GetMsgReplierEndpoint());
-    kvs.push_back(m_prefix + KEY_CONFIG_DB_ENDPOINT);
-    kvs.push_back(cfg.GetDbEndpoint());
-    kvs.push_back(m_prefix + KEY_CONFIG_DB_TIMEOUT_SEC);
-    kvs.push_back(std::to_string(cfg.GetDbTimeout().tv_sec));
-    kvs.push_back(m_prefix + KEY_CONFIG_SM_SCXML);
-    kvs.push_back(cfg.GetSmScxmlFilename());
-    kvs.push_back(m_prefix + KEY_CONFIG_FILENAME);
-    kvs.push_back(cfg.GetConfigFilename());
-    kvs.push_back(m_prefix + KEY_CONFIG_LOG_LEVEL);
-    kvs.push_back(cfg.GetLogLevel());
-    kvs.push_back(m_prefix + KEY_CONFIG_LOG_PROPERTIES);
-    kvs.push_back(cfg.GetLogProperties());
-
-    m_runtime_db.MultiSet(kvs);
-}
-
-void DbInterface::Set(const std::string& key, const std::string& value) {
-    RAD_TRACE(GetLogger());
-    m_runtime_db.Set(m_prefix + key, value);
+    %createActivities%
 }
 
 }  // namespace %moduleNameLowerCase%

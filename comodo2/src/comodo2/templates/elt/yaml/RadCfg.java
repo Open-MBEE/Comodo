@@ -49,6 +49,5 @@ public class RadCfg implements IGenerator {
 			System.out.println("===>>>ERROR " + throwable.getMessage());
 		}
 		return "";
-
 	}
 }

@@ -9,11 +9,13 @@ import javax.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.Interface;
-import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
 
 public class RadWscript implements IGenerator {
 	@Inject
@@ -56,23 +58,17 @@ public class RadWscript implements IGenerator {
 	}
 
 	public CharSequence generate(final String moduleName, final String parentName, final String appName, final String ifModulesName) {
-		StringConcatenation str = new StringConcatenation();
-		str.append("\"\"\"" + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("@file" + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("@ingroup " + moduleName + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("@copyright ESO - European Southern Observatory" + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.newLine();
-		str.append("@defgroup " + moduleName + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("@ingroup " + parentName + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("@brief " + moduleName + " Application module." + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("\"\"\""  + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.newLine();
-		str.append("from wtools.module import declare_cprogram" + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.newLine();
-		str.append("declare_cprogram(target=\'" + appName + "\'," + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("                 " + "features=\'radgen\'," + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("                 " + "use=\'log4cplus yaml-cpp hiredis protobuf xerces-c rad.cpp.core rad.cpp.services rad.cpp.events rad.cpp.sm rad.cpp.utils rad.cpp.mal " + ifModulesName + "\')");
-		str.newLineIfNotEmpty();
-		return str;
+		try {
+			STGroup g = new STGroupFile("resources/tpl/EltRadWaf.stg");
+			ST st = g.getInstanceOf("WscriptAppl");
+			st.add("moduleName", moduleName);
+			st.add("parentName", parentName);			
+			st.add("appName", appName);			
+			st.add("ifModulesName", ifModulesName);			
+			return st.render();
+		} catch(Throwable throwable) {
+			System.out.println("===>>>ERROR " + throwable.getMessage());
+		}
+		return "";		
 	}
 }
