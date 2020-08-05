@@ -107,8 +107,8 @@ int main(int argc, char *argv[]) {
         //state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Disable>();
 
         // Register publisher to export state information
-        %if(fullyQualifiedStateNames)%state_machine.SetStatusRepresentation(true); 
-        %else%state_machine.SetStatusRepresentation(false); 
+        %if(fullyQualifiedStateNames)%state_machine.SetStatusRepresentation(true);
+        %else%state_machine.SetStatusRepresentation(false);
         %endif%
         using std::placeholders::_1;
         state_machine.SetStatusPublisher(std::bind(
@@ -124,11 +124,8 @@ int main(int argc, char *argv[]) {
          * Start event loop
          */
         state_machine.Start();
-        
-
         io_service.run();
         state_machine.Stop();
-        
     } catch (rad::Exception& e) {
         LOG4CPLUS_ERROR(%moduleName%::GetLogger(), e.what());
         return EXIT_FAILURE;

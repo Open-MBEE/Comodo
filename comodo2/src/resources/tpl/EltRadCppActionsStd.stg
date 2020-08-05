@@ -7,7 +7,7 @@ ActionsStdHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% header file.
+ * @brief %className% class header file.
  */
 #ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
 #define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
@@ -153,6 +153,7 @@ class ActionsStd : public rad::ActionGroup {
 }  // namespace %moduleNameLowerCase%
 
 #endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
 >>
 
 ActionsStdSource(moduleName, moduleNameLowerCase, className) ::= <<
@@ -162,7 +163,7 @@ ActionsStdSource(moduleName, moduleNameLowerCase, className) ::= <<
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% source file.
+ * @brief %className% class source file.
  */
 
 #include <%moduleName%/actionsStd.hpp>

@@ -7,7 +7,7 @@ ActionMgrHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className,
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% header file.
+ * @brief %className% class header file.
  */
 #ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
 #define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
@@ -61,6 +61,7 @@ class ActionMgr : public rad::ActionMgr {
 }  // namespace %moduleNameLowerCase%
 
 #endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
 >>
 
 ActionMgrSource(moduleName, moduleNameLowerCase, className, classNameFilename, actionsInclude, activitiesInclude, createActions, createActivities) ::= <<
@@ -70,10 +71,10 @@ ActionMgrSource(moduleName, moduleNameLowerCase, className, classNameFilename, a
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% source file.
+ * @brief %className% class source file.
  */
 
-#include <%moduleName%/%className.toFileName%.hpp>
+#include <%moduleName%/%classNameFilename%.hpp>
 %actionsInclude%
 %activitiesInclude%
 #include <%moduleName%/dataContext.hpp>
@@ -102,7 +103,6 @@ void ActionMgr::CreateActions(boost::asio::io_service& ios, rad::SMAdapter& sm,
 
 void ActionMgr::CreateActivities(rad::SMAdapter& sm, DataContext& the_data) {
     RAD_TRACE(GetLogger());
-
     %createActivities%
 }
 

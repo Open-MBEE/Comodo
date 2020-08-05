@@ -146,12 +146,12 @@ public class Config {
 		return mGenerationMode;
 	}
 
-	public String getStartTime() {
+	public String getStartTimeStr() {
 		 DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss.SSS");  
 		 return mStartTime.format(format);   		  
 		//return mStartTime.toString();
 	}
-	
+
 	public void setGenerationMode(String mode) {
 		if (mode.contentEquals(GEN_MODE_ALL)) {
 			mGenerationMode = GEN_MODE_ALL;

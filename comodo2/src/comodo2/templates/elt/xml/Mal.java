@@ -273,7 +273,7 @@ public class Mal implements IGenerator {
 		str.newLine();
 		str.append("<member name=\"" + p.getName() + "\" " + printAttributeType(p));
 		if (p.getUpper() > 1) {
-			str.append(" arrayDimensions=\"(" + p.getUpper() + ")");
+			str.append(" arrayDimensions=\"(" + p.getUpper() + ")\"");
 		} 
 		str.append("/>");
 		return str;

@@ -7,7 +7,7 @@ DataContextHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, classNam
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% header file.
+ * @brief %className% class header file.
  */
 #ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
 #define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
@@ -66,6 +66,7 @@ class DataContext {
 }  // namespace %moduleNameLowerCase%
 
 #endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
 >>
 
 DataContextSource(moduleName, moduleNameLowerCase, className) ::= <<
@@ -75,7 +76,7 @@ DataContextSource(moduleName, moduleNameLowerCase, className) ::= <<
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% source file.
+ * @brief %className% class source file.
  */
 
 #include <%moduleName%/dataContext.hpp>

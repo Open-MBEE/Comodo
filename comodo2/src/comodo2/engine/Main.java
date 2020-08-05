@@ -25,10 +25,11 @@ import com.google.inject.Injector;
 
 public class Main {
 	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
+	//private static final Logger mLogger = Logger.getRootLogger();
 
 	public static void main(String[] args) {
 		try {
-			org.apache.log4j.BasicConfigurator.configure();
+			//org.apache.log4j.BasicConfigurator.configure();
 			new Main().run(args);
 		} catch(Throwable throwable) {
 			mLogger.error(throwable.getMessage(), throwable);
@@ -75,7 +76,7 @@ public class Main {
 		CommandLine line = null;
 		try {
 			Config.getInstance().setStartTime();
-			mLogger.info("Starting execution at " + Config.getInstance().getStartTime());
+			mLogger.info("Starting execution at " + Config.getInstance().getStartTimeStr());
 
 			line = parser.parse(options, args);
 
@@ -203,15 +204,16 @@ public class Main {
 
 			mLogger.info("Starting transformation " + Config.getInstance().getTargetPlatform() 
 					+ " on model " + modelFilePath + " for modules " + Config.getInstance().getModulesStr());
+			long startTime = System.nanoTime();			
 
 			// check  OperationCanceledException is accessible
 			OperationCanceledException.class.getName();
 
 			Injector injector = new Mwe2StandaloneSetup().createInjectorAndDoEMFRegistration();
 			Mwe2Runner mweRunner = injector.getInstance(Mwe2Runner.class);
+			
 			mweRunner.run(URI.createURI(urlWorkflow.toString()), params);
-
-			mLogger.info("Execution completed.");			
+			mLogger.info("Execution completed (" + (System.nanoTime() - startTime)/1e9 + "s).");			
 		} catch(NoClassDefFoundError e) {
 			if ("org/eclipse/core/runtime/OperationCanceledException".equals(e.getMessage())) {
 				mLogger.error("Could not load class: org.eclipse.core.runtime.OperationCanceledException");

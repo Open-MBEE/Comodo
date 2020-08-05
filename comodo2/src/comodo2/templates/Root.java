@@ -33,6 +33,7 @@ public class Root implements IGenerator {
 
 	public void generate(final Resource input, final IFileSystemAccess fsa) {
 		if (Config.getInstance().isModelConfigured(input.getURI().toFileString())) {
+			long startTime = System.nanoTime();	
 			if (Objects.equal(Config.getInstance().getTargetPlatform(), Config.TARGET_PLATFORM_SCXML)) {
 				mScxmlTemplate.doGenerate(input, fsa);
 			} else {
@@ -43,7 +44,8 @@ public class Root implements IGenerator {
 					mLogger.error("Unsupported target: <" + Config.getInstance().getTargetPlatform() + "> for module <" + Config.getInstance().getCurrentModule() + ">");
 				}
 			}
-			mLogger.debug("Processed module <" + Config.getInstance().getCurrentModule() + "> from resource URI <" + input.getURI().toString() + ">");
+			mLogger.debug("Processed module <" + Config.getInstance().getCurrentModule() + "> from resource URI <" + input.getURI().toString() + "> (" + 
+					(System.nanoTime() - startTime)/1e9 + "s)");
 		}
 	}
 }

@@ -19,9 +19,13 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
+import org.apache.log4j.Logger;
 
 @SuppressWarnings("all")
 public class RadActionMgr implements IGenerator {
+	
+	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
+
 	@Inject
 	@Extension
 	private QClass mQClass;
@@ -49,23 +53,20 @@ public class RadActionMgr implements IGenerator {
 			if ((mQClass.isToBeGenerated(e) && mQClass.hasStateMachines(e))) {
 				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("actionMgr")));
 				fsa.generateFile(mFilesHelper.toHppFilePath("actionMgr"), this.generateHeader(Config.getInstance().getCurrentModule(), "ActionMgr"));
+
+				Iterable<StateMachine> stateMachines = mQClass.getStateMachines(e);
 				TreeSet<String> activityNames = new TreeSet<String>();
-				Iterable<StateMachine> _stateMachines = mQClass.getStateMachines(e);
-				for (final StateMachine sm : _stateMachines) {
-					TreeSet<String> _allActivityNames = mQStateMachine.getAllActivityNames(sm);
-					Iterables.<String>addAll(activityNames, _allActivityNames);
-				}
 				TreeSet<String> actionNames = new TreeSet<String>();
-				Iterable<StateMachine> _stateMachines_1 = mQClass.getStateMachines(e);
-				for (final StateMachine sm_1 : _stateMachines_1) {
-					TreeSet<String> _allActionNames = mQStateMachine.getAllActionNames(sm_1);
-					Iterables.<String>addAll(actionNames, _allActionNames);
-				}
 				TreeSet<String> guardNames = new TreeSet<String>();
-				Iterable<StateMachine> _stateMachines_2 = mQClass.getStateMachines(e);
-				for (final StateMachine sm_2 : _stateMachines_2) {
-					TreeSet<String> _allGuardNames = mQStateMachine.getAllGuardNames(sm_2);
-					Iterables.<String>addAll(guardNames, _allGuardNames);
+				for (final StateMachine sm : stateMachines) {
+					TreeSet<String> allActivityNames = mQStateMachine.getAllActivityNames(sm);
+					Iterables.<String>addAll(activityNames, allActivityNames);
+
+					TreeSet<String> allActionNames = mQStateMachine.getAllActionNames(sm);
+					Iterables.<String>addAll(actionNames, allActionNames);
+
+					TreeSet<String> allGuardNames = mQStateMachine.getAllGuardNames(sm);
+					Iterables.<String>addAll(guardNames, allGuardNames);
 				}
 				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("actionMgr")));
 				fsa.generateFile(mFilesHelper.toCppFilePath("actionMgr"), this.generateSource(Config.getInstance().getCurrentModule(), "ActionMgr", activityNames, actionNames, guardNames));
@@ -87,7 +88,7 @@ public class RadActionMgr implements IGenerator {
 			st.add("classNameUpperCase", className.toUpperCase());	
 			return st.render();
 		} catch(Throwable throwable) {
-			System.out.println("===>>>ERROR " + throwable.getMessage());
+			mLogger.error("Generating header file for " + className + " class (" + throwable.getMessage() + ").");
 		}
 		return "";
 	}
@@ -109,7 +110,7 @@ public class RadActionMgr implements IGenerator {
 			st.add("createActivities", printCreateActivities(activityNames));
 			return st.render();
 		} catch(Throwable throwable) {
-			System.out.println("===>>>ERROR " + throwable.getMessage());
+			mLogger.error("Generating source file for " + className + " class (" + throwable.getMessage() + ").");
 		}
 		return "";
 	}
@@ -134,27 +135,27 @@ public class RadActionMgr implements IGenerator {
 	public CharSequence printCreateActions(final TreeSet<String> actionNames, final TreeSet<String> guardNames) {
 		String str = "";
 		TreeSet<String> mergeClassNames = mActions.getMergeClassNames(mActions.getClassNames(actionNames), mActions.getClassNames(guardNames));
-		for(final String group : mergeClassNames) {
+		for (final String group : mergeClassNames) {
+			str += "\n";
 			str += group + "* my_" + group.toLowerCase() + " = new " + group + "(ios, sm, the_data);\n";
 			str += "if (my_" + group.toLowerCase() + " == nullptr) {\n";
-			str += "	LOG4CPLUS_ERROR(GetLogger(), \"Cannot create " + group + " object.\");\n";
-			str += "	// @TODO throw exception\n";
-			str += "	return;\n";
+			str += "    LOG4CPLUS_ERROR(GetLogger(), \"Cannot create " + group + " object.\");\n";
+			str += "    // @TODO throw exception\n";
+			str += "    return;\n";
 			str += "}\n";
 			str += "AddActionGroup(my_" +  group.toLowerCase() + ");\n";
-			str += "\n";
 			TreeSet<String> methodNames = mActions.getMethodNames(actionNames, group);
 			for(final String method : methodNames) {
-				str = "\n";
+				str += "\n";
 				str += "the_action = new rad::ActionCallback(\"" + group + "." + method + "\",\n";
-				str += "    std::bind(&" + group + "::" + method + ", my_" + group.toLowerCase() + ", _1));\n";
+				str += "                                     std::bind(&" + group + "::" + method + ", my_" + group.toLowerCase() + ", _1));\n";
 				str += "AddAction(the_action);\n";
 			}
 			TreeSet<String> methodNames2 = mActions.getMethodNames(guardNames, group);
 			for(final String method2 : methodNames2) {
-				str = "\n";
+				str += "\n";
 				str += "the_action = new rad::GuardCallback(\"" + group + "." + method2 + "\",\n";
-				str += "    std::bind(&" + group + "::" + method2 + ", my_" + group.toLowerCase() + ", _1));\n";
+				str += "                                    std::bind(&" + group + "::" + method2 + ", my_" + group.toLowerCase() + ", _1));\n";
 				str += "AddAction(the_action);\n";
 			}
 		}
@@ -165,10 +166,10 @@ public class RadActionMgr implements IGenerator {
 		String str = "";
 		if (activityNames.size() > 0) {
 			str += "scxml4cpp::Activity* the_activity = nullptr;\n";
-			for(final String name : activityNames) {
+			for (final String name : activityNames) {
 				str += "\n";
 				str += "the_activity = new "  + name + "(\"" + name + "\", sm, the_data);\n";
-				str += "AddActivity(the_activity);\n";
+				str += "AddActivity(the_activity);";
 			}
 		}
 		return str;

@@ -64,7 +64,7 @@ public class FilesHelper {
 			if (Config.getInstance().isFileBackupEnabled()) {
 				File src = new File(absPath);
 				if (src.isFile()) {
-					String postfix = ("." + Config.getInstance().getStartTime() + ".backup");
+					String postfix = ("." + Config.getInstance().getStartTimeStr() + ".backup");
 					File dst = new File((absPath + postfix));
 					Files.copy(src.toPath(), dst.toPath(), StandardCopyOption.REPLACE_EXISTING);
 					FilesHelper.mLogger.debug((("Created backup file: " + absPath) + postfix));

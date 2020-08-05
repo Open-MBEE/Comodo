@@ -7,22 +7,16 @@ DbInterfaceHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, classNam
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% header file.
+ * @brief %className% class header file.
  */
 #ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
 #define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
-
-#include <yaml-cpp/yaml.h>
-
-#include <string>
-
-namespace %moduleNameLowerCase% {
 
 #include <rad/dbAdapter.hpp>
 
 #include <string>
 
-namespace %moduleName.toLowerCase% {
+namespace %moduleNameLowerCase% {
 
 const std::string KEY_CONTROL_STATE = "ctr.state";
 
@@ -95,6 +89,7 @@ class DbInterface {
 }  // namespace %moduleNameLowerCase%
 
 #endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
 >>
 
 DbInterfaceSource(moduleName, moduleNameLowerCase, className) ::= <<
@@ -104,7 +99,7 @@ DbInterfaceSource(moduleName, moduleNameLowerCase, className) ::= <<
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% source file.
+ * @brief %className% class source file.
  */
 
 #include <%moduleName%/dbInterface.hpp>

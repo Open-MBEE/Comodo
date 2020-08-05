@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:EELT_INS_Profile.ICSFrameworkStereotypes="http:///EELT_INS_Profile/ICSFrameworkStereotypes.ecore" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:SysML.Allocations="http:///SysML/Allocations.ecore" xmlns:SysML.Blocks="http:///SysML/Blocks.ecore" xmlns:additional_stereotypes="http://www.magicdraw.com/spec/Customization/180/SysML" xmlns:comodoProfile="http:///schemas/comodoProfile/_B2N0gNJLEeqDrricSWSjJg/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///EELT_INS_Profile/ICSFrameworkStereotypes.ecore EELT_INS_Profile.profile.uml#_CLmRRNJLEeqDrricSWSjJg http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_CLkZj9JLEeqDrricSWSjJg http:///SysML/Allocations.ecore SysML.profile.uml#_CLjOb9JLEeqDrricSWSjJg http:///SysML/Blocks.ecore SysML.profile.uml#_CLjLxtJLEeqDrricSWSjJg http://www.magicdraw.com/spec/Customization/180/SysML MD_Customization_for_SysML.additional_stereotypes.profile.uml#_CLm329JLEeqDrricSWSjJg http:///schemas/comodoProfile/_B2N0gNJLEeqDrricSWSjJg/0 comodoProfile.profile.uml#_CLovF9JLEeqDrricSWSjJg">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:EELT_INS_Profile.ICSFrameworkStereotypes="http:///EELT_INS_Profile/ICSFrameworkStereotypes.ecore" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:SysML.Allocations="http:///SysML/Allocations.ecore" xmlns:SysML.Blocks="http:///SysML/Blocks.ecore" xmlns:additional_stereotypes="http://www.magicdraw.com/spec/Customization/180/SysML" xmlns:comodoProfile="http:///schemas/comodoProfile/_SO3LoNblEeqSko38ONw-SA/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///EELT_INS_Profile/ICSFrameworkStereotypes.ecore EELT_INS_Profile.profile.uml#_Sa-ZatblEeqSko38ONw-SA http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_Sa-_pdblEeqSko38ONw-SA http:///SysML/Allocations.ecore SysML.profile.uml#_SbBbpNblEeqSko38ONw-SA http:///SysML/Blocks.ecore SysML.profile.uml#_SbBY-9blEeqSko38ONw-SA http://www.magicdraw.com/spec/Customization/180/SysML MD_Customization_for_SysML.additional_stereotypes.profile.uml#_Sa9u5dblEeqSko38ONw-SA http:///schemas/comodoProfile/_SO3LoNblEeqSko38ONw-SA/0 comodoProfile.profile.uml#_Sa8j7NblEeqSko38ONw-SA">
   <uml:Model xmi:id="6676b54a-8d75-4743-969c-a1577c45ff24" name="Data" visibility="public" URI="" viewpoint="">
     <packageImport xmi:id="_0primitiveTypesData">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -1808,6 +1808,10 @@
                         </effect>
                         <trigger xmi:id="ed77fe39-01fc-44da-8d4a-04bfa37ea2b6" name="" visibility="public" event="0d30dfa7-ba8e-4b49-9ca6-dc64cb45511d"/>
                       </transition>
+                      <transition xmi:id="f1cd9216-79e5-4db5-b64c-5f8a8d95d42e" name="Stop" visibility="public" kind="internal" source="a618db83-b1b7-453f-9cd7-16b25bcd0f4d" target="a618db83-b1b7-453f-9cd7-16b25bcd0f4d">
+                        <effect xmi:type="uml:Activity" xmi:id="486fba42-a168-48dc-b18e-3a2a067dfe7d" name="ActionsStd.Stop" visibility="public" isReentrant="true"/>
+                        <trigger xmi:id="6da6a267-76d2-4f77-b2a3-31d3a365c463" name="" visibility="public" event="9e05a633-efb3-4377-8acd-b1a679b53bde"/>
+                      </transition>
                       <subvertex xmi:type="uml:State" xmi:id="b734b81c-e7a1-4f4f-8176-f1eb76ed0dce" name="NotOperational" visibility="public">
                         <region xmi:id="82dcc8f6-5c24-431b-81c0-52b445bdc88e" name="" visibility="public">
                           <transition xmi:id="99b99be4-231b-4d51-b357-7597c778d750" name="" visibility="public" source="521e67d2-1bba-4fe9-ac85-b609b08deace" target="2d9380f6-ae24-4ae8-aeb5-dc5acb2e0d9a"/>
@@ -1847,7 +1851,7 @@
                       <subvertex xmi:type="uml:State" xmi:id="e4c9aace-082a-4537-8d0f-1598f3648d9e" name="Operational" visibility="public">
                         <region xmi:id="be5cff14-d423-4fd8-811b-07763652f32f" name="" visibility="public">
                           <transition xmi:id="0b253a68-e471-4d26-aa71-bb2d34cfb8b5" name="" visibility="public" source="e2b1b6f4-c96e-47f1-9648-494de99c0a4f" target="c0a95c19-7577-409c-91ac-93bdbacd9356"/>
-                          <transition xmi:id="c301b733-e679-44ec-a512-2bb0a9039abc" name="" visibility="public" source="c0a95c19-7577-409c-91ac-93bdbacd9356" target="09b92aa0-c537-473b-b559-9682de5241f6">
+                          <transition xmi:id="c301b733-e679-44ec-a512-2bb0a9039abc" name="" visibility="public" source="b774a170-4046-458e-9b3a-3a43c6803c23" target="c0a95c19-7577-409c-91ac-93bdbacd9356">
                             <effect xmi:type="uml:Activity" xmi:id="2805aa2d-428a-4269-a564-5caeaffd9ad5" name="ActionsStd.Stop" visibility="public" isReentrant="true" node="51202b57-06fa-4479-9b05-9e6d236c12bc 5e72db25-d681-4cc7-8fc3-f1250712b77f ac4fb2de-fec0-4c8f-89b3-db17f2b6fcc5">
                               <edge xmi:type="uml:ControlFlow" xmi:id="983fa247-fca7-4547-acfe-453065b3a1a8" name="" visibility="public" target="ac4fb2de-fec0-4c8f-89b3-db17f2b6fcc5" source="51202b57-06fa-4479-9b05-9e6d236c12bc">
                                 <weight xmi:type="uml:LiteralUnlimitedNatural" xmi:id="4ba937f6-4f5d-4246-b555-d74cfd41373f" name="" visibility="public" value="1"/>
@@ -1861,8 +1865,41 @@
                             </effect>
                             <trigger xmi:id="cff26732-b56b-4e99-ae8c-1f2ca6870460" name="" visibility="public" event="46be56c9-2355-4841-8054-36528f5727ad"/>
                           </transition>
+                          <transition xmi:id="291b5d19-2adb-45e5-ae52-17b860074f2c" name="" visibility="public" guard="9f18e7ce-0a68-48b4-b497-58f0c0c92b3d" source="c0a95c19-7577-409c-91ac-93bdbacd9356" target="b774a170-4046-458e-9b3a-3a43c6803c23">
+                            <ownedRule xmi:id="9f18e7ce-0a68-48b4-b497-58f0c0c92b3d" name="unnamed1" visibility="public">
+                              <specification xmi:type="uml:OpaqueExpression" xmi:id="03d5abf8-dbf7-42cd-8e68-15a60e7cfa83" name="" visibility="public">
+                                <language>English</language>
+                                <body>ActionsPreset.VerifyConditions</body>
+                              </specification>
+                            </ownedRule>
+                            <effect xmi:type="uml:Activity" xmi:id="859c8922-3e4f-42cf-8985-b3b10f686798" name="ActionsPreset.Start" visibility="public" isReentrant="true" node="e3bd5385-f21c-4b90-a0ea-f723030aa173 acfdf7d9-f8e5-4db1-a4e5-7a8dbddfe359 69c6d6a5-f015-47e2-8355-24aff2067131">
+                              <edge xmi:type="uml:ControlFlow" xmi:id="b00c316e-5cb4-4c88-bea9-01bc43429a0e" name="" visibility="public" target="69c6d6a5-f015-47e2-8355-24aff2067131" source="e3bd5385-f21c-4b90-a0ea-f723030aa173">
+                                <weight xmi:type="uml:LiteralUnlimitedNatural" xmi:id="bab5c937-b3c4-4a12-9f1b-d81f67fb8c9b" name="" visibility="public" value="1"/>
+                              </edge>
+                              <edge xmi:type="uml:ControlFlow" xmi:id="2fab8e87-3b2b-459b-b975-edf3d1309641" name="" visibility="public" target="acfdf7d9-f8e5-4db1-a4e5-7a8dbddfe359" source="69c6d6a5-f015-47e2-8355-24aff2067131">
+                                <weight xmi:type="uml:LiteralUnlimitedNatural" xmi:id="3890fd07-216b-4ce9-904e-7796508dadf5" name="" visibility="public" value="1"/>
+                              </edge>
+                              <node xmi:type="uml:InitialNode" xmi:id="e3bd5385-f21c-4b90-a0ea-f723030aa173" name="" visibility="public" outgoing="b00c316e-5cb4-4c88-bea9-01bc43429a0e"/>
+                              <node xmi:type="uml:ActivityFinalNode" xmi:id="acfdf7d9-f8e5-4db1-a4e5-7a8dbddfe359" name="" visibility="public" incoming="2fab8e87-3b2b-459b-b975-edf3d1309641"/>
+                              <node xmi:type="uml:CallBehaviorAction" xmi:id="69c6d6a5-f015-47e2-8355-24aff2067131" name="" visibility="public" incoming="b00c316e-5cb4-4c88-bea9-01bc43429a0e" outgoing="2fab8e87-3b2b-459b-b975-edf3d1309641" behavior="1285b525-5414-4c3c-809f-8f3fdf3631a7"/>
+                            </effect>
+                            <trigger xmi:id="09408dfe-d3f0-4bd2-abec-5e9f4c1743f6" name="" visibility="public" event="4bbccc16-9979-4cda-8a6e-3598efaf7ffd"/>
+                          </transition>
                           <subvertex xmi:type="uml:State" xmi:id="c0a95c19-7577-409c-91ac-93bdbacd9356" name="Idle" visibility="public"/>
                           <subvertex xmi:type="uml:Pseudostate" xmi:id="e2b1b6f4-c96e-47f1-9648-494de99c0a4f" name="" visibility="public"/>
+                          <subvertex xmi:type="uml:State" xmi:id="b774a170-4046-458e-9b3a-3a43c6803c23" name="Presetting" visibility="public">
+                            <doActivity xmi:type="uml:Activity" xmi:id="245bd4d8-b473-4a4e-b82c-465b75fa6c45" name="ActivityPreset" visibility="public" isReentrant="true" node="8da7facc-0316-4850-ac84-029e53a34f07 239cff53-f36a-404f-a4a7-46cc2a7fb97f 566b94b1-187f-42a0-bd78-2db2d09a2117">
+                              <edge xmi:type="uml:ControlFlow" xmi:id="d6da9773-abe1-4a4b-a03a-58847afde767" name="" visibility="public" target="566b94b1-187f-42a0-bd78-2db2d09a2117" source="8da7facc-0316-4850-ac84-029e53a34f07">
+                                <weight xmi:type="uml:LiteralUnlimitedNatural" xmi:id="d8a91c02-b2e8-4e84-b1c8-1634126c7319" name="" visibility="public" value="1"/>
+                              </edge>
+                              <edge xmi:type="uml:ControlFlow" xmi:id="9fc84faa-9d64-42cd-9911-fbb0d80c901b" name="" visibility="public" target="239cff53-f36a-404f-a4a7-46cc2a7fb97f" source="566b94b1-187f-42a0-bd78-2db2d09a2117">
+                                <weight xmi:type="uml:LiteralUnlimitedNatural" xmi:id="db2fc872-a2cf-47df-8927-264776e03f48" name="" visibility="public" value="1"/>
+                              </edge>
+                              <node xmi:type="uml:InitialNode" xmi:id="8da7facc-0316-4850-ac84-029e53a34f07" name="" visibility="public" outgoing="d6da9773-abe1-4a4b-a03a-58847afde767"/>
+                              <node xmi:type="uml:ActivityFinalNode" xmi:id="239cff53-f36a-404f-a4a7-46cc2a7fb97f" name="" visibility="public" incoming="9fc84faa-9d64-42cd-9911-fbb0d80c901b"/>
+                              <node xmi:type="uml:CallBehaviorAction" xmi:id="566b94b1-187f-42a0-bd78-2db2d09a2117" name="" visibility="public" incoming="d6da9773-abe1-4a4b-a03a-58847afde767" outgoing="9fc84faa-9d64-42cd-9911-fbb0d80c901b" behavior="4f3befe5-f38b-4f88-a442-5e0be5feb32e"/>
+                            </doActivity>
+                          </subvertex>
                         </region>
                       </subvertex>
                       <subvertex xmi:type="uml:Pseudostate" xmi:id="8fc442d1-1d5c-414d-8303-0ce89b409cf2" name="" visibility="public"/>
@@ -1887,8 +1924,12 @@
               <packagedElement xmi:type="uml:Activity" xmi:id="bd0aaaf5-0b9d-4bd6-a903-09903b5b35de" name="ActionsStd.Exit" visibility="public" isReentrant="true"/>
               <packagedElement xmi:type="uml:Activity" xmi:id="289ca35a-711f-407b-bb1a-7ff37f492429" name="ActionsStd.ExitNoReply" visibility="public" isReentrant="true"/>
               <packagedElement xmi:type="uml:Activity" xmi:id="93fcc7b1-38e9-4a72-8988-57efafb428db" name="ActionsStd.GetState" visibility="public" isReentrant="true"/>
+              <packagedElement xmi:type="uml:Activity" xmi:id="1285b525-5414-4c3c-809f-8f3fdf3631a7" name="ActionsPreset.Start" visibility="public" isReentrant="true"/>
+              <packagedElement xmi:type="uml:Activity" xmi:id="2b6fecc1-9a82-4eb5-b5e0-1d503e43e4d8" name="ActionsPreset.VerifyConditions" visibility="public" isReentrant="true"/>
             </packagedElement>
-            <packagedElement xmi:type="uml:Package" xmi:id="cd73cb5d-2987-4389-89e1-022e3aa675c8" name="Activities" visibility="public" URI=""/>
+            <packagedElement xmi:type="uml:Package" xmi:id="cd73cb5d-2987-4389-89e1-022e3aa675c8" name="Activities" visibility="public" URI="">
+              <packagedElement xmi:type="uml:Activity" xmi:id="4f3befe5-f38b-4f88-a442-5e0be5feb32e" name="ActivityPreset" visibility="public" isReentrant="true"/>
+            </packagedElement>
             <packagedElement xmi:type="uml:SignalEvent" xmi:id="42d3af2a-295d-488d-b7ae-c3cde5c2e10a" name="" visibility="public" signal="c6359622-507e-49c4-9085-7d6b28c1000c"/>
             <packagedElement xmi:type="uml:SignalEvent" xmi:id="0ded5158-ac01-419c-8908-58d2c770f004" name="" visibility="public" signal="477f7216-0d12-4881-b80e-a2308a99f7b8"/>
             <packagedElement xmi:type="uml:SignalEvent" xmi:id="61f6e8b6-b5bf-4c7c-9a1d-c44a9e5e5d15" name="" visibility="public" signal="469b60de-8f1a-4406-8b1c-15177728db55"/>
@@ -1898,6 +1939,8 @@
             <packagedElement xmi:type="uml:SignalEvent" xmi:id="bb476557-8148-4b13-9663-d5f49dbd8af8" name="" visibility="public" signal="1b9b9361-f378-46f4-ab6a-b9aa6a4c4631"/>
             <packagedElement xmi:type="uml:SignalEvent" xmi:id="8cc4a34c-9d74-421d-8d06-00b64105626c" name="" visibility="public" signal="a3c6a5c0-07de-4245-87d1-5e7d45f2ff66"/>
             <packagedElement xmi:type="uml:SignalEvent" xmi:id="7e301ef9-a660-4de6-bdb5-41562583a6c4" name="" visibility="public" signal="6326daa2-649e-4c9c-b313-9e257fe4fa7e"/>
+            <packagedElement xmi:type="uml:SignalEvent" xmi:id="4bbccc16-9979-4cda-8a6e-3598efaf7ffd" name="" visibility="public" signal="c0bd7a27-6d34-4f66-bb54-029ca8131401"/>
+            <packagedElement xmi:type="uml:SignalEvent" xmi:id="9e05a633-efb3-4377-8acd-b1a679b53bde" name="" visibility="public" signal="41b3d3ad-55c0-4ef3-956d-924e8f171ac5"/>
           </packagedElement>
           <packagedElement xmi:type="uml:Package" xmi:id="6bcab13d-0a05-4bb3-9612-94ee5ee357ac" name="hellomalif2" visibility="public" URI="">
             <packagedElement xmi:type="uml:Interface" xmi:id="ef99e35c-a62a-4159-a22f-c5166b2d066f" name="StdCmds" visibility="public">
@@ -1968,6 +2011,7 @@
           <packagedElement xmi:type="uml:Package" xmi:id="c5a891ff-31dd-4b73-9dff-40af83b955d7" name="externalif2" visibility="public" URI="">
             <packagedElement xmi:type="uml:Interface" xmi:id="5d793347-c576-4ca1-929e-13e6000ec09e" name="ExternalCmds" visibility="public">
               <ownedReception xmi:id="502de456-c3be-4c15-8237-3ce43d0f5249" name="ExternalCmds.Setup" visibility="public" signal="c2d848b4-6e8c-4a27-84dc-6644b722f806"/>
+              <ownedReception xmi:id="172e7560-25de-45b7-a49a-90fdf59c7f71" name="" visibility="public" signal="c0bd7a27-6d34-4f66-bb54-029ca8131401"/>
             </packagedElement>
             <packagedElement xmi:type="uml:Signal" xmi:id="c2d848b4-6e8c-4a27-84dc-6644b722f806" name="ExternalCmds.Setup" visibility="public">
               <ownedAttribute xmi:id="73a6f354-6335-46fb-bc3a-b4464cb17830" name="reply" visibility="private">
@@ -1987,280 +2031,296 @@
                 <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="bf4955e8-5364-4e31-bb05-84c3502cd07c" name="" visibility="public" value="100"/>
               </ownedAttribute>
             </packagedElement>
+            <packagedElement xmi:type="uml:DataType" xmi:id="a380a685-e67c-4b92-b5ae-3361a92ed099" name="PresetParams" visibility="public">
+              <ownedAttribute xmi:id="4b508cec-f75e-48b0-bea8-f1b8d1044662" name="ra" visibility="private">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#double"/>
+              </ownedAttribute>
+              <ownedAttribute xmi:id="9677d406-9f7f-4c2d-b16c-f66476dadab0" name="dec" visibility="private">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#double"/>
+              </ownedAttribute>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Signal" xmi:id="c0bd7a27-6d34-4f66-bb54-029ca8131401" name="ExternalCmds.Preset" visibility="public">
+              <ownedAttribute xmi:id="7656d8d7-6f11-494c-a3a5-eb4fd7610f7c" name="reply" visibility="private">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+              </ownedAttribute>
+              <ownedAttribute xmi:id="454441e9-8fe9-462b-ad7a-4d3a3a841caa" name="parameters" visibility="private" type="a380a685-e67c-4b92-b5ae-3361a92ed099"/>
+            </packagedElement>
           </packagedElement>
         </packagedElement>
       </packagedElement>
     </packagedElement>
     <profileApplication xmi:id="4586088b-cde1-48c5-bdb3-28de04964072profileApplicationData">
-      <eAnnotations xmi:id="_CLqgStJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="MD_Customization_for_Requirements.additional_stereotypes.profile.uml#_CLp6YNJLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbCnn9blEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="MD_Customization_for_Requirements.additional_stereotypes.profile.uml#_Sa-WR9blEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="MD_Customization_for_Requirements.additional_stereotypes.profile.uml#4586088b-cde1-48c5-bdb3-28de04964072"/>
     </profileApplication>
     <profileApplication xmi:id="bd891608-1711-4464-b1e4-f0f8a4b2363eprofileApplicationData">
-      <eAnnotations xmi:id="_CLs8UdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="SysML.profile.uml#_CLjLv9JLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbFpwdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="SysML.profile.uml#_SbBY9NblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="SysML.profile.uml#bd891608-1711-4464-b1e4-f0f8a4b2363e"/>
     </profileApplication>
     <profileApplication xmi:id="3fdef01e-9029-4487-a77b-a94a012016dbprofileApplicationData">
-      <eAnnotations xmi:id="_CLuKcdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Find_By_Text.profile.uml#_CLovB9JLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbHe8dblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Find_By_Text.profile.uml#_Sa9I2tblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.Find_By_Text.profile.uml#3fdef01e-9029-4487-a77b-a94a012016db"/>
     </profileApplication>
     <profileApplication xmi:id="5a693be0-a3ca-45ca-880b-791edb835736profileApplicationData">
-      <eAnnotations xmi:id="_CLv_odJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="MD_Customization_for_SysML.additional_stereotypes.profile.uml#_CLm329JLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbJ7MdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="MD_Customization_for_SysML.additional_stereotypes.profile.uml#_Sa9u5dblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="MD_Customization_for_SysML.additional_stereotypes.profile.uml#5a693be0-a3ca-45ca-880b-791edb835736"/>
     </profileApplication>
     <profileApplication xmi:id="68d5eb5a-50dc-42d2-ae1d-97f271517d74profileApplicationData">
-      <eAnnotations xmi:id="_CLx00dJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="EELT_INS_Profile.ICS_Framework_Stereotypes.TccsFramework_Profile.profile.uml#_CLikQtJLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbMXcdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="EELT_INS_Profile.ICS_Framework_Stereotypes.TccsFramework_Profile.profile.uml#_Sa9uTNblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="EELT_INS_Profile.ICS_Framework_Stereotypes.TccsFramework_Profile.profile.uml#68d5eb5a-50dc-42d2-ae1d-97f271517d74"/>
     </profileApplication>
     <profileApplication xmi:id="3f623f26-c68f-43aa-970e-de2167f555b7profileApplicationData">
-      <eAnnotations xmi:id="_CLzqAdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="MD_Customization_for_ViewsViewpoints.DocBook_Profile.profile.uml#_CLlpU9JLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbPawdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="MD_Customization_for_ViewsViewpoints.DocBook_Profile.profile.uml#_Sa9LRNblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="MD_Customization_for_ViewsViewpoints.DocBook_Profile.profile.uml#3f623f26-c68f-43aa-970e-de2167f555b7"/>
     </profileApplication>
     <profileApplication xmi:id="207f5112-d1bf-4c0a-a0b5-110117868b67profileApplicationData">
-      <eAnnotations xmi:id="_CL2GQdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="MD_Customization_for_SysML.sysphs_profile.profile.uml#_CLlqBNJLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbTFIdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="MD_Customization_for_SysML.sysphs_profile.profile.uml#_SbCmutblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="MD_Customization_for_SysML.sysphs_profile.profile.uml#207f5112-d1bf-4c0a-a0b5-110117868b67"/>
     </profileApplication>
     <profileApplication xmi:id="5c56b417-3214-4864-9592-d4be706363eeprofileApplicationData">
-      <eAnnotations xmi:id="_CL37cdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_CLkZj9JLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbWIcdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_Sa-_pdblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#5c56b417-3214-4864-9592-d4be706363ee"/>
     </profileApplication>
     <profileApplication xmi:id="8a00d2a9-6a76-48bd-9e88-1f603e81705aprofileApplicationData">
-      <eAnnotations xmi:id="_CL5wodJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#_CLpUttJLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbaZ4dblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#_SbA0O9blEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml#8a00d2a9-6a76-48bd-9e88-1f603e81705a"/>
     </profileApplication>
     <profileApplication xmi:id="5c667b4c-d186-48e2-a4d0-5f6eadaa0728profileApplicationData">
-      <eAnnotations xmi:id="_CL7l0dJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Dependency_Matrix_Profile.profile.uml#_CLp6x9JLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbeEQdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Dependency_Matrix_Profile.profile.uml#_Sa9yQdblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.Dependency_Matrix_Profile.profile.uml#5c667b4c-d186-48e2-a4d0-5f6eadaa0728"/>
     </profileApplication>
     <profileApplication xmi:id="733d9950-fc7d-47d9-857b-243c0ff30a65profileApplicationData">
-      <eAnnotations xmi:id="_CL9bAdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_CLilatJLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbiVsdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_Sa9wrNblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#733d9950-fc7d-47d9-857b-243c0ff30a65"/>
     </profileApplication>
     <profileApplication xmi:id="4f90d892-7809-4e09-bc3e-5974a9e67577profileApplicationData">
-      <eAnnotations xmi:id="_CL_QMdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_CLnc-tJLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SblZAdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_Sa74x9blEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#4f90d892-7809-4e09-bc3e-5974a9e67577"/>
     </profileApplication>
     <profileApplication xmi:id="e2e8c318-4908-4d71-b561-c20ecd01a79dprofileApplicationData">
-      <eAnnotations xmi:id="_CMBFYdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="EELT_INS_Profile.profile.uml#_CLlq6tJLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbpqcdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="EELT_INS_Profile.profile.uml#_Sa-Wq9blEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="EELT_INS_Profile.profile.uml#e2e8c318-4908-4d71-b561-c20ecd01a79d"/>
     </profileApplication>
     <profileApplication xmi:id="e299c909-d998-4a97-92c3-a8bc6e39b5a3profileApplicationData">
-      <eAnnotations xmi:id="_CMC6kdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="comodoProfile.profile.uml#_CLovF9JLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbstwdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="comodoProfile.profile.uml#_Sa8j7NblEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="comodoProfile.profile.uml#e299c909-d998-4a97-92c3-a8bc6e39b5a3"/>
     </profileApplication>
     <profileApplication xmi:id="34c46ff9-2b7c-4074-95da-ef300033feb3profileApplicationData">
-      <eAnnotations xmi:id="_CMEIsdJLEeqDrricSWSjJg" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="MD_Customization_for_SysML.customizations_for_traceability.profile.uml#_CLj2m9JLEeqDrricSWSjJg"/>
+      <eAnnotations xmi:id="_SbvKAdblEeqSko38ONw-SA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="MD_Customization_for_SysML.customizations_for_traceability.profile.uml#_Sa9LC9blEeqSko38ONw-SA"/>
       </eAnnotations>
       <appliedProfile href="MD_Customization_for_SysML.customizations_for_traceability.profile.uml#34c46ff9-2b7c-4074-95da-ef300033feb3"/>
     </profileApplication>
   </uml:Model>
-  <SysML.Blocks:ValueType xmi:id="_CMQV-tJLEeqDrricSWSjJg" base_DataType="eb106e2e-a761-4ab5-83f8-4f4674d68be4"/>
-  <SysML.Blocks:ValueType xmi:id="_CMQV-9JLEeqDrricSWSjJg" base_DataType="5a120a43-e776-46e8-90cc-ed6de733228d"/>
-  <SysML.Blocks:Block xmi:id="_CMUndtJLEeqDrricSWSjJg" base_Class="a4ca0b40-b0af-45fa-990e-7de150fd2243"/>
-  <SysML.Blocks:Block xmi:id="_CMUnd9JLEeqDrricSWSjJg" base_Class="73563b3f-98f0-4fdb-a81b-f633f8428ebe"/>
-  <SysML.Blocks:Block xmi:id="_CMUneNJLEeqDrricSWSjJg" base_Class="b0a7005b-8f2c-47b9-aca7-56a851960b76"/>
-  <SysML.Blocks:Block xmi:id="_CMUnedJLEeqDrricSWSjJg" base_Class="2e6cae9b-39e6-4325-8329-e2a9d4942470"/>
-  <SysML.Blocks:Block xmi:id="_CMUnetJLEeqDrricSWSjJg" base_Class="f47a69d8-0567-46fb-ab81-a50fce89847c"/>
-  <SysML.Blocks:Block xmi:id="_CMUne9JLEeqDrricSWSjJg" base_Class="2407cabc-e89f-47cc-a6dc-d50b342e8e28"/>
-  <SysML.Blocks:Block xmi:id="_CMUnfNJLEeqDrricSWSjJg" base_Class="ff72b539-62b3-420b-8fbb-86bdecb010b2"/>
-  <SysML.Blocks:Block xmi:id="_CMUnfdJLEeqDrricSWSjJg" base_Class="57489f87-4bbb-4cc1-b397-aef94796c2c1"/>
-  <SysML.Blocks:Block xmi:id="_CMUnftJLEeqDrricSWSjJg" base_Class="2cdad0e5-79a0-456f-ae22-e318d1332fb3"/>
-  <SysML.Blocks:Block xmi:id="_CMUnf9JLEeqDrricSWSjJg" base_Class="4d62d1ac-8d1a-42be-8ddb-b42dab577cef"/>
-  <SysML.Blocks:Block xmi:id="_CMUngNJLEeqDrricSWSjJg" base_Class="8d6369c9-6f1e-40d6-b49f-d52ce6f66f6e"/>
-  <SysML.Blocks:Block xmi:id="_CMUngdJLEeqDrricSWSjJg" base_Class="0ba035ee-95bd-41c3-8b09-2a5cce10d038"/>
-  <SysML.Blocks:Block xmi:id="_CMVOcNJLEeqDrricSWSjJg" base_Class="3114e31c-3271-4a67-96cd-a3467af5995a"/>
-  <SysML.Blocks:Block xmi:id="_CMVOcdJLEeqDrricSWSjJg" base_Class="4665b383-9ac2-4dfb-bf9c-f2f36b3f8b9d"/>
-  <SysML.Blocks:Block xmi:id="_CMVOctJLEeqDrricSWSjJg" base_Class="48088434-e9f3-4666-82ee-6883f480ff2d"/>
-  <SysML.Blocks:Block xmi:id="_CMVOc9JLEeqDrricSWSjJg" base_Class="678bb0c2-28dc-47ef-b469-644aed6ce3bb"/>
-  <SysML.Blocks:Block xmi:id="_CMVOdNJLEeqDrricSWSjJg" base_Class="7d4bea7e-c9fe-4f40-b167-8459da3de6c8"/>
-  <SysML.Blocks:Block xmi:id="_CMVOddJLEeqDrricSWSjJg" base_Class="347dcda2-f42a-4e4d-a8cd-be012af81388"/>
-  <SysML.Blocks:Block xmi:id="_CMVOdtJLEeqDrricSWSjJg" base_Class="93c584d4-8fd9-448c-b216-ce31733d5cfa"/>
-  <SysML.Blocks:Block xmi:id="_CMVOd9JLEeqDrricSWSjJg" base_Class="c4d02fef-e17b-4c89-b17e-89533771ef9b"/>
-  <SysML.Blocks:Block xmi:id="_CMVOeNJLEeqDrricSWSjJg" base_Class="d61179b5-dd54-44c3-9841-d0a3f30c3255"/>
-  <SysML.Blocks:Block xmi:id="_CMVOedJLEeqDrricSWSjJg" base_Class="0f39778a-0f18-44db-97d9-f2f75b12f9ef"/>
-  <SysML.Blocks:Block xmi:id="_CMVOetJLEeqDrricSWSjJg" base_Class="828b509f-df8e-418e-a0b9-1f7564774b78"/>
-  <SysML.Blocks:Block xmi:id="_CMVOe9JLEeqDrricSWSjJg" base_Class="2a71d36f-7165-49e6-b9eb-6df9ea6fad50"/>
-  <SysML.Blocks:Block xmi:id="_CMVOfNJLEeqDrricSWSjJg" base_Class="687cc300-c910-4816-ab5e-41603af9ecfc"/>
-  <SysML.Blocks:Block xmi:id="_CMVOfdJLEeqDrricSWSjJg" base_Class="139e8c59-7091-48e1-a005-4a45fdfb96fd"/>
-  <SysML.Blocks:Block xmi:id="_CMVOftJLEeqDrricSWSjJg" base_Class="582c30eb-9e47-4e96-acc6-0bc378c96bc8"/>
-  <SysML.Blocks:Block xmi:id="_CMVOf9JLEeqDrricSWSjJg" base_Class="e3f04468-64fd-4854-9b7b-f0a059b05a3b"/>
-  <SysML.Blocks:Block xmi:id="_CMVOgNJLEeqDrricSWSjJg" base_Class="1ecc8c62-9129-4e1c-8732-17980f9244f6"/>
-  <SysML.Blocks:Block xmi:id="_CMVOgdJLEeqDrricSWSjJg" base_Class="a533e369-df6d-480b-8b1b-436b8aa31a16"/>
-  <SysML.Blocks:Block xmi:id="_CMVOgtJLEeqDrricSWSjJg" base_Class="e5d24195-a49f-49e0-85ce-53088c21c2cd"/>
-  <SysML.Blocks:Block xmi:id="_CMVOg9JLEeqDrricSWSjJg" base_Class="a3047dca-8a68-4ced-8004-00b6439d6ffb"/>
-  <SysML.Blocks:Block xmi:id="_CMVOhNJLEeqDrricSWSjJg" base_Class="82b4d15a-2b34-419b-83d0-e0a906595d6e"/>
-  <SysML.Blocks:Block xmi:id="_CMVOhdJLEeqDrricSWSjJg" base_Class="8273126b-2b36-4ed6-aa31-745146fc0c2e"/>
-  <SysML.Blocks:Block xmi:id="_CMVOhtJLEeqDrricSWSjJg" base_Class="ab973940-4ea8-49b1-9c30-02b802b300a9"/>
-  <SysML.Blocks:Block xmi:id="_CMVOh9JLEeqDrricSWSjJg" base_Class="191c884a-4ae9-4da0-8423-7d1921a45427"/>
-  <SysML.Blocks:Block xmi:id="_CMV1gNJLEeqDrricSWSjJg" base_Class="aed0325a-4a95-49ab-8ef7-f9f1751813df"/>
-  <SysML.Blocks:Block xmi:id="_CMV1gdJLEeqDrricSWSjJg" base_Class="9a3eaa92-f261-4f75-83ad-2177a0a7ba12"/>
-  <SysML.Blocks:Block xmi:id="_CMV1gtJLEeqDrricSWSjJg" base_Class="d5b737e7-0f2a-4ba3-a749-fa24c3a80bda"/>
-  <SysML.Blocks:Block xmi:id="_CMV1g9JLEeqDrricSWSjJg" base_Class="81a674a3-5b9e-4285-8fd0-e6aa576d054f"/>
-  <SysML.Blocks:Block xmi:id="_CMV1hNJLEeqDrricSWSjJg" base_Class="f7391e15-039b-4de0-969a-9b125ecb6962"/>
-  <SysML.Blocks:Block xmi:id="_CMV1hdJLEeqDrricSWSjJg" base_Class="e09b4bfb-9d5a-4f8b-a254-41537e793819"/>
-  <SysML.Blocks:Block xmi:id="_CMV1htJLEeqDrricSWSjJg" base_Class="a480305e-3eba-42fe-9e6d-bc2c6e18070f"/>
-  <SysML.Blocks:Block xmi:id="_CMV1h9JLEeqDrricSWSjJg" base_Class="991750aa-73ab-4d3f-9407-19bb844f0f80"/>
-  <SysML.Blocks:Block xmi:id="_CMV1iNJLEeqDrricSWSjJg" base_Class="801cdac9-3295-4848-9733-d13d2ffd57ba"/>
-  <SysML.Blocks:Block xmi:id="_CMV1idJLEeqDrricSWSjJg" base_Class="0c739220-1bee-4b24-a6c1-32d696104fb3"/>
-  <SysML.Blocks:Block xmi:id="_CMV1itJLEeqDrricSWSjJg" base_Class="fcaa8e4d-4a98-4cdf-a8e9-64bd03fd8b9f"/>
-  <SysML.Blocks:Block xmi:id="_CMV1i9JLEeqDrricSWSjJg" base_Class="1ee312de-5cad-4c61-aa06-ff243dfb3dfb"/>
-  <SysML.Blocks:Block xmi:id="_CMV1jNJLEeqDrricSWSjJg" base_Class="01b1eea0-2647-4f06-b6a8-d9bdf9957c06"/>
-  <SysML.Blocks:Block xmi:id="_CMV1jdJLEeqDrricSWSjJg" base_Class="57213b61-b7f1-491c-a023-3c512c1c71d7"/>
-  <SysML.Blocks:Block xmi:id="_CMV1jtJLEeqDrricSWSjJg" base_Class="9b0bdbda-7be3-469d-aa17-3c90fcf4de07"/>
-  <SysML.Blocks:Block xmi:id="_CMV1j9JLEeqDrricSWSjJg" base_Class="caa5ed45-987e-47b9-9a27-8e943a8eef36"/>
-  <SysML.Blocks:Block xmi:id="_CMV1kNJLEeqDrricSWSjJg" base_Class="efa2a60b-760a-4fcb-a0da-3d155514c62d"/>
-  <SysML.Blocks:Block xmi:id="_CMV1kdJLEeqDrricSWSjJg" base_Class="65bc067a-9357-459f-a397-706dfcc73a74"/>
-  <SysML.Blocks:Block xmi:id="_CMV1ktJLEeqDrricSWSjJg" base_Class="0a06e6fd-8069-40c9-acbd-e204125e5b26"/>
-  <SysML.Blocks:Block xmi:id="_CMV1k9JLEeqDrricSWSjJg" base_Class="4c376db0-116a-47da-bb3d-7570f5e143fc"/>
-  <SysML.Blocks:Block xmi:id="_CMV1lNJLEeqDrricSWSjJg" base_Class="00f84981-b6ec-4c72-a928-5c2a5d764688"/>
-  <SysML.Blocks:Block xmi:id="_CMV1ldJLEeqDrricSWSjJg" base_Class="d393c1a1-18fc-4d11-9498-b4373e04f974"/>
-  <SysML.Blocks:Block xmi:id="_CMV1ltJLEeqDrricSWSjJg" base_Class="79b37f03-e70c-470b-a916-532a6d36664e"/>
-  <SysML.Blocks:Block xmi:id="_CMV1l9JLEeqDrricSWSjJg" base_Class="dbe6b180-edc2-4622-8e00-fdef20a2cc41"/>
-  <SysML.Blocks:Block xmi:id="_CMV1mNJLEeqDrricSWSjJg" base_Class="0a358d27-e4eb-4d90-9b9f-935fb49374c1"/>
-  <SysML.Blocks:Block xmi:id="_CMV1mdJLEeqDrricSWSjJg" base_Class="4f7c4de9-abc8-4047-ae1d-934b8d3d5581"/>
-  <SysML.Blocks:Block xmi:id="_CMV1mtJLEeqDrricSWSjJg" base_Class="90465ba4-665a-436b-be82-cfefd4026db6"/>
-  <SysML.Allocations:AllocateActivityPartition xmi:id="_CMXDoNJLEeqDrricSWSjJg" base_ActivityPartition="2d40d07d-c472-4480-82ce-91dfc1d21cb8"/>
-  <SysML.Allocations:AllocateActivityPartition xmi:id="_CMXDodJLEeqDrricSWSjJg" base_ActivityPartition="2501a553-bd81-478d-b95d-5fe5e912b7c9"/>
-  <SysML.Allocations:AllocateActivityPartition xmi:id="_CMXDotJLEeqDrricSWSjJg" base_ActivityPartition="e863ed11-7f10-4766-9fb7-90130e79c044"/>
-  <SysML.Allocations:AllocateActivityPartition xmi:id="_CMXDo9JLEeqDrricSWSjJg" base_ActivityPartition="df5468a8-f55c-46b0-bb8b-fcb42951d9a2"/>
-  <SysML.Allocations:AllocateActivityPartition xmi:id="_CMXDpNJLEeqDrricSWSjJg" base_ActivityPartition="3f36289e-113e-46ef-b557-e9afe3034d69"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjMNJLEeqDrricSWSjJg" base_Element="bc7cf344-aa4b-482a-ac59-ac593a69589a" base_Property="bc7cf344-aa4b-482a-ac59-ac593a69589a"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjMdJLEeqDrricSWSjJg" base_Element="5bd74a4b-1a9b-44dd-b38e-a5c3ba4fb32c" base_Property="5bd74a4b-1a9b-44dd-b38e-a5c3ba4fb32c"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjMtJLEeqDrricSWSjJg" base_Element="b68224f5-f5c5-4018-99fd-2e56056fc31e" base_Property="b68224f5-f5c5-4018-99fd-2e56056fc31e"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjM9JLEeqDrricSWSjJg" base_Element="ca49bf87-3bea-4a4b-8b1b-7620c12405c4" base_Property="ca49bf87-3bea-4a4b-8b1b-7620c12405c4"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjNNJLEeqDrricSWSjJg" base_Element="18928f77-e3a4-4077-9b05-55f62f1c6054" base_Property="18928f77-e3a4-4077-9b05-55f62f1c6054"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjNdJLEeqDrricSWSjJg" base_Element="f30ba859-897e-4a25-bd81-b3773155f272" base_Property="f30ba859-897e-4a25-bd81-b3773155f272"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjNtJLEeqDrricSWSjJg" base_Element="d9b425d8-4b4d-4bcb-8f42-24fca804c92b" base_Property="d9b425d8-4b4d-4bcb-8f42-24fca804c92b"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjN9JLEeqDrricSWSjJg" base_Element="f5c75bd0-7ab9-4b39-9a6b-1aeb9b0fde95" base_Property="f5c75bd0-7ab9-4b39-9a6b-1aeb9b0fde95"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjONJLEeqDrricSWSjJg" base_Element="a45b9e3d-9f0c-4168-a7cf-69682dfaaa70" base_Property="a45b9e3d-9f0c-4168-a7cf-69682dfaaa70"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjOdJLEeqDrricSWSjJg" base_Element="1ed6cf55-4527-424f-a857-23d4e20ee9da" base_Property="1ed6cf55-4527-424f-a857-23d4e20ee9da"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjOtJLEeqDrricSWSjJg" base_Element="409cf9e5-b79d-4406-bcb8-0ebc5bf30b28" base_Property="409cf9e5-b79d-4406-bcb8-0ebc5bf30b28"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjO9JLEeqDrricSWSjJg" base_Element="1c50b495-728e-4783-b887-a3ac3bf93f06" base_Property="1c50b495-728e-4783-b887-a3ac3bf93f06"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjPNJLEeqDrricSWSjJg" base_Element="54252af2-c74d-4ee4-9c66-3c7d2a7903a1" base_Property="54252af2-c74d-4ee4-9c66-3c7d2a7903a1"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjPdJLEeqDrricSWSjJg" base_Element="b2cb781a-d2d6-4e67-becc-b32963bf5b93" base_Property="b2cb781a-d2d6-4e67-becc-b32963bf5b93"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjPtJLEeqDrricSWSjJg" base_Element="0f5e3e8c-9b5f-486e-ad28-ee61ef628883" base_Property="0f5e3e8c-9b5f-486e-ad28-ee61ef628883"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjP9JLEeqDrricSWSjJg" base_Element="da8de77a-c052-4b47-911b-07d1e6acd6a9" base_Property="da8de77a-c052-4b47-911b-07d1e6acd6a9"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjQNJLEeqDrricSWSjJg" base_Element="adc25180-3236-4b76-84bb-c8719edb62c0" base_Property="adc25180-3236-4b76-84bb-c8719edb62c0"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjQdJLEeqDrricSWSjJg" base_Element="ab0c5a03-05a2-4ff8-b035-b4b0547cb63c" base_Property="ab0c5a03-05a2-4ff8-b035-b4b0547cb63c"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjQtJLEeqDrricSWSjJg" base_Element="62884f01-7e42-4598-b33a-12ccf2bdbdca" base_Property="62884f01-7e42-4598-b33a-12ccf2bdbdca"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjQ9JLEeqDrricSWSjJg" base_Element="5ad12569-bd03-4620-b02e-a41dec8316ce" base_Property="5ad12569-bd03-4620-b02e-a41dec8316ce"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjRNJLEeqDrricSWSjJg" base_Element="02fc34c8-0a65-46d8-81b3-257a0aad8760" base_Property="02fc34c8-0a65-46d8-81b3-257a0aad8760"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMcjRdJLEeqDrricSWSjJg" base_Element="0c8499d1-0ea2-4e11-b8d0-1d242552065e" base_Property="0c8499d1-0ea2-4e11-b8d0-1d242552065e"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMdKQNJLEeqDrricSWSjJg" base_Element="bfce4717-f1fa-4751-bd2b-2d7ec26eb9e2" base_Property="bfce4717-f1fa-4751-bd2b-2d7ec26eb9e2"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMdKQdJLEeqDrricSWSjJg" base_Element="16f1d527-598f-4009-97e3-233ae6da665c" base_Property="16f1d527-598f-4009-97e3-233ae6da665c"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMdKQtJLEeqDrricSWSjJg" base_Element="af2f1e82-94d5-4750-9458-a6bcf5aa73c3" base_Property="af2f1e82-94d5-4750-9458-a6bcf5aa73c3"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMdKQ9JLEeqDrricSWSjJg" base_Element="b6e70c69-1746-47e2-8762-0f525d24bdb5" base_Property="b6e70c69-1746-47e2-8762-0f525d24bdb5"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMdKRNJLEeqDrricSWSjJg" base_Element="1915de4b-067a-4a5d-81c0-60875126e9b0" base_Property="1915de4b-067a-4a5d-81c0-60875126e9b0"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMdKRdJLEeqDrricSWSjJg" base_Element="63241ec9-e430-400f-9b2b-044cb11b2fbd" base_Property="63241ec9-e430-400f-9b2b-044cb11b2fbd"/>
-  <additional_stereotypes:PartProperty xmi:id="_CMdKRtJLEeqDrricSWSjJg" base_Element="cb911589-3af6-4c94-a582-c58984dc74c5" base_Property="cb911589-3af6-4c94-a582-c58984dc74c5"/>
-  <additional_stereotypes:ValueProperty xmi:id="_CMdxV9JLEeqDrricSWSjJg" base_Element="90ea37d0-8e81-4b66-b9b8-04f670e94aef" base_Property="90ea37d0-8e81-4b66-b9b8-04f670e94aef"/>
-  <additional_stereotypes:ValueProperty xmi:id="_CMdxWNJLEeqDrricSWSjJg" base_Element="61a35a68-1aa0-4f1b-82cb-55ab286de865" base_Property="61a35a68-1aa0-4f1b-82cb-55ab286de865"/>
-  <additional_stereotypes:ValueProperty xmi:id="_CMdxWdJLEeqDrricSWSjJg" base_Element="8e53fb4a-8b16-4f36-9f40-449c6d0698d5" base_Property="8e53fb4a-8b16-4f36-9f40-449c6d0698d5"/>
-  <additional_stereotypes:ValueProperty xmi:id="_CMdxWtJLEeqDrricSWSjJg" base_Element="8ff08a5a-d6a3-4f99-94e2-6d0730a07e41" base_Property="8ff08a5a-d6a3-4f99-94e2-6d0730a07e41"/>
-  <additional_stereotypes:ValueProperty xmi:id="_CMdxW9JLEeqDrricSWSjJg" base_Element="5eb80e3d-a253-40e7-8132-cdd4a9064441" base_Property="5eb80e3d-a253-40e7-8132-cdd4a9064441"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMdxYtJLEeqDrricSWSjJg" base_Element="f1be8cec-c274-4852-ac8e-0002292ec466" base_Property="f1be8cec-c274-4852-ac8e-0002292ec466"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMdxY9JLEeqDrricSWSjJg" base_Element="1c95198f-0370-42c1-8eb5-9e9c5f92e99d" base_Property="1c95198f-0370-42c1-8eb5-9e9c5f92e99d"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMdxZNJLEeqDrricSWSjJg" base_Element="49d74d83-cf87-412d-9b3e-5f5fec03cf0b" base_Property="49d74d83-cf87-412d-9b3e-5f5fec03cf0b"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMdxZdJLEeqDrricSWSjJg" base_Element="a54b7647-59c0-421d-a69a-2d5021651318" base_Property="a54b7647-59c0-421d-a69a-2d5021651318"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMdxZtJLEeqDrricSWSjJg" base_Element="ccd13f2d-76c6-487a-a08f-71dfb9b5e82e" base_Property="ccd13f2d-76c6-487a-a08f-71dfb9b5e82e"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYYNJLEeqDrricSWSjJg" base_Element="f5c0821f-27ba-4fc4-8515-4cae0883cc4d" base_Property="f5c0821f-27ba-4fc4-8515-4cae0883cc4d"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYYdJLEeqDrricSWSjJg" base_Element="3c9abd39-e2f3-4b6e-b69e-28591f2fe851" base_Property="3c9abd39-e2f3-4b6e-b69e-28591f2fe851"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYYtJLEeqDrricSWSjJg" base_Element="b0672bb0-1608-4d5d-aa6e-5eda287f091e" base_Property="b0672bb0-1608-4d5d-aa6e-5eda287f091e"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYY9JLEeqDrricSWSjJg" base_Element="6ac728a3-2593-45b2-b6ca-ddc2ee9b7a4d" base_Property="6ac728a3-2593-45b2-b6ca-ddc2ee9b7a4d"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYZNJLEeqDrricSWSjJg" base_Element="32feaabd-cdc4-4e6a-b717-63197c613d6c" base_Property="32feaabd-cdc4-4e6a-b717-63197c613d6c"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYZdJLEeqDrricSWSjJg" base_Element="82dd6603-c49a-4000-ba6f-1ad93396636b" base_Property="82dd6603-c49a-4000-ba6f-1ad93396636b"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYZtJLEeqDrricSWSjJg" base_Element="ca966b48-46cf-4fff-911a-d24debc00c48" base_Property="ca966b48-46cf-4fff-911a-d24debc00c48"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYZ9JLEeqDrricSWSjJg" base_Element="1034a553-e1f7-4881-8798-fd490c504715" base_Property="1034a553-e1f7-4881-8798-fd490c504715"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYaNJLEeqDrricSWSjJg" base_Element="a8bc0acc-2536-418d-9b5d-e686d66ed2e7" base_Property="a8bc0acc-2536-418d-9b5d-e686d66ed2e7"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYadJLEeqDrricSWSjJg" base_Element="23bc5157-37a0-4860-b664-a559b4c78c9e" base_Property="23bc5157-37a0-4860-b664-a559b4c78c9e"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYatJLEeqDrricSWSjJg" base_Element="8d61b0d0-c21a-41db-abef-188a5b24247b" base_Property="8d61b0d0-c21a-41db-abef-188a5b24247b"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYa9JLEeqDrricSWSjJg" base_Element="ad94ad24-310d-4905-99ef-688800cd500f" base_Property="ad94ad24-310d-4905-99ef-688800cd500f"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYbNJLEeqDrricSWSjJg" base_Element="2a6ae69d-aa50-4c6e-8fd8-c1554c9ebf26" base_Property="2a6ae69d-aa50-4c6e-8fd8-c1554c9ebf26"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYbdJLEeqDrricSWSjJg" base_Element="dfc27506-f05f-47f0-9fa7-ca7959c12eb8" base_Property="dfc27506-f05f-47f0-9fa7-ca7959c12eb8"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYbtJLEeqDrricSWSjJg" base_Element="41b463af-b658-4d25-8cca-4d96b7d14205" base_Property="41b463af-b658-4d25-8cca-4d96b7d14205"/>
-  <additional_stereotypes:ReferenceProperty xmi:id="_CMeYb9JLEeqDrricSWSjJg" base_Element="cc2e09b5-39f4-4a5d-858c-6d61b125d168" base_Property="cc2e09b5-39f4-4a5d-858c-6d61b125d168"/>
-  <MagicDrawProfile:mount xmi:id="_CMx6ZtJLEeqDrricSWSjJg" base_Dependency="bc1c0771-0e75-4d7e-88e3-d80363341980"/>
-  <MagicDrawProfile:mount xmi:id="_CMx6Z9JLEeqDrricSWSjJg" base_Dependency="b467498e-b366-46f2-9667-c7c973b74b9a"/>
-  <EELT_INS_Profile.ICSFrameworkStereotypes:eltcomponent xmi:id="_CNUF4NJLEeqDrricSWSjJg" base_Class="db34a40d-4cb2-40a8-972a-dc8d25713edd"/>
-  <comodoProfile:cmdoInterface xmi:id="_CNUF4dJLEeqDrricSWSjJg" base_Interface="5d793347-c576-4ca1-929e-13e6000ec09e"/>
-  <comodoProfile:cmdoInterface xmi:id="_CNUF4tJLEeqDrricSWSjJg" base_Interface="ef99e35c-a62a-4159-a22f-c5166b2d066f"/>
-  <comodoProfile:cmdoInterface xmi:id="_CNUF49JLEeqDrricSWSjJg" base_Interface="3dfff5b0-ae10-4266-a882-145e05a23404"/>
-  <comodoProfile:cmdoInterface xmi:id="_CNUF5NJLEeqDrricSWSjJg" base_Interface="28039292-af37-4b36-a909-f0c9984dc667"/>
-  <comodoProfile:cmdoInterface xmi:id="_CNUs8tJLEeqDrricSWSjJg" base_Interface="5aecb0d4-1115-4950-a525-809d5227e80a"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUs89JLEeqDrricSWSjJg" base_Signal="c2d848b4-6e8c-4a27-84dc-6644b722f806"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUs9NJLEeqDrricSWSjJg" base_Signal="6326daa2-649e-4c9c-b313-9e257fe4fa7e"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUs9dJLEeqDrricSWSjJg" base_Signal="c6359622-507e-49c4-9085-7d6b28c1000c"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUs9tJLEeqDrricSWSjJg" base_Signal="41b3d3ad-55c0-4ef3-956d-924e8f171ac5"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUs99JLEeqDrricSWSjJg" base_Signal="a3c6a5c0-07de-4245-87d1-5e7d45f2ff66"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUs-NJLEeqDrricSWSjJg" base_Signal="40ac2048-e9c9-499b-99b9-9e67fb60078e"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUs-dJLEeqDrricSWSjJg" base_Signal="469b60de-8f1a-4406-8b1c-15177728db55"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUs-tJLEeqDrricSWSjJg" base_Signal="26ed15e1-3b08-4907-9a1b-b844b8dac29a"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUs-9JLEeqDrricSWSjJg" base_Signal="477f7216-0d12-4881-b80e-a2308a99f7b8"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtANJLEeqDrricSWSjJg" base_Signal="a393383e-5220-4e21-bfb4-d263da0e8c67"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtAdJLEeqDrricSWSjJg" base_Signal="6adcec3a-0ce8-4d01-bb9e-1070fa677b2e"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtAtJLEeqDrricSWSjJg" base_Signal="27306bd2-f270-4a87-b582-112205df8aa9"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtA9JLEeqDrricSWSjJg" base_Signal="aa3f344a-3387-4a82-b3e4-207ea9769d52"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtBNJLEeqDrricSWSjJg" base_Signal="7836ff47-3736-46dc-b933-38c7f80955c7"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtBdJLEeqDrricSWSjJg" base_Signal="136adbf4-63cd-48a0-a0a0-5d35c6eaff28"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtBtJLEeqDrricSWSjJg" base_Signal="19419b11-7ee8-4f6d-b6f4-89a60845e6ab"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtB9JLEeqDrricSWSjJg" base_Signal="38ba9516-edd3-4c4c-a825-5f0107ca65ff"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtCNJLEeqDrricSWSjJg" base_Signal="7c730b5e-f74e-4937-9c3b-32f7fe9172cb"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtCdJLEeqDrricSWSjJg" base_Signal="764cdce7-fcb7-44d7-ae81-2ea06c69a8fc"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtCtJLEeqDrricSWSjJg" base_Signal="75287045-3e8f-4de4-a1a4-1b8b7538451a"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtC9JLEeqDrricSWSjJg" base_Signal="4ae5b96c-e369-44e5-82d8-20c1d268d77e"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtDNJLEeqDrricSWSjJg" base_Signal="904107b0-513b-451a-b854-eb5f82e17802"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtDdJLEeqDrricSWSjJg" base_Signal="1774959a-8efd-4d84-93b0-cb19bc9d64b6"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtDtJLEeqDrricSWSjJg" base_Signal="3d753d7b-0b72-4d9f-adc2-b0e121708835"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtD9JLEeqDrricSWSjJg" base_Signal="8e60dc1f-cb79-4a15-a642-cb6462dde3ed"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtENJLEeqDrricSWSjJg" base_Signal="b920e7a5-d9f7-4eaa-97b8-18c6ab1ea10b"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtEdJLEeqDrricSWSjJg" base_Signal="f3cfeccd-8062-45a5-b5e9-34b4e5ccd665"/>
-  <comodoProfile:cmdoCommand xmi:id="_CNUtEtJLEeqDrricSWSjJg" base_Signal="863292d2-abb9-4dae-8ae9-5223b82c2bc1"/>
-  <comodoProfile:cmdoModule xmi:id="_CNUtE9JLEeqDrricSWSjJg" base_Package="c5a891ff-31dd-4b73-9dff-40af83b955d7"/>
-  <comodoProfile:cmdoModule xmi:id="_CNUtFNJLEeqDrricSWSjJg" base_Package="6bcab13d-0a05-4bb3-9612-94ee5ee357ac"/>
-  <comodoProfile:cmdoModule xmi:id="_CNUtFdJLEeqDrricSWSjJg" base_Package="15165db9-5dbf-4ac9-8a41-9d69e94695c3"/>
-  <comodoProfile:cmdoModule xmi:id="_CNUtFtJLEeqDrricSWSjJg" base_Package="9e9ce9ec-7daf-4552-98fa-512ee0d9b9de"/>
-  <comodoProfile:cmdoModule xmi:id="_CNUtGNJLEeqDrricSWSjJg" base_Package="75740af7-5a61-429c-b858-7c7f34e1ed72"/>
-  <comodoProfile:cmdoModule xmi:id="_CNUtGdJLEeqDrricSWSjJg" base_Package="2e5cb6ad-f5df-44d5-9c9a-8ceb1d4f0afa"/>
-  <comodoProfile:cmdoComponent xmi:id="_CNVUANJLEeqDrricSWSjJg" base_Class="f5173cbc-3529-4fac-a7da-71b5b6847bd8"/>
-  <comodoProfile:cmdoComponent xmi:id="_CNVUAdJLEeqDrricSWSjJg" base_Class="8244b172-90a2-4229-b748-ca8ac0dbc867"/>
-  <comodoProfile:cmdoComponent xmi:id="_CNVUA9JLEeqDrricSWSjJg" base_Class="f47a69d8-0567-46fb-ab81-a50fce89847c"/>
-  <comodoProfile:cmdoStructure xmi:id="_CNVUBNJLEeqDrricSWSjJg" base_DataType="44f5abcc-b1e8-48b6-927c-5c5a909e38a1"/>
-  <comodoProfile:cmdoStructure xmi:id="_CNVUBdJLEeqDrricSWSjJg" base_DataType="2336ed04-93ab-4487-ab32-03ad3065f1aa"/>
-  <comodoProfile:cmdoStructure xmi:id="_CNVUBtJLEeqDrricSWSjJg" base_DataType="0e692054-37a7-4f1a-a0d2-41055192020f"/>
-  <comodoProfile:cmdoException xmi:id="_CNVUB9JLEeqDrricSWSjJg" base_DataType="fe7d7da8-93cc-4120-b362-417175a1b784"/>
-  <comodoProfile:cmdoException xmi:id="_CNVUCNJLEeqDrricSWSjJg" base_DataType="982290fb-70e8-40ec-b9ff-7ace75a82802"/>
-  <comodoProfile:cmdoSignal xmi:id="_CNVUCdJLEeqDrricSWSjJg" base_Signal="1b9b9361-f378-46f4-ab6a-b9aa6a4c4631"/>
-  <comodoProfile:cmdoSignal xmi:id="_CNVUCtJLEeqDrricSWSjJg" base_Signal="f3bf02bf-3cf6-427c-a79a-5947e017a1eb"/>
-  <comodoProfile:cmdoInternal xmi:id="_CNVUDNJLEeqDrricSWSjJg" base_Signal="02e93cb2-7df1-4d30-ba5b-dfe341f8c1a1"/>
-  <comodoProfile:cmdoInternal xmi:id="_CNVUDdJLEeqDrricSWSjJg" base_Signal="9222ddf5-2635-4afd-aa94-ed2ee0d723f3"/>
-  <comodoProfile:cmdoInternal xmi:id="_CNVUDtJLEeqDrricSWSjJg" base_Signal="e3651596-e2dd-4d8b-aff1-1851f4611f84"/>
-  <comodoProfile:cmdoIOSignal xmi:id="_CNVUD9JLEeqDrricSWSjJg" base_Signal="2091e262-5013-42bf-9245-aab14bdd74bb"/>
+  <SysML.Blocks:ValueType xmi:id="_ScCsANblEeqSko38ONw-SA" base_DataType="eb106e2e-a761-4ab5-83f8-4f4674d68be4"/>
+  <SysML.Blocks:ValueType xmi:id="_ScCsAdblEeqSko38ONw-SA" base_DataType="5a120a43-e776-46e8-90cc-ed6de733228d"/>
+  <SysML.Blocks:Block xmi:id="_ScG9ctblEeqSko38ONw-SA" base_Class="a4ca0b40-b0af-45fa-990e-7de150fd2243"/>
+  <SysML.Blocks:Block xmi:id="_ScG9c9blEeqSko38ONw-SA" base_Class="73563b3f-98f0-4fdb-a81b-f633f8428ebe"/>
+  <SysML.Blocks:Block xmi:id="_ScG9dNblEeqSko38ONw-SA" base_Class="b0a7005b-8f2c-47b9-aca7-56a851960b76"/>
+  <SysML.Blocks:Block xmi:id="_ScG9ddblEeqSko38ONw-SA" base_Class="2e6cae9b-39e6-4325-8329-e2a9d4942470"/>
+  <SysML.Blocks:Block xmi:id="_ScG9dtblEeqSko38ONw-SA" base_Class="f47a69d8-0567-46fb-ab81-a50fce89847c"/>
+  <SysML.Blocks:Block xmi:id="_ScG9d9blEeqSko38ONw-SA" base_Class="2407cabc-e89f-47cc-a6dc-d50b342e8e28"/>
+  <SysML.Blocks:Block xmi:id="_ScG9eNblEeqSko38ONw-SA" base_Class="ff72b539-62b3-420b-8fbb-86bdecb010b2"/>
+  <SysML.Blocks:Block xmi:id="_ScG9edblEeqSko38ONw-SA" base_Class="57489f87-4bbb-4cc1-b397-aef94796c2c1"/>
+  <SysML.Blocks:Block xmi:id="_ScG9etblEeqSko38ONw-SA" base_Class="2cdad0e5-79a0-456f-ae22-e318d1332fb3"/>
+  <SysML.Blocks:Block xmi:id="_ScHkgNblEeqSko38ONw-SA" base_Class="4d62d1ac-8d1a-42be-8ddb-b42dab577cef"/>
+  <SysML.Blocks:Block xmi:id="_ScHkgdblEeqSko38ONw-SA" base_Class="8d6369c9-6f1e-40d6-b49f-d52ce6f66f6e"/>
+  <SysML.Blocks:Block xmi:id="_ScHkgtblEeqSko38ONw-SA" base_Class="0ba035ee-95bd-41c3-8b09-2a5cce10d038"/>
+  <SysML.Blocks:Block xmi:id="_ScHkg9blEeqSko38ONw-SA" base_Class="3114e31c-3271-4a67-96cd-a3467af5995a"/>
+  <SysML.Blocks:Block xmi:id="_ScHkhNblEeqSko38ONw-SA" base_Class="4665b383-9ac2-4dfb-bf9c-f2f36b3f8b9d"/>
+  <SysML.Blocks:Block xmi:id="_ScHkhdblEeqSko38ONw-SA" base_Class="48088434-e9f3-4666-82ee-6883f480ff2d"/>
+  <SysML.Blocks:Block xmi:id="_ScHkhtblEeqSko38ONw-SA" base_Class="678bb0c2-28dc-47ef-b469-644aed6ce3bb"/>
+  <SysML.Blocks:Block xmi:id="_ScHkh9blEeqSko38ONw-SA" base_Class="7d4bea7e-c9fe-4f40-b167-8459da3de6c8"/>
+  <SysML.Blocks:Block xmi:id="_ScHkiNblEeqSko38ONw-SA" base_Class="347dcda2-f42a-4e4d-a8cd-be012af81388"/>
+  <SysML.Blocks:Block xmi:id="_ScHkidblEeqSko38ONw-SA" base_Class="93c584d4-8fd9-448c-b216-ce31733d5cfa"/>
+  <SysML.Blocks:Block xmi:id="_ScILkNblEeqSko38ONw-SA" base_Class="c4d02fef-e17b-4c89-b17e-89533771ef9b"/>
+  <SysML.Blocks:Block xmi:id="_ScILkdblEeqSko38ONw-SA" base_Class="d61179b5-dd54-44c3-9841-d0a3f30c3255"/>
+  <SysML.Blocks:Block xmi:id="_ScILktblEeqSko38ONw-SA" base_Class="0f39778a-0f18-44db-97d9-f2f75b12f9ef"/>
+  <SysML.Blocks:Block xmi:id="_ScILk9blEeqSko38ONw-SA" base_Class="828b509f-df8e-418e-a0b9-1f7564774b78"/>
+  <SysML.Blocks:Block xmi:id="_ScILlNblEeqSko38ONw-SA" base_Class="2a71d36f-7165-49e6-b9eb-6df9ea6fad50"/>
+  <SysML.Blocks:Block xmi:id="_ScILldblEeqSko38ONw-SA" base_Class="687cc300-c910-4816-ab5e-41603af9ecfc"/>
+  <SysML.Blocks:Block xmi:id="_ScILltblEeqSko38ONw-SA" base_Class="139e8c59-7091-48e1-a005-4a45fdfb96fd"/>
+  <SysML.Blocks:Block xmi:id="_ScILl9blEeqSko38ONw-SA" base_Class="582c30eb-9e47-4e96-acc6-0bc378c96bc8"/>
+  <SysML.Blocks:Block xmi:id="_ScILmNblEeqSko38ONw-SA" base_Class="e3f04468-64fd-4854-9b7b-f0a059b05a3b"/>
+  <SysML.Blocks:Block xmi:id="_ScILmdblEeqSko38ONw-SA" base_Class="1ecc8c62-9129-4e1c-8732-17980f9244f6"/>
+  <SysML.Blocks:Block xmi:id="_ScILmtblEeqSko38ONw-SA" base_Class="a533e369-df6d-480b-8b1b-436b8aa31a16"/>
+  <SysML.Blocks:Block xmi:id="_ScILm9blEeqSko38ONw-SA" base_Class="e5d24195-a49f-49e0-85ce-53088c21c2cd"/>
+  <SysML.Blocks:Block xmi:id="_ScILnNblEeqSko38ONw-SA" base_Class="a3047dca-8a68-4ced-8004-00b6439d6ffb"/>
+  <SysML.Blocks:Block xmi:id="_ScIyoNblEeqSko38ONw-SA" base_Class="82b4d15a-2b34-419b-83d0-e0a906595d6e"/>
+  <SysML.Blocks:Block xmi:id="_ScIyodblEeqSko38ONw-SA" base_Class="8273126b-2b36-4ed6-aa31-745146fc0c2e"/>
+  <SysML.Blocks:Block xmi:id="_ScIyotblEeqSko38ONw-SA" base_Class="ab973940-4ea8-49b1-9c30-02b802b300a9"/>
+  <SysML.Blocks:Block xmi:id="_ScIyo9blEeqSko38ONw-SA" base_Class="191c884a-4ae9-4da0-8423-7d1921a45427"/>
+  <SysML.Blocks:Block xmi:id="_ScIypNblEeqSko38ONw-SA" base_Class="aed0325a-4a95-49ab-8ef7-f9f1751813df"/>
+  <SysML.Blocks:Block xmi:id="_ScIypdblEeqSko38ONw-SA" base_Class="9a3eaa92-f261-4f75-83ad-2177a0a7ba12"/>
+  <SysML.Blocks:Block xmi:id="_ScIyptblEeqSko38ONw-SA" base_Class="d5b737e7-0f2a-4ba3-a749-fa24c3a80bda"/>
+  <SysML.Blocks:Block xmi:id="_ScIyp9blEeqSko38ONw-SA" base_Class="81a674a3-5b9e-4285-8fd0-e6aa576d054f"/>
+  <SysML.Blocks:Block xmi:id="_ScIyqNblEeqSko38ONw-SA" base_Class="f7391e15-039b-4de0-969a-9b125ecb6962"/>
+  <SysML.Blocks:Block xmi:id="_ScIyqdblEeqSko38ONw-SA" base_Class="e09b4bfb-9d5a-4f8b-a254-41537e793819"/>
+  <SysML.Blocks:Block xmi:id="_ScIyqtblEeqSko38ONw-SA" base_Class="a480305e-3eba-42fe-9e6d-bc2c6e18070f"/>
+  <SysML.Blocks:Block xmi:id="_ScIyq9blEeqSko38ONw-SA" base_Class="991750aa-73ab-4d3f-9407-19bb844f0f80"/>
+  <SysML.Blocks:Block xmi:id="_ScIyrNblEeqSko38ONw-SA" base_Class="801cdac9-3295-4848-9733-d13d2ffd57ba"/>
+  <SysML.Blocks:Block xmi:id="_ScIyrdblEeqSko38ONw-SA" base_Class="0c739220-1bee-4b24-a6c1-32d696104fb3"/>
+  <SysML.Blocks:Block xmi:id="_ScJZsNblEeqSko38ONw-SA" base_Class="fcaa8e4d-4a98-4cdf-a8e9-64bd03fd8b9f"/>
+  <SysML.Blocks:Block xmi:id="_ScJZsdblEeqSko38ONw-SA" base_Class="1ee312de-5cad-4c61-aa06-ff243dfb3dfb"/>
+  <SysML.Blocks:Block xmi:id="_ScJZstblEeqSko38ONw-SA" base_Class="01b1eea0-2647-4f06-b6a8-d9bdf9957c06"/>
+  <SysML.Blocks:Block xmi:id="_ScJZs9blEeqSko38ONw-SA" base_Class="57213b61-b7f1-491c-a023-3c512c1c71d7"/>
+  <SysML.Blocks:Block xmi:id="_ScJZtNblEeqSko38ONw-SA" base_Class="9b0bdbda-7be3-469d-aa17-3c90fcf4de07"/>
+  <SysML.Blocks:Block xmi:id="_ScJZtdblEeqSko38ONw-SA" base_Class="caa5ed45-987e-47b9-9a27-8e943a8eef36"/>
+  <SysML.Blocks:Block xmi:id="_ScJZttblEeqSko38ONw-SA" base_Class="efa2a60b-760a-4fcb-a0da-3d155514c62d"/>
+  <SysML.Blocks:Block xmi:id="_ScJZt9blEeqSko38ONw-SA" base_Class="65bc067a-9357-459f-a397-706dfcc73a74"/>
+  <SysML.Blocks:Block xmi:id="_ScJZuNblEeqSko38ONw-SA" base_Class="0a06e6fd-8069-40c9-acbd-e204125e5b26"/>
+  <SysML.Blocks:Block xmi:id="_ScJZudblEeqSko38ONw-SA" base_Class="4c376db0-116a-47da-bb3d-7570f5e143fc"/>
+  <SysML.Blocks:Block xmi:id="_ScJZutblEeqSko38ONw-SA" base_Class="00f84981-b6ec-4c72-a928-5c2a5d764688"/>
+  <SysML.Blocks:Block xmi:id="_ScJZu9blEeqSko38ONw-SA" base_Class="d393c1a1-18fc-4d11-9498-b4373e04f974"/>
+  <SysML.Blocks:Block xmi:id="_ScJZvNblEeqSko38ONw-SA" base_Class="79b37f03-e70c-470b-a916-532a6d36664e"/>
+  <SysML.Blocks:Block xmi:id="_ScKAwNblEeqSko38ONw-SA" base_Class="dbe6b180-edc2-4622-8e00-fdef20a2cc41"/>
+  <SysML.Blocks:Block xmi:id="_ScKAwdblEeqSko38ONw-SA" base_Class="0a358d27-e4eb-4d90-9b9f-935fb49374c1"/>
+  <SysML.Blocks:Block xmi:id="_ScKAwtblEeqSko38ONw-SA" base_Class="4f7c4de9-abc8-4047-ae1d-934b8d3d5581"/>
+  <SysML.Blocks:Block xmi:id="_ScKAw9blEeqSko38ONw-SA" base_Class="90465ba4-665a-436b-be82-cfefd4026db6"/>
+  <SysML.Allocations:AllocateActivityPartition xmi:id="_ScLO5NblEeqSko38ONw-SA" base_ActivityPartition="2d40d07d-c472-4480-82ce-91dfc1d21cb8"/>
+  <SysML.Allocations:AllocateActivityPartition xmi:id="_ScLO5dblEeqSko38ONw-SA" base_ActivityPartition="2501a553-bd81-478d-b95d-5fe5e912b7c9"/>
+  <SysML.Allocations:AllocateActivityPartition xmi:id="_ScLO5tblEeqSko38ONw-SA" base_ActivityPartition="e863ed11-7f10-4766-9fb7-90130e79c044"/>
+  <SysML.Allocations:AllocateActivityPartition xmi:id="_ScLO59blEeqSko38ONw-SA" base_ActivityPartition="df5468a8-f55c-46b0-bb8b-fcb42951d9a2"/>
+  <SysML.Allocations:AllocateActivityPartition xmi:id="_ScL18NblEeqSko38ONw-SA" base_ActivityPartition="3f36289e-113e-46ef-b557-e9afe3034d69"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScRVg9blEeqSko38ONw-SA" base_Element="bc7cf344-aa4b-482a-ac59-ac593a69589a" base_Property="bc7cf344-aa4b-482a-ac59-ac593a69589a"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScRVhNblEeqSko38ONw-SA" base_Element="5bd74a4b-1a9b-44dd-b38e-a5c3ba4fb32c" base_Property="5bd74a4b-1a9b-44dd-b38e-a5c3ba4fb32c"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScRVhdblEeqSko38ONw-SA" base_Element="b68224f5-f5c5-4018-99fd-2e56056fc31e" base_Property="b68224f5-f5c5-4018-99fd-2e56056fc31e"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScRVhtblEeqSko38ONw-SA" base_Element="ca49bf87-3bea-4a4b-8b1b-7620c12405c4" base_Property="ca49bf87-3bea-4a4b-8b1b-7620c12405c4"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScR8kNblEeqSko38ONw-SA" base_Element="18928f77-e3a4-4077-9b05-55f62f1c6054" base_Property="18928f77-e3a4-4077-9b05-55f62f1c6054"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScR8kdblEeqSko38ONw-SA" base_Element="f30ba859-897e-4a25-bd81-b3773155f272" base_Property="f30ba859-897e-4a25-bd81-b3773155f272"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScR8ktblEeqSko38ONw-SA" base_Element="d9b425d8-4b4d-4bcb-8f42-24fca804c92b" base_Property="d9b425d8-4b4d-4bcb-8f42-24fca804c92b"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScR8k9blEeqSko38ONw-SA" base_Element="f5c75bd0-7ab9-4b39-9a6b-1aeb9b0fde95" base_Property="f5c75bd0-7ab9-4b39-9a6b-1aeb9b0fde95"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScR8lNblEeqSko38ONw-SA" base_Element="a45b9e3d-9f0c-4168-a7cf-69682dfaaa70" base_Property="a45b9e3d-9f0c-4168-a7cf-69682dfaaa70"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScR8ldblEeqSko38ONw-SA" base_Element="1ed6cf55-4527-424f-a857-23d4e20ee9da" base_Property="1ed6cf55-4527-424f-a857-23d4e20ee9da"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScR8ltblEeqSko38ONw-SA" base_Element="409cf9e5-b79d-4406-bcb8-0ebc5bf30b28" base_Property="409cf9e5-b79d-4406-bcb8-0ebc5bf30b28"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScR8l9blEeqSko38ONw-SA" base_Element="1c50b495-728e-4783-b887-a3ac3bf93f06" base_Property="1c50b495-728e-4783-b887-a3ac3bf93f06"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScR8mNblEeqSko38ONw-SA" base_Element="54252af2-c74d-4ee4-9c66-3c7d2a7903a1" base_Property="54252af2-c74d-4ee4-9c66-3c7d2a7903a1"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScSjoNblEeqSko38ONw-SA" base_Element="b2cb781a-d2d6-4e67-becc-b32963bf5b93" base_Property="b2cb781a-d2d6-4e67-becc-b32963bf5b93"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScSjodblEeqSko38ONw-SA" base_Element="0f5e3e8c-9b5f-486e-ad28-ee61ef628883" base_Property="0f5e3e8c-9b5f-486e-ad28-ee61ef628883"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScSjotblEeqSko38ONw-SA" base_Element="da8de77a-c052-4b47-911b-07d1e6acd6a9" base_Property="da8de77a-c052-4b47-911b-07d1e6acd6a9"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScSjo9blEeqSko38ONw-SA" base_Element="adc25180-3236-4b76-84bb-c8719edb62c0" base_Property="adc25180-3236-4b76-84bb-c8719edb62c0"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScSjpNblEeqSko38ONw-SA" base_Element="ab0c5a03-05a2-4ff8-b035-b4b0547cb63c" base_Property="ab0c5a03-05a2-4ff8-b035-b4b0547cb63c"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScSjpdblEeqSko38ONw-SA" base_Element="62884f01-7e42-4598-b33a-12ccf2bdbdca" base_Property="62884f01-7e42-4598-b33a-12ccf2bdbdca"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScSjptblEeqSko38ONw-SA" base_Element="5ad12569-bd03-4620-b02e-a41dec8316ce" base_Property="5ad12569-bd03-4620-b02e-a41dec8316ce"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScSjp9blEeqSko38ONw-SA" base_Element="02fc34c8-0a65-46d8-81b3-257a0aad8760" base_Property="02fc34c8-0a65-46d8-81b3-257a0aad8760"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScTKsNblEeqSko38ONw-SA" base_Element="0c8499d1-0ea2-4e11-b8d0-1d242552065e" base_Property="0c8499d1-0ea2-4e11-b8d0-1d242552065e"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScTKsdblEeqSko38ONw-SA" base_Element="bfce4717-f1fa-4751-bd2b-2d7ec26eb9e2" base_Property="bfce4717-f1fa-4751-bd2b-2d7ec26eb9e2"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScTKstblEeqSko38ONw-SA" base_Element="16f1d527-598f-4009-97e3-233ae6da665c" base_Property="16f1d527-598f-4009-97e3-233ae6da665c"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScTKs9blEeqSko38ONw-SA" base_Element="af2f1e82-94d5-4750-9458-a6bcf5aa73c3" base_Property="af2f1e82-94d5-4750-9458-a6bcf5aa73c3"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScTKtNblEeqSko38ONw-SA" base_Element="b6e70c69-1746-47e2-8762-0f525d24bdb5" base_Property="b6e70c69-1746-47e2-8762-0f525d24bdb5"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScTKtdblEeqSko38ONw-SA" base_Element="1915de4b-067a-4a5d-81c0-60875126e9b0" base_Property="1915de4b-067a-4a5d-81c0-60875126e9b0"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScTKttblEeqSko38ONw-SA" base_Element="63241ec9-e430-400f-9b2b-044cb11b2fbd" base_Property="63241ec9-e430-400f-9b2b-044cb11b2fbd"/>
+  <additional_stereotypes:PartProperty xmi:id="_ScTKt9blEeqSko38ONw-SA" base_Element="cb911589-3af6-4c94-a582-c58984dc74c5" base_Property="cb911589-3af6-4c94-a582-c58984dc74c5"/>
+  <additional_stereotypes:ValueProperty xmi:id="_ScUY09blEeqSko38ONw-SA" base_Element="90ea37d0-8e81-4b66-b9b8-04f670e94aef" base_Property="90ea37d0-8e81-4b66-b9b8-04f670e94aef"/>
+  <additional_stereotypes:ValueProperty xmi:id="_ScUY1NblEeqSko38ONw-SA" base_Element="61a35a68-1aa0-4f1b-82cb-55ab286de865" base_Property="61a35a68-1aa0-4f1b-82cb-55ab286de865"/>
+  <additional_stereotypes:ValueProperty xmi:id="_ScUY1dblEeqSko38ONw-SA" base_Element="8e53fb4a-8b16-4f36-9f40-449c6d0698d5" base_Property="8e53fb4a-8b16-4f36-9f40-449c6d0698d5"/>
+  <additional_stereotypes:ValueProperty xmi:id="_ScUY1tblEeqSko38ONw-SA" base_Element="8ff08a5a-d6a3-4f99-94e2-6d0730a07e41" base_Property="8ff08a5a-d6a3-4f99-94e2-6d0730a07e41"/>
+  <additional_stereotypes:ValueProperty xmi:id="_ScUY19blEeqSko38ONw-SA" base_Element="5eb80e3d-a253-40e7-8132-cdd4a9064441" base_Property="5eb80e3d-a253-40e7-8132-cdd4a9064441"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScU_49blEeqSko38ONw-SA" base_Element="f1be8cec-c274-4852-ac8e-0002292ec466" base_Property="f1be8cec-c274-4852-ac8e-0002292ec466"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScU_5NblEeqSko38ONw-SA" base_Element="1c95198f-0370-42c1-8eb5-9e9c5f92e99d" base_Property="1c95198f-0370-42c1-8eb5-9e9c5f92e99d"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScU_5dblEeqSko38ONw-SA" base_Element="49d74d83-cf87-412d-9b3e-5f5fec03cf0b" base_Property="49d74d83-cf87-412d-9b3e-5f5fec03cf0b"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScU_5tblEeqSko38ONw-SA" base_Element="a54b7647-59c0-421d-a69a-2d5021651318" base_Property="a54b7647-59c0-421d-a69a-2d5021651318"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScU_59blEeqSko38ONw-SA" base_Element="ccd13f2d-76c6-487a-a08f-71dfb9b5e82e" base_Property="ccd13f2d-76c6-487a-a08f-71dfb9b5e82e"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScU_6NblEeqSko38ONw-SA" base_Element="f5c0821f-27ba-4fc4-8515-4cae0883cc4d" base_Property="f5c0821f-27ba-4fc4-8515-4cae0883cc4d"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScU_6dblEeqSko38ONw-SA" base_Element="3c9abd39-e2f3-4b6e-b69e-28591f2fe851" base_Property="3c9abd39-e2f3-4b6e-b69e-28591f2fe851"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScU_6tblEeqSko38ONw-SA" base_Element="b0672bb0-1608-4d5d-aa6e-5eda287f091e" base_Property="b0672bb0-1608-4d5d-aa6e-5eda287f091e"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm8NblEeqSko38ONw-SA" base_Element="6ac728a3-2593-45b2-b6ca-ddc2ee9b7a4d" base_Property="6ac728a3-2593-45b2-b6ca-ddc2ee9b7a4d"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm8dblEeqSko38ONw-SA" base_Element="32feaabd-cdc4-4e6a-b717-63197c613d6c" base_Property="32feaabd-cdc4-4e6a-b717-63197c613d6c"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm8tblEeqSko38ONw-SA" base_Element="82dd6603-c49a-4000-ba6f-1ad93396636b" base_Property="82dd6603-c49a-4000-ba6f-1ad93396636b"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm89blEeqSko38ONw-SA" base_Element="ca966b48-46cf-4fff-911a-d24debc00c48" base_Property="ca966b48-46cf-4fff-911a-d24debc00c48"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm9NblEeqSko38ONw-SA" base_Element="1034a553-e1f7-4881-8798-fd490c504715" base_Property="1034a553-e1f7-4881-8798-fd490c504715"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm9dblEeqSko38ONw-SA" base_Element="a8bc0acc-2536-418d-9b5d-e686d66ed2e7" base_Property="a8bc0acc-2536-418d-9b5d-e686d66ed2e7"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm9tblEeqSko38ONw-SA" base_Element="23bc5157-37a0-4860-b664-a559b4c78c9e" base_Property="23bc5157-37a0-4860-b664-a559b4c78c9e"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm99blEeqSko38ONw-SA" base_Element="8d61b0d0-c21a-41db-abef-188a5b24247b" base_Property="8d61b0d0-c21a-41db-abef-188a5b24247b"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm-NblEeqSko38ONw-SA" base_Element="ad94ad24-310d-4905-99ef-688800cd500f" base_Property="ad94ad24-310d-4905-99ef-688800cd500f"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm-dblEeqSko38ONw-SA" base_Element="2a6ae69d-aa50-4c6e-8fd8-c1554c9ebf26" base_Property="2a6ae69d-aa50-4c6e-8fd8-c1554c9ebf26"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScVm-tblEeqSko38ONw-SA" base_Element="dfc27506-f05f-47f0-9fa7-ca7959c12eb8" base_Property="dfc27506-f05f-47f0-9fa7-ca7959c12eb8"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScWOANblEeqSko38ONw-SA" base_Element="41b463af-b658-4d25-8cca-4d96b7d14205" base_Property="41b463af-b658-4d25-8cca-4d96b7d14205"/>
+  <additional_stereotypes:ReferenceProperty xmi:id="_ScWOAdblEeqSko38ONw-SA" base_Element="cc2e09b5-39f4-4a5d-858c-6d61b125d168" base_Property="cc2e09b5-39f4-4a5d-858c-6d61b125d168"/>
+  <MagicDrawProfile:mount xmi:id="_Sc1WONblEeqSko38ONw-SA" base_Dependency="bc1c0771-0e75-4d7e-88e3-d80363341980"/>
+  <MagicDrawProfile:mount xmi:id="_Sc1WOdblEeqSko38ONw-SA" base_Dependency="b467498e-b366-46f2-9667-c7c973b74b9a"/>
+  <EELT_INS_Profile.ICSFrameworkStereotypes:eltcomponent xmi:id="_Sd1bwNblEeqSko38ONw-SA" base_Class="db34a40d-4cb2-40a8-972a-dc8d25713edd"/>
+  <comodoProfile:cmdoInterface xmi:id="_Sd1bwdblEeqSko38ONw-SA" base_Interface="5d793347-c576-4ca1-929e-13e6000ec09e"/>
+  <comodoProfile:cmdoInterface xmi:id="_Sd1bwtblEeqSko38ONw-SA" base_Interface="ef99e35c-a62a-4159-a22f-c5166b2d066f"/>
+  <comodoProfile:cmdoInterface xmi:id="_Sd1bw9blEeqSko38ONw-SA" base_Interface="3dfff5b0-ae10-4266-a882-145e05a23404"/>
+  <comodoProfile:cmdoInterface xmi:id="_Sd1bxNblEeqSko38ONw-SA" base_Interface="28039292-af37-4b36-a909-f0c9984dc667"/>
+  <comodoProfile:cmdoInterface xmi:id="_Sd2C0tblEeqSko38ONw-SA" base_Interface="5aecb0d4-1115-4950-a525-809d5227e80a"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C09blEeqSko38ONw-SA" base_Signal="c0bd7a27-6d34-4f66-bb54-029ca8131401"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C1NblEeqSko38ONw-SA" base_Signal="c2d848b4-6e8c-4a27-84dc-6644b722f806"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C1dblEeqSko38ONw-SA" base_Signal="6326daa2-649e-4c9c-b313-9e257fe4fa7e"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C1tblEeqSko38ONw-SA" base_Signal="c6359622-507e-49c4-9085-7d6b28c1000c"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C19blEeqSko38ONw-SA" base_Signal="41b3d3ad-55c0-4ef3-956d-924e8f171ac5"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C2NblEeqSko38ONw-SA" base_Signal="a3c6a5c0-07de-4245-87d1-5e7d45f2ff66"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C2dblEeqSko38ONw-SA" base_Signal="40ac2048-e9c9-499b-99b9-9e67fb60078e"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C2tblEeqSko38ONw-SA" base_Signal="469b60de-8f1a-4406-8b1c-15177728db55"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C29blEeqSko38ONw-SA" base_Signal="26ed15e1-3b08-4907-9a1b-b844b8dac29a"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C3NblEeqSko38ONw-SA" base_Signal="477f7216-0d12-4881-b80e-a2308a99f7b8"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C4dblEeqSko38ONw-SA" base_Signal="a393383e-5220-4e21-bfb4-d263da0e8c67"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C4tblEeqSko38ONw-SA" base_Signal="6adcec3a-0ce8-4d01-bb9e-1070fa677b2e"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C49blEeqSko38ONw-SA" base_Signal="27306bd2-f270-4a87-b582-112205df8aa9"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C5NblEeqSko38ONw-SA" base_Signal="aa3f344a-3387-4a82-b3e4-207ea9769d52"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2C5dblEeqSko38ONw-SA" base_Signal="7836ff47-3736-46dc-b933-38c7f80955c7"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p4NblEeqSko38ONw-SA" base_Signal="136adbf4-63cd-48a0-a0a0-5d35c6eaff28"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p4dblEeqSko38ONw-SA" base_Signal="19419b11-7ee8-4f6d-b6f4-89a60845e6ab"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p4tblEeqSko38ONw-SA" base_Signal="38ba9516-edd3-4c4c-a825-5f0107ca65ff"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p49blEeqSko38ONw-SA" base_Signal="7c730b5e-f74e-4937-9c3b-32f7fe9172cb"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p5NblEeqSko38ONw-SA" base_Signal="764cdce7-fcb7-44d7-ae81-2ea06c69a8fc"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p5dblEeqSko38ONw-SA" base_Signal="75287045-3e8f-4de4-a1a4-1b8b7538451a"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p5tblEeqSko38ONw-SA" base_Signal="4ae5b96c-e369-44e5-82d8-20c1d268d77e"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p59blEeqSko38ONw-SA" base_Signal="904107b0-513b-451a-b854-eb5f82e17802"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p6NblEeqSko38ONw-SA" base_Signal="1774959a-8efd-4d84-93b0-cb19bc9d64b6"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p6dblEeqSko38ONw-SA" base_Signal="3d753d7b-0b72-4d9f-adc2-b0e121708835"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p6tblEeqSko38ONw-SA" base_Signal="8e60dc1f-cb79-4a15-a642-cb6462dde3ed"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p69blEeqSko38ONw-SA" base_Signal="b920e7a5-d9f7-4eaa-97b8-18c6ab1ea10b"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p7NblEeqSko38ONw-SA" base_Signal="f3cfeccd-8062-45a5-b5e9-34b4e5ccd665"/>
+  <comodoProfile:cmdoCommand xmi:id="_Sd2p7dblEeqSko38ONw-SA" base_Signal="863292d2-abb9-4dae-8ae9-5223b82c2bc1"/>
+  <comodoProfile:cmdoModule xmi:id="_Sd2p7tblEeqSko38ONw-SA" base_Package="c5a891ff-31dd-4b73-9dff-40af83b955d7"/>
+  <comodoProfile:cmdoModule xmi:id="_Sd2p79blEeqSko38ONw-SA" base_Package="6bcab13d-0a05-4bb3-9612-94ee5ee357ac"/>
+  <comodoProfile:cmdoModule xmi:id="_Sd2p8NblEeqSko38ONw-SA" base_Package="15165db9-5dbf-4ac9-8a41-9d69e94695c3"/>
+  <comodoProfile:cmdoModule xmi:id="_Sd2p8dblEeqSko38ONw-SA" base_Package="9e9ce9ec-7daf-4552-98fa-512ee0d9b9de"/>
+  <comodoProfile:cmdoModule xmi:id="_Sd2p89blEeqSko38ONw-SA" base_Package="75740af7-5a61-429c-b858-7c7f34e1ed72"/>
+  <comodoProfile:cmdoModule xmi:id="_Sd2p9NblEeqSko38ONw-SA" base_Package="2e5cb6ad-f5df-44d5-9c9a-8ceb1d4f0afa"/>
+  <comodoProfile:cmdoComponent xmi:id="_Sd2p9dblEeqSko38ONw-SA" base_Class="f5173cbc-3529-4fac-a7da-71b5b6847bd8"/>
+  <comodoProfile:cmdoComponent xmi:id="_Sd2p9tblEeqSko38ONw-SA" base_Class="8244b172-90a2-4229-b748-ca8ac0dbc867"/>
+  <comodoProfile:cmdoComponent xmi:id="_Sd2p-NblEeqSko38ONw-SA" base_Class="f47a69d8-0567-46fb-ab81-a50fce89847c"/>
+  <comodoProfile:cmdoStructure xmi:id="_Sd2p-dblEeqSko38ONw-SA" base_DataType="a380a685-e67c-4b92-b5ae-3361a92ed099"/>
+  <comodoProfile:cmdoStructure xmi:id="_Sd2p-tblEeqSko38ONw-SA" base_DataType="44f5abcc-b1e8-48b6-927c-5c5a909e38a1"/>
+  <comodoProfile:cmdoStructure xmi:id="_Sd2p-9blEeqSko38ONw-SA" base_DataType="2336ed04-93ab-4487-ab32-03ad3065f1aa"/>
+  <comodoProfile:cmdoStructure xmi:id="_Sd3Q8NblEeqSko38ONw-SA" base_DataType="0e692054-37a7-4f1a-a0d2-41055192020f"/>
+  <comodoProfile:cmdoException xmi:id="_Sd3Q8dblEeqSko38ONw-SA" base_DataType="fe7d7da8-93cc-4120-b362-417175a1b784"/>
+  <comodoProfile:cmdoException xmi:id="_Sd3Q8tblEeqSko38ONw-SA" base_DataType="982290fb-70e8-40ec-b9ff-7ace75a82802"/>
+  <comodoProfile:cmdoSignal xmi:id="_Sd3Q89blEeqSko38ONw-SA" base_Signal="1b9b9361-f378-46f4-ab6a-b9aa6a4c4631"/>
+  <comodoProfile:cmdoSignal xmi:id="_Sd3Q9NblEeqSko38ONw-SA" base_Signal="f3bf02bf-3cf6-427c-a79a-5947e017a1eb"/>
+  <comodoProfile:cmdoInternal xmi:id="_Sd3Q9tblEeqSko38ONw-SA" base_Signal="02e93cb2-7df1-4d30-ba5b-dfe341f8c1a1"/>
+  <comodoProfile:cmdoInternal xmi:id="_Sd3Q99blEeqSko38ONw-SA" base_Signal="9222ddf5-2635-4afd-aa94-ed2ee0d723f3"/>
+  <comodoProfile:cmdoInternal xmi:id="_Sd3Q-NblEeqSko38ONw-SA" base_Signal="e3651596-e2dd-4d8b-aff1-1851f4611f84"/>
+  <comodoProfile:cmdoIOSignal xmi:id="_Sd3Q-dblEeqSko38ONw-SA" base_Signal="2091e262-5013-42bf-9245-aab14bdd74bb"/>
 </xmi:XMI>

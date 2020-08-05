@@ -7,7 +7,7 @@ ConfigHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className, cl
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% header file.
+ * @brief %className% class header file.
  */
 #ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
 #define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
@@ -135,6 +135,7 @@ class Config {
 }  // namespace %moduleNameLowerCase%
 
 #endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
 >>
 
 ConfigSource(moduleName, moduleNameLowerCase, className) ::= <<
@@ -144,7 +145,7 @@ ConfigSource(moduleName, moduleNameLowerCase, className) ::= <<
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% source file.
+ * @brief %className% class source file.
  */
 
 #include <%moduleName%/config.hpp>

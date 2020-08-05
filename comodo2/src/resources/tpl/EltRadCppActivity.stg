@@ -7,7 +7,7 @@ ActivityHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className, 
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% header file.
+ * @brief %className% class header file.
  */
 #ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
 #define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
@@ -56,6 +56,7 @@ class %className% : public rad::ThreadActivity {
 }  // namespace %moduleNameLowerCase%
 
 #endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
 >>
 
 ActivitySource(moduleName, moduleNameLowerCase, className, classNameFileName) ::= <<
@@ -65,7 +66,7 @@ ActivitySource(moduleName, moduleNameLowerCase, className, classNameFileName) ::
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief %className% source file.
+ * @brief %className% class source file.
  */
 
 #include <%moduleName%/%classNameFileName%.hpp>
