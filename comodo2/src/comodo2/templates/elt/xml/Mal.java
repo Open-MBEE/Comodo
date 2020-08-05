@@ -159,8 +159,6 @@ public class Mal implements IGenerator {
 	}
 
 	public String getExceptionDataTypeName(final Reception r) {
-		//Type _head = IterableExtensions.<Type>head(r.getRaisedExceptions());
-		//boolean _tripleNotEquals = (_head != null);
 		if (IterableExtensions.<Type>head(r.getRaisedExceptions()) != null) {
 			return mTypes.typeName(IterableExtensions.<Type>head(r.getRaisedExceptions()));
 		}

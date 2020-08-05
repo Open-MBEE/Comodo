@@ -13,6 +13,9 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 public class RadLogger implements IGenerator {
+	
+	//private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
+
 	@Inject
 	@Extension
 	private QClass mQClass;

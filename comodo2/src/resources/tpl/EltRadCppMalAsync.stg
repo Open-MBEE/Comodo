@@ -1,0 +1,40 @@
+delimiters "%", "%"
+
+MalAsyncHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className, classNameUpperCase, radEvInclude, parentClass, methodsImpl) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% class header file.
+ */
+#ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+#define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+#include "%radEvInclude%"	
+#include <%moduleName%/logger.hpp>
+
+#include <rad/exceptions.hpp>
+#include <rad/smAdapter.hpp>
+
+namespace %moduleNameLowerCase% {
+
+/**
+ * This class implements the CII/MAL interface.
+ */
+class %className% : public %parentClass% {
+   public:
+    explicit %className%(rad::SMAdapter& sm) : m_sm(sm) { RAD_TRACE(GetLogger()); }
+
+    virtual ~%className%() { RAD_TRACE(GetLogger()); }
+ 	%methodsImpl%   
+private:
+	rad::SMAdapter& m_sm;   
+};
+
+}  // namespace %moduleNameLowerCase%
+
+#endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+>>

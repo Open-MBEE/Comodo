@@ -4,6 +4,8 @@ import com.google.common.collect.Iterables;
 import comodo2.queries.QClass;
 import comodo2.utils.FilesHelper;
 import javax.inject.Inject;
+
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
@@ -15,6 +17,9 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
 public class RadCfg implements IGenerator {
+
+	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
+
 	@Inject
 	@Extension
 	private QClass mQClass;
@@ -46,7 +51,7 @@ public class RadCfg implements IGenerator {
 			st.add("moduleName", modName);
 			return st.render();
 		} catch(Throwable throwable) {
-			System.out.println("===>>>ERROR " + throwable.getMessage());
+			mLogger.error("Generating Application Config file for " + modName + " module (" + throwable.getMessage() + ").");
 		}
 		return "";
 	}

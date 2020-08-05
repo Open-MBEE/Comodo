@@ -6,6 +6,8 @@ import comodo2.queries.QPackage;
 import comodo2.utils.FilesHelper;
 import java.util.HashMap;
 import javax.inject.Inject;
+
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.Interface;
@@ -18,6 +20,9 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
 public class MalWscript implements IGenerator {
+	
+	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
+
 	@Inject
 	@Extension
 	private QInterface mQInterface;
@@ -58,7 +63,7 @@ public class MalWscript implements IGenerator {
 			st.add("parentName", parentName);			
 			return st.render();
 		} catch(Throwable throwable) {
-			System.out.println("===>>>ERROR " + throwable.getMessage());
+			mLogger.error("Generating wscript file for " + moduleName + " module (" + throwable.getMessage() + ").");			
 		}
 		return "";		
 	}

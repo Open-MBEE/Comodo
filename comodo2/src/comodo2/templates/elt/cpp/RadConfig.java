@@ -5,6 +5,8 @@ import comodo2.engine.Config;
 import comodo2.queries.QClass;
 import comodo2.utils.FilesHelper;
 import javax.inject.Inject;
+
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
@@ -14,6 +16,9 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.stringtemplate.v4.*;
 
 public class RadConfig implements IGenerator {
+	
+	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
+
 	@Inject
 	@Extension
 	private QClass mQClass;
@@ -53,7 +58,7 @@ public class RadConfig implements IGenerator {
 			st.add("classNameUpperCase", className.toUpperCase());	
 			return st.render();
 		} catch(Throwable throwable) {
-			System.out.println("===>>>ERROR " + throwable.getMessage());
+			mLogger.error("Generating header file for " + className + " class (" + throwable.getMessage() + ").");
 		}
 		return "";		
 	}
@@ -70,7 +75,7 @@ public class RadConfig implements IGenerator {
 			st.add("className", className);	
 			return st.render();
 		} catch(Throwable throwable) {
-			System.out.println("===>>>ERROR " + throwable.getMessage());
+			mLogger.error("Generating source file for " + className + " class (" + throwable.getMessage() + ").");
 		}
 		return "";
 	}
