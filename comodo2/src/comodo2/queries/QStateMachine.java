@@ -12,8 +12,6 @@ import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 public class QStateMachine {
 	@Inject
@@ -43,11 +41,20 @@ public class QStateMachine {
 	 */
 	public String getInitialStateName(final StateMachine sm) {
 		for (final Pseudostate ps : Iterables.<Pseudostate>filter(sm.allOwnedElements(), Pseudostate.class)) {
+			/*
 			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
 					Objects.equal(ps.getContainer().getOwner(), sm)) && 
 					(ps.getOutgoings().size() == 1)) && 
 					(IterableExtensions.<Transition>head(ps.getOutgoings()).getTarget() != null))) {
 				return mQState.getStateName(((State) IterableExtensions.<Transition>head(ps.getOutgoings()).getTarget()));
+			}
+			*/
+			if ((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
+					Objects.equal(ps.getContainer().getOwner(), sm)) && 
+					(ps.getOutgoings().size() == 1))) {
+				if (ps.getOutgoings().get(0).getTarget() != null) {
+					return mQState.getStateName((State)ps.getOutgoings().get(0).getTarget());
+				}
 			}
 		}
 		return "";
@@ -157,11 +164,17 @@ public class QStateMachine {
 			if (mQState.hasOnExitActions(state)) {
 				names.add(state.getExit().getName());
 			}
-
+			/*
 			final Function1<Transition, String> _function = (Transition e) -> {
 				return e.getName();
 			};
 			for (final Transition t : IterableExtensions.<Transition, String>sortBy(state.getOutgoings(), _function)) {
+				if (mQTransition.hasAction(t)) {
+					names.add(mQTransition.getFirstActionName(t));
+				}
+			}
+			*/
+			for (final Transition t : state.getOutgoings()) {
 				if (mQTransition.hasAction(t)) {
 					names.add(mQTransition.getFirstActionName(t));
 				}
@@ -181,10 +194,17 @@ public class QStateMachine {
 	public TreeSet<String> getAllGuardNames(final StateMachine sm) {
 		TreeSet<String> names = new TreeSet<String>();
 		for (final State state : getAllAvailableStates(sm)) {
+			/*
 			final Function1<Transition, String> _function = (Transition e) -> {
 				return e.getName();
 			};
 			for (final Transition t : IterableExtensions.<Transition, String>sortBy(state.getOutgoings(), _function)) {
+				if (mQTransition.hasGuard(t)) {
+					names.add(mQTransition.getGuardName(t));
+				}
+			}
+			*/
+			for (final Transition t : state.getOutgoings()) {
 				if (mQTransition.hasGuard(t)) {
 					names.add(mQTransition.getGuardName(t));
 				}
