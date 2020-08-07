@@ -22,38 +22,30 @@ import org.eclipse.uml2.uml.Transition;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 public class RadEv implements IGenerator {
 	@Inject
-	@Extension
 	private QClass mQClass;
 
 	@Inject
-	@Extension
 	private QTransition mQTransition;
 
 	@Inject
-	@Extension
 	private QStereotype mQStereotype;
 
 	@Inject
-	@Extension
 	private QSignal mQSignal;
 
 	@Inject
-	@Extension
 	private QInterface mQInterface;
 
 	@Inject
-	@Extension
 	private Types mTypes;
 
 	@Inject
-	@Extension
 	private FilesHelper mFilesHelper;
 
 	/**

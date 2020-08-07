@@ -1,0 +1,34 @@
+# Events definitions for hellomal2 application.
+version: "1.0"
+namespace: StdCmds
+includes:
+    - boost/exception_ptr.hpp
+    - rad/mal/request.hpp
+    - Hellomalif2.hpp
+
+events:
+    Enable:
+        payload: rad::cii::Request<std::string>
+        doc: event documentation to be added
+    Reset:
+        payload: rad::cii::Request<std::string>
+        doc: event documentation to be added
+    GetState:
+        payload: rad::cii::Request<std::string>
+        doc: event documentation to be added
+    Disable:
+        payload: rad::cii::Request<std::string>
+        doc: event documentation to be added
+    Exit:
+        payload: rad::cii::Request<std::string>
+        doc: event documentation to be added
+    SetLogLevel:
+        payload: rad::cii::Request<std::string, std::shared_ptr<hellomalif2::LogInfo>>
+        doc: event documentation to be added
+    Stop:
+        payload: rad::cii::Request<std::string>
+        doc: event documentation to be added
+    Init:
+        payload: rad::cii::Request<std::string>
+        doc: event documentation to be added
+    

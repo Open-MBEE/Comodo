@@ -4,25 +4,21 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import comodo2.engine.Config;
-import comodo2.queries.QRegion;
-import comodo2.queries.QTransition;
+
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.uml2.uml.FinalState;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.Transition;
-import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.uml2.uml.Element;
 
 public class QState {
 	@Inject
-	@Extension
 	private QRegion mQRegion;
 
 	@Inject
-	@Extension
 	private QTransition mQTransition;
 
 	public Region getParentRegion(final State s) {
@@ -63,7 +59,7 @@ public class QState {
 	}
 
 	public String getHistoryTypeName(final Pseudostate ps) {
-		if (Objects.equal(ps.getKind(), PseudostateKind.SHALLOW_HISTORY_LITERAL)) {
+		if (ps.getKind() == PseudostateKind.SHALLOW_HISTORY_LITERAL) {
 			return "shallow";
 		}
 		return "deep";
@@ -78,57 +74,81 @@ public class QState {
 	}
 
 	public Iterable<State> getAllNonFinalSubstates(final State s) {
-		final Function1<State, Boolean> _function = (State e) -> {
-			return Boolean.valueOf((!isFinal(e)));
-		};
-		return IterableExtensions.<State>filter(Iterables.<State>filter(s.allOwnedElements(), State.class), _function);
+		BasicEList<State> res = new BasicEList<State>();
+		for (State e : Iterables.<State>filter(s.allOwnedElements(), State.class)) {
+			if (isFinal(e) == false) {
+				res.add(e);
+			}
+		}
+		return res;
 	}
 
 	public Iterable<State> getAllFinalSubstates(final State s) {
-		final Function1<State, Boolean> _function = (State e) -> {
-			return Boolean.valueOf(this.isFinal(e));
-		};
-		return IterableExtensions.<State>filter(Iterables.<State>filter(s.allOwnedElements(), State.class), _function);
+		BasicEList<State> res = new BasicEList<State>();
+		for (State e : Iterables.<State>filter(s.allOwnedElements(), State.class)) {
+			if (isFinal(e)) {
+				res.add(e);
+			}
+		}
+		return res;		
 	}
 
 	public String getInitialSubstateName(final State s) {
-		Iterable<Pseudostate> _filter = Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class);
+		Iterable<Pseudostate> _filter = Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class);		
 		for (final Pseudostate ps : _filter) {
-			if ((((Objects.equal(ps.getKind(), PseudostateKind.INITIAL_LITERAL) && 
+			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
 					Objects.equal(ps.getContainer().getOwner(), s)) && 
 					(ps.getOutgoings().size() == 1)) && 
-					(IterableExtensions.<Transition>head(ps.getOutgoings()).getTarget() != null))) {
-				return getStateName(((State) IterableExtensions.<Transition>head(ps.getOutgoings()).getTarget()));
+					(Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget() != null))) {
+				return getStateName( ((State) Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget()) );
 			}
 		}
+		
 		return "";
 	}
 
+	/**
+	 * @return all the composite substates of 's'.
+	 */
 	public Iterable<State> getCompositeSubstates(final State s) {
-		final Function1<State, Boolean> _function = (State e) -> {
-			return Boolean.valueOf((e.isComposite() && Objects.equal(this.getParentState(e), s)));
-		};
-		return IterableExtensions.<State>filter(Iterables.<State>filter(s.allOwnedElements(), State.class), _function);
+		BasicEList<State> res = new BasicEList<State>();
+		Iterable<State> states = Iterables.<State>filter(s.allOwnedElements(), State.class);
+		for (State e : states) {
+			if (e.isComposite() && Objects.equal(this.getParentState(e), s)) {
+				res.add(e);
+			}
+		}
+		return res;
 	}
 
 	public Iterable<State> getSimpleSubstates(final State s) {
-		final Function1<State, Boolean> _function = (State e) -> {
-			return Boolean.valueOf(((!e.isComposite()) && Objects.equal(this.getParentState(e), s)));
-		};
-		return IterableExtensions.<State>filter(Iterables.<State>filter(this.getAllNonFinalSubstates(s), State.class), _function);
+		BasicEList<State> res = new BasicEList<State>();
+		Iterable<State> states = Iterables.<State>filter(s.allOwnedElements(), State.class);
+		for (State e : states) {
+			if ((e.isComposite() == false) && Objects.equal(this.getParentState(e), s)) {
+				res.add(e);
+			}
+		}
+		return res;		
 	}
 
 	public Iterable<State> getFinalSubstates(final State s) {
-		final Function1<State, Boolean> _function = (State e) -> {
-			return Boolean.valueOf((((!e.isComposite()) && Objects.equal(this.getParentState(e), s)) && this.isFinal(e)));
-		};
-		return IterableExtensions.<State>filter(Iterables.<State>filter(s.allOwnedElements(), State.class), _function);
+		BasicEList<State> res = new BasicEList<State>();
+		Iterable<State> states = Iterables.<State>filter(s.allOwnedElements(), State.class);
+		for (State e : states) {
+			if ((e.isComposite() == false) && Objects.equal(this.getParentState(e), s) && isFinal(e)) {
+				res.add(e);
+			}
+		}
+		return res;		
+		
 	}
 
 	public Iterable<Pseudostate> getHistory(final State s) {
 		if (s.isComposite() == false) {
 			return null;
 		}
+		/*
 		final Function1<Pseudostate, Boolean> _function = (Pseudostate e) -> {
 			return Boolean.valueOf(this.isHistoryState(e));
 		};
@@ -140,19 +160,32 @@ public class QState {
 			return Boolean.valueOf(Objects.equal(getParentState(e), s));
 		};
 		return IterableExtensions.<Pseudostate>filter(hs, _function_1);
+		*/
+		BasicEList<Pseudostate> res = new BasicEList<Pseudostate>();		
+		State p = getParentState(s);
+		if (p != null) {
+			for (Element ps : p.allOwnedElements()) {
+				if (ps instanceof Pseudostate) {
+					if (isHistoryState((Pseudostate)ps)) {
+						res.add((Pseudostate)ps);
+					}
+				}
+			}
+		}
+		return res;
 	}
 
 	public boolean isInitalState(final Pseudostate ps) {
-		return Objects.equal(ps.getKind(), PseudostateKind.INITIAL_LITERAL);
+		return ps.getKind() == PseudostateKind.INITIAL_LITERAL;
 	}
 
 	public boolean isFinalState(final Pseudostate ps) {
-		return Objects.equal(ps.getKind(), PseudostateKind.TERMINATE_LITERAL);
+		return ps.getKind() == PseudostateKind.TERMINATE_LITERAL;
 	}
 
 	public boolean isHistoryState(final Pseudostate ps) {
-		return (Objects.equal(ps.getKind(), PseudostateKind.DEEP_HISTORY_LITERAL) || 
-				Objects.equal(ps.getKind(), PseudostateKind.SHALLOW_HISTORY_LITERAL));
+		return (ps.getKind() == PseudostateKind.DEEP_HISTORY_LITERAL) || 
+			   (ps.getKind() == PseudostateKind.SHALLOW_HISTORY_LITERAL);
 	}
 
 	/**
@@ -199,19 +232,35 @@ public class QState {
 		if (getParentState(s) == null) {
 			return false;
 		}
+		/*
 		final Function1<Transition, Boolean> _function = (Transition e) -> {
 			return Boolean.valueOf((mQTransition.isTimerTransition(e) && e.getSource().getName().matches(s.getName())));
 		};
 		return !IterableExtensions.isEmpty(IterableExtensions.<Transition>filter(Iterables.<Transition>filter(this.getParentState(s).allOwnedElements(), Transition.class), _function));
+		*/
+		for (Transition e : Iterables.<Transition>filter(getParentState(s).allOwnedElements(), Transition.class)) {
+			if (mQTransition.isTimerTransition(e) && e.getSource().getName().matches(s.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean hasHistory(final State s) {
 		if (s.isComposite() == false) {
 			return false;
 		}
-		final Function1<Pseudostate, Boolean> _function = (Pseudostate ps) -> {
-			return Boolean.valueOf((isHistoryState(ps) == true));
-		};
-		return !IterableExtensions.isEmpty(IterableExtensions.<Pseudostate>filter(Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class), _function));
+		State p = getParentState(s);
+		if (p == null) {
+			return false;
+		}
+		for (Element ps : p.allOwnedElements()) {
+			if (ps instanceof Pseudostate) {
+				if (isHistoryState((Pseudostate)ps)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

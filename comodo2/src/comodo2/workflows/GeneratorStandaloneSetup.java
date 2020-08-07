@@ -15,19 +15,19 @@ import com.google.inject.Module;
 public class GeneratorStandaloneSetup implements ISetup {
 	private Injector injector;
 	private GeneratorConfig config;
-	
+
 	public void setConfig(GeneratorConfig config) {
 		this.config = config;
 	}
-	
+
 	public void setDoInit (boolean init) {
 		createInjectorAndDoEMFRegistration();
 	}
-	
+
 
 	public GeneratorStandaloneSetup () {
 	}
-	
+
 	private Module getDynamicModule () {
 		return new AbstractModule() {
 			@Override
@@ -51,10 +51,10 @@ public class GeneratorStandaloneSetup implements ISetup {
 		org.eclipse.xtext.resource.IResourceServiceProvider serviceProvider = injector.getInstance(org.eclipse.xtext.resource.IResourceServiceProvider.class);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("uml", resourceFactory);
 		org.eclipse.xtext.resource.IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("uml", serviceProvider);
-		
+
 		registerUMLPathMaps();
 	}
-	
+
 	protected void registerUMLPathMaps () {
 		// Compute the base URI for org.eclipse.uml2.uml.resources plugin archive
 		String umlResourcesPath = null;
@@ -76,5 +76,5 @@ public class GeneratorStandaloneSetup implements ISetup {
 		URIConverter.URI_MAP.put(URI.createURI("pathmap://UML_METAMODELS/"), URI.createURI(umlResourcesPath+"/metamodels/"));
 		URIConverter.URI_MAP.put(URI.createURI("pathmap://UML_LIBRARIES/"), URI.createURI(umlResourcesPath+"/libraries/"));
 	}
-	
+
 }

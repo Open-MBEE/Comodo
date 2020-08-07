@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml xmlns="http://www.w3.org/2005/07/scxml" xmlns:customActionDomain="http://my.custom-actions.domain/CUSTOM" version="1.0" initial="On">
+  <final id="Off"/>
+  <state id="On">
+    <initial>
+      <transition target="NotOperational"/>
+    </initial>
+  
+    <state id="NotOperational">
+      <initial>
+        <transition target="NotReady"/>
+      </initial>
+    
+      <state id="NotReady">
+        <transition event="StdCmds.Init" target="Ready">
+          <customActionDomain:ActionsStd.Init name="ActionsStd.Init"/>
+        </transition>
+      </state>
+    
+      <state id="Ready">
+        <transition event="StdCmds.Enable" target="Operational">
+          <customActionDomain:ActionsStd.Enable name="ActionsStd.Enable"/>
+        </transition>
+      </state>
+    </state>
+  
+    <state id="Operational">
+      <initial>
+        <transition target="Idle"/>
+      </initial>
+    
+      <state id="Idle">
+        <transition event="ExternalCmds.Preset" cond="ActionsPreset.VerifyConditions" target="Presetting">
+          <customActionDomain:ActionsPreset.Start name="ActionsPreset.Start"/>
+        </transition>
+      </state>
+    
+      <state id="Presetting">
+        <invoke id="ActivityPreset"/>
+        <transition event="StdCmds.Stop" target="Idle">
+          <customActionDomain:ActionsStd.Stop name="ActionsStd.Stop"/>
+        </transition>
+      </state>
+      <transition event="StdCmds.Disable" target="Ready">
+        <customActionDomain:ActionsStd.Disable name="ActionsStd.Disable"/>
+      </transition>
+    </state>
+    <transition event="StdCmds.Exit" target="Off">
+      <customActionDomain:ActionsStd.Exit name="ActionsStd.Exit"/>
+    </transition>
+    <transition event="StdCmds.Reset" target="NotReady">
+      <customActionDomain:ActionsStd.Reset name="ActionsStd.Reset"/>
+    </transition>
+    <transition event="Events.CtrlC" target="Off">
+      <customActionDomain:ActionsStd.ExitNoReply name="ActionsStd.ExitNoReply"/>
+    </transition>
+    <transition event="StdCmds.GetState">
+      <customActionDomain:ActionsStd.GetState name="ActionsStd.GetState"/>
+    </transition>
+    <transition event="StdCmds.SetLogLevel">
+      <customActionDomain:ActionsStd.SetLogLevel name="ActionsStd.SetLogLevel"/>
+    </transition>
+    <transition event="StdCmds.Stop">
+      <customActionDomain:ActionsStd.Stop name="ActionsStd.Stop"/>
+    </transition>
+  </state>
+</scxml>

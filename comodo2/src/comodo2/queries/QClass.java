@@ -2,22 +2,17 @@ package comodo2.queries;
 
 import com.google.common.collect.Iterables;
 import comodo2.engine.Config;
-import comodo2.queries.QPackage;
-import comodo2.queries.QStereotype;
 import javax.inject.Inject;
+
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.StateMachine;
-import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
-@SuppressWarnings("all")
 public class QClass {
 	@Inject
-	@Extension
 	private QStereotype mQStereotype;
 
 	@Inject
-	@Extension
 	private QPackage mQPackage;
 
 	/**
@@ -28,7 +23,12 @@ public class QClass {
 	 * @return true If the given Class has a State Machine, false otherwise.
 	 */
 	public boolean hasStateMachines(final org.eclipse.uml2.uml.Class c) {
-		return (!IterableExtensions.isEmpty(this.getStateMachines(c)));
+		for (Element e : c.allOwnedElements()) {
+			if (e instanceof StateMachine) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -39,7 +39,13 @@ public class QClass {
 	 * @return The list of State Machines associated to the given Class.
 	 */
 	public Iterable<StateMachine> getStateMachines(final org.eclipse.uml2.uml.Class c) {
-		return Iterables.<StateMachine>filter(c.allOwnedElements(), StateMachine.class);
+		BasicEList<StateMachine> res = new BasicEList<StateMachine>();
+		for (Element e : c.allOwnedElements()) {
+			if (e instanceof StateMachine) {
+				res.add((StateMachine)e);
+			}
+		}
+		return res;
 	}
 
 	/**
@@ -50,7 +56,7 @@ public class QClass {
 	 * @return The first State Machine associated to the given Class.
 	 */
 	public StateMachine getFirstStateMachine(final org.eclipse.uml2.uml.Class c) {
-		return IterableExtensions.<StateMachine>head(this.getStateMachines(c));
+		return Iterables.<StateMachine>getFirst(getStateMachines(c), null);
 	}
 
 	public org.eclipse.uml2.uml.Package getContainerPackage(final org.eclipse.uml2.uml.Class c) {

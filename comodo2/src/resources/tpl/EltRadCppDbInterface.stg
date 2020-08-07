@@ -109,7 +109,7 @@ DbInterfaceSource(moduleName, moduleNameLowerCase, className) ::= <<
 #include <rad/assert.hpp>
 #include <rad/exceptions.hpp>
 
-namespace %moduleName.toLowerCase% {
+namespace %moduleNameLowerCase% {
 
 DbInterface::DbInterface(const std::string& prefix, rad::DbAdapter& runtime_db)
                 : m_prefix(prefix),

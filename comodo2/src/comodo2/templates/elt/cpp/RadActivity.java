@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
@@ -25,15 +24,12 @@ public class RadActivity implements IGenerator {
 	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
 
 	@Inject
-	@Extension
 	private QClass mQClass;
 
 	@Inject
-	@Extension
 	private QStateMachine mQStateMachine;
 
 	@Inject
-	@Extension
 	private FilesHelper mFilesHelper;
 
 	/**

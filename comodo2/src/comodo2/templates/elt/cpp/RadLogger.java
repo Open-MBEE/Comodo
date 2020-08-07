@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 public class RadLogger implements IGenerator {
@@ -17,11 +16,9 @@ public class RadLogger implements IGenerator {
 	//private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
 
 	@Inject
-	@Extension
 	private QClass mQClass;
 
 	@Inject
-	@Extension
 	private FilesHelper mFilesHelper;
 
 	/**

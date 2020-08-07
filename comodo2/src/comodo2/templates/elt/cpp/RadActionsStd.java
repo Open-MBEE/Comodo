@@ -9,26 +9,21 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
-@SuppressWarnings("all")
 public class RadActionsStd implements IGenerator {
 
 	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
 
 	@Inject
-	@Extension
 	private QClass _qClass;
 
 	@Inject
-	@Extension
 	private FilesHelper _filesHelper;
 
 	/**

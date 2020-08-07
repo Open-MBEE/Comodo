@@ -22,30 +22,24 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 public class Mal implements IGenerator {
 	@Inject
-	@Extension
 	private QStereotype mQStereotype;
 
 	@Inject
-	@Extension
 	private QInterface mQInterface;
 
 	@Inject
-	@Extension
 	private QSignal mQSignal;
 
 	@Inject
-	@Extension
 	private Types mTypes;
 
 	@Inject
-	@Extension
 	private FilesHelper mFilesHelper;
 
 	/**
@@ -66,12 +60,12 @@ public class Mal implements IGenerator {
 	public CharSequence generate(final Interface i) {
 		StringConcatenation str = new StringConcatenation();
 		str.append(printXmlStart());
-		str.append("\t" + printPackageStart(i));		
-		str.append(exploreEnumerations(mQInterface.getContainerPackage(i)), "\t");		
-		str.append(exploreStructures(mQInterface.getContainerPackage(i)), "\t");
-		str.append(exploreExceptions(mQInterface.getContainerPackage(i)), "\t");
-		str.append(exploreUnions(mQInterface.getContainerPackage(i)), "\t");	
-		str.append(exploreInterfaces(i), "\t");	
+		str.append("    " + printPackageStart(i));		
+		str.append(exploreEnumerations(mQInterface.getContainerPackage(i)), "    ");		
+		str.append(exploreStructures(mQInterface.getContainerPackage(i)), "    ");
+		str.append(exploreExceptions(mQInterface.getContainerPackage(i)), "    ");
+		str.append(exploreUnions(mQInterface.getContainerPackage(i)), "    ");	
+		str.append(exploreInterfaces(i), "    ");	
 		str.append(printPackageEnd(i));	
 		str.append(printXmlEnd());
 		return str;
@@ -85,14 +79,14 @@ public class Mal implements IGenerator {
 			};
 			Iterable<Enumeration> _filter = IterableExtensions.<Enumeration>filter(Iterables.<Enumeration>filter(p.allOwnedElements(), Enumeration.class), _function);
 			for(final Enumeration e : _filter) {
-				_builder.append("\t");
+				_builder.append("    ");
 				_builder.newLine();
 				CharSequence _printEnumeration = this.printEnumeration(e);
 				_builder.append(_printEnumeration);
 				_builder.newLineIfNotEmpty();
 			}
 		}
-		_builder.append("\t\t");
+		_builder.append("        ");
 		_builder.newLine();
 		return _builder;
 	}
@@ -187,7 +181,7 @@ public class Mal implements IGenerator {
 		str.append("<enum name=\"" + e.getName() + "\">" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		//EList<EnumerationLiteral> _ownedLiterals = e.getOwnedLiterals();
 		for (final EnumerationLiteral i : e.getOwnedLiterals()) {
-			str.append("\t<enumerator name=\"" + i.getName() + "\" />" + StringConcatenation.DEFAULT_LINE_DELIMITER);
+			str.append("    <enumerator name=\"" + i.getName() + "\" />" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		}
 		str.append("</enum>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		return str;
@@ -201,7 +195,7 @@ public class Mal implements IGenerator {
 		};
 		List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(d.getOwnedAttributes(), _function);
 		for(final Property a : _sortBy) {
-			str.append("\t" + printAttribute(a), "\t");
+			str.append("    " + printAttribute(a), "    ");
 		}
 		str.append(StringConcatenation.DEFAULT_LINE_DELIMITER + "</struct>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		return str;
@@ -216,7 +210,7 @@ public class Mal implements IGenerator {
 		};
 		List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(d.getOwnedAttributes(), _function);
 		for(final Property a : _sortBy) {
-			str.append("\t" + printAttribute(a), "\t");
+			str.append("    " + printAttribute(a), "    ");
 		}
 		str.append(StringConcatenation.DEFAULT_LINE_DELIMITER + "</exception>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		return str;
@@ -249,7 +243,7 @@ public class Mal implements IGenerator {
 				_builder.append("<caseDiscriminator value=\"");
 				int _plusPlus = i++;
 				_builder.append(_plusPlus, "    ");
-				_builder.append("\" />\t  ");
+				_builder.append("\" />      ");
 				_builder.newLineIfNotEmpty();
 				_builder.append("  ");
 				_builder.append("  ");
@@ -261,7 +255,7 @@ public class Mal implements IGenerator {
 				_builder.newLine();
 			}
 		}
-		_builder.append("</union>\t");
+		_builder.append("</union>    ");
 		_builder.newLine();
 		return _builder;
 	}
@@ -289,7 +283,7 @@ public class Mal implements IGenerator {
 
 	public CharSequence printInterfaceMethod(final Signal s, final String replyTypeName, final boolean replyTypeIsPrimitive, final String exceptionName) {
 		StringConcatenation str = new StringConcatenation();
-		str.append("\t" + printInterfaceMethodHeader(s, replyTypeName, replyTypeIsPrimitive, exceptionName));
+		str.append("    " + printInterfaceMethodHeader(s, replyTypeName, replyTypeIsPrimitive, exceptionName));
 		final Function1<Property, String> _function = (Property e) -> {
 			return e.getName();
 		};
@@ -305,7 +299,7 @@ public class Mal implements IGenerator {
 		if (flag) {
 			str.newLine();
 		}
-		str.append("\t" + "</method>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
+		str.append("    " + "</method>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		return str;
 	}
 
@@ -332,9 +326,9 @@ public class Mal implements IGenerator {
 	public CharSequence printInterfaceArgument(final Property a) {
 		StringConcatenation str = new StringConcatenation();
 		if (mTypes.isPrimitiveType(a)) {
-			str.append("\t\t<argument name=\"" + a.getName() + "\" type=\"" + mTypes.typeName(a) + "\"/>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
+			str.append("        <argument name=\"" + a.getName() + "\" type=\"" + mTypes.typeName(a) + "\"/>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		} else {
-			str.append("\t\t<argument name=\"" + a.getName() + "\" type=\"nonBasic\" nonBasicTypeName=\"" + mTypes.typeName(a) + "\"/>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
+			str.append("        <argument name=\"" + a.getName() + "\" type=\"nonBasic\" nonBasicTypeName=\"" + mTypes.typeName(a) + "\"/>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		}
 		return str;
 	}

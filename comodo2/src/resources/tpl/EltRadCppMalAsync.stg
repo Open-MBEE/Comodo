@@ -24,13 +24,13 @@ namespace %moduleNameLowerCase% {
  * This class implements the CII/MAL interface.
  */
 class %className% : public %parentClass% {
-   public:
+ public:
     explicit %className%(rad::SMAdapter& sm) : m_sm(sm) { RAD_TRACE(GetLogger()); }
 
     virtual ~%className%() { RAD_TRACE(GetLogger()); }
  	%methodsImpl%   
-private:
-	rad::SMAdapter& m_sm;   
+ private:
+	rad::SMAdapter& m_sm;
 };
 
 }  // namespace %moduleNameLowerCase%

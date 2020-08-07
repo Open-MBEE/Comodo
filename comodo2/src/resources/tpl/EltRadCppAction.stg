@@ -34,7 +34,7 @@ class %className% : public rad::ActionGroup {
      * @param[in] sm State Machine facade.
      * @param[in] data Data shared within the application among actions and activities.
      */
-    %className%(boost::asio::io_service& ios, rad::SMAdapter& sm, DataContext& data);   
+    %className%(boost::asio::io_service& ios, rad::SMAdapter& sm, DataContext& data);
     %actionMethodsDeclaration%
     %guardMethodsDeclaration%
 	
@@ -44,7 +44,7 @@ class %className% : public rad::ActionGroup {
    private:
     boost::asio::io_service& m_io_service;
     rad::SMAdapter& m_sm;
-    DataContext& m_data; 
+    DataContext& m_data;
 };
 
 }  // namespace %moduleNameLowerCase%

@@ -3,26 +3,23 @@ package comodo2.queries;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-import comodo2.queries.QState;
-import comodo2.queries.QTransition;
 import java.util.TreeSet;
+
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 public class QStateMachine {
 	@Inject
-	@Extension
 	private QState mQState;
 
 	@Inject
-	@Extension
 	private QTransition mQTransition;
 
 	/**
@@ -46,7 +43,7 @@ public class QStateMachine {
 	 */
 	public String getInitialStateName(final StateMachine sm) {
 		for (final Pseudostate ps : Iterables.<Pseudostate>filter(sm.allOwnedElements(), Pseudostate.class)) {
-			if ((((Objects.equal(ps.getKind(), PseudostateKind.INITIAL_LITERAL) && 
+			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
 					Objects.equal(ps.getContainer().getOwner(), sm)) && 
 					(ps.getOutgoings().size() == 1)) && 
 					(IterableExtensions.<Transition>head(ps.getOutgoings()).getTarget() != null))) {
@@ -75,10 +72,20 @@ public class QStateMachine {
 	 * @return All available state of a given state machine.
 	 */
 	public Iterable<State> getAllAvailableStates(final StateMachine sm) {
+		/*
 		final Function1<State, Boolean> _function = (State s) -> {
 			return Boolean.valueOf((!Objects.equal(s.getName(), "Unavailable")));
 		};
 		return IterableExtensions.<State>filter(this.getAllStates(sm), _function);
+		 */
+		BasicEList<State> res = new BasicEList<State>();
+		for (State s : getAllStates(sm)) {
+			if (!Objects.equal(s.getName(), "Unavailable")) {
+				res.add(s);
+			}
+		}
+		return res;
+
 	}
 
 	/**
@@ -89,10 +96,20 @@ public class QStateMachine {
 	 * @return All available and non-final states of a given state machine.
 	 */
 	public Iterable<Pseudostate> getAllAvailableNonFinalStates(final StateMachine sm) {
+		/*
 		final Function1<Pseudostate, Boolean> _function = (Pseudostate ps) -> {
 			return Boolean.valueOf((!Objects.equal(ps.getKind(), PseudostateKind.TERMINATE_LITERAL)));
 		};
 		return IterableExtensions.<Pseudostate>filter(Iterables.<Pseudostate>filter(this.getAllAvailableStates(sm), Pseudostate.class), _function);
+		 */
+		BasicEList<Pseudostate> res = new BasicEList<Pseudostate>();
+		for (Pseudostate ps : Iterables.<Pseudostate>filter(getAllAvailableStates(sm), Pseudostate.class)) {
+			if (ps.getKind() == PseudostateKind.TERMINATE_LITERAL) {
+				res.add(ps);
+			}
+		}
+		return res;
+
 	}
 
 	/**
@@ -134,20 +151,21 @@ public class QStateMachine {
 	public TreeSet<String> getAllActionNames(final StateMachine sm) {
 		TreeSet<String> names = new TreeSet<String>();
 		for (final State state : getAllAvailableStates(sm)) {
-				if (mQState.hasOnEntryActions(state)) {
-					names.add(state.getEntry().getName());
+			if (mQState.hasOnEntryActions(state)) {
+				names.add(state.getEntry().getName());
+			}
+			if (mQState.hasOnExitActions(state)) {
+				names.add(state.getExit().getName());
+			}
+
+			final Function1<Transition, String> _function = (Transition e) -> {
+				return e.getName();
+			};
+			for (final Transition t : IterableExtensions.<Transition, String>sortBy(state.getOutgoings(), _function)) {
+				if (mQTransition.hasAction(t)) {
+					names.add(mQTransition.getFirstActionName(t));
 				}
-				if (mQState.hasOnExitActions(state)) {
-					names.add(state.getExit().getName());
-				}
-				final Function1<Transition, String> _function = (Transition e) -> {
-					return e.getName();
-				};
-				for (final Transition t : IterableExtensions.<Transition, String>sortBy(state.getOutgoings(), _function)) {
-					if (mQTransition.hasAction(t)) {
-						names.add(mQTransition.getFirstActionName(t));
-					}
-				}
+			}
 		}
 		return names;
 	}

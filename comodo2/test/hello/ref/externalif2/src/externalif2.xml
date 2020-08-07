@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="schemas/icd_type_definition.xsd">
+  <package name="externalif2">
+			
+		
+	<struct name="SetupParams">
+	  <member name="key" type="string" arrayDimensions="(100)"/>
+	  <member name="value" type="string" arrayDimensions="(100)"/>
+	</struct>	
+		
+	<struct name="PresetParams">
+	  <member name="dec" type="double"/>
+	  <member name="ra" type="double"/>
+	</struct>	
+			
+			
+			
+    <interface name="ExternalCmds">	    
+      <method name="Preset" returnType="string">
+        <argument name="parameters" type="nonBasic" nonBasicTypeName="PresetParams"/>	
+      </method>
+      <method name="Setup" returnType="string">
+        <argument name="parameters" type="nonBasic" nonBasicTypeName="SetupParams"/>	
+      </method>
+  	</interface>
+  </package>
+</types>

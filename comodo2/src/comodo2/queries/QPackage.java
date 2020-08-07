@@ -1,16 +1,12 @@
 package comodo2.queries;
 
 import com.google.common.base.Objects;
-import comodo2.queries.QStereotype;
 import javax.inject.Inject;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.uml2.uml.Element;
-import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 public class QPackage {
 	@Inject
-	@Extension
 	private QStereotype mQStereotype;
 
 	/**
@@ -18,10 +14,13 @@ public class QPackage {
 	 * @return The cmdoComponent classes inside the given package.
 	 */
 	public Iterable<Element> getComponents(final org.eclipse.uml2.uml.Package p) {
-		final Function1<Element, Boolean> _function = (Element c) -> {
-			return Boolean.valueOf(mQStereotype.isComodoComponent(c));
-		};
-		return IterableExtensions.<Element>filter(p.allOwnedElements(), _function);
+		BasicEList<Element> res = new BasicEList<Element>();
+		for (Element e : p.allOwnedElements()) {
+			if (mQStereotype.isComodoComponent(e)) {
+				res.add(e);
+			}
+		}
+		return res;
 	}
 
 	/**
@@ -29,10 +28,12 @@ public class QPackage {
 	 * @return The first cmdoComponent class inside the given package.
 	 */
 	public Element getFirstComponent(final org.eclipse.uml2.uml.Package p) {
-		final Function1<Element, Boolean> _function = (Element c) -> {
-			return Boolean.valueOf(mQStereotype.isComodoComponent(c));
-		};
-		return IterableExtensions.<Element>head(IterableExtensions.<Element>filter(p.allOwnedElements(), _function));
+		for (Element e : p.allOwnedElements()) {
+			if (mQStereotype.isComodoComponent(e)) {
+				return e;
+			}
+		}
+		return null;
 	}
 
 	public boolean isParentComodoModule(final org.eclipse.uml2.uml.Package p, final String moduleName) {

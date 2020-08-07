@@ -1,10 +1,8 @@
 package comodo2.queries;
 
-import com.google.common.base.Objects;
+import com.google.common.collect.Iterables;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Stereotype;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 public class QStereotype {
 	public boolean isComodoInterface(final Element e) {
@@ -50,9 +48,18 @@ public class QStereotype {
 		if (e.getAppliedStereotypes() == null) {
 			return false;
 		}
+		/*
 		final Function1<Stereotype, Boolean> _function = (Stereotype s) -> {
 			return Boolean.valueOf(Objects.equal(s.getName(), stereotypeName));
 		};
 		return !IterableExtensions.isEmpty(IterableExtensions.<Stereotype>filter(e.getAppliedStereotypes(), _function));
+		*/
+		for (Stereotype s : Iterables.<Stereotype>filter(e.getAppliedStereotypes(), Stereotype.class)) {
+			if (s.getName().equals(stereotypeName)) {
+				return true;
+			}
+		}
+		return false;
+
 	}
 }

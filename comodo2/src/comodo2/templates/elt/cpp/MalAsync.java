@@ -16,7 +16,6 @@ import org.eclipse.uml2.uml.Reception;
 import org.eclipse.uml2.uml.Signal;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
@@ -29,23 +28,18 @@ public class MalAsync implements IGenerator {
 	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
 
 	@Inject
-	@Extension
 	private QClass mQClass;
 
 	@Inject
-	@Extension
 	private QSignal mQSignal;
 
 	@Inject
-	@Extension
 	private QInterface mQInterface;
 
 	@Inject
-	@Extension
 	private Types mTypes;
 
 	@Inject
-	@Extension
 	private FilesHelper mFilesHelper;
 
 	/**
