@@ -8,8 +8,11 @@ import comodo2.queries.QSignal;
 import comodo2.queries.QStereotype;
 import comodo2.queries.QTransition;
 import comodo2.utils.FilesHelper;
-import java.util.HashSet;
+import comodo2.utils.SignalComparator;
+
 import java.util.List;
+import java.util.TreeSet;
+
 import javax.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -86,8 +89,8 @@ public class RadEv implements IGenerator {
 	/**
 	 * This function finds all signals of an Interfaces.
 	 */
-	public HashSet<Signal> getAllSignals(final Interface i) {
-		HashSet<Signal> allSignals = new HashSet<Signal>();
+	public TreeSet<Signal> getAllSignals(final Interface i) {
+		TreeSet<Signal> allSignals = new TreeSet<Signal>(new SignalComparator());
 		final Function1<Reception, String> _function = (Reception e) -> {
 			return e.getName();
 		};
@@ -101,8 +104,8 @@ public class RadEv implements IGenerator {
 	/**
 	 * This function finds all signals of the class's realized Interfaces.
 	 */
-	public HashSet<Signal> getAllSignals(final org.eclipse.uml2.uml.Class c) {
-		HashSet<Signal> allSignals = new HashSet<Signal>();
+	public TreeSet<Signal> getAllSignals(final org.eclipse.uml2.uml.Class c) {
+		TreeSet<Signal> allSignals = new TreeSet<Signal>(new SignalComparator());
 		final Function1<Interface, Boolean> _function = (Interface e) -> {
 			return Boolean.valueOf(mQInterface.isToBeGenerated(e));
 		};
@@ -122,8 +125,8 @@ public class RadEv implements IGenerator {
 	/**
 	 * This function finds all signals of a State Machine.
 	 */
-	public HashSet<Signal> getAllSignals(final StateMachine sm) {
-		HashSet<Signal> allSignals = new HashSet<Signal>();
+	public TreeSet<Signal> getAllSignals(final StateMachine sm) {
+		TreeSet<Signal> allSignals = new TreeSet<Signal>(new SignalComparator());
 		Iterable<Transition> _filter = Iterables.<Transition>filter(sm.allOwnedElements(), Transition.class);
 		for (final Transition t : _filter) {
 			Signal _firstEvent = mQTransition.getFirstEvent(t);
@@ -138,7 +141,7 @@ public class RadEv implements IGenerator {
 	/**
 	 * Looks for events in the state machine.
 	 */
-	public CharSequence exploreEvents(final HashSet<Signal> allSignals, final String ifModName) {
+	public CharSequence exploreEvents(final TreeSet<Signal> allSignals, final String ifModName) {
 		StringConcatenation str = new StringConcatenation();
 		for(final Signal s : allSignals) {
 			str.append(mQSignal.nameWithoutPrefix(s) + ":" + StringConcatenation.DEFAULT_LINE_DELIMITER);
