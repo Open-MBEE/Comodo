@@ -195,7 +195,7 @@ public class Mal implements IGenerator {
 		};
 		List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(d.getOwnedAttributes(), _function);
 		for(final Property a : _sortBy) {
-			str.append("    " + printAttribute(a), "    ");
+			str.append(printAttribute(a), "    ");
 		}
 		str.append(StringConcatenation.DEFAULT_LINE_DELIMITER + "</struct>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		return str;
@@ -210,7 +210,7 @@ public class Mal implements IGenerator {
 		};
 		List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(d.getOwnedAttributes(), _function);
 		for(final Property a : _sortBy) {
-			str.append("    " + printAttribute(a), "    ");
+			str.append(printAttribute(a), "    ");
 		}
 		str.append(StringConcatenation.DEFAULT_LINE_DELIMITER + "</exception>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		return str;

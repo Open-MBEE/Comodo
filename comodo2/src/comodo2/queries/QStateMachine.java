@@ -3,6 +3,9 @@ package comodo2.queries;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+
+import comodo2.utils.StateComparator;
+
 import java.util.TreeSet;
 
 import org.eclipse.emf.common.util.BasicEList;
@@ -69,6 +72,14 @@ public class QStateMachine {
 	 */
 	public Iterable<State> getAllStates(final StateMachine sm) {
 		return Iterables.<State>filter(sm.allOwnedElements(), State.class);
+	}
+
+	public Iterable<State> getAllStatesSorted(final StateMachine sm) {
+		TreeSet<State> sortedStates = new TreeSet<State>(new StateComparator());
+		for (final State s : Iterables.<State>filter(sm.allOwnedElements(), State.class) ) {
+			sortedStates.add(s);
+		}
+		return sortedStates;
 	}
 
 	/**

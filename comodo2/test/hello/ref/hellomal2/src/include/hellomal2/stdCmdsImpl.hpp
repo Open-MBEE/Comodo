@@ -4,10 +4,10 @@
  * @copyright ESO - European Southern Observatory
  * @author
  *
- * @brief  StdCmds Interface implementation header file.
+ * @brief StdCmdsImpl class header file.
  */
-#ifndef HELLOMAL2_STDCMDS_IMPL_HPP_
-#define HELLOMAL2_STDCMDS_IMPL_HPP_
+#ifndef HELLOMAL2_STDCMDSIMPL_HPP_
+#define HELLOMAL2_STDCMDSIMPL_HPP_
 
 #include "stdCmds.rad.hpp"	
 #include <hellomal2/logger.hpp>
@@ -17,8 +17,11 @@
 
 namespace hellomal2 {
 
+/**
+ * This class implements the CII/MAL interface.
+ */
 class StdCmdsImpl : public hellomalif2::AsyncStdCmds {
-public:
+ public:
     explicit StdCmdsImpl(rad::SMAdapter& sm) : m_sm(sm) { RAD_TRACE(GetLogger()); }
 
     virtual ~StdCmdsImpl() { RAD_TRACE(GetLogger()); }
@@ -81,10 +84,10 @@ public:
     }
     
 
-private:
+ private:
 	rad::SMAdapter& m_sm;
 };
 
 }  // namespace hellomal2
 
-#endif  // HELLOMAL2_STDCMDS_IMPL_HPP_
+#endif  // HELLOMAL2_STDCMDSIMPL_HPP_

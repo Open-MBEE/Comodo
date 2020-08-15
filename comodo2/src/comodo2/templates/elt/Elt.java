@@ -1,6 +1,5 @@
 package comodo2.templates.elt;
 
-import com.google.common.base.Objects;
 import comodo2.engine.Config;
 import comodo2.templates.elt.cpp.MalAsync;
 import comodo2.templates.elt.cpp.RadAction;
@@ -78,11 +77,11 @@ public class Elt implements IGenerator {
 
 	@Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
-		if ((Objects.equal(Config.getInstance().getTargetPlatform(), Config.TARGET_PLATFORM_ELT_RAD) || 
-				Objects.equal(Config.getInstance().getTargetPlatform(), Config.TARGET_PLATFORM_ELT_MAL))) {
+		if ((Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_ELT_RAD) || 
+			 Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_ELT_MAL))) {
 			mMalTemplate.doGenerate(input, fsa);
 		}
-		if (Objects.equal(Config.getInstance().getTargetPlatform(), Config.TARGET_PLATFORM_ELT_RAD)) {
+		if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_ELT_RAD)) {
 			mScxmlTemplate.doGenerate(input, fsa);
 			mRadEvTemplate.doGenerate(input, fsa);
 			mMalAsyncTemplate.doGenerate(input, fsa);

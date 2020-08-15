@@ -7,28 +7,28 @@ includes:
     - Hellomalif2.hpp
 
 events:
+    Disable:
+        payload: rad::cii::Request<std::string>
+        doc: event documentation to be added
     Enable:
         payload: rad::cii::Request<std::string>
         doc: event documentation to be added
-    Reset:
+    Exit:
         payload: rad::cii::Request<std::string>
         doc: event documentation to be added
     GetState:
         payload: rad::cii::Request<std::string>
         doc: event documentation to be added
-    Disable:
+    Init:
         payload: rad::cii::Request<std::string>
         doc: event documentation to be added
-    Exit:
+    Reset:
         payload: rad::cii::Request<std::string>
         doc: event documentation to be added
     SetLogLevel:
         payload: rad::cii::Request<std::string, std::shared_ptr<hellomalif2::LogInfo>>
         doc: event documentation to be added
     Stop:
-        payload: rad::cii::Request<std::string>
-        doc: event documentation to be added
-    Init:
         payload: rad::cii::Request<std::string>
         doc: event documentation to be added
     

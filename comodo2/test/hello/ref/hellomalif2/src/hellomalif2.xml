@@ -4,14 +4,14 @@
         
     <struct name="LogInfo">
         <member name="level" type="string"/>
-	    <member name="logger" type="string"/>
+        <member name="logger" type="string"/>
     </struct>
     
     <exception name="ExceptionErr">
         <member name="desc" type="string"/>
     </exception>
-
-    <interface name="StdCmds">	    
+    
+    <interface name="StdCmds">
         <method name="Reset" returnType="string">
         </method>
         <method name="Enable" returnType="string" throws="ExceptionErr">

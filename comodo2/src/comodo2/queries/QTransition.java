@@ -67,6 +67,9 @@ public class QTransition {
 	}
 
 	public String getFirstEventName(final Transition t) {
+		if (t == null) {
+			return "";
+		}
 		if (t.getTriggers().isEmpty()) {
 			return "";
 		}
@@ -74,7 +77,7 @@ public class QTransition {
 		if (mQEvent.isSignalEvent(IterableExtensions.<Trigger>head(t.getTriggers()).getEvent())) {
 			return mQEvent.getSignalEventName(IterableExtensions.<Trigger>head(t.getTriggers()).getEvent());
 		} else {
-			if (mQEvent.isTimeEvent(IterableExtensions.<Trigger>head(t.getTriggers()).getEvent())) {
+ 			if (mQEvent.isTimeEvent(IterableExtensions.<Trigger>head(t.getTriggers()).getEvent())) {
 				return mQEvent.getTimeEventName(IterableExtensions.<Trigger>head(t.getTriggers()).getEvent());
 			}
 		}
