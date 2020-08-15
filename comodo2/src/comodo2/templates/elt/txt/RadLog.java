@@ -1,17 +1,14 @@
 package comodo2.templates.elt.txt;
 
-import com.google.common.collect.Iterables;
-
 import comodo2.queries.QClass;
 import comodo2.utils.FilesHelper;
 import javax.inject.Inject;
-
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
@@ -32,6 +29,7 @@ public class RadLog implements IGenerator {
 	 */
 	@Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
+/*		
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if (mQClass.isToBeGenerated(e)) {
@@ -40,6 +38,19 @@ public class RadLog implements IGenerator {
 				fsa.generateFile(filename, this.generate(mQClass.getContainerPackageName(e)));
 			}
 		}
+*/		
+		final TreeIterator<EObject> allContents = input.getAllContents();
+		while (allContents.hasNext()) {
+			EObject e = allContents.next();
+			if (e instanceof org.eclipse.uml2.uml.Class) {
+				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
+				if (mQClass.isToBeGenerated(c)) {
+					String filename = mFilesHelper.getRelativeConfigPath() + "log.properties";
+					mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(filename));
+					fsa.generateFile(filename, generate(mQClass.getContainerPackageName(c)));
+				}
+			}
+		}		
 	}
 
 	public CharSequence generate(final String modName) {

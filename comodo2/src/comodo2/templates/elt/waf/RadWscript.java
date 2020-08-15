@@ -1,6 +1,5 @@
 package comodo2.templates.elt.waf;
 
-import com.google.common.collect.Iterables;
 import comodo2.queries.QClass;
 import comodo2.queries.QInterface;
 import comodo2.queries.QPackage;
@@ -8,12 +7,12 @@ import comodo2.utils.FilesHelper;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
@@ -40,6 +39,7 @@ public class RadWscript implements IGenerator {
 	 */
 	@Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
+		/*
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class c : _filter) {
 			if (mQClass.isToBeGenerated(c)) {
@@ -53,6 +53,26 @@ public class RadWscript implements IGenerator {
 				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(filename));
 				fsa.generateFile(filename, this.generate(mQClass.getContainerPackage(c).getName(), mQPackage.getContainerPackage(mQClass.getContainerPackage(c)).getName(), c.getName(), ifModules));
 				return;
+			}
+		}
+		*/
+		final TreeIterator<EObject> allContents = input.getAllContents();
+		while (allContents.hasNext()) {
+			EObject e = allContents.next();
+			if (e instanceof org.eclipse.uml2.uml.Class) {
+				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
+				if (mQClass.isToBeGenerated(c)) {
+					String ifModules = "";
+					for (final Interface i : c.allRealizedInterfaces()) {
+						if (mQInterface.hasRequests(i)) {
+							ifModules = (ifModules + mQInterface.getContainerPackage(i).getName() + "-cxx ");
+						}
+					}
+					String filename = mQClass.getContainerPackage(c).getName() + "/wscript";
+					mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(filename));
+					fsa.generateFile(filename, this.generate(mQClass.getContainerPackage(c).getName(), mQPackage.getContainerPackage(mQClass.getContainerPackage(c)).getName(), c.getName(), ifModules));
+					return;
+				}
 			}
 		}
 	}
