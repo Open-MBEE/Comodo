@@ -1,6 +1,5 @@
 package comodo2.templates.elt.waf;
 
-import com.google.common.collect.Iterables;
 import comodo2.queries.QInterface;
 import comodo2.queries.QPackage;
 import comodo2.utils.FilesHelper;
@@ -8,12 +7,12 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
@@ -38,11 +37,24 @@ public class MalWscript implements IGenerator {
 	@Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
 		HashMap<String, String> icdModules = new HashMap<String, String>();
+	/*	
 		for (final Interface e : Iterables.<Interface>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), Interface.class)) {
 			if ((mQInterface.isToBeGenerated(e) && mQInterface.hasRequests(e))) {
 				icdModules.put(mQInterface.getContainerPackage(e).getName(), mQPackage.getContainerPackage(mQInterface.getContainerPackage(e)).getName());
 			}
 		}
+	*/	
+		final TreeIterator<EObject> allContents = input.getAllContents();
+		while (allContents.hasNext()) {
+			EObject e = allContents.next();
+			if (e instanceof Interface) {
+				Interface i = (Interface)e; 
+				if ((mQInterface.isToBeGenerated(i) && mQInterface.hasRequests(i))) {
+					icdModules.put(mQInterface.getContainerPackage(i).getName(), mQPackage.getContainerPackage(mQInterface.getContainerPackage(i)).getName());
+				}
+			}
+		}
+		
 		for (final String m : icdModules.keySet()) {
 			String p = (m + "/wscript");
 			mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(p));
