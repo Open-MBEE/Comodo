@@ -1,6 +1,5 @@
 package comodo2.templates.elt.yaml;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import comodo2.queries.QClass;
 import comodo2.queries.QInterface;
@@ -10,10 +9,11 @@ import comodo2.queries.QTransition;
 import comodo2.utils.FilesHelper;
 import comodo2.utils.SignalComparator;
 
-import java.util.List;
 import java.util.TreeSet;
 
 import javax.inject.Inject;
+
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.Element;
@@ -25,9 +25,6 @@ import org.eclipse.uml2.uml.Transition;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 public class RadEv implements IGenerator {
 	@Inject
@@ -57,12 +54,27 @@ public class RadEv implements IGenerator {
 	 */
 	@Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
+		/*
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if (mQClass.isToBeGenerated(e)) {
 				for (final Interface i : e.allRealizedInterfaces()) {
 					mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toRadEvFilePath(i.getName())));
 					fsa.generateFile(mFilesHelper.toRadEvFilePath(i.getName()), this.generate(e, i));
+				}
+			}
+		}
+		*/
+		final TreeIterator<EObject> allContents = input.getAllContents();
+		while (allContents.hasNext()) {
+			EObject e = allContents.next();
+			if (e instanceof org.eclipse.uml2.uml.Class) {
+				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
+				if (mQClass.isToBeGenerated(c)) {
+					for (final Interface i : c.allRealizedInterfaces()) {
+						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toRadEvFilePath(i.getName())));
+						fsa.generateFile(mFilesHelper.toRadEvFilePath(i.getName()), this.generate(c, i));
+					}
 				}
 			}
 		}
@@ -91,6 +103,7 @@ public class RadEv implements IGenerator {
 	 */
 	public TreeSet<Signal> getAllSignals(final Interface i) {
 		TreeSet<Signal> allSignals = new TreeSet<Signal>(new SignalComparator());
+		/*
 		final Function1<Reception, String> _function = (Reception e) -> {
 			return e.getName();
 		};
@@ -98,6 +111,11 @@ public class RadEv implements IGenerator {
 		for (final Reception r : _sortBy) {
 			allSignals.add(r.getSignal());
 		}
+		*/
+		for (final Reception r : i.getOwnedReceptions()) {
+			allSignals.add(r.getSignal());
+		}
+		
 		return allSignals;
 	}
 
@@ -106,6 +124,7 @@ public class RadEv implements IGenerator {
 	 */
 	public TreeSet<Signal> getAllSignals(final org.eclipse.uml2.uml.Class c) {
 		TreeSet<Signal> allSignals = new TreeSet<Signal>(new SignalComparator());
+		/*
 		final Function1<Interface, Boolean> _function = (Interface e) -> {
 			return Boolean.valueOf(mQInterface.isToBeGenerated(e));
 		};
@@ -119,6 +138,14 @@ public class RadEv implements IGenerator {
 				allSignals.add(r.getSignal());
 			}
 		}
+		*/
+		for (final Interface i : c.allRealizedInterfaces()) {
+			if (mQInterface.isToBeGenerated(i)) {
+				for (final Reception r : i.getOwnedReceptions()) {
+					allSignals.add(r.getSignal());
+				}
+			}
+		}
 		return allSignals;
 	}
 
@@ -129,9 +156,7 @@ public class RadEv implements IGenerator {
 		TreeSet<Signal> allSignals = new TreeSet<Signal>(new SignalComparator());
 		Iterable<Transition> _filter = Iterables.<Transition>filter(sm.allOwnedElements(), Transition.class);
 		for (final Transition t : _filter) {
-			Signal _firstEvent = mQTransition.getFirstEvent(t);
-			boolean _tripleNotEquals = (_firstEvent != null);
-			if (_tripleNotEquals) {
+			if (mQTransition.getFirstEvent(t) != null) {
 				allSignals.add(mQTransition.getFirstEvent(t));
 			}
 		}
@@ -167,14 +192,14 @@ public class RadEv implements IGenerator {
 
 	public CharSequence printPayload(final boolean isReplyTypePrimitive, final String replyTypeName, final boolean isParamTypePrimitive, final String paramTypeName, final String ifModName) {
 		String str = "rad::cii::Request<";
-		if (!Objects.equal(replyTypeName, "")) {
+		if (replyTypeName.isEmpty() == false) {
 			if (isReplyTypePrimitive) {
 				str += replyTypeName;
 			} else {
 				str += "std::shared_ptr<" + ifModName + "::" + replyTypeName + ">";
 			}
 		}
-		if (!Objects.equal(paramTypeName, "")) {
+		if (paramTypeName.isEmpty() == false) {
 			str += ", ";
 			if (isParamTypePrimitive) {
 				str += paramTypeName;

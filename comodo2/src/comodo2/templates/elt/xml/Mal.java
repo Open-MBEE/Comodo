@@ -1,13 +1,16 @@
 package comodo2.templates.elt.xml;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Iterables;
 import comodo2.queries.QInterface;
 import comodo2.queries.QSignal;
 import comodo2.queries.QStereotype;
 import comodo2.utils.FilesHelper;
-import java.util.List;
+import comodo2.utils.PropertyComparator;
+import comodo2.utils.ReceptionComparator;
+import java.util.TreeSet;
 import javax.inject.Inject;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.DataType;
@@ -22,11 +25,10 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+//import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 public class Mal implements IGenerator {
+
 	@Inject
 	private QStereotype mQStereotype;
 
@@ -47,12 +49,26 @@ public class Mal implements IGenerator {
 	 */
 	@Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
+		/*
 		Iterable<Interface> _filter = Iterables.<Interface>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), Interface.class);
 		for (final Interface e : _filter) {
 			if ((mQInterface.isToBeGenerated(e) && mQInterface.hasRequests(e))) {
 				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(e).getName())));
 				fsa.generateFile(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(e).getName()), this.generate(e));
 				return;
+			}
+		}
+		*/
+		final TreeIterator<EObject> allContents = input.getAllContents();
+		while (allContents.hasNext()) {
+			EObject e = allContents.next();
+			if (e instanceof Interface) {
+				Interface i = (Interface)e; 
+				if ((mQInterface.isToBeGenerated(i) && mQInterface.hasRequests(i))) {
+					mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(i).getName())));
+					fsa.generateFile(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(i).getName()), this.generate(i));
+					return;
+				}
 			}
 		}
 	}
@@ -72,27 +88,36 @@ public class Mal implements IGenerator {
 	}
 
 	public CharSequence exploreEnumerations(final org.eclipse.uml2.uml.Package p) {
-		StringConcatenation _builder = new StringConcatenation();
-		{
-			final Function1<Enumeration, Boolean> _function = (Enumeration e1) -> {
-				return Boolean.valueOf(mQStereotype.isComodoEnumeration(e1));
-			};
-			Iterable<Enumeration> _filter = IterableExtensions.<Enumeration>filter(Iterables.<Enumeration>filter(p.allOwnedElements(), Enumeration.class), _function);
-			for(final Enumeration e : _filter) {
-				_builder.append("    ");
-				_builder.newLine();
-				CharSequence _printEnumeration = this.printEnumeration(e);
-				_builder.append(_printEnumeration);
-				_builder.newLineIfNotEmpty();
+		StringConcatenation str = new StringConcatenation();
+		/*
+		final Function1<Enumeration, Boolean> _function = (Enumeration e1) -> {
+			return Boolean.valueOf(mQStereotype.isComodoEnumeration(e1));
+		};
+		Iterable<Enumeration> _filter = IterableExtensions.<Enumeration>filter(Iterables.<Enumeration>filter(p.allOwnedElements(), Enumeration.class), _function);
+		for(final Enumeration e : _filter) {
+			str.append("    ");
+			str.newLine();
+			CharSequence _printEnumeration = this.printEnumeration(e);
+			str.append(_printEnumeration);
+			str.newLineIfNotEmpty();
+		}
+		*/
+		for (Element e : p.allOwnedElements()) {
+			if (mQStereotype.isComodoEnumeration(e)) {
+				str.append("    ");
+				str.newLine();
+				str.append(printEnumeration((Enumeration)e));
+				str.newLineIfNotEmpty();					
 			}
 		}
-		_builder.append("        ");
-		_builder.newLine();
-		return _builder;
+		str.append("        ");
+		str.newLine();
+		return str;
 	}
 
 	public CharSequence exploreStructures(final org.eclipse.uml2.uml.Package p) {
 		StringConcatenation str = new StringConcatenation();
+		/*
 		final Function1<DataType, Boolean> _function = (DataType e1) -> {
 			return Boolean.valueOf(mQStereotype.isComodoStructure(e1));
 		};
@@ -100,11 +125,18 @@ public class Mal implements IGenerator {
 		for(final DataType e : _filter) {
 			str.append(printStructure(e));
 		}
+		*/
+		for (Element e : p.allOwnedElements()) {
+			if (mQStereotype.isComodoStructure(e)) {
+				str.append(printStructure((DataType)e));
+			}
+		}
 		return str;
 	}
 
 	public CharSequence exploreExceptions(final org.eclipse.uml2.uml.Package p) {
 		StringConcatenation str = new StringConcatenation();
+		/*
 		final Function1<DataType, Boolean> _function = (DataType e1) -> {
 			return Boolean.valueOf(mQStereotype.isComodoException(e1));
 		};
@@ -112,17 +144,30 @@ public class Mal implements IGenerator {
 		for(final DataType e : _filter) {
 			str.append(printException(e));
 		}
+		*/
+		for (Element e : p.allOwnedElements()) {
+			if (mQStereotype.isComodoException(e)) {
+				str.append(printException((DataType)e));
+			}
+		}
 		return str;
 	}
 
 	public CharSequence exploreUnions(final org.eclipse.uml2.uml.Package p) {
 		StringConcatenation str = new StringConcatenation();
+		/*
 		final Function1<DataType, Boolean> _function = (DataType e1) -> {
 			return Boolean.valueOf(mQStereotype.isComodoUnion(e1));
 		};
 		Iterable<DataType> _filter = IterableExtensions.<DataType>filter(Iterables.<DataType>filter(p.allOwnedElements(), DataType.class), _function);
 		for(final DataType e : _filter) {
 			str.append(printUnion(e));
+		}
+		*/
+		for (Element e : p.allOwnedElements()) {
+			if (mQStereotype.isComodoUnion(e)) {
+				str.append(printUnion((DataType)e));
+			}
 		}
 		return str;
 	}
@@ -139,6 +184,7 @@ public class Mal implements IGenerator {
 
 	public CharSequence exploreSignals(final Interface i) {
 		StringConcatenation str = new StringConcatenation();
+		/*
 		final Function1<Reception, String> _function = (Reception e) -> {
 			return e.getName();
 		};
@@ -149,13 +195,32 @@ public class Mal implements IGenerator {
 				str.append(printInterfaceMethod(r.getSignal(), mTypes.typeName(mQSignal.getReplyType(r.getSignal())), mQSignal.isReplyTypePrimitive(r.getSignal()), this.getExceptionDataTypeName(r)));
 			}
 		}
+		*/
+		TreeSet<Reception> allReceptions = new TreeSet<Reception>(new ReceptionComparator());
+		for (final Reception r : i.getOwnedReceptions()) {
+			allReceptions.add(r);
+		}
+		for(final Reception r : allReceptions) {
+			Signal s = r.getSignal();
+			if (s != null && mQStereotype.isComodoCommand(((Element) s))) {
+				str.append(printInterfaceMethod(s, mTypes.typeName(mQSignal.getReplyType(s)), mQSignal.isReplyTypePrimitive(s), getExceptionDataTypeName(r)));
+			}
+		}
+
 		return str;
 	}
 
 	public String getExceptionDataTypeName(final Reception r) {
+		EList<Type> raisedExceptions = r.getRaisedExceptions();
+		if (raisedExceptions != null && raisedExceptions.size() > 0) {
+			Type t = raisedExceptions.get(0);
+			return mTypes.typeName(t);
+		}
+		/*
 		if (IterableExtensions.<Type>head(r.getRaisedExceptions()) != null) {
 			return mTypes.typeName(IterableExtensions.<Type>head(r.getRaisedExceptions()));
 		}
+		*/
 		return "";
 	}
 
@@ -164,15 +229,11 @@ public class Mal implements IGenerator {
 	 */
 
 	public CharSequence printPackageStart(final Interface i) {
-		StringConcatenation str = new StringConcatenation();
-		str.append("<package name=\"" + mQInterface.getContainerPackage(i).getName() + "\">" + StringConcatenation.DEFAULT_LINE_DELIMITER);		
-		return str;
+		return "<package name=\"" + mQInterface.getContainerPackage(i).getName() + "\">\n";		
 	}
 
 	public CharSequence printPackageEnd(final Interface i) {
-		StringConcatenation str = new StringConcatenation();
-		str.append("</package>" +  StringConcatenation.DEFAULT_LINE_DELIMITER);		
-		return str;
+		return "</package>\n";
 	}
 
 	public CharSequence printEnumeration(final Enumeration e) {
@@ -190,6 +251,7 @@ public class Mal implements IGenerator {
 	public CharSequence printStructure(final DataType d) {
 		StringConcatenation str = new StringConcatenation();
 		str.append("<struct name=\"" + d.getName() + "\">");
+		/*
 		final Function1<Property, String> _function = (Property e) -> {
 			return e.getName();
 		};
@@ -197,6 +259,15 @@ public class Mal implements IGenerator {
 		for(final Property a : _sortBy) {
 			str.append(printAttribute(a), "    ");
 		}
+		*/
+		TreeSet<Property> allProperties = new TreeSet<Property>(new PropertyComparator());
+		for (final Property p : d.getOwnedAttributes()) {
+			allProperties.add(p);
+		}
+		for(final Property p : allProperties) {
+			str.append(printAttribute(p), "    ");			
+		}
+		
 		str.append(StringConcatenation.DEFAULT_LINE_DELIMITER + "</struct>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		return str;
 	}
@@ -205,6 +276,7 @@ public class Mal implements IGenerator {
 		StringConcatenation str = new StringConcatenation();
 		str.newLine();
 		str.append("<exception name=\"" + d.getName() + "\">");
+		/*
 		final Function1<Property, String> _function = (Property e) -> {
 			return e.getName();
 		};
@@ -212,71 +284,83 @@ public class Mal implements IGenerator {
 		for(final Property a : _sortBy) {
 			str.append(printAttribute(a), "    ");
 		}
+		*/
+		TreeSet<Property> allProperties = new TreeSet<Property>(new PropertyComparator());
+		for (final Property p : d.getOwnedAttributes()) {
+			allProperties.add(p);
+		}
+		for(final Property p : allProperties) {
+			str.append(printAttribute(p), "    ");			
+		}
+
 		str.append(StringConcatenation.DEFAULT_LINE_DELIMITER + "</exception>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
 		return str;
 	}
 
 	public CharSequence printUnion(final DataType d) {
-		StringConcatenation _builder = new StringConcatenation();
-		_builder.append("<union name=\"");
-		String _name = d.getName();
-		_builder.append(_name);
-		_builder.append("\">");
-		_builder.newLineIfNotEmpty();
-		_builder.append("  ");
-		_builder.append("<discriminator type=\"int8_t\" />");
-		_builder.newLine();
-		_builder.append("  ");
+		StringConcatenation str = new StringConcatenation();
+		str.append("<union name=\"");
+		str.append(d.getName());
+		str.append("\">");
+		str.newLineIfNotEmpty();
+		str.append("  ");
+		str.append("<discriminator type=\"int8_t\" />");
+		str.newLine();
+		str.append("  ");
 		int i = 1;
-		_builder.newLineIfNotEmpty();
-		{
-			final Function1<Property, String> _function = (Property e) -> {
-				return e.getName();
-			};
-			List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(d.getOwnedAttributes(), _function);
-			for(final Property a : _sortBy) {
-				_builder.append("  ");
-				_builder.append("<case>");
-				_builder.newLine();
-				_builder.append("  ");
-				_builder.append("  ");
-				_builder.append("<caseDiscriminator value=\"");
-				int _plusPlus = i++;
-				_builder.append(_plusPlus, "    ");
-				_builder.append("\" />      ");
-				_builder.newLineIfNotEmpty();
-				_builder.append("  ");
-				_builder.append("  ");
-				CharSequence _printAttribute = this.printAttribute(a);
-				_builder.append(_printAttribute, "    ");
-				_builder.newLineIfNotEmpty();
-				_builder.append("  ");
-				_builder.append("</case>");
-				_builder.newLine();
-			}
+		str.newLineIfNotEmpty();
+
+		TreeSet<Property> allProperties = new TreeSet<Property>(new PropertyComparator());
+		for (final Property p : d.getOwnedAttributes()) {
+			allProperties.add(p);
 		}
-		_builder.append("</union>    ");
-		_builder.newLine();
-		return _builder;
+/*
+		final Function1<Property, String> _function = (Property e) -> {
+			return e.getName();
+		};
+		List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(d.getOwnedAttributes(), _function);
+		for(final Property a : _sortBy) {
+*/
+		for(final Property p : allProperties) {		
+			str.append("  ");
+			str.append("<case>");
+			str.newLine();
+			str.append("  ");
+			str.append("  ");
+			str.append("<caseDiscriminator value=\"");
+			str.append(i++, "    ");
+			str.append("\" />      ");
+			str.newLineIfNotEmpty();
+			str.append("  ");
+			str.append("  ");
+			str.append(printAttribute(p), "    ");
+			str.newLineIfNotEmpty();
+			str.append("  ");
+			str.append("</case>");
+			str.newLine();
+		}		
+		
+		str.append("</union>    ");
+		str.newLine();
+		return str;
 	}
 
 	public CharSequence printAttribute(final Property p) {
-		StringConcatenation str = new StringConcatenation();
-		str.newLine();
-		str.append("<member name=\"" + p.getName() + "\" " + printAttributeType(p));
+		String str = "\n"; 
+		str += "<member name=\"" + p.getName() + "\" " + printAttributeType(p);
 		if (p.getUpper() > 1) {
-			str.append(" arrayDimensions=\"(" + p.getUpper() + ")\"");
+			str += " arrayDimensions=\"(" + p.getUpper() + ")\"";
 		} 
-		str.append("/>");
+		str += "/>";
 		return str;
 	}
 
 	public CharSequence printAttributeType(final Property p) {
-		StringConcatenation str = new StringConcatenation();
+		String str = "";
 		if (mTypes.isPrimitiveType(p)) {
-			str.append("type=\"" + mTypes.typeName(p) + "\"");
+			str = "type=\"" + mTypes.typeName(p) + "\"";
 		} else {
-			str.append("type=\"nonBasic\" nonBasicTypeName=\"" + mTypes.typeName(p) +"\"");
+			str = "type=\"nonBasic\" nonBasicTypeName=\"" + mTypes.typeName(p) +"\"";
 		}
 		return str;
 	}
@@ -284,6 +368,7 @@ public class Mal implements IGenerator {
 	public CharSequence printInterfaceMethod(final Signal s, final String replyTypeName, final boolean replyTypeIsPrimitive, final String exceptionName) {
 		StringConcatenation str = new StringConcatenation();
 		str.append("    " + printInterfaceMethodHeader(s, replyTypeName, replyTypeIsPrimitive, exceptionName));
+		/*
 		final Function1<Property, String> _function = (Property e) -> {
 			return e.getName();
 		};
@@ -296,6 +381,20 @@ public class Mal implements IGenerator {
 				flag = false;
 			}
 		}
+		*/
+		TreeSet<Property> allProperties = new TreeSet<Property>(new PropertyComparator());
+		for (final Property p : s.getOwnedAttributes()) {
+			allProperties.add(p);
+		}
+		boolean flag = true;
+		for(final Property p : allProperties) {
+			if (p.getName().equalsIgnoreCase("reply") == false) {
+				str.newLine();
+				str.append(printInterfaceArgument(p));
+				flag = false;
+			}
+		}
+		
 		if (flag) {
 			str.newLine();
 		}
@@ -304,45 +403,35 @@ public class Mal implements IGenerator {
 	}
 
 	public CharSequence printInterfaceMethodHeader(final Signal s, final String replyTypeName, final boolean replyTypeIsPrimitive, final String exceptionName) {
-		String _nameWithoutPrefix = mQSignal.nameWithoutPrefix(s);
-		String _plus = ("<method name=\"" + _nameWithoutPrefix);
-		String str = (_plus + "\" returnType=\"");
+		String str = ("<method name=\"" + mQSignal.nameWithoutPrefix(s) + "\" returnType=\"");
 		if (replyTypeIsPrimitive) {
-			String _str = str;
-			str = (_str + (replyTypeName + "\""));
+			str += replyTypeName + "\"";
 		} else {
-			String _str_1 = str;
-			str = (_str_1 + ((("nonBasic" + "\" nonBasicReturnTypeName=\"") + replyTypeName) + "\""));
+			str += "nonBasic" + "\" nonBasicReturnTypeName=\"" + replyTypeName + "\"";
 		}
-		if (!Objects.equal(exceptionName, "")) {
-			String _str_2 = str;
-			str = (_str_2 + ((" throws=\"" + exceptionName) + "\""));
+		if (exceptionName.isEmpty() == false) {
+			str += " throws=\"" + exceptionName + "\"";
 		}
-		String _str_3 = str;
-		str = (_str_3 + ">");
+		str += ">";
 		return str;
 	}
 
 	public CharSequence printInterfaceArgument(final Property a) {
-		StringConcatenation str = new StringConcatenation();
+		String str = "        <argument name=\"" + a.getName() + "\" type=\"";
 		if (mTypes.isPrimitiveType(a)) {
-			str.append("        <argument name=\"" + a.getName() + "\" type=\"" + mTypes.typeName(a) + "\"/>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
+			str += mTypes.typeName(a) + "\"/>\n";
 		} else {
-			str.append("        <argument name=\"" + a.getName() + "\" type=\"nonBasic\" nonBasicTypeName=\"" + mTypes.typeName(a) + "\"/>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
+			str += "nonBasic\" nonBasicTypeName=\"" + mTypes.typeName(a) + "\"/>\n";
 		}
 		return str;
 	}
 
 	public CharSequence printXmlStart() {
-		StringConcatenation str = new StringConcatenation();
-		str.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		str.append("<types xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"schemas/icd_type_definition.xsd\">" + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		return str;
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+		       "<types xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"schemas/icd_type_definition.xsd\">\n";
 	}
 
 	public CharSequence printXmlEnd() {
-		StringConcatenation str = new StringConcatenation();
-		str.append("</types>" + StringConcatenation.DEFAULT_LINE_DELIMITER);
-		return str;
+		return "</types>\n";
 	}
 }

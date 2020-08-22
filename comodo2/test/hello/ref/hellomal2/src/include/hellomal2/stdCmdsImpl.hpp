@@ -25,65 +25,64 @@ class StdCmdsImpl : public hellomalif2::AsyncStdCmds {
     explicit StdCmdsImpl(rad::SMAdapter& sm) : m_sm(sm) { RAD_TRACE(GetLogger()); }
 
     virtual ~StdCmdsImpl() { RAD_TRACE(GetLogger()); }
-    
-    virtual elt::mal::future<std::string> Enable() override {
-    	RAD_TRACE(GetLogger());
-    	auto ev = std::make_shared<StdCmds::Enable>();
-    	m_sm.PostEvent(ev);
-    	return ev->GetPayload().GetReplyFuture();
-    }
-    
-    virtual elt::mal::future<std::string> Reset() override {
-    	RAD_TRACE(GetLogger());
-    	auto ev = std::make_shared<StdCmds::Reset>();
-    	m_sm.PostEvent(ev);
-    	return ev->GetPayload().GetReplyFuture();
-    }
-    
-    virtual elt::mal::future<std::string> GetState() override {
-    	RAD_TRACE(GetLogger());
-    	auto ev = std::make_shared<StdCmds::GetState>();
-    	m_sm.PostEvent(ev);
-    	return ev->GetPayload().GetReplyFuture();
-    }
-    
+
     virtual elt::mal::future<std::string> Disable() override {
-    	RAD_TRACE(GetLogger());
-    	auto ev = std::make_shared<StdCmds::Disable>();
-    	m_sm.PostEvent(ev);
-    	return ev->GetPayload().GetReplyFuture();
+        RAD_TRACE(GetLogger());
+        auto ev = std::make_shared<StdCmds::Disable>();
+        m_sm.PostEvent(ev);
+        return ev->GetPayload().GetReplyFuture();
     }
-    
+
+    virtual elt::mal::future<std::string> Enable() override {
+        RAD_TRACE(GetLogger());
+        auto ev = std::make_shared<StdCmds::Enable>();
+        m_sm.PostEvent(ev);
+        return ev->GetPayload().GetReplyFuture();
+    }
+
     virtual elt::mal::future<std::string> Exit() override {
-    	RAD_TRACE(GetLogger());
-    	auto ev = std::make_shared<StdCmds::Exit>();
-    	m_sm.PostEvent(ev);
-    	return ev->GetPayload().GetReplyFuture();
+        RAD_TRACE(GetLogger());
+        auto ev = std::make_shared<StdCmds::Exit>();
+        m_sm.PostEvent(ev);
+        return ev->GetPayload().GetReplyFuture();
     }
-    
+
+    virtual elt::mal::future<std::string> GetState() override {
+        RAD_TRACE(GetLogger());
+        auto ev = std::make_shared<StdCmds::GetState>();
+        m_sm.PostEvent(ev);
+        return ev->GetPayload().GetReplyFuture();
+    }
+
+    virtual elt::mal::future<std::string> Init() override {
+        RAD_TRACE(GetLogger());
+        auto ev = std::make_shared<StdCmds::Init>();
+        m_sm.PostEvent(ev);
+        return ev->GetPayload().GetReplyFuture();
+    }
+
+    virtual elt::mal::future<std::string> Reset() override {
+        RAD_TRACE(GetLogger());
+        auto ev = std::make_shared<StdCmds::Reset>();
+        m_sm.PostEvent(ev);
+        return ev->GetPayload().GetReplyFuture();
+    }
+
     virtual elt::mal::future<std::string> SetLogLevel(
         const std::shared_ptr<hellomalif2::LogInfo>& mal_param) override {
-    	RAD_TRACE(GetLogger());
-    	auto ev = std::make_shared<StdCmds::SetLogLevel>(mal_param->clone());	
-    	m_sm.PostEvent(ev);
-    	return ev->GetPayload().GetReplyFuture();
+        RAD_TRACE(GetLogger());
+        auto ev = std::make_shared<StdCmds::SetLogLevel>(mal_param->clone());
+        m_sm.PostEvent(ev);
+        return ev->GetPayload().GetReplyFuture();
     }
-    
-    virtual elt::mal::future<std::string> Stop() override {
-    	RAD_TRACE(GetLogger());
-    	auto ev = std::make_shared<StdCmds::Stop>();
-    	m_sm.PostEvent(ev);
-    	return ev->GetPayload().GetReplyFuture();
-    }
-    
-    virtual elt::mal::future<std::string> Init() override {
-    	RAD_TRACE(GetLogger());
-    	auto ev = std::make_shared<StdCmds::Init>();
-    	m_sm.PostEvent(ev);
-    	return ev->GetPayload().GetReplyFuture();
-    }
-    
 
+    virtual elt::mal::future<std::string> Stop() override {
+        RAD_TRACE(GetLogger());
+        auto ev = std::make_shared<StdCmds::Stop>();
+        m_sm.PostEvent(ev);
+        return ev->GetPayload().GetReplyFuture();
+    }
+   
  private:
 	rad::SMAdapter& m_sm;
 };

@@ -12,22 +12,22 @@
     </exception>
     
     <interface name="StdCmds">
-        <method name="Reset" returnType="string">
+        <method name="Disable" returnType="string">
         </method>
         <method name="Enable" returnType="string" throws="ExceptionErr">
         </method>
-        <method name="Disable" returnType="string">
+        <method name="Exit" returnType="string">
         </method>
         <method name="GetState" returnType="string">
         </method>
-        <method name="Stop" returnType="string">
+        <method name="Init" returnType="string">
         </method>
-        <method name="Exit" returnType="string">
+        <method name="Reset" returnType="string">
         </method>
         <method name="SetLogLevel" returnType="string" throws="ExceptionErr">
             <argument name="info" type="nonBasic" nonBasicTypeName="LogInfo"/>
         </method>
-        <method name="Init" returnType="string">
+        <method name="Stop" returnType="string">
         </method>
     </interface>
     

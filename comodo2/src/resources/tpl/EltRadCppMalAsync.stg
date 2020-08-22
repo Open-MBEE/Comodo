@@ -28,7 +28,7 @@ class %className% : public %parentClass% {
     explicit %className%(rad::SMAdapter& sm) : m_sm(sm) { RAD_TRACE(GetLogger()); }
 
     virtual ~%className%() { RAD_TRACE(GetLogger()); }
- 	%methodsImpl%   
+    %methodsImpl%   
  private:
 	rad::SMAdapter& m_sm;
 };
