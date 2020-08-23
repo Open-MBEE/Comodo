@@ -1,0 +1,18 @@
+import os
+from waflib import Utils
+from wtools.module import declare_custom
+
+def configure(cnf):
+    cnf.find_program('sed', var='SED')
+    cnf.env.CP = os.path.join(cnf.env.PREFIX, 'lib/*')
+
+def build(bld):
+    bld(source=bld.path.make_node('src/comodo.j2'),
+        target=bld.path.get_bld().make_node('comodo'),
+        chmod=Utils.O755,
+        install_path='${PREFIX}/bin',
+        rule='${SED} \'s#{{ classpath }}#${CP}#g\' ${SRC} > ${TGT}'
+    )
+
+
+declare_custom()
