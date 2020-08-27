@@ -7,12 +7,13 @@ Installation
 To install COMODO2 from GIT repository:
 
     $ git lfs install
-    $ git clone https://gitlab.eso.org/ifw/comodo2.git   
+    $ git clone https://gitlab.eso.org/ifw/comodo2.git comodo2  
+    $ cd comodo2
     $ git lfs pull
     $ waf configure
     $ waf install
 
-The installation of Large File Storage (lfs) is required to retrieve the JAR files used by COMODO2.
+The installation of Large File Storage (lfs) is required to retrieve the JAR files used by COMODO2. This step (`git lfs install`) should be executed only once per account.
 
 JARs (including comodo2.jar) are installed by waf in `$PREFIX/lib` directory.
 
@@ -26,7 +27,7 @@ COMODO2 can be executed by invoking a wrapper script which takes care to set the
 
 For example:
 
-    $ comodo -i comodo2/test/hello/model/EELT_ICS_ApplicationFramework.uml -t ELT-RAD -m "hellomalif hellomal" -o "./gen" -g ALL -d -a
+    $ comodo -i comodo2/test/hello/model/EELT_ICS_ApplicationFramework.uml -o ./gen -m "hellomalif hellomal" -t ELT-RAD -g ALL -a -d
 
 The supported options are:
 
@@ -45,7 +46,7 @@ Input Model
 -----------
 The input model should comply with COMODO profile and be stored in EMF XMI 5.x format.
 
-For example, in MagicDrow, use the option: File -> Export to -> Eclipse UML2 XMI 5.x
+For example, in MagicDrow, use the option: File -> Export to -> Eclipse UML2 XMI 5.x to export the model.
 
 Target Platforms
 ----------------
