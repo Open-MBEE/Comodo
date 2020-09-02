@@ -36,6 +36,12 @@ public class Types {
 	}
 
 	public String typeName(final Property p) {
+		if (p == null) {
+			return "";
+		}
+		if (p.getType() == null) {
+			return "";
+		}
 		if (isPrimitiveType(p)) {
 			return typeName(((PrimitiveType) p.getType()));
 		}

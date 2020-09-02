@@ -119,9 +119,11 @@ public class MalAsync implements IGenerator {
 		for (final Reception r : i.getOwnedReceptions()) {
 			allSignals.add(r.getSignal());
 		}
+		/*
 		for (Signal s : allSignals) {
 			mLogger.debug(i.getName() + " - " + s.getName());
 		}
+		*/
 		return allSignals;
 	}
 
