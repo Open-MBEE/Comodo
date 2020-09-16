@@ -24,15 +24,34 @@ public class Types {
 			case "Integer":
 				return "int32_t";
 			case "Real":
-				return "float";
+				return "double";
 			case "void":
 				return "void";
+			case "Int8":
+				return "int8_t";
+			case "Int16":
+				return "int16_t";
+			case "Int32":
+				return "int32_t";
+			case "UInt8":
+				return "uint8_t";
+			case "UInt16":
+				return "uint16_t";
+			case "UInt32":
+				return "uint32_t";
+			case "Float":
+				return "float";
+			case "Double":
+				return "double";
+			case "DateTime":
+				return "timedate";
+			case "Timestamp":
+				return "timestamp";
 			default:
 				return t.getName();
 			}
-		} else {
-			return t.getName();
-		}
+		} 
+		return "";
 	}
 
 	public String typeName(final Property p) {
