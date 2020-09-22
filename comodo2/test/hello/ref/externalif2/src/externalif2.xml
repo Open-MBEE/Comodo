@@ -10,6 +10,23 @@
         <member name="dec" type="double"/>
         <member name="ra" type="double"/>
     </struct>
+    <struct name="AllSupportedPrimitiveTypes">
+        <member name="Boolean" type="boolean"/>
+        <member name="Integer" type="int32_t"/>
+        <member name="Real" type="double"/>
+        <member name="String" type="string"/>
+    </struct>
+    <struct name="AllSupportedComodoTypes">
+        <member name="Double" type="double"/>
+        <member name="Float" type="float"/>
+        <member name="Int16" type="int8_t"/>
+        <member name="Int32" type="int32_t"/>
+        <member name="Int8" type="int8_t"/>
+        <member name="Timestamp" type="timestamp"/>
+        <member name="UInt16" type="uint16_t"/>
+        <member name="UInt32" type="uint32_t"/>
+        <member name="UInt8" type="uint8_t"/>
+    </struct>
     
     <interface name="ExternalCmds">
         <method name="Preset" returnType="string">
