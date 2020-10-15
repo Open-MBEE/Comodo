@@ -18,6 +18,7 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Reception;
 import org.eclipse.uml2.uml.Signal;
@@ -76,6 +77,7 @@ public class Mal implements IGenerator {
 	public CharSequence generate(final Interface i) {
 		StringConcatenation str = new StringConcatenation();
 		str.append(printXmlStart());
+		str.append(explorePackageIncludes(mQInterface.getContainerPackage(i)));				
 		str.append("    " + printPackageStart(i));		
 		str.append(exploreEnumerations(mQInterface.getContainerPackage(i)), "    ");		
 		str.append(exploreStructures(mQInterface.getContainerPackage(i)), "    ");
@@ -87,6 +89,16 @@ public class Mal implements IGenerator {
 		return str;
 	}
 
+	public CharSequence explorePackageIncludes(final org.eclipse.uml2.uml.Package p) {
+		String str = "";
+		for (PackageImport e : p.getPackageImports()) {
+			if (e.getImportedPackage() != null) {
+				str += "    <include href=\"" + e.getImportedPackage().getName() + ".xml\"/>\n";
+			}
+		}
+		return str;
+	}
+	
 	public CharSequence exploreEnumerations(final org.eclipse.uml2.uml.Package p) {
 		StringConcatenation str = new StringConcatenation();
 		/*
