@@ -23,6 +23,8 @@ import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Reception;
 import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.Type;
+import org.eclipse.uml2.uml.Class;
+
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
@@ -62,29 +64,58 @@ public class Mal implements IGenerator {
 		*/
 		final TreeIterator<EObject> allContents = input.getAllContents();
 		while (allContents.hasNext()) {
-			EObject e = allContents.next();
-			if (e instanceof Interface) {
-				Interface i = (Interface)e; 
-				if ((mQInterface.isToBeGenerated(i) && mQInterface.hasRequests(i))) {
-					mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(i).getName())));
-					fsa.generateFile(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(i).getName()), this.generate(i));
-					return;
+			EObject o = allContents.next();
+			if (o instanceof Element) {
+				Element e = (Element)o;		
+				if (mQInterface.isToBeGenerated((Element)e)) {
+					if (e instanceof Interface) {
+						// UML
+						Interface i = (Interface)e; 
+						if ((/*mQInterface.isToBeGenerated(i) &&*/ mQInterface.hasRequests(i))) {
+							mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(i).getName())));
+							fsa.generateFile(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(i).getName()), this.generate(i));
+							return;
+						}
+					} else {
+						// SysML
+						Class c = (Class)e; 
+						if (mQInterface.hasRequests(c)) {
+							mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(c).getName())));
+							fsa.generateFile(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(c).getName()), this.generate(c));
+							return;
+						}
+					}
 				}
 			}
 		}
+	}
+
+	public CharSequence generate(final Class c) {
+		StringConcatenation str = new StringConcatenation();
+		str.append(printXmlStart());
+		str.append(explorePackageIncludes(mQInterface.getContainerPackage(c)));				
+		str.append("    " + printPackageStart(mQInterface.getContainerPackage(c).getName()));		
+		str.append(exploreEnumerations(mQInterface.getContainerPackage(c)), "    ");		
+		str.append(exploreStructures(mQInterface.getContainerPackage(c)), "    ");
+		str.append(exploreExceptions(mQInterface.getContainerPackage(c)), "    ");
+		str.append(exploreUnions(mQInterface.getContainerPackage(c)), "    ");	
+		str.append(exploreInterfaces(c), "    ");	
+		str.append(printPackageEnd());	
+		str.append(printXmlEnd());
+		return str;
 	}
 
 	public CharSequence generate(final Interface i) {
 		StringConcatenation str = new StringConcatenation();
 		str.append(printXmlStart());
 		str.append(explorePackageIncludes(mQInterface.getContainerPackage(i)));				
-		str.append("    " + printPackageStart(i));		
+		str.append("    " + printPackageStart(mQInterface.getContainerPackage(i).getName()));		
 		str.append(exploreEnumerations(mQInterface.getContainerPackage(i)), "    ");		
 		str.append(exploreStructures(mQInterface.getContainerPackage(i)), "    ");
 		str.append(exploreExceptions(mQInterface.getContainerPackage(i)), "    ");
 		str.append(exploreUnions(mQInterface.getContainerPackage(i)), "    ");	
 		str.append(exploreInterfaces(i), "    ");	
-		str.append(printPackageEnd(i));	
+		str.append(printPackageEnd());	
 		str.append(printXmlEnd());
 		return str;
 	}
@@ -101,19 +132,6 @@ public class Mal implements IGenerator {
 	
 	public CharSequence exploreEnumerations(final org.eclipse.uml2.uml.Package p) {
 		StringConcatenation str = new StringConcatenation();
-		/*
-		final Function1<Enumeration, Boolean> _function = (Enumeration e1) -> {
-			return Boolean.valueOf(mQStereotype.isComodoEnumeration(e1));
-		};
-		Iterable<Enumeration> _filter = IterableExtensions.<Enumeration>filter(Iterables.<Enumeration>filter(p.allOwnedElements(), Enumeration.class), _function);
-		for(final Enumeration e : _filter) {
-			str.append("    ");
-			str.newLine();
-			CharSequence _printEnumeration = this.printEnumeration(e);
-			str.append(_printEnumeration);
-			str.newLineIfNotEmpty();
-		}
-		*/
 		for (Element e : p.allOwnedElements()) {
 			if (mQStereotype.isComodoEnumeration(e)) {
 				str.append("    ");
@@ -129,15 +147,6 @@ public class Mal implements IGenerator {
 
 	public CharSequence exploreStructures(final org.eclipse.uml2.uml.Package p) {
 		StringConcatenation str = new StringConcatenation();
-		/*
-		final Function1<DataType, Boolean> _function = (DataType e1) -> {
-			return Boolean.valueOf(mQStereotype.isComodoStructure(e1));
-		};
-		Iterable<DataType> _filter = IterableExtensions.<DataType>filter(Iterables.<DataType>filter(p.allOwnedElements(), DataType.class), _function);
-		for(final DataType e : _filter) {
-			str.append(printStructure(e));
-		}
-		*/
 		for (Element e : p.allOwnedElements()) {
 			if (mQStereotype.isComodoStructure(e)) {
 				str.append(printStructure((DataType)e));
@@ -148,15 +157,6 @@ public class Mal implements IGenerator {
 
 	public CharSequence exploreExceptions(final org.eclipse.uml2.uml.Package p) {
 		StringConcatenation str = new StringConcatenation();
-		/*
-		final Function1<DataType, Boolean> _function = (DataType e1) -> {
-			return Boolean.valueOf(mQStereotype.isComodoException(e1));
-		};
-		Iterable<DataType> _filter = IterableExtensions.<DataType>filter(Iterables.<DataType>filter(p.allOwnedElements(), DataType.class), _function);
-		for(final DataType e : _filter) {
-			str.append(printException(e));
-		}
-		*/
 		for (Element e : p.allOwnedElements()) {
 			if (mQStereotype.isComodoException(e)) {
 				str.append(printException((DataType)e));
@@ -167,15 +167,6 @@ public class Mal implements IGenerator {
 
 	public CharSequence exploreUnions(final org.eclipse.uml2.uml.Package p) {
 		StringConcatenation str = new StringConcatenation();
-		/*
-		final Function1<DataType, Boolean> _function = (DataType e1) -> {
-			return Boolean.valueOf(mQStereotype.isComodoUnion(e1));
-		};
-		Iterable<DataType> _filter = IterableExtensions.<DataType>filter(Iterables.<DataType>filter(p.allOwnedElements(), DataType.class), _function);
-		for(final DataType e : _filter) {
-			str.append(printUnion(e));
-		}
-		*/
 		for (Element e : p.allOwnedElements()) {
 			if (mQStereotype.isComodoUnion(e)) {
 				str.append(printUnion((DataType)e));
@@ -194,31 +185,50 @@ public class Mal implements IGenerator {
 		return str;
 	}
 
-	public CharSequence exploreSignals(final Interface i) {
+	public CharSequence exploreInterfaces(final Class c) {
 		StringConcatenation str = new StringConcatenation();
-		/*
-		final Function1<Reception, String> _function = (Reception e) -> {
-			return e.getName();
-		};
-		List<Reception> _sortBy = IterableExtensions.<Reception, String>sortBy(i.getOwnedReceptions(), _function);
-		for(final Reception r : _sortBy) {
-			Signal _signal = r.getSignal();
-			if (mQStereotype.isComodoCommand(((Element) _signal))) {
-				str.append(printInterfaceMethod(r.getSignal(), mTypes.typeName(mQSignal.getReplyType(r.getSignal())), mQSignal.isReplyTypePrimitive(r.getSignal()), this.getExceptionDataTypeName(r)));
-			}
-		}
-		*/
+		str.newLine();
+		str.append("<interface name=\"" + c.getName() + "\">" + StringConcatenation.DEFAULT_LINE_DELIMITER);		
+		str.append(exploreSignals(c));
+		str.append("</interface>"  +  StringConcatenation.DEFAULT_LINE_DELIMITER);	
+		str.newLine();
+		return str;
+	}
+
+	public CharSequence exploreSignals(final Interface i) {
+		//StringConcatenation str = new StringConcatenation();
 		TreeSet<Reception> allReceptions = new TreeSet<Reception>(new ReceptionComparator());
 		for (final Reception r : i.getOwnedReceptions()) {
 			allReceptions.add(r);
 		}
+		return exploreSignalReceptions(allReceptions);
+/*		
 		for(final Reception r : allReceptions) {
 			Signal s = r.getSignal();
 			if (s != null && mQStereotype.isComodoCommand(((Element) s))) {
 				str.append(printInterfaceMethod(s, mTypes.typeName(mQSignal.getReplyType(s)), mQSignal.isReplyTypePrimitive(s), getExceptionDataTypeName(r)));
 			}
 		}
+		return str;
+*/
+	}
 
+	public CharSequence exploreSignals(final Class c) {
+		TreeSet<Reception> allReceptions = new TreeSet<Reception>(new ReceptionComparator());
+		for (final Reception r : c.getOwnedReceptions()) {
+			allReceptions.add(r);
+		}
+		return exploreSignalReceptions(allReceptions);
+	}
+	
+	public CharSequence exploreSignalReceptions(final TreeSet<Reception> allReceptions) {
+		StringConcatenation str = new StringConcatenation();
+		for(final Reception r : allReceptions) {
+			Signal s = r.getSignal();
+			if (s != null && mQStereotype.isComodoCommand(((Element) s))) {
+				str.append(printInterfaceMethod(s, mTypes.typeName(mQSignal.getReplyType(s)), mQSignal.isReplyTypePrimitive(s), getExceptionDataTypeName(r)));
+			}
+		}
 		return str;
 	}
 
@@ -228,11 +238,6 @@ public class Mal implements IGenerator {
 			Type t = raisedExceptions.get(0);
 			return mTypes.typeName(t);
 		}
-		/*
-		if (IterableExtensions.<Type>head(r.getRaisedExceptions()) != null) {
-			return mTypes.typeName(IterableExtensions.<Type>head(r.getRaisedExceptions()));
-		}
-		*/
 		return "";
 	}
 
@@ -240,11 +245,11 @@ public class Mal implements IGenerator {
 	 * Formatters
 	 */
 
-	public CharSequence printPackageStart(final Interface i) {
-		return "<package name=\"" + mQInterface.getContainerPackage(i).getName() + "\">\n";		
+	public CharSequence printPackageStart(final String containerPackageName) {
+		return "<package name=\"" + containerPackageName + "\">\n";		
 	}
 
-	public CharSequence printPackageEnd(final Interface i) {
+	public CharSequence printPackageEnd() {
 		return "</package>\n";
 	}
 
@@ -263,15 +268,7 @@ public class Mal implements IGenerator {
 	public CharSequence printStructure(final DataType d) {
 		StringConcatenation str = new StringConcatenation();
 		str.append("<struct name=\"" + d.getName() + "\">");
-		/*
-		final Function1<Property, String> _function = (Property e) -> {
-			return e.getName();
-		};
-		List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(d.getOwnedAttributes(), _function);
-		for(final Property a : _sortBy) {
-			str.append(printAttribute(a), "    ");
-		}
-		*/
+
 		TreeSet<Property> allProperties = new TreeSet<Property>(new PropertyComparator());
 		for (final Property p : d.getOwnedAttributes()) {
 			allProperties.add(p);
@@ -288,15 +285,7 @@ public class Mal implements IGenerator {
 		StringConcatenation str = new StringConcatenation();
 		str.newLine();
 		str.append("<exception name=\"" + d.getName() + "\">");
-		/*
-		final Function1<Property, String> _function = (Property e) -> {
-			return e.getName();
-		};
-		List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(d.getOwnedAttributes(), _function);
-		for(final Property a : _sortBy) {
-			str.append(printAttribute(a), "    ");
-		}
-		*/
+
 		TreeSet<Property> allProperties = new TreeSet<Property>(new PropertyComparator());
 		for (final Property p : d.getOwnedAttributes()) {
 			allProperties.add(p);
@@ -326,13 +315,7 @@ public class Mal implements IGenerator {
 		for (final Property p : d.getOwnedAttributes()) {
 			allProperties.add(p);
 		}
-/*
-		final Function1<Property, String> _function = (Property e) -> {
-			return e.getName();
-		};
-		List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(d.getOwnedAttributes(), _function);
-		for(final Property a : _sortBy) {
-*/
+
 		for(final Property p : allProperties) {		
 			str.append("  ");
 			str.append("<case>");
@@ -380,20 +363,7 @@ public class Mal implements IGenerator {
 	public CharSequence printInterfaceMethod(final Signal s, final String replyTypeName, final boolean replyTypeIsPrimitive, final String exceptionName) {
 		StringConcatenation str = new StringConcatenation();
 		str.append("    " + printInterfaceMethodHeader(s, replyTypeName, replyTypeIsPrimitive, exceptionName));
-		/*
-		final Function1<Property, String> _function = (Property e) -> {
-			return e.getName();
-		};
-		List<Property> _sortBy = IterableExtensions.<Property, String>sortBy(s.getOwnedAttributes(), _function);
-		boolean flag = true;
-		for(final Property a : _sortBy) {			
-			if (!Objects.equal(a.getName(), "reply")) {
-				str.newLine();
-				str.append(printInterfaceArgument(a));
-				flag = false;
-			}
-		}
-		*/
+
 		TreeSet<Property> allProperties = new TreeSet<Property>(new PropertyComparator());
 		for (final Property p : s.getOwnedAttributes()) {
 			allProperties.add(p);
