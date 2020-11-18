@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schemas/icd_type_definition.xsd">
+    <package name="hellomalif">
+        
+    <struct name="LogInfo">
+        <member name="level" type="string"/>
+        <member name="logger" type="string"/>
+    </struct>
+    
+    <exception name="ExceptionErr">
+        <member name="desc" type="string"/>
+    </exception>
+    
+    <interface name="StdCmds">
+        <method name="Disable" returnType="string">
+        </method>
+        <method name="Enable" returnType="string" throws="ExceptionErr">
+        </method>
+        <method name="Exit" returnType="string">
+        </method>
+        <method name="GetState" returnType="string">
+        </method>
+        <method name="Init" returnType="string">
+        </method>
+        <method name="Reset" returnType="string">
+        </method>
+        <method name="SetLogLevel" returnType="string" throws="ExceptionErr">
+            <argument name="info" type="nonBasic" nonBasicTypeName="LogInfo"/>
+        </method>
+        <method name="Stop" returnType="string">
+        </method>
+    </interface>
+    
+    </package>
+</types>

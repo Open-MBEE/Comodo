@@ -1,0 +1,14 @@
+"""
+@file
+@ingroup hellomal
+@copyright ESO - European Southern Observatory
+
+@defgroup hellomal
+@ingroup hellomal
+@brief hellomal Application module.
+"""
+from wtools.module import declare_cprogram
+
+declare_cprogram(target='hellomal',
+                 features='radgen',
+                 use='log4cplus yaml-cpp hiredis protobuf xerces-c rad.cpp.core rad.cpp.services rad.cpp.events rad.cpp.sm rad.cpp.utils rad.cpp.mal hellomalif-cxx ')

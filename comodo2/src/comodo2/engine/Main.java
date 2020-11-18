@@ -221,10 +221,12 @@ public class Main {
 			} else {
 				throw e;
 			}
+			System.exit(1);
 		} catch (final ParseException exp) {
 			//System.err.println("Parsing arguments failed: " + exp.getMessage());
 			mLogger.error("Parsing arguments failed: " + exp.getMessage());
 			printHelp(options);
+			System.exit(1);
 			return;
 		}
 	}
