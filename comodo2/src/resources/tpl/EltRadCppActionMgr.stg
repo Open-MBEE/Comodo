@@ -1,0 +1,112 @@
+delimiters "%", "%"
+
+ActionMgrHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className, classNameUpperCase) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% class header file.
+ */
+#ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+#define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+#include <rad/actionMgr.hpp>
+#include <rad/smAdapter.hpp>
+
+#include <boost/asio.hpp>
+
+namespace %moduleNameLowerCase% {
+
+class DataContext;
+
+/**
+ * This class is responsible for the life-cycle management of
+ * actions and activities.
+ */
+class ActionMgr : public rad::ActionMgr {
+   public:
+    /**
+     * Default constructor.
+     */
+    ActionMgr();
+
+    /**
+     * Default destructor.
+     */
+    virtual ~ActionMgr();
+
+    /**
+     * Method to instantiate the action objects.
+     *
+     * @param[in] ios Event loop.
+     * @param[in] sm SM adapter used to inject internal events.
+     * @param[in] the_data Data shared within the application among actions and activities.
+     */
+    void CreateActions(boost::asio::io_service& ios, rad::SMAdapter& sm, DataContext& the_data);
+
+    /**
+     * Method to instantiate activity objects.
+     *
+     * @param[in] the_data Data shared within the application.
+     * @param[in] sm Reference to the State Machine adapter needed to trigger internal events.
+     */
+    void CreateActivities(rad::SMAdapter& sm, DataContext& the_data);
+
+    ActionMgr(const ActionMgr&) = delete;             //! Disable copy constructor
+    ActionMgr& operator=(const ActionMgr&) = delete;  //! Disable assignment operator
+};
+
+}  // namespace %moduleNameLowerCase%
+
+#endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+>>
+
+ActionMgrSource(moduleName, moduleNameLowerCase, className, classNameFilename, actionsInclude, activitiesInclude, createActions, createActivities) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% class source file.
+ */
+
+#include <%moduleName%/%classNameFilename%.hpp>
+%actionsInclude%
+%activitiesInclude%
+#include <%moduleName%/dataContext.hpp>
+#include <%moduleName%/logger.hpp>
+
+#include <rad/actionCallback.hpp>
+#include <rad/actionGroup.hpp>
+#include <rad/assert.hpp>
+
+#include <functional>
+
+namespace %moduleNameLowerCase% {
+
+ActionMgr::ActionMgr() { RAD_TRACE(GetLogger()); }
+
+ActionMgr::~ActionMgr() { RAD_TRACE(GetLogger()); }
+
+void ActionMgr::CreateActions(boost::asio::io_service& ios, rad::SMAdapter& sm,
+                              DataContext& the_data) {
+    RAD_TRACE(GetLogger());
+    
+    scxml4cpp::Action* the_action = nullptr;    
+    using std::placeholders::_1;
+    %createActions%
+}
+
+void ActionMgr::CreateActivities(rad::SMAdapter& sm, DataContext& the_data) {
+    RAD_TRACE(GetLogger());
+    %createActivities%
+}
+
+}  // namespace %moduleNameLowerCase%
+
+>>
+

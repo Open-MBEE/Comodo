@@ -1,0 +1,36 @@
+delimiters "%", "%"
+
+WscriptMal(moduleName, parentName) ::= <<
+"""
+@file
+@ingroup %moduleName%
+@copyright ESO - European Southern Observatory
+
+@defgroup %moduleName%
+@ingroup %parentName%
+@brief %moduleName% CII/MAL interface module.
+"""
+
+from wtools.module import declare_malicd
+
+declare_malicd()
+
+>>
+
+WscriptAppl(moduleName, parentName, appName, ifModulesName) ::= <<
+"""
+@file
+@ingroup %moduleName%
+@copyright ESO - European Southern Observatory
+
+@defgroup %moduleName%
+@ingroup %parentName%
+@brief %moduleName% Application module.
+"""
+from wtools.module import declare_cprogram
+
+declare_cprogram(target='%appName%',
+                 features='radgen',
+                 use='log4cplus yaml-cpp hiredis protobuf xerces-c rad.cpp.core rad.cpp.services rad.cpp.events rad.cpp.sm rad.cpp.utils rad.cpp.mal %ifModulesName%')
+
+>>

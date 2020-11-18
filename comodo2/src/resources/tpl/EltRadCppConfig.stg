@@ -1,0 +1,391 @@
+delimiters "%", "%"
+
+ConfigHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className, classNameUpperCase) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% class header file.
+ */
+#ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+#define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+#include <yaml-cpp/yaml.h>
+
+#include <string>
+
+namespace %moduleNameLowerCase% {
+
+/**
+ * Default application configuration values.
+ */
+const std::string CONFIG_DEFAULT_PROCNAME       = "%moduleName%";
+//! no default value to force user to specify config filename since it overwrites the command line options.
+const std::string CONFIG_DEFAULT_FILENAME       = "";
+const std::string CONFIG_DEFAULT_SCXML_FILENAME = "%moduleName%/sm.xml";
+const std::string CONFIG_DEFAULT_LOGLEVEL       = "INFO";
+const std::string CONFIG_DEFAULT_LOG_PROPERTIES = "%moduleName%/log.properties";
+const std::string CONFIG_DEFAULT_DB_ENDPOINT    = "127.0.0.1:6379";
+const int CONFIG_DEFAULT_DB_TIMEOUT_SEC         = 2;
+const std::string CONFIG_DEFAULT_REQ_ENDPOINT   = "zpb.rr://127.0.0.1:12081/";
+
+/**
+ * Application configuration environment variables
+ */
+const std::string CONFIG_ENVVAR_DBHOST          = "DB_HOST";
+
+/**
+ * This class provide access to the command line options and
+ * the configuration parameters stored in the configuration file.
+ */
+class Config {
+ public:
+    /**
+     * Default constructor.
+     *
+     * Initialize application configuration attributes by
+     * - first use the default constant values defined in the header
+     * - override the constant values with environment variables (if defined)
+     */
+    Config();
+
+    /**
+     * Default destructor.
+     */
+    virtual ~Config();
+
+    /**
+     * This method parses the command line parameters overriding
+     * the initialization done in the constructor.
+     *
+     * @param[in] argc Number of command line options.
+     * @param[in] argv Pointer to the array of command line options.
+     * @return false if the help option has been invoked, true otherwise.
+     */
+    bool ParseOptions(int argc, char* argv[]);
+
+    /**
+     * This method load from a configuration file the application
+     * configuration overriding the initialization done in the constructor
+     * and the command line options.
+     *
+     * @param[in] filename Application configuration filename.
+     */
+    void LoadConfig(const std::string& filename = "");
+
+    /**
+     * @return The network endpoint to send request to this application.
+     * The format is "<middleware>.<protocol>://<ipaddr>:<port>".
+     * For example: "zpb.rr://127.0.0.1:12081/"
+     */
+    const std::string& GetMsgReplierEndpoint() const;
+
+    /**
+     * @return The IP address and port used to connect to the runtime DB.
+     */
+    const std::string& GetDbEndpoint() const;
+
+    /**
+     * @return The timeout used when communicating to the runtime DB.
+     */
+    const timeval GetDbTimeout() const;
+
+    /**
+     * @return The SCXML State Machine model filename used by the application.
+     */
+    const std::string& GetSmScxmlFilename() const;
+
+    /**
+     * @return The application configuration filename.
+     */
+    const std::string& GetConfigFilename() const;
+
+    /**
+     * @return The application process name.
+     */
+    const std::string& GetProcName() const;
+
+    /**
+     * @return The configured log level.
+     */
+    const std::string& GetLogLevel() const;
+
+    /**
+     * @return The log properties config filename.
+     */
+    const std::string& GetLogProperties() const;
+
+    Config(const Config&) = delete;             //! Disable copy constructor
+    Config& operator=(const Config&) = delete;  //! Disable assignment operator
+
+ private:
+    YAML::Node  m_config_node;
+    std::string m_proc_name;
+    std::string m_log_level;
+    std::string m_log_properties;
+    std::string m_config_filename;
+    std::string m_scxml_filename;
+    std::string m_db_host_endpoint;
+    int         m_db_timeout_sec;
+    std::string m_req_endpoint;
+};
+
+}  // namespace %moduleNameLowerCase%
+
+#endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+>>
+
+ConfigSource(moduleName, moduleNameLowerCase, className) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% class source file.
+ */
+
+#include <%moduleName%/config.hpp>
+#include <%moduleName%/dbInterface.hpp>
+#include <%moduleName%/logger.hpp>
+
+#include <rad/assert.hpp>
+#include <rad/exceptions.hpp>
+#include <rad/helper.hpp>
+
+#include <boost/program_options.hpp>
+
+#include <iostream>
+
+namespace bpo = boost::program_options;
+
+namespace %moduleNameLowerCase% {
+
+Config::Config()
+: m_proc_name(CONFIG_DEFAULT_PROCNAME),
+  m_log_level(CONFIG_DEFAULT_LOGLEVEL),
+  m_log_properties(CONFIG_DEFAULT_LOG_PROPERTIES),
+  m_config_filename(CONFIG_DEFAULT_FILENAME),
+  m_scxml_filename(CONFIG_DEFAULT_SCXML_FILENAME),
+  m_db_host_endpoint(CONFIG_DEFAULT_DB_ENDPOINT),
+  m_db_timeout_sec(CONFIG_DEFAULT_DB_TIMEOUT_SEC),
+  m_req_endpoint(CONFIG_DEFAULT_REQ_ENDPOINT) {
+    RAD_TRACE(GetLogger());
+
+    /*
+     * @todo these msgs won't be displayed until the DEBUG logLevel is applied.
+     */
+    LOG4CPLUS_DEBUG(GetLogger(), "Default - Log level: <" << m_log_level << ">");
+    LOG4CPLUS_DEBUG(GetLogger(), "Default - Log properties: <" << m_log_properties << ">");
+    LOG4CPLUS_DEBUG(GetLogger(), "Default - Configuration filename: <"
+                    << m_config_filename << ">");
+    LOG4CPLUS_DEBUG(GetLogger(), "Default - DB host: <" << m_db_host_endpoint
+                    << "> (timeout " << m_db_timeout_sec << " sec)");
+    LOG4CPLUS_DEBUG(GetLogger(), "Default - Requests endpoint: <" << m_req_endpoint
+                    << ">");
+
+    /*
+     * Read environment variables.
+     */
+    std::string db_addr = rad::Helper::GetEnvVar(CONFIG_ENVVAR_DBHOST);
+    if (db_addr.size() > 0) {
+        m_db_host_endpoint = db_addr;
+        LOG4CPLUS_DEBUG(GetLogger(), "EnvVar - DB host: <" << m_db_host_endpoint << ">");
+    }
+}
+
+Config::~Config() {
+    RAD_TRACE(GetLogger());
+}
+
+bool Config::ParseOptions(int argc, char *argv[]) {
+    RAD_TRACE(GetLogger());
+
+    /*
+     * Define command line options.
+     */
+    bpo::options_description options_desc("Options");
+    options_desc.add_options()("help,h", "Print help messages")(
+                    "proc-name,n", bpo::value < std::string > (&m_proc_name),
+                    "Process name")(
+                    "log-level,l",
+                    bpo::value < std::string > (&m_log_level),
+                    "Log level: ERROR, WARNING, STATE, EVENT, ACTION, INFO, DEBUG, TRACE")(
+                    "config,c", bpo::value < std::string > (&m_config_filename),
+                    "Configuration filename")(
+                    "db-host,d",
+                    bpo::value < std::string > (&m_db_host_endpoint),
+                    "In-memory DB host (ipaddr:port)");
+
+    // Parse the options.
+    try {
+        bpo::variables_map options_map;
+        bpo::store(bpo::parse_command_line(argc, argv, options_desc),
+                   options_map);
+        if (options_map.count("help")) {
+            std::cout << options_desc << std::endl;
+            return false;
+        }
+
+        /*
+         * Throws on error, so do after help in case
+         * there are any problems.
+         */
+        bpo::notify(options_map);
+
+        if (options_map.count("log-level")) {
+        	log4cplus::LogLevelManager& log_mgr = log4cplus::getLogLevelManager();
+        	log4cplus::LogLevel ll = log_mgr.fromString(m_log_level);
+        	if (ll != log4cplus::NOT_SET_LOG_LEVEL) {
+        		GetLogger().setLogLevel(ll);
+        		LOG4CPLUS_DEBUG(GetLogger(), "CmdOpt - Log level: <" << m_log_level
+                                << ">");
+            } else {
+                std::cout << options_desc << std::endl;
+                throw rad::InvalidOptionException("Invalid log level.");
+            }
+        }
+
+        if (options_map.count("proc-name") == 0) {
+            m_proc_name = std::string(argv[0]);
+            LOG4CPLUS_DEBUG(GetLogger(), "Default - Process name: <" << m_proc_name
+                            << ">");
+        } else {
+            LOG4CPLUS_DEBUG(GetLogger(), "CmdOpt - Process name: <" << m_proc_name
+                            << ">");
+        }
+
+        if (options_map.count("db-host")) {
+            LOG4CPLUS_DEBUG(GetLogger(), "CmdOpt - DB host: <" << m_db_host_endpoint
+                            << ">");
+        } else {
+            LOG4CPLUS_DEBUG(GetLogger(), "Default - DB host: <" << m_db_host_endpoint
+                            << ">");
+        }
+
+        if (options_map.count("config")) {
+            LOG4CPLUS_DEBUG(GetLogger(), "CmdOpt - Configuration filename: <"
+                            << m_config_filename << ">");
+        } else {
+            LOG4CPLUS_DEBUG(GetLogger(), "Default - Configuration filename: <"
+                            << m_config_filename << ">");
+        }
+    } catch (bpo::error& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
+        std::cerr << options_desc << std::endl;
+        throw rad::InvalidOptionException(e.what());
+    }
+
+    return true;
+}
+
+void Config::LoadConfig(const std::string& filename) {
+    RAD_TRACE(GetLogger());
+
+    std::string config_filename = filename;
+    if (config_filename == "") {
+        config_filename = m_config_filename;
+    }
+
+    // resolve filename
+    std::string resolved_config_filename = rad::Helper::FindFile(
+                    config_filename);
+    if (resolved_config_filename.size() == 0) {
+        LOG4CPLUS_ERROR(GetLogger(), "Cannot find <" << config_filename << ">");
+        throw rad::Exception(rad::errorMsg::CFG_LOAD, resolved_config_filename);
+    }
+
+    try {
+        m_config_node = YAML::LoadFile(resolved_config_filename);
+
+        if (m_config_node[KEY_CONFIG_LOG_PROPERTIES]) {
+        	m_log_properties = m_config_node[KEY_CONFIG_LOG_PROPERTIES].as<std::string>();
+            LOG4CPLUS_DEBUG(GetLogger(), "CfgFile - " << KEY_CONFIG_LOG_PROPERTIES
+                    << " = <" << m_log_properties << ">");
+        }
+
+        if (m_config_node[KEY_CONFIG_REQ_ENDPOINT]) {
+            m_req_endpoint = m_config_node[KEY_CONFIG_REQ_ENDPOINT]
+                            .as<std::string>();
+            LOG4CPLUS_DEBUG(GetLogger(), "CfgFile - " << KEY_CONFIG_REQ_ENDPOINT
+                            << " = <" << m_req_endpoint << ">");
+        }
+
+        if (m_config_node[KEY_CONFIG_DB_ENDPOINT]) {
+            m_db_host_endpoint = m_config_node[KEY_CONFIG_DB_ENDPOINT]
+                            .as<std::string>();
+            LOG4CPLUS_DEBUG(GetLogger(), "CfgFile - " << KEY_CONFIG_DB_ENDPOINT
+                            << " = <" << m_db_host_endpoint << ">");
+        }
+
+        if (m_config_node[KEY_CONFIG_DB_TIMEOUT_SEC]) {
+            m_db_timeout_sec =
+                            m_config_node[KEY_CONFIG_DB_TIMEOUT_SEC].as<int>();
+            LOG4CPLUS_DEBUG(GetLogger(), "CfgFile - " << KEY_CONFIG_DB_TIMEOUT_SEC
+                            << " = <" << m_db_timeout_sec << "> sec");
+        }
+
+        if (m_config_node[KEY_CONFIG_SM_SCXML]) {
+            m_scxml_filename = m_config_node[KEY_CONFIG_SM_SCXML]
+                            .as<std::string>();
+            LOG4CPLUS_DEBUG(GetLogger(), "CfgFile - " << KEY_CONFIG_SM_SCXML << " = <"
+                            << m_scxml_filename << ">");
+        }
+    } catch (YAML::Exception& e) {
+        throw rad::Exception(rad::errorMsg::CFG_LOAD, resolved_config_filename);
+    }
+    RAD_ASSERT(m_config_node.IsNull() == false);
+
+    m_config_filename = resolved_config_filename;
+    LOG4CPLUS_DEBUG(GetLogger(), "Loaded configuration file <" << m_config_filename
+                    << ">");
+}
+
+const std::string& Config::GetMsgReplierEndpoint() const {
+    RAD_TRACE(GetLogger());
+    return m_req_endpoint;
+}
+
+const std::string& Config::GetDbEndpoint() const {
+    RAD_TRACE(GetLogger());
+    return m_db_host_endpoint;
+}
+
+const timeval Config::GetDbTimeout() const {
+    RAD_TRACE(GetLogger());
+    timeval timeout = { m_db_timeout_sec, 0 };  // default
+    return timeout;
+}
+
+const std::string& Config::GetSmScxmlFilename() const {
+    RAD_TRACE(GetLogger());
+    return m_scxml_filename;
+}
+
+const std::string& Config::GetConfigFilename() const {
+    RAD_TRACE(GetLogger());
+    return m_config_filename;
+}
+
+const std::string& Config::GetProcName() const {
+    RAD_TRACE(GetLogger());
+    return m_proc_name;
+}
+
+const std::string& Config::GetLogLevel() const {
+    RAD_TRACE(GetLogger());
+    return m_log_level;
+}
+
+const std::string& Config::GetLogProperties() const {
+    RAD_TRACE(GetLogger());
+    return m_log_properties;
+}
+
+}  // namespace %moduleNameLowerCase%
+
+>>
+

@@ -1,0 +1,16 @@
+# Events definitions for hellomal2 application.
+version: "1.0"
+namespace: ExternalCmds
+includes:
+    - boost/exception_ptr.hpp
+    - rad/mal/request.hpp
+    - Externalif2.hpp
+
+events:
+    Preset:
+        payload: rad::cii::Request<std::string, std::shared_ptr<externalif2::PresetParams>>
+        doc: event documentation to be added
+    Setup:
+        payload: rad::cii::Request<std::string, std::shared_ptr<externalif2::SetupParams>>
+        doc: event documentation to be added
+    

@@ -1,0 +1,110 @@
+delimiters "%", "%"
+
+ActivityHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className, classNameUpperCase) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% class header file.
+ */
+#ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+#define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+#include <%moduleName%/logger.hpp>
+
+#include <rad/activity.hpp>
+#include <rad/smAdapter.hpp>
+
+#include <string>
+
+namespace %moduleNameLowerCase% {
+
+class DataContext;
+
+/**
+ * This class contains the implementation of the do-activity used
+ * to simulate the axes movements.
+ */
+class %className% : public rad::ThreadActivity {
+   public:
+    /**
+     * Constructor.
+     *
+     * @param[in] id Name of the activity.
+     * @param[in] sm State Machine facade.
+     * @param[in] data Data shared within the application among actions and activities.
+     */
+    %className%(const std::string& id, rad::SMAdapter& sm, DataContext& data);
+    virtual ~%className%();
+
+    /**
+     * Thread implementation method.
+     */
+    void Run() override;
+
+    %className%(const %className%&) = delete;             //! Disable copy constructor
+    %className%& operator=(const %className%&) = delete;  //! Disable assignment operator
+
+   private:
+    log4cplus::Logger m_logger = log4cplus::Logger::getInstance(LOGGER_NAME + ".%className%");
+    rad::SMAdapter& m_sm;
+    DataContext& m_data;
+};
+
+}  // namespace %moduleNameLowerCase%
+
+#endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+>>
+
+ActivitySource(moduleName, moduleNameLowerCase, className, classNameFileName) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% class source file.
+ */
+
+#include <%moduleName%/%classNameFileName%.hpp>
+#include <%moduleName%/dataContext.hpp>
+#include <%moduleName%/dbInterface.hpp>
+
+#include <events.rad.hpp>
+
+#include <rad/assert.hpp>
+#include <rad/exceptions.hpp>
+#include <rad/mal/publisher.hpp>
+
+#include <chrono>
+
+namespace %moduleNameLowerCase% {
+
+%className%::%className%(const std::string& id, rad::SMAdapter& sm, DataContext& data)
+    : rad::ThreadActivity(id), m_sm(sm), m_data(data) {
+    RAD_TRACE(GetLogger());
+}
+
+%className%::~%className%() { RAD_TRACE(GetLogger()); }
+
+void %className%::Run() {
+    /*
+     * Inside the thread we use dedicated logger to be able
+     * to enable/disable logs independently from the main thread.
+     */
+    RAD_TRACE(m_logger);
+
+    using namespace std::chrono_literals;
+    while (IsStopRequested() == false) {
+        LOG4CPLUS_DEBUG(m_logger, "%className% is working... ");
+        std::this_thread::sleep_for(1s);
+    }
+}
+
+}  // namespace %moduleNameLowerCase%
+
+>>
+

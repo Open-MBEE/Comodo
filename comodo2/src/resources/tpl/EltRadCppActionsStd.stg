@@ -1,0 +1,313 @@
+delimiters "%", "%"
+
+ActionsStdHeader(moduleName, moduleNameUpperCase, moduleNameLowerCase, className, classNameUpperCase) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% class header file.
+ */
+#ifndef %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+#define %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+#include <rad/actionGroup.hpp>
+#include <rad/signal.hpp>
+#include <rad/smAdapter.hpp>
+
+#include <string>
+
+namespace %moduleNameLowerCase% {
+
+class DataContext;
+
+/**
+ * This class contains the implementation of the actions dealing with
+ * the following "standard" commands:
+ *
+ * - Exit
+ * - GetState
+ * - Reset
+ * - Stop
+ * - Init
+ * - Enable
+ * - Disable
+ *
+ * and the following signals:
+ *
+ * - SIGINT
+ * - SIGTERM
+ *
+ * In addition it implements the:
+ * - scxml4cpp::StatusListener interface to receive the notification of change of state from the State Machine engine.
+ * - rad::EventRejectListener interface to receive the notification of rejected event from the State Machine adapter.
+ */
+class ActionsStd : public rad::ActionGroup {
+ public:
+    /**
+     * Constructor.
+     *
+     * @param[in] ios Reference to the event loop.
+     * @param[in] sm Reference to the SM Adapter used to inject internal events.
+     * @param[in] data Data shared within the application among actions and activities.
+     */
+    ActionsStd(boost::asio::io_service& ios,
+    		   rad::SMAdapter& sm,
+               DataContext& data);
+
+    /**
+     * Implementation of the scxml4cpp::StatusListener interface
+     * to receive the change of state notification.
+     *
+     * @param[in] status Current State Machine active states configuration.
+     */
+    void notifyStatus(std::set<scxml4cpp::State*>& status);
+
+    /**
+     * Implementation of the GetState action. This action:
+     * - replies back for the originator of the GetState request with the
+     * current State Machine active state configuration.
+     *
+     * @param[in] c Context containing the last event received by the State Machine.
+     */
+    void GetState(scxml4cpp::Context* c);
+
+    /**
+     * Implementation of the Stop action. This action:
+     * - replies back for the originator of the ReqStop request.
+     *
+     * @param[in] c Context containing the last event received by the State Machine.
+     */
+    void Stop(scxml4cpp::Context* c);
+
+    /**
+     * Implementation of the Init action. This action:
+     * - re-initialize the application run-time data,
+     * - replies back for the originator of the ReqInit request.
+     *
+     * @param[in] c Context containing the last event received by the State Machine.
+     */
+    void Init(scxml4cpp::Context* c);
+
+    /**
+     * Implementation of the Enable action. This action:
+     * - replies back for the originator of the ReqEnable request.
+     *
+     * @param[in] c Context containing the last event received by the State Machine.
+     */
+    void Enable(scxml4cpp::Context* c);
+
+    /**
+     * Implementation of the Disable action. This action:
+     * - replies back for the originator of the ReqDisable request.
+     *
+     * @param[in] c Context containing the last event received by the State Machine.
+     */
+    void Disable(scxml4cpp::Context* c);
+
+    /**
+     * Implementation of the Reset action. This action:
+     * - replies back for the originator of the ReqReset request.
+     *
+     * @param[in] c Context containing the last event received by the State Machine.
+     */
+    void Reset(scxml4cpp::Context* c);
+
+    /**
+     * Implementation of the SetLogLevel action. This action:
+     * - changes the log level,
+     * - replies back for the originator of the ReqSetLogLevel request.
+     *
+     * @param[in] c Context containing the last event received by the State Machine.
+     */
+    void SetLogLevel(scxml4cpp::Context* c);
+
+    /**
+     * Implementation of the Exit action. This action:
+     * - replies back for the originator of the ReqExit request.
+     * - stops the event loop.
+     *
+     * @param[in] c Context containing the last event received by the State Machine.
+     */
+    void Exit(scxml4cpp::Context* c);
+
+    /**
+     * Implementation of the ExitNoReply action. This action:
+     * - stops the event loop.
+     *
+     * @param[in] c Context containing the last event received by the State Machine.
+     */
+    void ExitNoReply(scxml4cpp::Context* c);
+
+    ActionsStd(const ActionsStd&) = delete;         //! Disable copy constructor
+    ActionsStd& operator=(const ActionsStd&) = delete;  //! Disable assignment operator
+
+ private:
+    boost::asio::io_service& m_io_service;
+    rad::SMAdapter&          m_sm;
+    rad::Signal              m_signal;
+    DataContext&             m_data;
+};
+
+}  // namespace %moduleNameLowerCase%
+
+#endif  // %moduleNameUpperCase%_%classNameUpperCase%_HPP_
+
+>>
+
+ActionsStdSource(moduleName, moduleNameLowerCase, className) ::= <<
+/**
+ * @file
+ * @ingroup %moduleName%
+ * @copyright ESO - European Southern Observatory
+ * @author
+ *
+ * @brief %className% class source file.
+ */
+
+#include <%moduleName%/actionsStd.hpp>
+#include <%moduleName%/dataContext.hpp>
+#include <%moduleName%/logger.hpp>
+#include <events.rad.hpp>
+#include <stdCmds.rad.hpp>
+
+#include <rad/exceptions.hpp>
+#include <rad/getPayload.hpp>
+
+namespace %moduleNameLowerCase% {
+
+ActionsStd::ActionsStd(boost::asio::io_service& ios,
+					   rad::SMAdapter& sm,
+                       DataContext& data)
+                : rad::ActionGroup("ActionsStd"),
+                  m_io_service(ios),
+				  m_sm(sm),
+                  m_signal(ios, sm,
+                  rad::UniqueEvent(new Events::CtrlC())),
+                  m_data(data) {
+    RAD_TRACE(GetLogger());
+
+    m_signal.Add(SIGINT);
+    m_signal.Add(SIGTERM);
+    m_signal.Install();
+}
+
+void ActionsStd::Exit(scxml4cpp::Context* c) {
+    RAD_TRACE(GetLogger());
+
+    auto req = rad::GetLastEventPayloadNothrow< StdCmds::Exit > (c);
+    if (req == nullptr) {
+        LOG4CPLUS_ERROR(GetLogger(), "Exit event has no associated request!");
+        return;
+    }
+    req->SetReplyValue("OK");
+    m_io_service.stop();
+}
+
+void ActionsStd::ExitNoReply(scxml4cpp::Context* c) {
+    RAD_TRACE(GetLogger());
+    m_io_service.stop();
+}
+
+void ActionsStd::GetState(scxml4cpp::Context* c) {
+    RAD_TRACE(GetLogger());
+
+    auto req = rad::GetLastEventPayloadNothrow< StdCmds::GetState > (c);
+    if (req == nullptr) {
+        LOG4CPLUS_ERROR(GetLogger(), "Status event has no associated request!");
+        return;
+    }
+    req->SetReplyValue(m_sm.GetStatus());
+}
+
+void ActionsStd::Stop(scxml4cpp::Context* c) {
+    RAD_TRACE(GetLogger());
+
+    auto req = rad::GetLastEventPayloadNothrow< StdCmds::Stop > (c);
+    if (req == nullptr) {
+        LOG4CPLUS_ERROR(GetLogger(), "Stop event has no associated request!");
+        return;
+    }
+    req->SetReplyValue("OK");
+}
+
+void ActionsStd::Init(scxml4cpp::Context* c) {
+    RAD_TRACE(GetLogger());
+
+    auto req = rad::GetLastEventPayloadNothrow< StdCmds::Init > (c);
+    if (req == nullptr) {
+        LOG4CPLUS_ERROR(GetLogger(), "Init event has no associated request!");
+        return;
+    }
+    req->SetReplyValue("OK");
+}
+
+void ActionsStd::Enable(scxml4cpp::Context* c) {
+    RAD_TRACE(GetLogger());
+
+    auto req = rad::GetLastEventPayloadNothrow< StdCmds::Enable > (c);
+    if (req == nullptr) {
+        LOG4CPLUS_ERROR(GetLogger(), "Enable event has no associated request!");
+        return;
+    }
+    req->SetReplyValue("OK");
+}
+
+void ActionsStd::Disable(scxml4cpp::Context* c) {
+    RAD_TRACE(GetLogger());
+
+    auto req = rad::GetLastEventPayloadNothrow< StdCmds::Disable > (c);
+    if (req == nullptr) {
+        LOG4CPLUS_ERROR(GetLogger(), "Disable event has no associated request!");
+        return;
+    }
+    req->SetReplyValue("OK");
+}
+
+void ActionsStd::Reset(scxml4cpp::Context* c) {
+    RAD_TRACE(GetLogger());
+
+    auto req = rad::GetLastEventPayloadNothrow< StdCmds::Reset > (c);
+    if (req == nullptr) {
+        LOG4CPLUS_ERROR(GetLogger(), "Reset event has no associated request!");
+        return;
+    }
+    req->SetReplyValue("OK");
+}
+
+void ActionsStd::SetLogLevel(scxml4cpp::Context* c) {
+    RAD_TRACE(GetLogger());
+
+    auto req = rad::GetLastEventPayloadNothrow< StdCmds::SetLogLevel > (c);
+    if (req == nullptr) {
+        LOG4CPLUS_ERROR(GetLogger(), "SetLogLevel event has no associated request!");
+        return;
+    }
+
+    auto req_params = req->GetRequestPayload();
+    std::string level = req_params->getLevel();
+    std::string logger_name = req_params->getLogger();
+
+    log4cplus::LogLevelManager& log_mgr = log4cplus::getLogLevelManager();
+	//LOG4CPLUS_DEBUG(GetLogger(), "Log level" << level);
+	log4cplus::LogLevel ll = log_mgr.fromString(level);
+	if (ll == log4cplus::NOT_SET_LOG_LEVEL) {
+		req->SetReplyValue("ERR unknown logging level: " + level);
+		return;
+	}
+
+	if (logger_name == "" || logger_name == LOGGER_NAME) {
+		GetLogger().setLogLevel(ll);
+	} else {
+		log4cplus::Logger::getInstance(logger_name).setLogLevel(ll);
+	}
+	LOG4CPLUS_DEBUG(GetLogger(), "Log level set to " << level << " for logger " << logger_name);
+
+	req->SetReplyValue("OK");
+}
+
+}  // namespace %moduleNameLowerCase%
+
+>>
+
