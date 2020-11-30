@@ -17,6 +17,7 @@
 #include <hellomal2/logger.hpp>
 
 #include <rad/actionCallback.hpp>
+#include <rad/guardCallback.hpp>
 #include <rad/actionGroup.hpp>
 #include <rad/assert.hpp>
 

@@ -39,7 +39,7 @@
  * @param[in] argv Command line options.
  */
 int main(int argc, char *argv[]) {
-	rad::LogInitialize();
+	rad::LogInitializer log_initializer;
 	LOG4CPLUS_INFO(hellomal2::GetLogger(), "Application hellomal2 started.");
 
     try {
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
             return EXIT_SUCCESS;
         }
         config.LoadConfig();
-        rad::LogConfigure(rad::Helper::FindFile(config.GetLogProperties()));
+        log_initializer.Configure(rad::Helper::FindFile(config.GetLogProperties()));
 
         /*
          * LAN 2020-07-09 EICSSW-717
@@ -101,9 +101,17 @@ int main(int argc, char *argv[]) {
                 &action_mgr.GetActivities());
 
         // Register handlers to reject events
-        //state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Init>();
-        //state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Enable>();
-        //state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Disable>();
+        state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Init>();
+        state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Reset>();
+        state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Enable>();
+        state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Disable>();
+        state_machine.RegisterDefaultRequestRejectHandler<StdCmds::GetState>();
+        state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Stop>();
+        state_machine.RegisterDefaultRequestRejectHandler<StdCmds::Exit>();
+        state_machine.RegisterDefaultRequestRejectHandler<StdCmds::SetLogLevel>();
+        state_machine.RegisterDefaultRequestRejectHandler<ExternalCmds::Setup>();
+        state_machine.RegisterDefaultRequestRejectHandler<ExternalCmds::Preset>();
+
 
         // Register publisher to export state information
         state_machine.SetStatusRepresentation(false);

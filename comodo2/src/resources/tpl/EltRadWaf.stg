@@ -1,6 +1,6 @@
 delimiters "%", "%"
 
-WscriptMal(moduleName, parentName) ::= <<
+WscriptMal(moduleName, parentName, usedModules) ::= <<
 """
 @file
 @ingroup %moduleName%
@@ -13,7 +13,7 @@ WscriptMal(moduleName, parentName) ::= <<
 
 from wtools.module import declare_malicd
 
-declare_malicd()
+declare_malicd(%usedModules%)
 
 >>
 

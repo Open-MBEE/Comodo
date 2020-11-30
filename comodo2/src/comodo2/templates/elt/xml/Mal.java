@@ -52,16 +52,6 @@ public class Mal implements IGenerator {
 	 */
 	@Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
-		/*
-		Iterable<Interface> _filter = Iterables.<Interface>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), Interface.class);
-		for (final Interface e : _filter) {
-			if ((mQInterface.isToBeGenerated(e) && mQInterface.hasRequests(e))) {
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(e).getName())));
-				fsa.generateFile(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(e).getName()), this.generate(e));
-				return;
-			}
-		}
-		*/
 		final TreeIterator<EObject> allContents = input.getAllContents();
 		while (allContents.hasNext()) {
 			EObject o = allContents.next();
