@@ -23,3 +23,10 @@
 | | Cleanup         | ../gen/   |
 | | Comodo          | ../model/hello/EELT_ICS_ApplicationFramework.uml | ../gen/ | externalif2 hellomalif2 hellomal2 | ELT-RAD | ALL | 
 | | Verify          | ../ref/hello2/ | ../gen/   |
+
+| Generate ccs-prototype | 
+| | [Documentation] | Generate TrkLsv module. |
+| | [Tags]          | TestTrkLsv |
+| | Cleanup         | ../gen/   |
+| | Comodo          | ../model/ccs-prototype/ELT_Project.uml | ../gen/ | TrkLsv | SCXML | ALL |  |
+| | Verify          | ../ref/ccs-prototype/ | ../gen/   |
