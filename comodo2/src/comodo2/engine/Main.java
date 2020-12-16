@@ -10,10 +10,10 @@ import java.util.Map;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -60,11 +60,13 @@ public class Main {
 
 		// -m option is added manually since requires multiple number of values
 		// -m for some platform may not be required
-		OptionBuilder.withArgName("m");
-		OptionBuilder.withLongOpt("modules");
-		OptionBuilder.hasArgs();
-		OptionBuilder.withDescription("Specify the module(s) to generate.");
-		opt.addOption(OptionBuilder.create("m"));
+		Option option = Option.builder("m")
+			    .longOpt( "modules" )
+			    .desc( "Specify the module(s) to generate."  )
+			    .hasArg()
+			    .argName( "modules" )
+			    .build();
+		opt.addOption(option);
 		return opt;
 	}
 
@@ -72,7 +74,7 @@ public class Main {
 		mLogger.setLevel(Level.INFO);
 
 		Options options = getOptions();
-		final CommandLineParser parser = new PosixParser();
+		final CommandLineParser parser = new DefaultParser();
 		CommandLine line = null;
 		try {
 			Config.getInstance().setStartTime();
