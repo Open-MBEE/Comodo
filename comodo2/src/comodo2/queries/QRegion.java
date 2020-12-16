@@ -8,7 +8,6 @@ import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
-import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Vertex;
 
 public class QRegion {
