@@ -135,10 +135,8 @@ public class Scxml implements IGenerator {
 	public CharSequence exploreState(final State s) {
 		if (s.isSimple()) {
 			return exploreSimpleState(s);
-		} else {
-			if (s.isComposite()) {
-				return exploreCompositeState(s);
-			}
+		} else if (s.isComposite()) {
+			return exploreCompositeState(s);
 		}
 		return "COMODO2 ERROR transforming " + s.getName() + " state!";
 	}
@@ -227,29 +225,31 @@ public class Scxml implements IGenerator {
 	*/
 		Iterable<Region> regions = Iterables.<Region>filter(s.allOwnedElements(), Region.class);
 		for(final Region r : regions) {
-			str.append("  ");
-			str.append("<state id=\"" + mQRegion.getRegionName(r) + "\">");
-			str.newLineIfNotEmpty();
-			str.append("    " + printInitial(mQRegion.getInitialStateName(r)), "    ");
-			str.newLineIfNotEmpty();
-			/*
-			final Function1<State, Boolean> _function_1 = (State e1) -> {
-				Element _owner = e1.getOwner();
-				return Boolean.valueOf(Objects.equal(_owner, r));
-			};
-			Iterable<State> _filter_1 = IterableExtensions.<State>filter(Iterables.<State>filter(r.allOwnedElements(), State.class), _function_1);
-			*/
-			Iterable<State> substates = Iterables.<State>filter(r.allOwnedElements(), State.class);			
-			for(final State substate : substates) {
-				if (Objects.equal(substate.getOwner(), r)) {
-					str.newLine();
-					str.append("    " + exploreState(substate), "\t");
-					str.newLineIfNotEmpty();
+			if (r.getOwner() == s) {
+				str.append("  ");
+				str.append("<state id=\"" + mQRegion.getRegionName(r) + "\">");
+				str.newLineIfNotEmpty();
+				str.append("    " + printInitial(mQRegion.getInitialStateName(r)), "    ");
+				str.newLineIfNotEmpty();
+				/*
+				final Function1<State, Boolean> _function_1 = (State e1) -> {
+					Element _owner = e1.getOwner();
+					return Boolean.valueOf(Objects.equal(_owner, r));
+				};
+				Iterable<State> _filter_1 = IterableExtensions.<State>filter(Iterables.<State>filter(r.allOwnedElements(), State.class), _function_1);
+				*/
+				Iterable<State> substates = Iterables.<State>filter(r.allOwnedElements(), State.class);			
+				for(final State substate : substates) {
+					if (Objects.equal(substate.getOwner(), r)) {
+						str.newLine();
+						str.append("    " + exploreState(substate), "\t");
+						str.newLineIfNotEmpty();
+					}
 				}
+				str.newLine();
+				str.append("  " + printStateEnd(), "  ");
+				str.newLineIfNotEmpty();
 			}
-			str.newLine();
-			str.append("  " + printStateEnd(), "  ");
-			str.newLineIfNotEmpty();
 		}
 				
 		if (mQState.hasHistory(s)) {
