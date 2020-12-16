@@ -10,11 +10,14 @@
 
 | *Keywords*        |
 
+
 | Comodo |
-# avoidFullyQualifiedNamesFlag = '-a' 
-# noBackupFlag = '-n'
-| | [Arguments]  | ${inModel} | ${outDir} | ${modules} | ${targetPlatform} | ${genMode} | ${avoidFullyQualifiedNamesFlag}='-a' |
-| | ${result} =  | Run Process  | comodo | -i | ${inModel} | -o | ${outDir} | -m | ${modules} | -t | ${targetPlatform} | -g | ${genMode} | -n | ${useFullyQualifiedNamesFlag} | -d | alias=cmdoApp | stdout=${COMODO_LOG_FILE} | stderr=${COMODO_ERR_FILE} | 
+| | [Arguments]  | ${inModel} | ${outDir} | ${modules} | ${targetPlatform} | ${genMode} |
+| | ${result} =  | Run Process  | comodo | -i | ${inModel} | -o | ${outDir} | -m | ${modules} | -t | ${targetPlatform} | -g | ${genMode} | -n | -a | -d | alias=cmdoApp | stdout=${COMODO_LOG_FILE} | stderr=${COMODO_ERR_FILE} | 
+
+| ComodoWithFullyQualifiedNames |
+| | [Arguments]  | ${inModel} | ${outDir} | ${modules} | ${targetPlatform} | ${genMode} |
+| | ${result} =  | Run Process  | comodo | -i | ${inModel} | -o | ${outDir} | -m | ${modules} | -t | ${targetPlatform} | -g | ${genMode} | -n | -d | alias=cmdoApp | stdout=${COMODO_LOG_FILE} | stderr=${COMODO_ERR_FILE} | 
 
 | | Log | ${result.stdout} |
 | | Log | ${result.stderr} |
