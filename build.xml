@@ -1,0 +1,111 @@
+<project>
+	<property name="SRC_PATH" value="comodo2/src"/>
+	<property name="TEST_PATH" value="comodo2/test"/>
+	<property name="LIB_PATH" value="libs"/>
+	<property name="BIN_PATH" value="build/jar" />
+	<property name="CLASSES_PATH" value="build/classes" />
+	<property name="debuglevel" value="source,lines,vars"/>
+	    	
+	<!-- Classpath !-->
+	<path id="comodo2.classpath">
+	   	<fileset dir="${LIB_PATH}/" includes="*.jar"/>
+	   	<fileset dir="${SRC_PATH}"/>
+	   	<!--fileset dir="${SRC_PATH}/resources" includes="GeneratorWorkflow.mwe2"/!-->
+	   	<!--fileset dir="${SRC_PATH}/resources/tpl" includes="*.stg"/!-->
+	</path>
+	
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${CLASSES_PATH}"/>
+        <javac debug="true" debuglevel="${debuglevel}" includeantruntime="false" srcdir="${SRC_PATH}" destdir="${CLASSES_PATH}">
+        	<classpath refid="comodo2.classpath"/> 
+        </javac>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="${BIN_PATH}"/>
+        <jar destfile="${BIN_PATH}/comodo2.jar" basedir="${CLASSES_PATH}">
+        	<fileset dir="${SRC_PATH}"/>  
+            <!--fileset dir="${TEST_PATH}/hello/model" includes="*.uml"/!-->  
+        	<manifest>
+                <attribute name="Main-Class" value="comodo2.engine.Main"/>
+            	<!--attribute name="Class-Path" value="." /!-->
+                <!--attribute name="Class-Path" value="${SRC_PATH}/resources/GeneratorWorkflow.mwe2"/!-->
+            </manifest>
+        </jar>
+    </target>
+
+	<!--target name="executable">
+	        <echo message="${ant.project.name}: ${ant.file}"/>
+	        <javac debug="true" debuglevel="${debuglevel}" includeantruntime="false" destdir="${BIN_PATH}" >
+	            <src path="."/>
+	            <classpath refid="comodo2.classpath"/>            
+	        </javac>
+	        <jar destfile="${BIN_PATH}/comodo2.jar" basedir="${CLASSES_PATH}">
+				<fileset dir="${SRC_PATH}"/>  
+	        	<zipfileset dir="${LIB_PATH}"/>  
+	        	<zipfileset src="${LIB_PATH}/jar-in-jar-loader.zip"/>
+	        	<manifest>
+	        		<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+	    			<attribute name="Built-Date" value="${TODAY}"/>
+	        		<attribute name="Class-Path" value="."/> 
+	        		<attribute name="Rsrc-Main-Class" value="comodo2.engine.Main"/>
+	    			<attribute name="Rsrc-Class-Path" value="./ 
+	    				jar-in-jar-loader.zip
+						libs/com.google.guava_21.0.0.v20170206-1425.jar
+	    				libs/com.google.inject_3.0.0.v201312141243.jar
+	    				libs/javax.inject_1.0.0.v20091030.jar
+	    				libs/org.antlr.runtime_3.2.0.v201101311130.jar
+	    				libs/org.apache.commons.cli_1.2.0.v201404270220.jar
+	    				libs/org.apache.commons.logging_1.2.0.v20180409-1502.jar
+	    				libs/org.apache.log4j_1.2.15.v201012070815.jar
+	    				libs/org.eclipse.core.contenttype_3.7.300.v20190215-2048.jar
+	    				libs/org.eclipse.core.jobs_3.10.300.v20190215-2048.jar
+	    				libs/org.eclipse.core.runtime_3.15.200.v20190301-1641.jar
+	    				libs/org.eclipse.emf.common_2.15.0.v20181220-0846.jar
+	    				libs/org.eclipse.emf.ecore_2.17.0.v20190116-0940.jar
+	    				libs/org.eclipse.emf.ecore.xmi_2.15.0.v20180706-1146.jar
+	    				libs/org.eclipse.emf.mapping.ecore2xml_2.11.0.v20180706-1146.jar
+	    				libs/org.eclipse.emf.mwe.core_1.4.0.jar
+	    				libs/org.eclipse.emf.mwe.utils_1.4.0.jar
+	    				libs/org.eclipse.emf.mwe2.language_2.10.0.jar
+	    				libs/org.eclipse.emf.mwe2.launch_2.10.0.jar
+	    				libs/org.eclipse.emf.mwe2.runtime_2.10.0.jar
+	    				libs/org.eclipse.equinox.app_1.4.100.v20190215-2139.jar
+	    				libs/org.eclipse.equinox.common_3.10.300.v20190218-2100.jar
+	    				libs/org.eclipse.equinox.preferences_3.7.300.v20190218-2100.jar
+	    				libs/org.eclipse.equinox.registry_3.8.300.v20190218-2100.jar
+	    				libs/org.eclipse.osgi_3.13.300.v20190218-1622.jar
+	    				libs/org.eclipse.osgi.compatibility.state_1.1.400.v20190208-1533.jar
+	    				libs/org.eclipse.uml2.common_2.5.0.v20181203-1331.jar
+	    				libs/org.eclipse.uml2.types_2.5.0.v20181203-1331.jar
+	    				libs/org.eclipse.uml2.uml_5.5.0.v20181203-1331.jar
+	    				libs/org.eclipse.uml2.uml.profile.standard_1.5.0.v20181203-1331.jar
+	    				libs/org.eclipse.uml2.uml.resources_5.5.0.v20181203-1331.jar
+	    				libs/org.eclipse.xtend.lib_2.17.1.v20190401-1111.jar
+	    				libs/org.eclipse.xtend.lib.macro_2.17.1.v20190401-1111.jar
+	    				libs/org.eclipse.xtext_2.17.1.v20190402-0537.jar
+	    				libs/org.eclipse.xtext.common.types_2.17.1.v20190402-0745.jar
+	    				libs/org.eclipse.xtext.util_2.17.1.v20190402-0537.jar
+	    				libs/org.eclipse.xtext.xbase.lib_2.17.1.v20190401-1111.jar
+	    				libs/org.objectweb.asm_7.0.0.v20181030-2244.jar
+	    				libs/ST-4.3.1.jar" />
+				</manifest>
+			</jar>
+		</target!-->
+
+    <target name="run">
+     	<java classname="comodo2.engine.Main" fork="true" failonerror="true">
+     		<arg line="-i 'comodo2\test\hello\model\EELT_ICS_ApplicationFramework.uml' -o gen -t ELT-RAD -m 'externalif2 hellomalif2 hellomal2' -g ALL -d -a -n"/>
+     		<classpath refid="comodo2.classpath"/>
+    		<!--classpath>
+	    		<path location="${BIN_PATH}/comodo2.jar"/>
+    		</classpath!-->	
+    	</java>
+    </target>
+
+</project>
+
