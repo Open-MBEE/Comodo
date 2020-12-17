@@ -1,0 +1,61 @@
+<project>
+        <property environment="env"/>
+        <property name="debuglevel" value="source,lines,vars"/>
+	
+	<property name="SRC_PATH" value="comodo2/src"/>
+	<property name="TEST_PATH" value="comodo2/test"/>
+	<property name="LIB_PATH" value="libs"/>
+	<property name="BIN_PATH" value="build/jar" />
+	<property name="CLASSES_PATH" value="build/classes" />
+	<property name="INSTALL_PATH" value="${env.PREFIX}/lib" />
+	    	
+	<!-- Classpath !-->
+	<path id="comodo2.classpath">
+	   	<fileset dir="${LIB_PATH}/" includes="*.jar"/>
+	   	<fileset dir="${SRC_PATH}"/>
+	   	<!--fileset dir="${SRC_PATH}/resources" includes="GeneratorWorkflow.mwe2"/!-->
+	   	<!--fileset dir="${SRC_PATH}/resources/tpl" includes="*.stg"/!-->
+	</path>
+	
+	<target name="clean">
+	  <echo message="Deleting build/ directory"/>
+          <delete dir="build"/>
+	</target>
+
+    <target name="compile">
+      <echo message="Compiling comodo2 source files"/>
+      <mkdir dir="${CLASSES_PATH}"/>
+        <javac debug="true" debuglevel="${debuglevel}" includeantruntime="false" srcdir="${SRC_PATH}" destdir="${CLASSES_PATH}">
+        	<classpath refid="comodo2.classpath"/> 
+        </javac>
+    </target>
+
+    <target name="jar">
+        <echo message="Creating comodo2.jar file"/>
+        <mkdir dir="${BIN_PATH}"/>
+        <jar destfile="${BIN_PATH}/comodo2.jar" basedir="${CLASSES_PATH}">
+        	<fileset dir="${SRC_PATH}"/>  
+            <!--fileset dir="${TEST_PATH}/hello/model" includes="*.uml"/!-->  
+        	<manifest>
+                <attribute name="Main-Class" value="comodo2.engine.Main"/>
+            	<!--attribute name="Class-Path" value="." /!-->
+                <!--attribute name="Class-Path" value="${SRC_PATH}/resources/GeneratorWorkflow.mwe2"/!-->
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="build" depends="compile,jar">
+    </target>
+    
+    <target name="install">
+      <echo message="Installing comodo2.jar and required .jar into ${INSTALL_PATH}"/>
+      <copy todir="${INSTALL_PATH}">
+        <fileset dir="${LIB_PATH}" includes="*.jar"/>
+      </copy>
+      <copy file="${BIN_PATH}/comodo2.jar" todir="${INSTALL_PATH}"/>
+      <copy file="${BIN_PATH}/comodo2.jar" todir="${INSTALL_PATH}"/>
+
+    </target>
+
+</project>
+

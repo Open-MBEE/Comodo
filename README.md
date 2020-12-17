@@ -2,9 +2,24 @@ COMODO2
 =======
 COMODO2 is a Java tool that allows to transform a UML/SysML model into code for different software platforms.
 
-Installation
-------------
-To install COMODO2 from GIT repository:
+Installation from OpenMBEE Git repository using ant
+---------------------------------------------------
+To install COMODO2 from OpenMBEE GIT repository:
+
+    $ git lfs install
+    $ git clone https://github.com/Open-MBEE/Comodo.git comodo2  
+    $ cd comodo2
+    $ git lfs pull
+    $ ant build
+    $ ant install
+
+JARs (including comodo2.jar) are installed by ant in `$PREFIX/lib` directory.
+
+A wrapper script, comodo, that sets the correct classpath is installed in `$PREFIX/bin` directory.
+
+Installation from ESO Git repository using waf
+----------------------------------------------
+To install COMODO2 from ESO GIT repository (it requires waf and wtools):
 
     $ git lfs install
     $ git clone https://gitlab.eso.org/ifw/comodo2.git comodo2  
