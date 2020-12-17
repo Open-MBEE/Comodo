@@ -8,7 +8,7 @@ import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
-import org.eclipse.uml2.uml.Transition;
+import org.eclipse.uml2.uml.Vertex;
 
 public class QRegion {
 	@Inject
@@ -35,14 +35,27 @@ public class QRegion {
 		return r.getName();
 	}
 
+	/*
+	 * 	def String getInitialStateName(Region r) {
+		for (ps : r.allOwnedElements().filter(Pseudostate)) {
+			if (ps.kind ==  PseudostateKind.INITIAL_LITERAL &&
+				ps.container.owner == r.getParentState &&
+				ps.outgoings.size == 1 &&
+				ps.outgoings.head.target !== null) {
+				return (ps.outgoings.head.target as State).getStateName
+			}
+		}
+		return ""
+	}
+	 */
 	public String getInitialStateName(final Region r) {
 		for (final Pseudostate ps : Iterables.<Pseudostate>filter(r.allOwnedElements(), Pseudostate.class)) {
 			if ((ps.getKind() == PseudostateKind.INITIAL_LITERAL) &&
 			    Objects.equal(ps.getContainer().getOwner(), this.getParentState(r)) &&
 				(ps.getOutgoings().size() == 1)) {
-				Transition t = ps.getOutgoings().get(0);
-				if (t != null) {
-					return  mQState.getStateName((State)t);
+				Vertex v = ps.getOutgoings().get(0).getTarget();
+				if (v != null) {
+					return  mQState.getStateName((State)v);
 				}
 			}
 		}

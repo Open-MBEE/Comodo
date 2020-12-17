@@ -3,14 +3,19 @@ package comodo2.templates.elt.cpp;
 import com.google.common.collect.Iterables;
 import comodo2.engine.Config;
 import comodo2.queries.QClass;
+import comodo2.queries.QSignal;
 import comodo2.queries.QInterface;
+import comodo2.queries.QStereotype;
 import comodo2.utils.FilesHelper;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Signal;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
@@ -30,6 +35,12 @@ public class RadMain implements IGenerator {
 
 	@Inject
 	private FilesHelper mFilesHelper;
+
+	@Inject
+	private QSignal mQSignal;
+	
+	@Inject
+	private QStereotype mQStereotype;
 
 	/**
 	 * Transform UML State Machine associated to a class (classifier behavior)
@@ -57,6 +68,7 @@ public class RadMain implements IGenerator {
 			st.add("fileName", fileName);
 			st.add("moreIncludes", printMoreIncludes(moduleName, c));
 			st.add("fullyQualifiedStateNames", Config.getInstance().generateFullyQualifiedStateNames());	
+			st.add("rejectHandlers", printRejectHandlers(moduleName, c));	
 			st.add("ifRegistration", printIfRegistration(moduleName, c));	
 			return st.render();
 		} catch(Throwable throwable) {
@@ -86,6 +98,24 @@ public class RadMain implements IGenerator {
 			}
 		}
 		return s;
+	}
+
+	public CharSequence printRejectHandlers(final String moduleName, final org.eclipse.uml2.uml.Class c) {
+		String str = "";
+		for (final Interface i : c.allRealizedInterfaces()) {
+			for (final Reception r : i.getOwnedReceptions()) {
+				Signal s = r.getSignal();
+				if (s != null) {
+					if (mQStereotype.isComodoCommand(((Element) s))) {
+						str += "state_machine.RegisterDefaultRequestRejectHandler<" + mQSignal.nameWithNamespace(s) + ">();\n";
+					}
+				}
+			}
+		}
+		/*
+		 * TODO add the SysML case
+		 */
+		return str;
 	}
 
 }

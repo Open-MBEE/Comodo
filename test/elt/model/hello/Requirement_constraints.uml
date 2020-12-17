@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:ValidationProfile="http://UML_Standard_Profile/Validation_Profile/_11_5_f720368_1159529670215_231387_1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_wiAvwi52EeuQBN9QbdAjGA http://UML_Standard_Profile/Validation_Profile/_11_5_f720368_1159529670215_231387_1 UML_Standard_Profile.Validation_Profile.profile.uml#_wiIrkS52EeuQBN9QbdAjGA">
+  <uml:Model xmi:id="d692863b-a9be-4e56-a3da-95073d7bb4b3" name="Model" visibility="public" URI="" viewpoint="">
+    <packageImport xmi:id="_0primitiveTypesModel">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypesModel">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="fcd7a7d2-17b8-414d-b37f-5f0d39bc5e1a" name="Requirement constraints" visibility="public" URI="">
+      <packagedElement xmi:type="uml:Package" xmi:id="97b8d576-4484-423d-8adc-81eeb0e56b68" name="ValSuite - Requirements" visibility="public" URI="">
+        <ownedComment xmi:id="5cd2c00c-148c-4268-b6e2-c63525c09f45" annotatedElement="97b8d576-4484-423d-8adc-81eeb0e56b68" body="Requirement validation suite for SysML project"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="803d4bfb-bc65-4b4b-b772-1b0dbcff9eed" name="TestCase" visibility="public" URI="">
+          <ownedRule xmi:id="7f316027-f868-426c-8470-b78d27eb0c82" name="Invalid return parameter type" visibility="public">
+            <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Behavior"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="a5189a90-2eda-4077-b705-09738e192851" name="" visibility="public">
+              <language>Binary</language>
+              <body>com.nomagic.requirements.validation.requirement.Requirement.isValidTestCase</body>
+            </specification>
+          </ownedRule>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="a3e34577-0606-48ed-a6fa-73b8611ce588" name="Copy" visibility="public" URI="">
+          <ownedRule xmi:id="6a84eaa2-68cb-4f66-9ce0-794c9415b637" name="Invalid Slave Requirement text" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#f10fee9c-fe95-446b-ac9d-dfa10b30a950"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="2a9debff-b2ce-4fe3-b34a-e78c36797321" name="" visibility="public">
+              <language>Binary</language>
+              <body>com.nomagic.requirements.validation.requirement.Requirement.isValidClientReadOnlyCopySupplier</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="e1f7b951-28c0-48d1-95b1-73fda469e903" name="Invalid Copy of requirement" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#f10fee9c-fe95-446b-ac9d-dfa10b30a950"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="0e197b92-1c55-4862-8d43-6fd795057fb8" name="" visibility="public">
+              <language>Binary</language>
+              <body>com.nomagic.requirements.validation.requirement.Requirement.hasSingleCopy</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="e2789f2d-8eb2-4ead-837a-6d9d21f0da54" name="Missing Recursive copy of sub-requirement" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#f10fee9c-fe95-446b-ac9d-dfa10b30a950"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="687af114-20f4-457c-91fc-9de5c09f51f0" name="" visibility="public">
+              <language>Binary</language>
+              <body>com.nomagic.requirements.validation.requirement.Requirement.isValidCopyRequirement</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="16e80fcc-35d9-4967-baa1-2bf16d4ffbaa" name="Recursive loop of Copy dependencies" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#f10fee9c-fe95-446b-ac9d-dfa10b30a950"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="e6bb3431-08ef-4471-9737-030a395b2882" name="" visibility="public">
+              <language>Binary</language>
+              <body>com.nomagic.requirements.validation.requirement.Requirement.hasNoRecursiveCopy</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="ced966ce-bec0-4898-81d6-3422d322391f" name="Invalid stereotype(s) of client/supplier of Copy" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#f10fee9c-fe95-446b-ac9d-dfa10b30a950"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="08ea91db-6a2e-42f3-963f-7239cdea48eb" name="" visibility="public">
+              <language>Binary</language>
+              <body>com.nomagic.requirements.validation.requirement.Requirement.isRequirementBetweenCopy</body>
+            </specification>
+          </ownedRule>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="fb855d5a-76dd-4ffa-b830-2ac8b50e8d50" name="DeriveReqt" visibility="public" URI="">
+          <ownedRule xmi:id="5e33e57a-e98b-4e95-a718-573c0b2cdc8b" name="Invalid source or target of DeriveReqt" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#44302170-cf3f-4c82-a4fa-d68886d81e27"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="f677096e-5cc2-4374-8995-3dee2b737f13" name="" visibility="public">
+              <language>OCL2.0</language>
+              <body>client->forAll(oclIsKindOf(SysML::Requirements::Requirement)) and supplier->forAll(oclIsKindOf(SysML::Requirements::Requirement))</body>
+            </specification>
+          </ownedRule>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="2d2ee292-3c79-4ef8-a510-c4ba6639ab84" name="Requirement" visibility="public" URI="">
+          <ownedRule xmi:id="cb8e2522-f210-4bc2-9172-f8a394fdefb6" name="Invalid owned operation of Requirement" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#e7fec716-0c02-4505-9a83-201ec7e8c822"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="00dbee0e-d161-4355-b233-1846ad2f57ec" name="" visibility="public">
+              <language>OCL2.0</language>
+              <body>ownedOperation->isEmpty()</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="64b1237c-48f4-4c36-9201-a139f54fa27b" name="Invalid owned attribute of Requirement" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#e7fec716-0c02-4505-9a83-201ec7e8c822"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="e0c1c4af-8c80-41f8-b5fa-b8b21ff4147f" name="" visibility="public">
+              <language>OCL2.0</language>
+              <body>ownedAttribute->isEmpty()</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="1752649b-b320-47e2-a53e-3fa82beddf05" name="Invalid generalization of Requirement" visibility="public">
+            <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Generalization"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="3defda4c-05c1-4a8d-866e-67d2de56c43e" name="" visibility="public">
+              <language>OCL2.0</language>
+              <body>(not general.oclIsKindOf(SysML::Requirements::Requirement)) and (not specific.oclIsKindOf(SysML::Requirements::Requirement))</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="6aebfb89-1261-4999-85bb-518c34272746" name="Missing requirement stereotype" visibility="public">
+            <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Classifier"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="2bb59763-ddfd-4892-88db-9f40289e04f2" name="" visibility="public">
+              <language>Binary</language>
+              <body>com.nomagic.requirements.validation.requirement.Requirement.isValidNested</body>
+            </specification>
+          </ownedRule>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="aebf6354-a170-429d-b882-06016e34ae83" name="ActiveValSuite - Requirements" visibility="public" URI="">
+        <ownedComment xmi:id="09ef8aa5-bbe6-4001-b04a-d72452bad4c1" annotatedElement="aebf6354-a170-429d-b882-06016e34ae83" body="Requirement active validation suite for SysML project"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="699e3cff-2476-478a-aaac-5e3e8778022d" name="TestCase" visibility="public" URI="">
+          <ownedRule xmi:id="dfd9919c-f5e0-4aef-8d0b-f8228cea3512" name="Invalid return parameter type" visibility="public">
+            <constrainedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Behavior"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="a709cb77-2d41-4043-8149-fae41ab783fd" name="" visibility="public">
+              <language>Binary</language>
+              <body></body>
+            </specification>
+          </ownedRule>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="ca6a8233-4ae9-4324-a245-fc0e44136b63" name="Copy" visibility="public" URI="">
+          <ownedRule xmi:id="8ee1309c-3b72-470d-9964-3e5abda81da5" name="Invalid Slave Requirement text" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#f10fee9c-fe95-446b-ac9d-dfa10b30a950"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="ac36ef6e-e435-4650-8fee-e2416d3a5030" name="" visibility="public">
+              <language>Binary</language>
+              <body></body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="09bcae8c-f8e3-4721-9ae9-61f483624e00" name="Invalid Copy of requirement" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#f10fee9c-fe95-446b-ac9d-dfa10b30a950"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="d8d75e06-ef9f-48bd-8ef2-196c2cb31552" name="" visibility="public">
+              <language>Binary</language>
+              <body></body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="998ba698-ee01-465e-a4cc-99b2532cd62a" name="Invalid stereotype(s) of client/supplier of Copy" visibility="public">
+            <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#f10fee9c-fe95-446b-ac9d-dfa10b30a950"/>
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="e6a71bf7-f82f-47f7-a9f9-b7136222c06d" name="" visibility="public">
+              <language>English</language>
+              <body></body>
+            </specification>
+          </ownedRule>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="e886ceba-61a7-4159-a83c-93db2806b301" name="ValSuite - Suspect Links" visibility="public" URI="">
+        <ownedComment xmi:id="02054978-abfb-4ed0-8851-e185a44f6856" annotatedElement="e886ceba-61a7-4159-a83c-93db2806b301" body="Requirement validation suite for SysML project"/>
+        <ownedRule xmi:id="e675b31d-b519-47d7-9fdb-f0f9a427a201" name="Suspect Unlinked Requirement" visibility="public">
+          <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#bd81ab71-7706-4692-b158-d2f584ca2974"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="a7b28e85-2cce-4215-9178-6af3c2f49477" name="" visibility="public">
+            <language>Binary</language>
+            <body></body>
+          </specification>
+        </ownedRule>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="00cd25e9-de84-4965-97ac-4e05df395db2" name="ValSuite - Requirement Coverage" visibility="public" URI="">
+        <ownedRule xmi:id="455a0952-6792-4d0a-8d10-e24b9251e90b" name="Non-derived Requirement (Treat Owner as Grouping Element)" visibility="public">
+          <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#e7fec716-0c02-4505-9a83-201ec7e8c822"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="ebd096f6-04be-4f5f-8837-0a61459f3f6f" name="" visibility="public">
+            <language>English</language>
+            <body></body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="dcaa22d8-f07d-4235-8c80-f5fa7fddb0b2" name="Non-refined Requirement (Treat Owner as Grouping Element)" visibility="public">
+          <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#e7fec716-0c02-4505-9a83-201ec7e8c822"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="e55dd9cc-ccdd-4aed-a1ce-8fd7561b8a50" name="" visibility="public">
+            <language>English</language>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="0555e2e3-bb0e-44d5-a85b-9c2e4b69e029" name="Non-refined Requirement (Treat Owner as Requirement)" visibility="public">
+          <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#e7fec716-0c02-4505-9a83-201ec7e8c822"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="79070410-014f-4342-9f6e-031c6ea25ab4" name="" visibility="public">
+            <language>English</language>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="2ba10bfa-4aa5-4c87-8dca-6cf9ca02ae7c" name="Non-satisfied Requirement (Treat Owner as Grouping Element)" visibility="public">
+          <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#e7fec716-0c02-4505-9a83-201ec7e8c822"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="ef09040a-c720-460a-b95e-51269417621a" name="" visibility="public">
+            <language>English</language>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="923e28f8-b92e-415b-9c1c-2b9dff53f77d" name="Non-satisfied Requirement (Treat Owner as Requirement)" visibility="public">
+          <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#e7fec716-0c02-4505-9a83-201ec7e8c822"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="9516b321-c022-4e13-87b9-16075844d9f8" name="" visibility="public">
+            <language>English</language>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="ff6bf978-3877-4a33-a531-410e3f34a399" name="Non-verified Requirement (Treat Owner as Grouping Element)" visibility="public">
+          <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#e7fec716-0c02-4505-9a83-201ec7e8c822"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="6bd1b4ee-7001-4bbb-8b29-b2b3becdd1c0" name="" visibility="public">
+            <language>English</language>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="a705a113-f095-4724-b02e-ebec1dd0c9ea" name="Non-verified Requirement (Treat Owner as Requirement)" visibility="public">
+          <constrainedElement xmi:type="uml:Stereotype" href="SysML.profile.uml#e7fec716-0c02-4505-9a83-201ec7e8c822"/>
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="2890ad41-463d-4c2f-b5bd-e007b64b1149" name="" visibility="public">
+            <language>English</language>
+          </specification>
+        </ownedRule>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="5c56b417-3214-4864-9592-d4be706363eeprofileApplicationModel">
+      <eAnnotations xmi:id="_wlEDwi52EeuQBN9QbdAjGA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_wiAvwi52EeuQBN9QbdAjGA"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#5c56b417-3214-4864-9592-d4be706363ee"/>
+    </profileApplication>
+    <profileApplication xmi:id="8a00d2a9-6a76-48bd-9e88-1f603e81705aprofileApplicationModel">
+      <eAnnotations xmi:id="_wmyiEC52EeuQBN9QbdAjGA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#_wiIrkS52EeuQBN9QbdAjGA"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml#8a00d2a9-6a76-48bd-9e88-1f603e81705a"/>
+    </profileApplication>
+  </uml:Model>
+  <MagicDrawProfile:auxiliaryResource xmi:id="_wlEDwy52EeuQBN9QbdAjGA" base_Element="d692863b-a9be-4e56-a3da-95073d7bb4b3"/>
+  <MagicDrawProfile:auxiliaryResource xmi:id="_wlMmoS52EeuQBN9QbdAjGA" base_Element="fcd7a7d2-17b8-414d-b37f-5f0d39bc5e1a"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUicy52EeuQBN9QbdAjGA" base_Element="a705a113-f095-4724-b02e-ebec1dd0c9ea"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUidC52EeuQBN9QbdAjGA" base_Element="ff6bf978-3877-4a33-a531-410e3f34a399"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUidS52EeuQBN9QbdAjGA" base_Element="09bcae8c-f8e3-4721-9ae9-61f483624e00"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUidi52EeuQBN9QbdAjGA" base_Element="923e28f8-b92e-415b-9c1c-2b9dff53f77d"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUidy52EeuQBN9QbdAjGA" base_Element="2ba10bfa-4aa5-4c87-8dca-6cf9ca02ae7c"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUieC52EeuQBN9QbdAjGA" base_Element="0555e2e3-bb0e-44d5-a85b-9c2e4b69e029"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUieS52EeuQBN9QbdAjGA" base_Element="dcaa22d8-f07d-4235-8c80-f5fa7fddb0b2"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUiei52EeuQBN9QbdAjGA" base_Element="455a0952-6792-4d0a-8d10-e24b9251e90b"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUiey52EeuQBN9QbdAjGA" base_Element="e675b31d-b519-47d7-9fdb-f0f9a427a201"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUifC52EeuQBN9QbdAjGA" base_Element="998ba698-ee01-465e-a4cc-99b2532cd62a"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlUifS52EeuQBN9QbdAjGA" base_Element="dfd9919c-f5e0-4aef-8d0b-f8228cea3512"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJgC52EeuQBN9QbdAjGA" base_Element="8ee1309c-3b72-470d-9964-3e5abda81da5"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJgS52EeuQBN9QbdAjGA" base_Element="5e33e57a-e98b-4e95-a718-573c0b2cdc8b"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJgi52EeuQBN9QbdAjGA" base_Element="6aebfb89-1261-4999-85bb-518c34272746"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJgy52EeuQBN9QbdAjGA" base_Element="1752649b-b320-47e2-a53e-3fa82beddf05"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJhC52EeuQBN9QbdAjGA" base_Element="64b1237c-48f4-4c36-9201-a139f54fa27b"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJhS52EeuQBN9QbdAjGA" base_Element="cb8e2522-f210-4bc2-9172-f8a394fdefb6"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJhi52EeuQBN9QbdAjGA" base_Element="16e80fcc-35d9-4967-baa1-2bf16d4ffbaa"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJhy52EeuQBN9QbdAjGA" base_Element="e1f7b951-28c0-48d1-95b1-73fda469e903"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJiC52EeuQBN9QbdAjGA" base_Element="ced966ce-bec0-4898-81d6-3422d322391f"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJiS52EeuQBN9QbdAjGA" base_Element="e2789f2d-8eb2-4ead-837a-6d9d21f0da54"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJii52EeuQBN9QbdAjGA" base_Element="6a84eaa2-68cb-4f66-9ce0-794c9415b637"/>
+  <MagicDrawProfile:InvisibleStereotype xmi:id="_wlVJiy52EeuQBN9QbdAjGA" base_Element="7f316027-f868-426c-8470-b78d27eb0c82"/>
+  <MagicDrawProfile:Info xmi:id="_wlmPSC52EeuQBN9QbdAjGA" base_Package="e886ceba-61a7-4159-a83c-93db2806b301" author="NoMagic"/>
+  <MagicDrawProfile:Info xmi:id="_wlmPSS52EeuQBN9QbdAjGA" base_Package="97b8d576-4484-423d-8adc-81eeb0e56b68" author="NoMagic"/>
+  <MagicDrawProfile:RequiresFeature xmi:id="_wl04wi52EeuQBN9QbdAjGA" base_Element="00cd25e9-de84-4965-97ac-4e05df395db2" requiredFeature="FEATURE_190_SP2_RequirementCoverageValidationRuleSuite"/>
+  <ValidationProfile:validationSuite xmi:id="_wmyiES52EeuQBN9QbdAjGA" base_Package="e886ceba-61a7-4159-a83c-93db2806b301"/>
+  <ValidationProfile:validationSuite xmi:id="_wmzJIC52EeuQBN9QbdAjGA" base_Package="97b8d576-4484-423d-8adc-81eeb0e56b68"/>
+  <ValidationProfile:validationRule xmi:id="_wm520C52EeuQBN9QbdAjGA" base_Constraint="a705a113-f095-4724-b02e-ebec1dd0c9ea" implementation="com.nomagic.requirements.validation.requirement.UnverifiedRequirementValidationRule" abbreviation="UnverifiedReq" errorMessage="The requirement is not verified." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm520S52EeuQBN9QbdAjGA" base_Constraint="ff6bf978-3877-4a33-a531-410e3f34a399" implementation="com.nomagic.requirements.validation.requirement.UnverifiedGroupingRequirementValidationRule" abbreviation="UnverifiedReq" errorMessage="The requirement is not verified." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm520i52EeuQBN9QbdAjGA" base_Constraint="09bcae8c-f8e3-4721-9ae9-61f483624e00" implementation="com.nomagic.requirements.validation.requirement.SingleCopy" abbreviation="Copy[A]" errorMessage="A requirement can’t copy more than one requirement." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm520y52EeuQBN9QbdAjGA" base_Constraint="923e28f8-b92e-415b-9c1c-2b9dff53f77d" implementation="com.nomagic.requirements.validation.requirement.UnsatisfiedRequirementValidationRule" abbreviation="UnsatisfiedReq" errorMessage="The requirement is not satisfied." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm521C52EeuQBN9QbdAjGA" base_Constraint="2ba10bfa-4aa5-4c87-8dca-6cf9ca02ae7c" implementation="com.nomagic.requirements.validation.requirement.UnsatisfiedGroupingRequirementValidationRule" abbreviation="UnsatisfiedReq" errorMessage="The requirement is not satisfied." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm521S52EeuQBN9QbdAjGA" base_Constraint="0555e2e3-bb0e-44d5-a85b-9c2e4b69e029" implementation="com.nomagic.requirements.validation.requirement.UnrefinedRequirementValidationRule" abbreviation="UnrefinedReq" errorMessage="The requirement is not refined." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm6d4C52EeuQBN9QbdAjGA" base_Constraint="dcaa22d8-f07d-4235-8c80-f5fa7fddb0b2" implementation="com.nomagic.requirements.validation.requirement.UnrefinedGroupingRequirementValidationRule" abbreviation="UnrefinedReq" errorMessage="The requirement is not refined." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm6d4S52EeuQBN9QbdAjGA" base_Constraint="455a0952-6792-4d0a-8d10-e24b9251e90b" implementation="com.nomagic.requirements.validation.requirement.UnderivedGroupingRequirementValidationRule" abbreviation="UnderivedReq" errorMessage="The requirement is not derived." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm6d4i52EeuQBN9QbdAjGA" base_Constraint="e675b31d-b519-47d7-9fdb-f0f9a427a201" implementation="com.nomagic.requirements.suspects.NewRequirementValidationRuleImpl" abbreviation="UnlinkReq" errorMessage="An unlinked element was found." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm6d4y52EeuQBN9QbdAjGA" base_Constraint="998ba698-ee01-465e-a4cc-99b2532cd62a" implementation="com.nomagic.requirements.validation.requirement.ValidIsRequirementBetweenCopy" abbreviation="Copy[1]" errorMessage="A Copy dependency may only be created between two classes that have the “requirement” stereotype, or a subtype of the “requirement” stereotype applied." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm6d5C52EeuQBN9QbdAjGA" base_Constraint="dfd9919c-f5e0-4aef-8d0b-f8228cea3512" implementation="com.nomagic.requirements.validation.requirement.ValidTestCase" abbreviation="TestCase[1]" errorMessage="The type of return parameter of the stereotyped model element must be VerdictKind. (note this is consistent with the UML Testing Profile)." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm6d5S52EeuQBN9QbdAjGA" base_Constraint="8ee1309c-3b72-470d-9964-3e5abda81da5" implementation="com.nomagic.requirements.validation.requirement.ValidClientReadOnly" abbreviation="Copy[2]" errorMessage="The text property of the client requirement is constrained to be a copy of the text property of the supplier requirement." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm6d5i52EeuQBN9QbdAjGA" base_Constraint="5e33e57a-e98b-4e95-a718-573c0b2cdc8b" abbreviation="DeriveReqt[1] and DeriveReqt[2]" errorMessage="A DeriveReqt dependency may only be created between two classes that have the &quot;requirement&quot; stereotype, or a sub-type of the &quot;requirement&quot; stereotype applied." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm7E8C52EeuQBN9QbdAjGA" base_Constraint="6aebfb89-1261-4999-85bb-518c34272746" abbreviation="Requirement[5]" errorMessage="A nested classifier of a class stereotyped by «requirement» must also be stereotyped by «requirement»." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm7E8S52EeuQBN9QbdAjGA" base_Constraint="1752649b-b320-47e2-a53e-3fa82beddf05" abbreviation="Requirement[4]" errorMessage="Classes stereotyped by «requirement» may not participate in generalizations." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm7E8i52EeuQBN9QbdAjGA" base_Constraint="64b1237c-48f4-4c36-9201-a139f54fa27b" abbreviation="Requirement[2]" errorMessage="The property ownedAttribute must be empty." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm7sAC52EeuQBN9QbdAjGA" base_Constraint="cb8e2522-f210-4bc2-9172-f8a394fdefb6" abbreviation="Requirement[1]" errorMessage="The property ownedOperation must be empty." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm7sAS52EeuQBN9QbdAjGA" base_Constraint="16e80fcc-35d9-4967-baa1-2bf16d4ffbaa" abbreviation="Copy[B]" errorMessage="Copy dependencies should not from a cyclic graph." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm7sAi52EeuQBN9QbdAjGA" base_Constraint="e1f7b951-28c0-48d1-95b1-73fda469e903" abbreviation="Copy[A]" errorMessage="A requirement can’t copy more than one requirement." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm7sAy52EeuQBN9QbdAjGA" base_Constraint="ced966ce-bec0-4898-81d6-3422d322391f" abbreviation="Copy[1]" errorMessage="A Copy dependency may only be created between two classes that have the “requirement” stereotype, or a subtype of the “requirement” stereotype applied." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm7sBC52EeuQBN9QbdAjGA" base_Constraint="e2789f2d-8eb2-4ead-837a-6d9d21f0da54" abbreviation="Copy[C]" errorMessage="If the supplier requirement has sub requirements, copies of the sub requirements are made recursively in the context of the client requirement and Copy dependencies are created between each sub requirement and the associated copy." severity="info"/>
+  <ValidationProfile:validationRule xmi:id="_wm7sBS52EeuQBN9QbdAjGA" base_Constraint="6a84eaa2-68cb-4f66-9ce0-794c9415b637" abbreviation="Copy[2]" errorMessage="The text property of the client requirement is constrained to be a copy of the text property of the supplier requirement." severity="warning"/>
+  <ValidationProfile:validationRule xmi:id="_wm8TEC52EeuQBN9QbdAjGA" base_Constraint="7f316027-f868-426c-8470-b78d27eb0c82" abbreviation="TestCase[1]" errorMessage="The type of return parameter of the stereotyped model element must be VerdictKind. (note this is consistent with the UML Testing Profile)." severity="warning"/>
+  <ValidationProfile:activeValidationSuite xmi:id="_wndQcy52EeuQBN9QbdAjGA" base_Package="aebf6354-a170-429d-b882-06016e34ae83"/>
+</xmi:XMI>

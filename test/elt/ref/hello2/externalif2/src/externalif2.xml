@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schemas/icd_type_definition.xsd">
+    <package name="externalif2">
+        
+    <struct name="SetupParams">
+        <member name="key" type="string" arrayDimensions="(100)"/>
+        <member name="value" type="string" arrayDimensions="(100)"/>
+    </struct>
+    <struct name="PresetParams">
+        <member name="dec" type="double"/>
+        <member name="ra" type="double"/>
+    </struct>
+    <struct name="AllSupportedPrimitiveTypes">
+        <member name="MyBoolean" type="boolean"/>
+        <member name="MyInteger" type="int32_t"/>
+        <member name="MyReal" type="double"/>
+        <member name="MyString" type="string"/>
+    </struct>
+    <struct name="AllSupportedComodoTypes">
+        <member name="MyDouble" type="double"/>
+        <member name="MyFloat" type="float"/>
+        <member name="MyInt16" type="int8_t"/>
+        <member name="MyInt32" type="int32_t"/>
+        <member name="MyInt8" type="int8_t"/>
+        <member name="MyTimestamp" type="timestamp"/>
+        <member name="MyUInt16" type="uint16_t"/>
+        <member name="MyUInt32" type="uint32_t"/>
+        <member name="MyUInt8" type="uint8_t"/>
+    </struct>
+    
+    <interface name="ExternalCmds">
+        <method name="Preset" returnType="string">
+            <argument name="parameters" type="nonBasic" nonBasicTypeName="PresetParams"/>
+        </method>
+        <method name="Setup" returnType="string">
+            <argument name="parameters" type="nonBasic" nonBasicTypeName="SetupParams"/>
+        </method>
+    </interface>
+    
+    </package>
+</types>
