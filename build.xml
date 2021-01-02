@@ -20,8 +20,9 @@
   </path>
   
   <target name="clean">
-    <echo message="Deleting build/ directory"/>
+    <echo message="Deleting build/ and gen/ directories"/>
     <delete dir="build"/>
+    <delete dir="gen"/>
   </target>
 
   <target name="compile">
@@ -58,6 +59,85 @@
     <replace file="${INSTALL_PATH}/bin/comodo" token="{{ classpath }}" value="${INSTALL_PATH}/lib/*"/>
     <chmod file="${INSTALL_PATH}/bin/comodo" perm="755"/>
   </target>
-  
+
+ 
+
+  <target name="test1" depends="clean,compile,jar,install">
+    <exec executable="/bin/bash" failonerror="true">
+      <arg value="${INSTALL_PATH}/bin/comodo"/>
+      <arg value="-i"/>
+      <arg value="test/elt/model/hello/EELT_ICS_ApplicationFramework.uml"/>
+      <arg value="-o"/>
+      <arg value="./gen"/>
+      <arg value="-m"/>
+      <arg value="hellomalif hellomal"/>
+      <arg value="-t"/>
+      <arg value="ELT-RAD"/>
+      <arg value="-g"/>
+      <arg value="ALL"/>
+      <arg value="-n"/>
+      <arg value="-a"/>
+      <arg value="-d"/>
+    </exec>
+    <exec executable="diff" failonerror="true">
+      <arg value="gen/"/>
+      <arg value="test/elt/ref/hello/"/>
+    </exec>
+  </target>
+ 
+  <target name="test2" depends="clean, compile, jar, install">
+    <exec executable="/bin/bash" failonerror="true">
+      <arg value="${INSTALL_PATH}/bin/comodo"/>
+      <arg value="-i"/>
+      <arg value="test/elt/model/hello/EELT_ICS_ApplicationFramework.uml"/>
+      <arg value="-o"/>
+      <arg value="./gen"/>
+      <arg value="-m"/>
+      <arg value="hellomalif2 externalif2 hellomal2"/>
+      <arg value="-t"/>
+      <arg value="ELT-RAD"/>
+      <arg value="-g"/>
+      <arg value="ALL"/>
+      <arg value="-n"/>
+      <arg value="-a"/>
+      <arg value="-d"/>
+    </exec>
+    <exec executable="diff" failonerror="true">
+      <arg value="gen/"/>
+      <arg value="test/elt/ref/hello2/"/>
+    </exec>
+  </target>
+
+  <target name="test3" depends="clean, compile, jar, install">
+    <exec executable="/bin/bash" failonerror="true">
+      <arg value="${INSTALL_PATH}/bin/comodo"/>
+      <arg value="-i"/>
+      <arg value="test/elt/model/ccs-prototype/ELT_Project.uml"/>
+      <arg value="-o"/>
+      <arg value="./gen"/>
+      <arg value="-m"/>
+      <arg value="TrkLsv"/>
+      <arg value="-t"/>
+      <arg value="SCXML"/>
+      <arg value="-g"/>
+      <arg value="ALL"/>
+      <arg value="-n"/>
+      <arg value="-d"/>
+    </exec>
+    <exec executable="diff" failonerror="true">
+      <arg value="gen/"/>
+      <arg value="test/elt/ref/ccs-prototype/"/>
+    </exec>
+  </target>
+
+  <target name="test">
+    <antcall target="clean"/>
+    <antcall target="test1"/>
+    <antcall target="clean"/>
+    <antcall target="test2"/>
+    <antcall target="clean"/>
+    <antcall target="test3"/>
+  </target>
+
 </project>
 
