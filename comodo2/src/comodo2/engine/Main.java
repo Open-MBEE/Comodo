@@ -137,7 +137,10 @@ public class Main {
 			}
 			Config.getInstance().setModelFilepath(modelFilePath);
 			mLogger.debug("Resolved model name: <" + modelFilePath.toAbsolutePath() + ">");			
-			Path modelDirPath = modelFilePath.getParent();
+			Path modelDirPath = modelFilePath.toAbsolutePath().getParent();
+			if (modelDirPath == null) {
+				throw new ParseException("model parent directory path missing");				
+			}
 			mLogger.debug("Resolved model directory: <" + modelDirPath.toAbsolutePath() + ">");			
 
 			/*
