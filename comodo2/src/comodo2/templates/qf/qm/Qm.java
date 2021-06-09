@@ -301,6 +301,9 @@ public class Qm implements IGenerator {
 
 
 	public CharSequence printInitial(final String name) {
+		// TODO 
+		// this does not go through the very first initial node because it is a pseudostate
+		// need to have a function that returns top states AND initial pseudo state, not just top states.
 		String target_relative_path = "../1";
 		String init_c_code = "";
 
