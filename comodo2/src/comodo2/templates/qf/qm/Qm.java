@@ -334,7 +334,7 @@ public class Qm implements IGenerator {
 		if (!Objects.equal(targetName, "")) {
 			str += " target=\"" + targetName + "\"";
 		}
-		str += ">";
+		str += ">\n";
 
 		if (mQTransition.hasAction(t)){
 			// printAction expects a code string instead of a name. Look into uml.Transition.getEffect()
@@ -351,7 +351,7 @@ public class Qm implements IGenerator {
 		String conn = "conn_placeholder";
 		String box = "box_placeholder";
 
-		String str = "<initial_glyph conn=" + conn + ">\n";
+		String str = "<initial_glyph conn=\"" + conn + "\">\n";
 		str += "  <action box=\"" + box + "\"/>\n";
 		str += "</initial_glyph>\n";
 		return str;
