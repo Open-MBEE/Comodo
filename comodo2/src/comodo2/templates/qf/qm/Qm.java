@@ -308,12 +308,12 @@ public class Qm implements IGenerator {
 		str += "</initial>\n";
 		return str;
 	}
-	
+
 	public CharSequence printInitialGlyph() {
 		String conn = "conn_placeholder";
 		String box = "box_placeholder";
 
-		String str = "<initial_glyph conn=" + conn + ">\n";
+		String str = "<initial_glyph conn=\"" + conn + "\">\n";
 		str += "  <action box=\"" + box + "\"/>\n";
 		str += "</initial_glyph>\n";
 		return str;
