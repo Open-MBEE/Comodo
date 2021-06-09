@@ -303,7 +303,7 @@ public class Qm implements IGenerator {
 
 		String str = "<initial target =" + target_relative_path + ">\n";
 		str += " <action brief=\"" + name + "\">";
-		str += init_c_code + "</action>";
+		str += init_c_code + "</action>\n";
 		str += printInitialGlyph();
 		str += "</initial>\n";
 		return str;
