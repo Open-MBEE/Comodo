@@ -149,10 +149,11 @@ public class Qm implements IGenerator {
 	 */
 	public CharSequence exploreCompositeState(final State s) {
 		StringConcatenation str = new StringConcatenation();
-		if (s.isOrthogonal()) {
+		/*if (s.isOrthogonal()) {
 			str.append(exploreOrthogonalState(s));
 			str.newLineIfNotEmpty();
-		} else if (!Iterables.isEmpty(mQState.getAllNonFinalSubstates(s))) {
+		} else */
+		if (!Iterables.isEmpty(mQState.getAllNonFinalSubstates(s))) {
 			str.append(printStateStart(s));
 			str.newLineIfNotEmpty();
 			str.append("  " + printInitial(mQState.getInitialSubstateName(s)), "  ");
@@ -172,11 +173,11 @@ public class Qm implements IGenerator {
 				str.append("  " + exploreSimpleState(ss_2), "  ");
 				str.newLineIfNotEmpty();
 			}
-			if (mQState.hasHistory(s)) {
+			/*if (mQState.hasHistory(s)) {
 				str.newLine();
 				str.append("  " + exploreHistoryState(s), "  ");
 				str.newLineIfNotEmpty();
-			}
+			}*/
 			str.append("  " + exploreActions(s), "  ");
 			str.newLineIfNotEmpty();
 			str.append("  " + exploreTransitions(s), "  ");
@@ -190,7 +191,7 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
-	public CharSequence exploreOrthogonalState(final State s) {
+/*	public CharSequence exploreOrthogonalState(final State s) {
 		StringConcatenation str = new StringConcatenation();
 		str.append("<parallel id=\"" + mQState.getStateName(s) + "\">");
 		str.newLineIfNotEmpty();
@@ -229,9 +230,9 @@ public class Qm implements IGenerator {
 		str.append("</parallel>");
 		str.newLine();
 		return str;
-	}
+	}*/
 
-	public CharSequence exploreHistoryState(final State s) {
+/*	public CharSequence exploreHistoryState(final State s) {
 		String str = "";
 		for (final Pseudostate hs : mQState.getHistory(s)) {
 			str += "<history id=\"" + mQRegion.getRegionName(hs.getContainer()) + ":" +  hs.getName() + "\" type=\"" + mQState.getHistoryTypeName(hs) + "\">\n";
@@ -240,7 +241,7 @@ public class Qm implements IGenerator {
 			str += "</history>\n";
 		}
 		return str;
-	}
+	}*/
 
 	public CharSequence exploreActions(final State s) {
 		String str = "";
@@ -283,10 +284,40 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
+	public CharSequence printStateMachineStart(final StateMachine sm) {
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+					"<model version=\"5.1.1\" links=\"1\">\n" + 
+					" <framework name=\"qpc\"/>";
+	}
+
+	public CharSequence printStateMachineEnd() {
+		return "</model>\n";
+	}
+
+
+
+
+
+
+
 	public CharSequence printInitial(final String name) {
-		String str = "<initial>\n";
-		str += "  <transition target=\"" + name + "\"/>\n";
+		String target_relative_path = "../1";
+		String init_c_code = "";
+
+		String str = "<initial target =" + target_relative_path + ">\n";
+		str += " <action brief=\"" + name + "\"/>";
+		str += init_c_code + "</action>";
+		str += printInitialGlyph();
 		str += "</initial>\n";
+		return str;
+	}
+	public CharSequence printInitialGlyph() {
+		String conn = "conn_placeholder";
+		String box = "box_placeholder";
+
+		String str = "<initial_glyph conn=" + conn + ">\n";
+		str += "  <action box=\"" + box + "\"/>\n";
+		str += "</initial_glyph>\n";
 		return str;
 	}
 
@@ -376,13 +407,4 @@ public class Qm implements IGenerator {
 		return "<final id=\"" + mQState.getStateName(s) + "\"/>\n";
 	}
 
-	public CharSequence printStateMachineStart(final StateMachine sm) {
-		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-					"<model version=\"5.1.1\" links=\"1\">\n" + 
-					" <framework name=\"qpc\"/>";
-	}
-
-	public CharSequence printStateMachineEnd() {
-		return "</model>\n";
-	}
 }
