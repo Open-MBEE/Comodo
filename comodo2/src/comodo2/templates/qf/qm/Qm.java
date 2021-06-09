@@ -271,14 +271,8 @@ public class Qm implements IGenerator {
 						mQState.getStateName(s) + 
 						" has no trigger event and no guard, skipped since could introduce infinite loop!");
 			} else {
-				str.append(printTransitionStart(mQTransition.getFirstEventName(t), mQTransition.getResolvedGuardName(t), mQTransition.getTargetName(t), mQTransition.hasAction(t)));
+				str.append(printTransition(t));
 				str.newLineIfNotEmpty();
-				if (mQTransition.hasAction(t)) {
-					str.append("  " + printAction(mQTransition.getFirstActionName(t)), "  ");
-					str.newLineIfNotEmpty();
-					str.append(printTransitionEnd());
-					str.newLineIfNotEmpty();
-				}
 			}
 		}
 		return str;
@@ -308,12 +302,13 @@ public class Qm implements IGenerator {
 		String init_c_code = "";
 
 		String str = "<initial target =" + target_relative_path + ">\n";
-		str += " <action brief=\"" + name + "\"/>";
+		str += " <action brief=\"" + name + "\">";
 		str += init_c_code + "</action>";
 		str += printInitialGlyph();
 		str += "</initial>\n";
 		return str;
 	}
+	
 	public CharSequence printInitialGlyph() {
 		String conn = "conn_placeholder";
 		String box = "box_placeholder";
@@ -324,10 +319,14 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
-	public CharSequence printTransitionStart(final String eventName, final String guardName, final String targetName, final boolean hasAction) {
-		String str = "<transition";
+	public CharSequence printTransition(final Transition t) {
+		String eventName  = mQTransition.getFirstEventName(t); 
+		String guardName  = mQTransition.getResolvedGuardName(t);
+		String targetName = mQTransition.getTargetName(t); 
+
+		String str = "<tran";
 		if (!Objects.equal(eventName, "")) {
-			str += " event=\"" + eventName + "\"";
+			str += " trig=\"" + eventName + "\"";
 		}
 		if (!Objects.equal(guardName, "")) {
 			str += " cond=\"" + guardName + "\"";
@@ -335,16 +334,27 @@ public class Qm implements IGenerator {
 		if (!Objects.equal(targetName, "")) {
 			str += " target=\"" + targetName + "\"";
 		}
-		if (hasAction) {
-			str += ">";
-		} else {
-			str += "/>";
+		str += ">";
+
+		if (mQTransition.hasAction(t)){
+			// printAction expects a code string instead of a name. Look into uml.Transition.getEffect()
+			str += printAction(t.getName()); //TODO
 		}
+
+		str += printTransitionGlyph();
+
+		str += "</tran>";
 		return str;
 	}
 
-	public CharSequence printTransitionEnd() {
-		return "</transition>\n";
+	public CharSequence printTransitionGlyph() {
+		String conn = "conn_placeholder";
+		String box = "box_placeholder";
+
+		String str = "<initial_glyph conn=" + conn + ">\n";
+		str += "  <action box=\"" + box + "\"/>\n";
+		str += "</initial_glyph>\n";
+		return str;
 	}
 
 	public CharSequence printEntryActions(final State s) {
@@ -390,8 +400,8 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
-	public CharSequence printAction(final String name) {
-		return "<customActionDomain:" + name + " name=\"" + name + "\"/>\n";
+	public CharSequence printAction(final String codeString) {
+		return "<action>" + codeString + "</action>\n";
 	}
 
 	public CharSequence printDoActivities(final State s) {
