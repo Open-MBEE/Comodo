@@ -79,11 +79,11 @@ public class Qm implements IGenerator {
 
 	public CharSequence generate(final StateMachine sm) {
 		StringConcatenation str = new StringConcatenation();
-		str.append(printStateMachineStart(sm));
+		str.append(printDocumentStart());
 		str.newLineIfNotEmpty();
 		str.append("  " + exploreTopStates(sm), "  ");
 		str.newLineIfNotEmpty();
-		str.append(printStateMachineEnd());
+		str.append(printDocumentEnd());
 		str.newLineIfNotEmpty();
 		return str;
 	}
@@ -278,13 +278,13 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
-	public CharSequence printStateMachineStart(final StateMachine sm) {
+	public CharSequence printDocumentStart() {
 		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 					"<model version=\"5.1.1\" links=\"1\">\n" + 
 					" <framework name=\"qpc\"/>";
 	}
 
-	public CharSequence printStateMachineEnd() {
+	public CharSequence printDocumentEnd() {
 		return "</model>\n";
 	}
 
