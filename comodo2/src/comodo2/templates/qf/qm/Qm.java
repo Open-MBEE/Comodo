@@ -83,9 +83,10 @@ public class Qm implements IGenerator {
 		str.newLineIfNotEmpty();
 		str.append(" <package name=\"" + sm.getName() + "\">\n");
 		str.append("  <class name=\"" + sm.getName() + "\" superclass=\"qpc::QActive\">\n");
+		str.append("   <statechart>\n");
 		str.append("  " + exploreTopStates(sm), "  ");
 		str.newLineIfNotEmpty();
-		str.append("  </class>\n </package>\n");
+		str.append("<state_diagram size=\"80,50\"/>\n</statechart>\n  </class>\n </package>\n");
 		str.append(printDocumentEnd());
 		str.newLineIfNotEmpty();
 		return str;
@@ -138,6 +139,8 @@ public class Qm implements IGenerator {
 			str.append("  " + exploreActions(s), "  ");
 			str.newLineIfNotEmpty();
 			str.append("  " + exploreTransitions(s), "  ");
+			str.newLineIfNotEmpty();
+			str.append(" " + printStateGlyph());
 			str.newLineIfNotEmpty();
 			str.append(" " + printStateEnd());
 			str.newLineIfNotEmpty();
@@ -338,6 +341,7 @@ public class Qm implements IGenerator {
 		}
 		if (!Objects.equal(targetName, "")) {
 			// TODO: QM expects a relative numeric path instead of a name
+			targetName = "../0"; // placeholder
 			str += " target=\"" + targetName + "\"";
 		}
 		str += ">\n";
@@ -357,19 +361,16 @@ public class Qm implements IGenerator {
 		String conn = "10,10,0,0,5,5"; // placeholder
 		String box = "15,15,10,3"; // placeholder
 
-		String str = "<initial_glyph conn=\"" + conn + "\">\n";
+		String str = "<tran_glyph conn=\"" + conn + "\">\n";
 		str += "  <action box=\"" + box + "\"/>\n";
-		str += "</initial_glyph>\n";
+		str += "</tran_glyph>\n";
 		return str;
 	}
 
 	public CharSequence printEntryActions(final State s) {
 		StringConcatenation str = new StringConcatenation();
-		str.append("<onentry>");
-		str.newLine();
-		str.append("  ");
-		str.append(printAction(s.getEntry().getName()), "  ");
-		str.newLineIfNotEmpty();
+		str.append("<entry>");
+		str.append(s.getEntry().getName());
 
 		for (final Transition t : s.getOutgoings()) {
 			if (mQTransition.isTimerTransition(t)) {
@@ -379,16 +380,14 @@ public class Qm implements IGenerator {
 			}
 		}
 
-		str.append("</onentry>\t");
-		str.newLine();
+		str.append("</entry>\n");
 		return str;
 	}
 
 	public CharSequence printExitActions(final State s) {
 		StringConcatenation str = new StringConcatenation();
-		str.append("<onexit>");
-		str.newLine();
-		str.append("  " + printAction(s.getExit().getName()), "  ");
+		str.append("<exit>");
+		str.append(s.getExit().getName());
 
 		for (final Transition t : s.getOutgoings()) {
 			if (mQTransition.isTimerTransition(t)) {
@@ -401,8 +400,7 @@ public class Qm implements IGenerator {
 			}
 		}
 
-		str.append("</onexit>");
-		str.newLine();
+		str.append("</exit>\n");
 		return str;
 	}
 
@@ -415,11 +413,21 @@ public class Qm implements IGenerator {
 	}
 
 	public CharSequence printStateStart(final State s) {
-		return "<state id=\"" + mQState.getStateName(s) + "\">\n";
+		return "<state name=\"" + mQState.getStateName(s) + "\">\n";
 	}
 
 	public CharSequence printStateEnd() {
 		return "</state>\n";
+	}
+
+	public CharSequence printStateGlyph() {
+		String node = "10,10,0,0"; // placeholder
+		String box = "15,15,10,3"; // placeholder
+
+		String str = "<state_glyph node=\"" + node + "\">\n";
+		str += "  <entry box=\"" + box + "\"/>\n";
+		str += "</state_glyph>\n";
+		return str;
 	}
 
 	public CharSequence printFinalState(final State s) {
