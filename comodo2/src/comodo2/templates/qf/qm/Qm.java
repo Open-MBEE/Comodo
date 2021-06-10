@@ -81,12 +81,17 @@ public class Qm implements IGenerator {
 		StringConcatenation str = new StringConcatenation();
 		str.append(printDocumentStart());
 		str.newLineIfNotEmpty();
+		str.append(" <package name=\"" + sm.getName() + "\">\n");
+		str.append("  <class name=\"" + sm.getName() + "\" superclass=\"qpc::QActive\">\n");
 		str.append("  " + exploreTopStates(sm), "  ");
 		str.newLineIfNotEmpty();
+		str.append("  </class>\n </package>\n");
 		str.append(printDocumentEnd());
 		str.newLineIfNotEmpty();
 		return str;
 	}
+
+
 
 	/**
 	 * Start transformation from top level states.
@@ -128,13 +133,13 @@ public class Qm implements IGenerator {
 			str.append(printFinalState(s));
 			str.newLineIfNotEmpty();
 		} else {
-			str.append(printStateStart(s));
+			str.append(" " + printStateStart(s));
 			str.newLineIfNotEmpty();
 			str.append("  " + exploreActions(s), "  ");
 			str.newLineIfNotEmpty();
 			str.append("  " + exploreTransitions(s), "  ");
 			str.newLineIfNotEmpty();
-			str.append(printStateEnd());
+			str.append(" " + printStateEnd());
 			str.newLineIfNotEmpty();
 		}
 		return str;
@@ -419,6 +424,10 @@ public class Qm implements IGenerator {
 
 	public CharSequence printFinalState(final State s) {
 		return "<final id=\"" + mQState.getStateName(s) + "\"/>\n";
+	}
+
+	public CharSequence printPackage(final State s) {
+		return "<state id=\"" + mQState.getStateName(s) + "\">\n";
 	}
 
 }
