@@ -301,7 +301,7 @@ public class Qm implements IGenerator {
 		String target_relative_path = "../1";
 		String init_c_code = "";
 
-		String str = "<initial target =" + target_relative_path + ">\n";
+		String str = "<initial target=" + target_relative_path + ">\n";
 		str += " <action brief=\"" + name + "\">";
 		str += init_c_code + "</action>\n";
 		str += printInitialGlyph();
@@ -310,8 +310,8 @@ public class Qm implements IGenerator {
 	}
 
 	public CharSequence printInitialGlyph() {
-		String conn = "conn_placeholder";
-		String box = "box_placeholder";
+		String conn = "10,10,0,0,5,5"; // placeholder
+		String box = "15,15,10,3"; // placeholder
 
 		String str = "<initial_glyph conn=\"" + conn + "\">\n";
 		str += "  <action box=\"" + box + "\"/>\n";
@@ -332,6 +332,7 @@ public class Qm implements IGenerator {
 			str += " cond=\"" + guardName + "\"";
 		}
 		if (!Objects.equal(targetName, "")) {
+			// TODO: QM expects a relative numeric path instead of a name
 			str += " target=\"" + targetName + "\"";
 		}
 		str += ">\n";
@@ -348,8 +349,8 @@ public class Qm implements IGenerator {
 	}
 
 	public CharSequence printTransitionGlyph() {
-		String conn = "conn_placeholder";
-		String box = "box_placeholder";
+		String conn = "10,10,0,0,5,5"; // placeholder
+		String box = "15,15,10,3"; // placeholder
 
 		String str = "<initial_glyph conn=\"" + conn + "\">\n";
 		str += "  <action box=\"" + box + "\"/>\n";
