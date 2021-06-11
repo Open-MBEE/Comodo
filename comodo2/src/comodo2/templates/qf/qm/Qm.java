@@ -297,7 +297,7 @@ public class Qm implements IGenerator {
 
 		if (!Objects.equal(eventName, "")) {
 			// Removing non alphanumeric characters since this will be the name of a C variable
-			timeEventsNameset.add(eventName.replaceAll("[^A-Za-z0-9]", ""));
+			timeEventsNameset.add(eventName.replaceAll("[^A-Za-z0-9]", "").toUpperCase());
 		}
 	}
 
@@ -357,7 +357,7 @@ public class Qm implements IGenerator {
 
 		String str = "<tran";
 		if (!Objects.equal(eventName, "")) {
-			str += " trig=\"" + eventName + "\"";
+			str += " trig=\"" + eventName.replaceAll("[^A-Za-z0-9]", "").toUpperCase() + "\"";
 		}
 		if (!Objects.equal(guardName, "")) {
 			str += " cond=\"" + guardName + "\"";
