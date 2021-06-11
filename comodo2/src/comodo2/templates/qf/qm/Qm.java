@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
@@ -29,6 +28,8 @@ import org.eclipse.xtext.generator.IGenerator;
 public class Qm implements IGenerator {
 
 	private static final Logger mLogger = Logger.getLogger(Main.class);
+
+	private static final TreeSet<String> timeEventsNameset = new TreeSet<String>();
 
 	@Inject
 	private QStateMachine mQStateMachine;
@@ -51,7 +52,6 @@ public class Qm implements IGenerator {
 	/**
 	 * Transform UML State Machine associated to a class (classifier behavior)
 	 * into a Quantum Framework XML file for the Quantum Modeler.
-	 * This file was based off of ../scxml/Scxml.java and modified to fit QM files
 	 * 
 	 * The UML Class should:
 	 * - be inside a UML Package with stereotype cmdoModule
@@ -84,9 +84,14 @@ public class Qm implements IGenerator {
 		str.append(" <package name=\"" + sm.getName() + "\">\n");
 		str.append("  <class name=\"" + sm.getName() + "\" superclass=\"qpc::QActive\">\n");
 		str.append("   <statechart>\n");
+
+		str.append(printInitial(mQStateMachine.getInitialStateName(sm)));
+		str.newLineIfNotEmpty();
 		str.append("  " + exploreTopStates(sm), "  ");
 		str.newLineIfNotEmpty();
-		str.append("<state_diagram size=\"80,50\"/>\n</statechart>\n  </class>\n </package>\n");
+		str.append("<state_diagram size=\"80,50\"/>\n</statechart>\n");
+		str.append(printTimeEvents()); // this will need to be moved before <statechart> because of QM
+		str.append("  </class>\n </package>\n");
 		str.append(printDocumentEnd());
 		str.newLineIfNotEmpty();
 		return str;
@@ -271,6 +276,7 @@ public class Qm implements IGenerator {
 		TreeSet<Transition> sortedTrans = new TreeSet<Transition>(new TransitionComparator());
 		for (final Transition t : s.getOutgoings()) {
 			sortedTrans.add(t);
+			registerTimeEvent(t);
 		}
 
 		for(final Transition t : sortedTrans) {
@@ -285,6 +291,26 @@ public class Qm implements IGenerator {
 		}
 		return str;
 	}
+
+	public void registerTimeEvent(Transition t){
+		String eventName  = mQTransition.getFirstEventName(t);
+
+		if (!Objects.equal(eventName, "")) {
+			// Removing non alphanumeric characters since this will be the name of a C variable
+			timeEventsNameset.add(eventName.replaceAll("[^A-Za-z0-9]", ""));
+		}
+	}
+
+	public CharSequence printTimeEvents(){
+		String str = "";
+
+		for (final String eventName : timeEventsNameset){
+			str += "<attribute name=\"" + eventName + "\"  type=\"QTimeEvt\"/>";
+		}
+
+		return str;
+	}
+
 
 	public CharSequence printDocumentStart() {
 		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -302,18 +328,18 @@ public class Qm implements IGenerator {
 
 
 
-	public CharSequence printInitial(final String name) {
+	public CharSequence printInitial(final String targetName) {
 		// TODO 
 		// this does not go through the very first initial node because it is a pseudostate
 		// need to have a function that returns top states AND initial pseudo state, not just top states.
 		String target_relative_path = "../1";
 		String init_c_code = "";
 
-		String str = "<initial target=" + target_relative_path + ">\n";
-		str += " <action brief=\"" + name + "\">";
+		String str = "    " + "<initial target=\"" + target_relative_path + "\">\n";
+		str += "     " + "<action>";
 		str += init_c_code + "</action>\n";
 		str += printInitialGlyph();
-		str += "</initial>\n";
+		str += "    " + "</initial>\n";
 		return str;
 	}
 
@@ -321,9 +347,9 @@ public class Qm implements IGenerator {
 		String conn = "10,10,0,0,5,5"; // placeholder
 		String box = "15,15,10,3"; // placeholder
 
-		String str = "<initial_glyph conn=\"" + conn + "\">\n";
-		str += "  <action box=\"" + box + "\"/>\n";
-		str += "</initial_glyph>\n";
+		String str = "     " + "<initial_glyph conn=\"" + conn + "\">\n";
+		str += "      " + "<action box=\"" + box + "\"/>\n";
+		str += "     " + "</initial_glyph>\n";
 		return str;
 	}
 
@@ -361,15 +387,15 @@ public class Qm implements IGenerator {
 		String conn = "10,10,0,0,5,5"; // placeholder
 		String box = "15,15,10,3"; // placeholder
 
-		String str = "<tran_glyph conn=\"" + conn + "\">\n";
+		String str = " <tran_glyph conn=\"" + conn + "\">\n";
 		str += "  <action box=\"" + box + "\"/>\n";
-		str += "</tran_glyph>\n";
+		str += " </tran_glyph>\n";
 		return str;
 	}
 
 	public CharSequence printEntryActions(final State s) {
 		StringConcatenation str = new StringConcatenation();
-		str.append("<entry>");
+		str.append("<entry>"); //TODO add brief here?
 		str.append(s.getEntry().getName());
 
 		for (final Transition t : s.getOutgoings()) {
@@ -434,8 +460,5 @@ public class Qm implements IGenerator {
 		return "<final id=\"" + mQState.getStateName(s) + "\"/>\n";
 	}
 
-	public CharSequence printPackage(final State s) {
-		return "<state id=\"" + mQState.getStateName(s) + "\">\n";
-	}
 
 }
