@@ -343,11 +343,15 @@ public class Qm implements IGenerator {
 
 	public CharSequence printInitial(final String targetName) {
 		String target_relative_path = "../1";
-		String init_c_code = "";
+		String init_code = "";
 
 		String str = "    " + "<initial target=\"" + target_relative_path + "\">\n";
-		str += "     " + "<action>";
-		str += init_c_code + "</action>\n";
+		
+		if (!Objects.equal(init_code, "")) {	
+			str += "     " + "<action>";
+			str += init_code + "</action>\n";
+		}
+
 		str += printInitialGlyph();
 		str += "    " + "</initial>\n";
 		return str;
