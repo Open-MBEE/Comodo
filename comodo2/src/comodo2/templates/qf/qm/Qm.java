@@ -3,6 +3,7 @@ package comodo2.templates.qf.qm;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import comodo2.engine.Main;
+import comodo2.queries.QBehavior;
 import comodo2.queries.QClass;
 import comodo2.queries.QRegion;
 import comodo2.queries.QState;
@@ -48,6 +49,9 @@ public class Qm implements IGenerator {
 
 	@Inject
 	private FilesHelper mFilesHelper;
+
+	@Inject
+	private QBehavior mQBehavior;
 
 	/**
 	 * Transform UML State Machine associated to a class (classifier behavior)
@@ -401,16 +405,9 @@ public class Qm implements IGenerator {
 
 	public CharSequence printEntryActions(final State s) {
 		StringConcatenation str = new StringConcatenation();
-		str.append("<entry>"); //TODO add brief here?
-		str.append(s.getEntry().getName());
+		str.append("<entry brief=\"" + s.getEntry().getName() + "\">");
 
-		for (final Transition t : s.getOutgoings()) {
-			if (mQTransition.isTimerTransition(t)) {
-				str.append("<send target=\"\" type=\"scxml\" sendid=\"\'" + mQState.getStateName(s) + "_" + mQTransition.getEventName(t));
-				str.append("\'\" event=\"\'" + mQTransition.getEventName(t) + "\'\" delay=\"\'" + mQTransition.getTimeEventDuration(t) + "\'\"/>");
-				str.newLineIfNotEmpty();
-			}
-		}
+		str.append(mQBehavior.getBehaviorCodeString(s.getEntry()));
 
 		str.append("</entry>\n");
 		return str;
@@ -418,19 +415,9 @@ public class Qm implements IGenerator {
 
 	public CharSequence printExitActions(final State s) {
 		StringConcatenation str = new StringConcatenation();
-		str.append("<exit>");
-		str.append(s.getExit().getName());
+		str.append("<exit brief=\"" + s.getEntry().getName() + "\">");
 
-		for (final Transition t : s.getOutgoings()) {
-			if (mQTransition.isTimerTransition(t)) {
-				str.append("<cancel sendid=\"\'");
-				str.append(mQState.getStateName(s));
-				str.append("_");
-				str.append(mQTransition.getEventName(t));
-				str.append("\'\"/>");
-				str.newLineIfNotEmpty();
-			}
-		}
+		str.append(mQBehavior.getBehaviorCodeString(s.getExit()));
 
 		str.append("</exit>\n");
 		return str;
@@ -440,8 +427,9 @@ public class Qm implements IGenerator {
 		return "<action>" + codeString + "</action>\n";
 	}
 
+	// Quantum Modeler does not have Do Activities, only Entry and Exit
 	public CharSequence printDoActivities(final State s) {
-		return "<invoke id=\"" + s.getDoActivity().getName() + "\"/>\n";
+		return "<entry>" + s.getDoActivity().getName() + "</entry>\n";
 	}
 
 	public CharSequence printStateStart(final State s) {
