@@ -12,6 +12,8 @@ import comodo2.queries.QTransition;
 import comodo2.utils.FilesHelper;
 import comodo2.utils.StateComparator;
 import comodo2.utils.TransitionComparator;
+import jdk.javadoc.internal.tool.resources.javadoc;
+
 import java.util.TreeSet;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
@@ -305,6 +307,9 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
+	/**
+	 * Registers any TimeEvent within a transition so that it can later be added to the class declaration (QM needs it)
+	 */
 	public void registerTimeEvent(Transition t){
 		String eventName  = mQTransition.getFirstEventName(t);
 
@@ -340,7 +345,11 @@ public class Qm implements IGenerator {
 
 
 
-
+	/**
+	 * Prints the initial transition of a State machine
+	 * @param targetName
+	 * @return CharSequence
+	 */
 	public CharSequence printInitial(final String targetName) {
 		String target_relative_path = "../1";
 		String init_code = "";
@@ -431,8 +440,8 @@ public class Qm implements IGenerator {
 		return "<action>" + codeString + "</action>\n";
 	}
 
-	// Quantum Modeler does not have Do Activities, only Entry and Exit
 	public CharSequence printDoActivities(final State s) {
+		// Quantum Modeler does not have Do Activities, only Entry and Exit
 		return "<entry>" + s.getDoActivity().getName() + "</entry>\n";
 	}
 
