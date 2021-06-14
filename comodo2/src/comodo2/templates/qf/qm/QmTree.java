@@ -9,25 +9,25 @@ import java.util.Objects;
  * This is because QM expects a relative path to be passed as a target.
  */
 
-public class QmTree<T> {
+public class QmTree {
     
-    T data;
-    QmTree<T> parent;
-    ArrayList<QmTree<T>> children;
+    String nodeName;
+    QmTree parent;
+    ArrayList<QmTree> children;
     Integer depth;
 
-    public QmTree(T data) {
-        this.data = data;
-        this.children = new ArrayList<QmTree<T>>();
+    public QmTree(String nodeName) {
+        this.nodeName = nodeName;
+        this.children = new ArrayList<QmTree>();
         this.depth = 0;
     }
 
     public String toString() {
-        return this.data.toString();
+        return this.nodeName.toString();
     }
 
-    public QmTree<T> addChild(T child) {
-        QmTree<T> childNode = new QmTree<T>(child);
+    public QmTree addChild(String child) {
+        QmTree childNode = new QmTree(child);
         childNode.parent = this;
         this.children.add(childNode);
         childNode.depth = this.depth + 1;
@@ -39,7 +39,7 @@ public class QmTree<T> {
      * Most likely, this will only be called from the root of the state machine
      * @return Relative path between source and target, as a String.
      */
-    public String getRelativePath(QmTree<T> source, QmTree<T> target){
+    public String getRelativePath(QmTree source, QmTree target){
         String path_to_root = stringRepeat(source.depth, "../");
 
         return path_to_root + this.findDownwardsPath(target);
@@ -50,7 +50,7 @@ public class QmTree<T> {
      * @param el to search for
      * @return String path
      */
-    public String findDownwardsPath(QmTree<T> el) {
+    public String findDownwardsPath(QmTree el) {
 
         if (this.children.isEmpty()) {
             return ""; // case where we have explored this entire subtree but not found
@@ -58,7 +58,7 @@ public class QmTree<T> {
         if (this.children.contains(el)) {
             return Integer.toString(this.children.indexOf(el));
         } else {
-            for (final QmTree<T> child : this.children) {
+            for (final QmTree child : this.children) {
                 String down_path = child.findDownwardsPath(el);
                 if (!Objects.equals("", down_path)) {
                     System.out.println(this.children.indexOf(child));
@@ -79,26 +79,26 @@ public class QmTree<T> {
         return new String(new char[count]).replace("\0", with);
     }
     
-    // public static void main(String[] args) {
+    public static void main(String[] args) {
 
-    //     QmTree<String> stateMachine = new QmTree<String>("SM");
+        QmTree stateMachine = new QmTree("SM");
 
-    //     QmTree<String> init = stateMachine.addChild("initial");
-    //     QmTree<String> off = stateMachine.addChild("off");
-    //     QmTree<String> on = stateMachine.addChild("on");
+        QmTree init = stateMachine.addChild("initial");
+        QmTree off = stateMachine.addChild("off");
+        QmTree on = stateMachine.addChild("on");
 
-    //     QmTree<String> off_timeout = off.addChild("off_timeout");
-    //     QmTree<String> on_timeout = on.addChild("on_timeout");
+        QmTree off_timeout = off.addChild("off_timeout");
+        QmTree on_timeout = on.addChild("on_timeout");
         
 
-    //     System.out.println(off.depth); 
-    //     System.out.println(stateMachine.children); 
+        System.out.println(off.depth); 
+        System.out.println(stateMachine.children); 
 
-    //     System.out.println("Downwards: " + stateMachine.findDownwardsPath(on_timeout));
-    //     System.out.println("Relative: " + stateMachine.getRelativePath(on_timeout, off));
+        System.out.println("Downwards: " + stateMachine.findDownwardsPath(on_timeout));
+        System.out.println("Relative: " + stateMachine.getRelativePath(on_timeout, off));
 
         
 
-    // }    
+    }    
     // other features ...
 }

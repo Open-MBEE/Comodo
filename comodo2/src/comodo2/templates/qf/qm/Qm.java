@@ -84,7 +84,7 @@ public class Qm implements IGenerator {
 
 	public CharSequence generate(final StateMachine sm) {
 		StringConcatenation str = new StringConcatenation();
-		StringConcatenation temp_str = new StringConcatenation();
+		StringConcatenation strTemp = new StringConcatenation();
 
 		str.append(printDocumentStart());
 		str.newLineIfNotEmpty();
@@ -94,15 +94,15 @@ public class Qm implements IGenerator {
 		// We need a temp string for now because the TimeEvent elements needs to be declared before the statechart
 		// in the XLM document. But these only get registered when registering the states in which they are used.
 		// Later, the plan will be to make use of the javax.xml.parsers libraries for this process to be more robust and understandable.
-		temp_str.append("   <statechart>\n");
-		temp_str.append(printInitial(mQStateMachine.getInitialStateName(sm)));
-		temp_str.newLineIfNotEmpty();
-		temp_str.append("  " + exploreTopStates(sm), "  ");
-		temp_str.newLineIfNotEmpty();
+		strTemp.append("   <statechart>\n");
+		strTemp.append(printInitial(mQStateMachine.getInitialStateName(sm)));
+		strTemp.newLineIfNotEmpty();
+		strTemp.append("  " + exploreTopStates(sm), "  ");
+		strTemp.newLineIfNotEmpty();
 		
 		str.append(printTimeEvents());
 		str.newLineIfNotEmpty();
-		str.append(temp_str);
+		str.append(strTemp);
 		
 		str.append("<state_diagram size=\"80,50\"/>\n</statechart>\n");
 		str.append("  </class>\n </package>\n");
