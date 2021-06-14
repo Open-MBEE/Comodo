@@ -12,7 +12,6 @@ import comodo2.queries.QTransition;
 import comodo2.utils.FilesHelper;
 import comodo2.utils.StateComparator;
 import comodo2.utils.TransitionComparator;
-import jdk.javadoc.internal.tool.resources.javadoc;
 
 import java.util.TreeSet;
 import javax.inject.Inject;
