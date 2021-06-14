@@ -31,7 +31,7 @@ public class Qm implements IGenerator {
 
 	private static final Logger mLogger = Logger.getLogger(Main.class);
 
-	private static final TreeSet<String> timeEventsNameset = new TreeSet<String>();
+	private final TreeSet<String> timeEventsNameset = new TreeSet<String>();
 
 	@Inject
 	private QStateMachine mQStateMachine;
