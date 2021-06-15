@@ -1,12 +1,11 @@
 package comodo2.templates.qf.qm;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Objects;
 
 /**
- * This class will be used to represent a model or state machine so that we can
- * retrieve relative paths between elements This is because QM expects a
+ * This class will be used to represent a model or state machine so that
+ * relative paths between elements can be retrieved. This is because QM expects a
  * relative path to be passed as a target.
  */
 
@@ -120,25 +119,25 @@ public class QmTree {
         return new String(new char[count]).replace("\0", with);
     }
 
-    public static void main(String[] args) {
+    // public static void main(String[] args) {
 
-        QmTree stateMachine = new QmTree("SM");
+    //     QmTree stateMachine = new QmTree("SM");
 
-        QmTree init = stateMachine.addChild("initial");
-        QmTree off = stateMachine.addChild("off");
-        QmTree on = stateMachine.addChild("on");
+    //     QmTree init = stateMachine.addChild("initial");
+    //     QmTree off = stateMachine.addChild("off");
+    //     QmTree on = stateMachine.addChild("on");
 
-        QmTree off_timeout = off.addChild("off_timeout");
-        QmTree on_timeout = on.addChild("on_timeout");
+    //     QmTree off_timeout = off.addChild("off_timeout");
+    //     QmTree on_timeout = on.addChild("on_timeout");
 
-        QmTree off_eetimeout = off_timeout.addChild("offee_timeout");
+    //     QmTree off_eetimeout = off_timeout.addChild("offee_timeout");
 
-        System.out.println(stateMachine.children);
+    //     System.out.println(stateMachine.children);
 
-        System.out.println("Downwards: " + stateMachine.findDownwardsPath(off_eetimeout));
-        System.out.println("Relative: " + stateMachine.getRelativePath(on_timeout, on));
+    //     System.out.println("Downwards: " + stateMachine.findDownwardsPath(off_eetimeout));
+    //     System.out.println("Relative: " + stateMachine.getRelativePath(on_timeout, on));
 
-        System.out.println(stateMachine.findDownwardsPath(stateMachine.getNodeByName("on_timeout")));
+    //     System.out.println(stateMachine.findDownwardsPath(stateMachine.getNodeByName("on_timeout")));
 
-    }
+    // }
 }

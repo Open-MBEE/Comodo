@@ -14,6 +14,8 @@ import comodo2.utils.StateComparator;
 import comodo2.utils.TransitionComparator;
 
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -32,6 +34,9 @@ public class Qm implements IGenerator {
 	private static final Logger mLogger = Logger.getLogger(Main.class);
 
 	private final TreeSet<String> timeEventsNameset = new TreeSet<String>();
+
+	private QmTree stateMachineRootNode;
+	private QmTree currentStateMachineNode;
 
 	@Inject
 	private QStateMachine mQStateMachine;
@@ -76,6 +81,12 @@ public class Qm implements IGenerator {
 					for (final StateMachine sm : mQClass.getStateMachines(c)) {
 						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(sm.getName())));
 						fsa.generateFile(mFilesHelper.toQmFilePath(sm.getName()), this.generate(sm));
+						System.out.println(stateMachineRootNode);
+
+						System.out.println("Off-tran to On: " + stateMachineRootNode.getRelativePath(stateMachineRootNode.getNodeByName("offAFTER05SEC"), stateMachineRootNode.getNodeByName("on")));
+						System.out.println("On-tran to Off: " + stateMachineRootNode.getRelativePath(stateMachineRootNode.getNodeByName("onAFTER05SEC"), stateMachineRootNode.getNodeByName("off")));
+
+						
 					}
 				}				
 			}
@@ -86,6 +97,9 @@ public class Qm implements IGenerator {
 		StringConcatenation str = new StringConcatenation();
 		StringConcatenation strTemp = new StringConcatenation();
 
+		stateMachineRootNode = new QmTree(sm.getName());
+		currentStateMachineNode = stateMachineRootNode;
+
 		str.append(printDocumentStart());
 		str.newLineIfNotEmpty();
 		str.append(" <package name=\"" + sm.getName() + "\">\n");
@@ -95,7 +109,10 @@ public class Qm implements IGenerator {
 		// in the XLM document. But these only get registered when registering the states in which they are used.
 		// Later, the plan will be to make use of the javax.xml.parsers libraries for this process to be more robust and understandable.
 		strTemp.append("   <statechart>\n");
+
 		strTemp.append(printInitial(mQStateMachine.getInitialStateName(sm)));
+		stateMachineRootNode.addChild("init");
+
 		strTemp.newLineIfNotEmpty();
 		strTemp.append("  " + exploreTopStates(sm), "  ");
 		strTemp.newLineIfNotEmpty();
@@ -108,7 +125,23 @@ public class Qm implements IGenerator {
 		str.append("  </class>\n </package>\n");
 		str.append(printDocumentEnd());
 		str.newLineIfNotEmpty();
-		return str;
+
+		String result = str.toString();
+
+		/* ------   REGEX FOR TRANSITION TARGETS   -------- */
+
+		Pattern r = Pattern.compile("target=\"(\\w+)\" comodoId=\"(\\w+)\"");
+		Matcher m = r.matcher(result);
+
+		// for every pattern match, replace the whole pattern (0) with the relative path between comodoId (2) and target (1)
+		while (m.find()) {
+			result = result.replace(m.group(0), 
+						   			"target=\"" + stateMachineRootNode.getRelativePath(stateMachineRootNode.getNodeByName(m.group(2)), 
+															 				  stateMachineRootNode.getNodeByName(m.group(1))) + "\""
+							);
+		}
+
+		return result;
 	}
 
 
@@ -149,6 +182,8 @@ public class Qm implements IGenerator {
 	 */
 	public CharSequence exploreSimpleState(final State s) {
 		StringConcatenation str = new StringConcatenation();
+		currentStateMachineNode = currentStateMachineNode.addChild(s.getName());
+		System.out.println(currentStateMachineNode.nodeName);
 		if (mQState.isFinal(s)) {
 			str.append(printFinalState(s));
 			str.newLineIfNotEmpty();
@@ -163,6 +198,8 @@ public class Qm implements IGenerator {
 			str.newLineIfNotEmpty();
 			str.append(" " + printStateEnd());
 			str.newLineIfNotEmpty();
+
+			currentStateMachineNode = currentStateMachineNode.parent;
 		}
 		return str;
 	}
@@ -184,6 +221,8 @@ public class Qm implements IGenerator {
 			str.append(printStateStart(s));
 			str.newLineIfNotEmpty();
 			str.append("  " + printInitial(mQState.getInitialSubstateName(s)), "  ");
+			//currentStateMachineNode.addChild(mQState.getStateName(s));
+
 			str.newLineIfNotEmpty();
 			for(final State ss : mQState.getCompositeSubstates(s)) {
 				str.newLine();
@@ -326,7 +365,7 @@ public class Qm implements IGenerator {
 		String str = "";
 
 		for (final String eventName : timeEventsNameset){
-			str += "<attribute name=\"" + eventName + "\"  type=\"QTimeEvt\"/>";
+			str += "<attribute name=\"" + "timeEvent" + eventName + "\"  type=\"QTimeEvt\"/>";
 		}
 
 		return str;
@@ -354,10 +393,10 @@ public class Qm implements IGenerator {
 	 * @return CharSequence
 	 */
 	public CharSequence printInitial(final String targetName) {
-		String target_relative_path = "../1";
+		//String target_relative_path = "../1";
 		String init_code = "";
 
-		String str = "    " + "<initial target=\"" + target_relative_path + "\">\n";
+		String str = "    " + "<initial target=\"" + targetName + "\" comodoId=\"init\">\n";
 		
 		if (!Objects.equal(init_code, "")) {	
 			str += "     " + "<action>";
@@ -383,18 +422,22 @@ public class Qm implements IGenerator {
 		String eventName  = timeEventNaming(mQTransition.getFirstEventName(t)); 
 		String guardName  = mQTransition.getResolvedGuardName(t);
 		String targetName = mQTransition.getTargetName(t); 
+		String sourceName = mQTransition.getSourceName(t); 
 
+		stateMachineRootNode.getNodeByName(sourceName).addChild(sourceName + eventName);
+		
 		String str = "<tran";
 		if (!Objects.equal(eventName, "")) {
-			str += " trig=\"" + eventName.replaceAll("[^A-Za-z0-9]", "").toUpperCase() + "\"";
+			str += " trig=\"" + eventName + "\"";
 		}
 		if (!Objects.equal(guardName, "")) {
 			str += " cond=\"" + guardName + "\"";
 		}
 		if (!Objects.equal(targetName, "")) {
 			// TODO: QM expects a relative numeric path instead of a name
-			targetName = "../0"; // placeholder
+
 			str += " target=\"" + targetName + "\"";
+			str += " comodoId=\"" + sourceName + eventName + "\"";
 		}
 		str += ">\n";
 
@@ -423,7 +466,8 @@ public class Qm implements IGenerator {
 		StringConcatenation str = new StringConcatenation();
 		str.append("<entry brief=\"" + s.getEntry().getName() + "\">");
 
-		str.append(mQBehavior.getBehaviorCodeString(s.getEntry()));
+		// str.append(mQBehavior.getBehaviorCodeString(s.getEntry()));
+		str.append(checkTrailingSemicolon(s.getEntry().getName()));
 
 		str.append("</entry>\n");
 		return str;
@@ -468,6 +512,10 @@ public class Qm implements IGenerator {
 
 	public CharSequence printFinalState(final State s) {
 		return "<final id=\"" + mQState.getStateName(s) + "\"/>\n";
+	}
+
+	private String checkTrailingSemicolon(String str) {
+		return str.endsWith(";") ? str : str + ";";
 	}
 
 
