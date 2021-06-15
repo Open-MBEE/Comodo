@@ -310,12 +310,16 @@ public class Qm implements IGenerator {
 	 * Registers any TimeEvent within a transition so that it can later be added to the class declaration (QM needs it)
 	 */
 	public void registerTimeEvent(Transition t){
-		String eventName  = mQTransition.getFirstEventName(t);
+		String eventName  = timeEventNaming(mQTransition.getFirstEventName(t));
 
 		if (!Objects.equal(eventName, "")) {
 			// Removing non alphanumeric characters since this will be the name of a C variable
-			timeEventsNameset.add(eventName.replaceAll("[^A-Za-z0-9]", "").toUpperCase());
+			timeEventsNameset.add(eventName);
 		}
+	}
+
+	public String timeEventNaming(String timeEventName){
+		return timeEventName.replaceAll("[^A-Za-z0-9]", "").toUpperCase();
 	}
 
 	public CharSequence printTimeEvents(){
@@ -376,7 +380,7 @@ public class Qm implements IGenerator {
 	}
 
 	public CharSequence printTransition(final Transition t) {
-		String eventName  = mQTransition.getFirstEventName(t); 
+		String eventName  = timeEventNaming(mQTransition.getFirstEventName(t)); 
 		String guardName  = mQTransition.getResolvedGuardName(t);
 		String targetName = mQTransition.getTargetName(t); 
 
