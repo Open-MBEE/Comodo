@@ -437,8 +437,7 @@ public class Qm implements IGenerator {
 			str += " cond=\"" + guardName + "\"";
 		}
 		if (!Objects.equal(targetName, "")) {
-			// TODO: QM expects a relative numeric path instead of a name
-
+			// This part is later Regex'ed and replaced with a relative path (see this class' generate function)
 			str += " target=\"" + targetName + "\"";
 			str += " comodoId=\"" + sourceName + eventName + "\"";
 		}
