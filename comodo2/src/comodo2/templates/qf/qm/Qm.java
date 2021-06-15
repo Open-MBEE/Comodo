@@ -479,7 +479,8 @@ public class Qm implements IGenerator {
 		StringConcatenation str = new StringConcatenation();
 		str.append("<exit brief=\"" + s.getEntry().getName() + "\">");
 
-		str.append(mQBehavior.getBehaviorCodeString(s.getExit()));
+		//str.append(mQBehavior.getBehaviorCodeString(s.getExit()));
+		str.append(checkTrailingSemicolon(s.getEntry().getName()));
 
 		str.append("</exit>\n");
 		return str;
