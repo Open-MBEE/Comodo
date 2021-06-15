@@ -329,15 +329,20 @@ public class Qm implements IGenerator {
 		TreeSet<Transition> sortedTrans = new TreeSet<Transition>(new TransitionComparator());
 		for (final Transition t : s.getOutgoings()) {
 			sortedTrans.add(t);
-			registerTimeEvent(t);
 		}
-
+		
 		for(final Transition t : sortedTrans) {
 			if (mQTransition.isMalformed(t)) {
 				mLogger.warn("Internal transition from state " + 
-						mQState.getStateName(s) + 
-						" has no trigger event and no guard, skipped since could introduce infinite loop!");
+				mQState.getStateName(s) + 
+				" has no trigger event and no guard, skipped since could introduce infinite loop!");
 			} else {
+				String eventName  = timeEventNaming(mQTransition.getFirstEventName(t)); 
+				String sourceName = mQTransition.getSourceName(t); 
+				
+				registerTimeEvent(t);
+				stateMachineRootNode.getNodeByName(sourceName).addChild(sourceName + eventName);
+
 				str.append(printTransition(t));
 				str.newLineIfNotEmpty();
 			}
@@ -423,8 +428,6 @@ public class Qm implements IGenerator {
 		String guardName  = mQTransition.getResolvedGuardName(t);
 		String targetName = mQTransition.getTargetName(t); 
 		String sourceName = mQTransition.getSourceName(t); 
-
-		stateMachineRootNode.getNodeByName(sourceName).addChild(sourceName + eventName);
 		
 		String str = "<tran";
 		if (!Objects.equal(eventName, "")) {
