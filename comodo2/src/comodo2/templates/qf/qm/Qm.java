@@ -110,8 +110,8 @@ public class Qm implements IGenerator {
 		// Later, the plan will be to make use of the javax.xml.parsers libraries for this process to be more robust and understandable.
 		strTemp.append("   <statechart>\n");
 
-		strTemp.append(printInitial(mQStateMachine.getInitialStateName(sm)));
-		stateMachineRootNode.addChild("init");
+		strTemp.append(printInitial(mQStateMachine.getInitialStateName(sm), sm.getName()));
+		stateMachineRootNode.addChild("init" + sm.getName());
 
 		strTemp.newLineIfNotEmpty();
 		strTemp.append("  " + exploreTopStates(sm), "  ");
@@ -135,6 +135,7 @@ public class Qm implements IGenerator {
 
 		// for every pattern match, replace the whole pattern (0) with the relative path between comodoId (2) and target (1)
 		while (m.find()) {
+			System.out.println(m.group(0));
 			result = result.replace(m.group(0), 
 						   			"target=\"" + stateMachineRootNode.getRelativePath(stateMachineRootNode.getNodeByName(m.group(2)), 
 															 				  stateMachineRootNode.getNodeByName(m.group(1))) + "\""
@@ -182,8 +183,9 @@ public class Qm implements IGenerator {
 	 */
 	public CharSequence exploreSimpleState(final State s) {
 		StringConcatenation str = new StringConcatenation();
+
 		currentStateMachineNode = currentStateMachineNode.addChild(s.getName());
-		System.out.println(currentStateMachineNode.nodeName);
+
 		if (mQState.isFinal(s)) {
 			str.append(printFinalState(s));
 			str.newLineIfNotEmpty();
@@ -194,13 +196,12 @@ public class Qm implements IGenerator {
 			str.newLineIfNotEmpty();
 			str.append("  " + exploreTransitions(s), "  ");
 			str.newLineIfNotEmpty();
-			str.append(" " + printStateGlyph());
-			str.newLineIfNotEmpty();
 			str.append(" " + printStateEnd());
 			str.newLineIfNotEmpty();
-
-			currentStateMachineNode = currentStateMachineNode.parent;
 		}
+
+		currentStateMachineNode = currentStateMachineNode.parent;
+
 		return str;
 	}
 
@@ -213,15 +214,23 @@ public class Qm implements IGenerator {
 	 */
 	public CharSequence exploreCompositeState(final State s) {
 		StringConcatenation str = new StringConcatenation();
+		
+		
 		/*if (s.isOrthogonal()) {
 			str.append(exploreOrthogonalState(s));
 			str.newLineIfNotEmpty();
 		} else */
 		if (!Iterables.isEmpty(mQState.getAllNonFinalSubstates(s))) {
+			
+			currentStateMachineNode = currentStateMachineNode.addChild(mQState.getStateName(s));
+			
 			str.append(printStateStart(s));
 			str.newLineIfNotEmpty();
-			str.append("  " + printInitial(mQState.getInitialSubstateName(s)), "  ");
-			//currentStateMachineNode.addChild(mQState.getStateName(s));
+			
+			if (!Objects.equal(mQState.getInitialSubstateName(s), "")){
+				currentStateMachineNode.addChild("init" + s.getName());
+				str.append("  " + printInitial(mQState.getInitialSubstateName(s), s.getName()), "  ");
+			}
 
 			str.newLineIfNotEmpty();
 			for(final State ss : mQState.getCompositeSubstates(s)) {
@@ -250,10 +259,15 @@ public class Qm implements IGenerator {
 			str.newLineIfNotEmpty();
 			str.append(printStateEnd());
 			str.newLineIfNotEmpty();
+			
+			currentStateMachineNode = currentStateMachineNode.parent;
+		
 		} else {
 			str.append(exploreSimpleState(s));
 			str.newLineIfNotEmpty();
 		}
+
+
 		return str;
 	}
 
@@ -397,11 +411,11 @@ public class Qm implements IGenerator {
 	 * @param targetName
 	 * @return CharSequence
 	 */
-	public CharSequence printInitial(final String targetName) {
-		//String target_relative_path = "../1";
+	public CharSequence printInitial(final String targetName, String initId) {
+
 		String init_code = "";
 
-		String str = "    " + "<initial target=\"" + targetName + "\" comodoId=\"init\">\n";
+		String str = "    " + "<initial target=\"" + targetName + "\" comodoId=\"init" + initId + "\">\n";
 		
 		if (!Objects.equal(init_code, "")) {	
 			str += "     " + "<action>";
@@ -477,10 +491,10 @@ public class Qm implements IGenerator {
 
 	public CharSequence printExitActions(final State s) {
 		StringConcatenation str = new StringConcatenation();
-		str.append("<exit brief=\"" + s.getEntry().getName() + "\">");
+		str.append("<exit brief=\"" + s.getExit().getName() + "\">");
 
 		//str.append(mQBehavior.getBehaviorCodeString(s.getExit()));
-		str.append(checkTrailingSemicolon(s.getEntry().getName()));
+		str.append(checkTrailingSemicolon(s.getExit().getName()));
 
 		str.append("</exit>\n");
 		return str;
@@ -500,7 +514,7 @@ public class Qm implements IGenerator {
 	}
 
 	public CharSequence printStateEnd() {
-		return "</state>\n";
+		return printStateGlyph() + "</state>\n";
 	}
 
 	public CharSequence printStateGlyph() {
