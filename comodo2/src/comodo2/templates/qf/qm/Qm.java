@@ -227,6 +227,11 @@ public class Qm implements IGenerator {
 			}
 
 			str.newLineIfNotEmpty();
+			str.append("  " + exploreActions(s), "  ");
+			str.newLineIfNotEmpty();
+			str.append("  " + exploreTransitions(s), "  ");
+			str.newLineIfNotEmpty();
+
 			for(final State ss : mQState.getCompositeSubstates(s)) {
 				str.newLine();
 				str.append("  " + exploreCompositeState(ss), "  ");
@@ -247,10 +252,6 @@ public class Qm implements IGenerator {
 				str.append("  " + exploreHistoryState(s), "  ");
 				str.newLineIfNotEmpty();
 			}*/
-			str.append("  " + exploreActions(s), "  ");
-			str.newLineIfNotEmpty();
-			str.append("  " + exploreTransitions(s), "  ");
-			str.newLineIfNotEmpty();
 			str.append(printStateEnd());
 			str.newLineIfNotEmpty();
 			
