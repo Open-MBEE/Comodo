@@ -80,13 +80,7 @@ public class Qm implements IGenerator {
 				if ((mQClass.isToBeGenerated(c) && mQClass.hasStateMachines(c))) {
 					for (final StateMachine sm : mQClass.getStateMachines(c)) {
 						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(sm.getName())));
-						fsa.generateFile(mFilesHelper.toQmFilePath(sm.getName()), this.generate(sm));
-						System.out.println(stateMachineRootNode);
-
-						System.out.println("Off-tran to On: " + stateMachineRootNode.getRelativePath(stateMachineRootNode.getNodeByName("offAFTER05SEC"), stateMachineRootNode.getNodeByName("on")));
-						System.out.println("On-tran to Off: " + stateMachineRootNode.getRelativePath(stateMachineRootNode.getNodeByName("onAFTER05SEC"), stateMachineRootNode.getNodeByName("off")));
-
-						
+						fsa.generateFile(mFilesHelper.toQmFilePath(sm.getName()), this.generate(sm));						
 					}
 				}				
 			}
