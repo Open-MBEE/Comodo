@@ -453,8 +453,8 @@ public class Qm implements IGenerator {
 		str += ">\n";
 
 		if (mQTransition.hasAction(t)){
-			// printAction expects a code string instead of a name. Look into uml.Transition.getEffect()
-			str += printAction(t.getEffect().getName()); //TODO
+			// Prints the name of the behavior as the code string
+			str += printAction(checkTrailingSemicolon(t.getEffect().getName()));
 		}
 
 		str += printTransitionGlyph();
