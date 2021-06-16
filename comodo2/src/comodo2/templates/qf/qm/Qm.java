@@ -129,7 +129,6 @@ public class Qm implements IGenerator {
 
 		// for every pattern match, replace the whole pattern (0) with the relative path between comodoId (2) and target (1)
 		while (m.find()) {
-			System.out.println(m.group(0));
 			result = result.replace(m.group(0), 
 						   			"target=\"" + stateMachineRootNode.getRelativePath(stateMachineRootNode.getNodeByName(m.group(2)), 
 															 				  stateMachineRootNode.getNodeByName(m.group(1))) + "\""
