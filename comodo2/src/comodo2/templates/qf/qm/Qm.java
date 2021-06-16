@@ -512,12 +512,8 @@ public class Qm implements IGenerator {
 	}
 
 	public CharSequence printStateGlyph() {
-		String node = "10,10,0,0"; // placeholder
-		String box = "15,15,10,3"; // placeholder
-
-		String str = "<state_glyph node=\"" + node + "\">\n";
-		str += "  <entry box=\"" + box + "\"/>\n";
-		str += "</state_glyph>\n";
+		String node = "0,0,0,0"; // placeholder
+		String str = "<state_glyph node=\"" + node + "\"/>\n";
 		return str;
 	}
 
