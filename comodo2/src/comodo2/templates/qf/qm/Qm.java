@@ -518,7 +518,9 @@ public class Qm implements IGenerator {
 	}
 
 	public CharSequence printFinalState(final State s) {
-		return "<final id=\"" + mQState.getStateName(s) + "\"/>\n";
+		// There's no Final State in QM
+		// return "<final id=\"" + mQState.getStateName(s) + "\"/>\n";
+		return "";
 	}
 
 	private String checkTrailingSemicolon(String str) {
