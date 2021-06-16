@@ -454,7 +454,7 @@ public class Qm implements IGenerator {
 
 		if (mQTransition.hasAction(t)){
 			// printAction expects a code string instead of a name. Look into uml.Transition.getEffect()
-			str += printAction(t.getName()); //TODO
+			str += printAction(t.getEffect().getName()); //TODO
 		}
 
 		str += printTransitionGlyph();
