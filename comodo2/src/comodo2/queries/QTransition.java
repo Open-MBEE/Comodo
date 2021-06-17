@@ -7,6 +7,7 @@ import org.eclipse.uml2.uml.Event;
 import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Pseudostate;
+import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.TimeEvent;
@@ -217,6 +218,22 @@ public class QTransition {
 				(this.hasTarget(t) == true)) && 
 				Objects.equal(this.getTargetName(t), this.getSourceName(t)))) {
 			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true if the transition points to a Choice pseudoState
+	 * This is needed for QF Target because QM has a different choice node structure.
+	 */
+	public boolean isChoiceTransition(final Transition t){
+		try {
+			Pseudostate ps = (Pseudostate) t.getTarget();
+			if (ps.getKind() == PseudostateKind.CHOICE_LITERAL){
+				return true;
+			}
+		} catch (ClassCastException e) {
+			return false;
 		}
 		return false;
 	}

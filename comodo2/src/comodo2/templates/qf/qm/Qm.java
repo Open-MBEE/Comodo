@@ -13,6 +13,7 @@ import comodo2.utils.FilesHelper;
 import comodo2.utils.StateComparator;
 import comodo2.utils.TransitionComparator;
 
+import java.util.UUID;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -124,7 +125,7 @@ public class Qm implements IGenerator {
 
 		/* ------   REGEX FOR TRANSITION TARGETS   -------- */
 
-		Pattern r = Pattern.compile("target=\"(\\w+)\" comodoId=\"(\\w+)\"");
+		Pattern r = Pattern.compile("target=\"(\\w+)\" comodoId=\"([\\w-_]+)\"");
 		Matcher m = r.matcher(result);
 
 		// for every pattern match, replace the whole pattern (0) with the relative path between comodoId (2) and target (1)
@@ -177,12 +178,14 @@ public class Qm implements IGenerator {
 	public CharSequence exploreSimpleState(final State s) {
 		StringConcatenation str = new StringConcatenation();
 
-		currentStateMachineNode = currentStateMachineNode.addChild(s.getName());
-
+		
 		if (mQState.isFinal(s)) {
-			str.append(printFinalState(s));
+			// Final nodes do not exist in QM. Is there a need to handle them?
+			// str.append(printFinalState(s));
 			str.newLineIfNotEmpty();
 		} else {
+			currentStateMachineNode = currentStateMachineNode.addChild(s.getName());
+
 			str.append(" " + printStateStart(s));
 			str.newLineIfNotEmpty();
 			str.append("  " + exploreActions(s), "  ");
@@ -191,9 +194,10 @@ public class Qm implements IGenerator {
 			str.newLineIfNotEmpty();
 			str.append(" " + printStateEnd());
 			str.newLineIfNotEmpty();
+
+			currentStateMachineNode = currentStateMachineNode.parent;
 		}
 
-		currentStateMachineNode = currentStateMachineNode.parent;
 
 		return str;
 	}
@@ -344,14 +348,18 @@ public class Qm implements IGenerator {
 				mLogger.warn("Internal transition from state " + 
 				mQState.getStateName(s) + 
 				" has no trigger event and no guard, skipped since could introduce infinite loop!");
+			//} else if (mQTransition.isChoiceTransition(t)) {
+
+				//str.append(printChoiceTransition(t));
+
 			} else {
-				String eventName  = timeEventNaming(mQTransition.getFirstEventName(t)); 
-				String sourceName = mQTransition.getSourceName(t); 
+				String sourceName = mQTransition.getSourceName(t);
+				String comodoId = UUID.randomUUID().toString();
 				
 				registerTimeEvent(t);
-				stateMachineRootNode.getNodeByName(sourceName).addChild(sourceName + eventName);
+				stateMachineRootNode.getNodeByName(sourceName).addChild(comodoId);
 
-				str.append(printTransition(t));
+				str.append(printTransition(t, comodoId));
 				str.newLineIfNotEmpty();
 			}
 		}
@@ -431,25 +439,38 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
-	public CharSequence printTransition(final Transition t) {
+	public CharSequence printTransition(final Transition t, final String transitionComodoId) {
 		String eventName  = timeEventNaming(mQTransition.getFirstEventName(t)); 
-		String guardName  = mQTransition.getResolvedGuardName(t);
+		String guard  = mQTransition.getResolvedGuardName(t);
 		String targetName = mQTransition.getTargetName(t); 
-		String sourceName = mQTransition.getSourceName(t); 
+		// targetName = t.getTarget().getQualifiedName();
 		
 		String str = "<tran";
 		if (!Objects.equal(eventName, "")) {
 			str += " trig=\"" + eventName + "\"";
 		}
-		if (!Objects.equal(guardName, "")) {
-			str += " cond=\"" + guardName + "\"";
-		}
-		if (!Objects.equal(targetName, "")) {
-			// This part is later Regex'ed and replaced with a relative path (see this class' generate function)
+
+		// A simple guard has to be translated into a choice node with a single option in QM.
+		// If so, the target is inside the choice node and not in the <tran ...> tag
+		if (!Objects.equal(guard, "")) {
+			String guardComodoId = UUID.randomUUID().toString();
+			stateMachineRootNode.getNodeByName(transitionComodoId).addChild(guardComodoId);
+			str += ">\n";
+			str += "<choice";
 			str += " target=\"" + targetName + "\"";
-			str += " comodoId=\"" + sourceName + eventName + "\"";
+			str += " comodoId=\"" + guardComodoId + "\"";
+			str += ">\n <guard>" + guard + "</guard>\n";
+			str += printChoicesGlyph();
+			str += "</choice>\n";
+		} else if (!Objects.equal(targetName, "")) {
+			str += " target=\"" + targetName + "\"";
+			str += " comodoId=\"" + transitionComodoId + "\"";
+			str += ">\n";
 		}
-		str += ">\n";
+
+		// if (mQTransition.isChoiceTransition(t)) {
+		// 	printChoices(t);
+		// }
 
 		if (mQTransition.hasAction(t)){
 			// Prints the name of the behavior as the code string
@@ -462,6 +483,27 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
+	/**
+	 * Returns CharSequence of Choice transition in QM format.
+	 * In QM, choice nodes are special types of transitions, not pseudoStates like in UML.
+	 */
+	// public CharSequence printChoices(final Transition t) {
+		
+	// 	String eventName  = timeEventNaming(mQTransition.getFirstEventName(t)); 
+	// 	String guard  = mQTransition.getResolvedGuardName(t);
+	// 	String targetName = mQTransition.getTargetName(t); 
+	// 	String sourceName = mQTransition.getSourceName(t); 
+	// 	String comodoId = eventName + targetName + sourceName;
+		
+	// 	String str = "";
+
+	// 	String target = "target=\"" + targetName + "\" comodoId=\"" + comodoId + "\"";
+
+
+
+	// 	return str;
+	// }
+
 	public CharSequence printTransitionGlyph() {
 		String conn = "10,10,0,0,5,5"; // placeholder
 		String box = "15,15,10,3"; // placeholder
@@ -469,6 +511,16 @@ public class Qm implements IGenerator {
 		String str = " <tran_glyph conn=\"" + conn + "\">\n";
 		str += "  <action box=\"" + box + "\"/>\n";
 		str += " </tran_glyph>\n";
+		return str;
+	}
+
+	public CharSequence printChoicesGlyph() {
+		String conn = "10,10,0,0,5,5"; // placeholder
+		String box = "15,15,10,3"; // placeholder
+
+		String str = " <choice_glyph conn=\"" + conn + "\">\n";
+		str += "  <action box=\"" + box + "\"/>\n";
+		str += " </choice_glyph>\n";
 		return str;
 	}
 
