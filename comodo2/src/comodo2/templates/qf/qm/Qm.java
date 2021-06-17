@@ -23,7 +23,6 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.Pseudostate;
-import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
@@ -43,8 +42,6 @@ public class Qm implements IGenerator {
 	@Inject
 	private QStateMachine mQStateMachine;
 
-	@Inject
-	private QRegion mQRegion;
 
 	@Inject
 	private QState mQState;
@@ -138,6 +135,7 @@ public class Qm implements IGenerator {
 		}
 
 		// TODO: Add a warning if we find a target="" in the file
+		// TODO : Internal state transition are used with action (see RTI in acs_ctl)
 
 		return result;
 	}
@@ -452,6 +450,7 @@ public class Qm implements IGenerator {
 		String targetName = mQTransition.getTargetName(t); 
 		
 		String str = "<tran";
+		String strTemp = "";
 
 		if (!Objects.equal(eventName, "")) {
 			str += " trig=\"" + eventName + "\">\n";
@@ -459,9 +458,7 @@ public class Qm implements IGenerator {
 
 
 		if (mQTransition.isChoiceTransition(t)) {
-			// str += ">\n";
-			str += "PRINT_ACTIONS_PLACEHOLDER";
-			str += printChoices(t, transitionComodoId);
+			strTemp += printChoices(t, transitionComodoId);
 
 		} else if (!Objects.equal(guard, "")) {
 			// A simple guard has to be translated into a choice node with a single option in QM.
@@ -470,30 +467,22 @@ public class Qm implements IGenerator {
 			
 			stateMachineRootNode.getNodeByName(transitionComodoId).addChild(guardComodoId);
 
-			// str += ">\n";
-			str += "PRINT_ACTIONS_PLACEHOLDER";
-			str += printChoiceNode(targetName, guard, guardComodoId);
+			strTemp += printChoiceNode(targetName, guard, "", guardComodoId);
 
 		} else if (!Objects.equal(targetName, "")) {
 			str = str.substring(0, str.length() - 2);
 			str += " target=\"" + targetName + "\"";
 			str += " comodoId=\"" + transitionComodoId + "\"";
 			str += ">\n";
-			str += "PRINT_ACTIONS_PLACEHOLDER";
 		}
 
-		// TODO : Most likely can be done prettier without the placeholder and just inserting target&comodoId in
-		// case targetName == "" by regexing
 		if (mQTransition.hasAction(t)){
 			// Prints the name of the behavior as the code string
-			// str += ">\n";
-			str = str.replace("PRINT_ACTIONS_PLACEHOLDER", printAction(checkTrailingSemicolon(t.getEffect().getName())));
-		} else {
-			str = str.replace("PRINT_ACTIONS_PLACEHOLDER", "");
+			str += printAction(checkTrailingSemicolon(mQTransition.getFirstActionName(t)));
 		}
 
+		str += strTemp;
 		str += printTransitionGlyph();
-
 		str += "</tran>";
 		return str;
 	}
@@ -514,17 +503,21 @@ public class Qm implements IGenerator {
 			
 			String targetName = mQTransition.getTargetName(choiceTransition); 
 			String guard  = mQTransition.getResolvedGuardName(choiceTransition);
+			String action = mQTransition.getFirstActionName(choiceTransition);
 
-			str += printChoiceNode(targetName, guard, guardComodoId);
+			str += printChoiceNode(targetName, guard, action, guardComodoId);
 		}
 
 		return str;
 	}
 	
-	public String printChoiceNode(String targetName, String guard, String guardComodoId){
+	public String printChoiceNode(String targetName, String guard, String action, String guardComodoId){
 		String str = "";
 		str += "<choice target=\"" + targetName + "\" comodoId=\"" + guardComodoId + "\">\n";
 		str += " <guard>" + guard + "</guard>\n";
+		if (!Objects.equal(action, "")) {
+			str += "  <action>" + action + "</action>\n";
+		}
 		str += printChoiceGlyph();
 		str += "</choice>\n";
 		return str;
