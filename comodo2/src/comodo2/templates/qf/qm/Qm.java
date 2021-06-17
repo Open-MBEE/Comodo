@@ -135,7 +135,6 @@ public class Qm implements IGenerator {
 		}
 
 		// TODO: Add a warning if we find a target="" in the file
-		// TODO : Internal state transition are used with action (see RTI in acs_ctl)
 
 		return result;
 	}
@@ -328,7 +327,8 @@ public class Qm implements IGenerator {
 			str += printEntryActions(s);
 		}		
 		if (mQState.hasDoActivities(s)) {
-			str += printDoActivities(s);
+			mLogger.warn("SKIPPED -- Do Activities are not supported in Quantum Modeler " +
+			 				"(found in state " + s.getName() + ")");
 		}
 		if (mQState.hasOnExitActions(s) || mQState.hasTimerTransition(s)) {
 			str += printExitActions(s);
@@ -478,7 +478,7 @@ public class Qm implements IGenerator {
 
 		if (mQTransition.hasAction(t)){
 			// Prints the name of the behavior as the code string
-			str += printAction(checkTrailingSemicolon(mQTransition.getFirstActionName(t)));
+			str += printTransitionAction(checkTrailingSemicolon(mQTransition.getFirstActionName(t)));
 		}
 
 		str += strTemp;
@@ -565,14 +565,10 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
-	public CharSequence printAction(final String codeString) {
+	public CharSequence printTransitionAction(final String codeString) {
 		return "<action>" + codeString + "</action>\n";
 	}
 
-	public CharSequence printDoActivities(final State s) {
-		// Quantum Modeler does not have Do Activities, only Entry and Exit
-		return "<entry>" + s.getDoActivity().getName() + "</entry>\n";
-	}
 
 	public CharSequence printStateStart(final State s) {
 		return "<state name=\"" + mQState.getStateName(s) + "\">\n";
