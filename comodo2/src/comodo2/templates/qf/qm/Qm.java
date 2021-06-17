@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
@@ -135,6 +136,8 @@ public class Qm implements IGenerator {
 															 				  stateMachineRootNode.getNodeByName(m.group(1))) + "\""
 							);
 		}
+
+		// TODO: Add a warning if we find a target="" in the file
 
 		return result;
 	}
@@ -450,27 +453,26 @@ public class Qm implements IGenerator {
 			str += " trig=\"" + eventName + "\"";
 		}
 
-		// A simple guard has to be translated into a choice node with a single option in QM.
-		// If so, the target is inside the choice node and not in the <tran ...> tag
-		if (!Objects.equal(guard, "")) {
-			String guardComodoId = UUID.randomUUID().toString();
-			stateMachineRootNode.getNodeByName(transitionComodoId).addChild(guardComodoId);
+
+		if (mQTransition.isChoiceTransition(t)) {
 			str += ">\n";
-			str += "<choice";
-			str += " target=\"" + targetName + "\"";
-			str += " comodoId=\"" + guardComodoId + "\"";
-			str += ">\n <guard>" + guard + "</guard>\n";
-			str += printChoicesGlyph();
-			str += "</choice>\n";
+			str += printChoices(t, transitionComodoId);
+
+		} else if (!Objects.equal(guard, "")) {
+			// A simple guard has to be translated into a choice node with a single option in QM.
+			// If so, the target is inside the choice node and not in the <tran ...> tag
+			String guardComodoId = UUID.randomUUID().toString();
+			
+			stateMachineRootNode.getNodeByName(transitionComodoId).addChild(guardComodoId);
+
+			str += ">\n";
+			str += printChoiceNode(targetName, guard, guardComodoId);
+
 		} else if (!Objects.equal(targetName, "")) {
 			str += " target=\"" + targetName + "\"";
 			str += " comodoId=\"" + transitionComodoId + "\"";
 			str += ">\n";
 		}
-
-		// if (mQTransition.isChoiceTransition(t)) {
-		// 	printChoices(t);
-		// }
 
 		if (mQTransition.hasAction(t)){
 			// Prints the name of the behavior as the code string
@@ -484,25 +486,36 @@ public class Qm implements IGenerator {
 	}
 
 	/**
-	 * Returns CharSequence of Choice transition in QM format.
+	 * Returns CharSequence of Choice transitions in QM format.
 	 * In QM, choice nodes are special types of transitions, not pseudoStates like in UML.
 	 */
-	// public CharSequence printChoices(final Transition t) {
+	public CharSequence printChoices(final Transition t, final String transitionComodoId) {
 		
-	// 	String eventName  = timeEventNaming(mQTransition.getFirstEventName(t)); 
-	// 	String guard  = mQTransition.getResolvedGuardName(t);
-	// 	String targetName = mQTransition.getTargetName(t); 
-	// 	String sourceName = mQTransition.getSourceName(t); 
-	// 	String comodoId = eventName + targetName + sourceName;
-		
-	// 	String str = "";
+		String str = "";
+		Pseudostate choicePseudoState = (Pseudostate) t.getTarget();
 
-	// 	String target = "target=\"" + targetName + "\" comodoId=\"" + comodoId + "\"";
+		for (Transition choiceTransition : choicePseudoState.getOutgoings()){
+			String guardComodoId = UUID.randomUUID().toString();
+			
+			stateMachineRootNode.getNodeByName(transitionComodoId).addChild(guardComodoId);
+			
+			String targetName = mQTransition.getTargetName(choiceTransition); 
+			String guard  = mQTransition.getResolvedGuardName(choiceTransition);
 
+			str += printChoiceNode(targetName, guard, guardComodoId);
+		}
 
-
-	// 	return str;
-	// }
+		return str;
+	}
+	
+	public String printChoiceNode(String targetName, String guard, String guardComodoId){
+		String str = "";
+		str += "<choice target=\"" + targetName + "\" comodoId=\"" + guardComodoId + "\">\n";
+		str += " <guard>" + guard + "</guard>\n";
+		str += printChoiceGlyph();
+		str += "</choice>\n";
+		return str;
+	}
 
 	public CharSequence printTransitionGlyph() {
 		String conn = "10,10,0,0,5,5"; // placeholder
@@ -514,7 +527,7 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
-	public CharSequence printChoicesGlyph() {
+	public CharSequence printChoiceGlyph() {
 		String conn = "10,10,0,0,5,5"; // placeholder
 		String box = "15,15,10,3"; // placeholder
 
