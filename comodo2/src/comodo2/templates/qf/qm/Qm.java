@@ -351,9 +351,6 @@ public class Qm implements IGenerator {
 				mLogger.warn("Internal transition from state " + 
 				mQState.getStateName(s) + 
 				" has no trigger event and no guard, skipped since could introduce infinite loop!");
-			//} else if (mQTransition.isChoiceTransition(t)) {
-
-				//str.append(printChoiceTransition(t));
 
 			} else {
 				String sourceName = mQTransition.getSourceName(t);
@@ -442,20 +439,28 @@ public class Qm implements IGenerator {
 		return str;
 	}
 
+	/**
+	 * Prints the <tran> QM elements. Multiple possibilities from UML
+	 *  -- Transition is simple (no guards)
+	 *  -- Transition has a guard
+	 *  -- Transition points to a UML choice node
+	 * On top of that, we need to print the actions
+	 */
 	public CharSequence printTransition(final Transition t, final String transitionComodoId) {
 		String eventName  = timeEventNaming(mQTransition.getFirstEventName(t)); 
 		String guard  = mQTransition.getResolvedGuardName(t);
 		String targetName = mQTransition.getTargetName(t); 
-		// targetName = t.getTarget().getQualifiedName();
 		
 		String str = "<tran";
+
 		if (!Objects.equal(eventName, "")) {
-			str += " trig=\"" + eventName + "\"";
+			str += " trig=\"" + eventName + "\">\n";
 		}
 
 
 		if (mQTransition.isChoiceTransition(t)) {
-			str += ">\n";
+			// str += ">\n";
+			str += "PRINT_ACTIONS_PLACEHOLDER";
 			str += printChoices(t, transitionComodoId);
 
 		} else if (!Objects.equal(guard, "")) {
@@ -465,18 +470,26 @@ public class Qm implements IGenerator {
 			
 			stateMachineRootNode.getNodeByName(transitionComodoId).addChild(guardComodoId);
 
-			str += ">\n";
+			// str += ">\n";
+			str += "PRINT_ACTIONS_PLACEHOLDER";
 			str += printChoiceNode(targetName, guard, guardComodoId);
 
 		} else if (!Objects.equal(targetName, "")) {
+			str = str.substring(0, str.length() - 2);
 			str += " target=\"" + targetName + "\"";
 			str += " comodoId=\"" + transitionComodoId + "\"";
 			str += ">\n";
+			str += "PRINT_ACTIONS_PLACEHOLDER";
 		}
 
+		// TODO : Most likely can be done prettier without the placeholder and just inserting target&comodoId in
+		// case targetName == "" by regexing
 		if (mQTransition.hasAction(t)){
 			// Prints the name of the behavior as the code string
-			str += printAction(checkTrailingSemicolon(t.getEffect().getName()));
+			// str += ">\n";
+			str = str.replace("PRINT_ACTIONS_PLACEHOLDER", printAction(checkTrailingSemicolon(t.getEffect().getName())));
+		} else {
+			str = str.replace("PRINT_ACTIONS_PLACEHOLDER", "");
 		}
 
 		str += printTransitionGlyph();
