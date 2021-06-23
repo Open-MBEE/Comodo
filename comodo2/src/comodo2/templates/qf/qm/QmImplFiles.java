@@ -58,8 +58,8 @@ public class QmImplFiles implements IGenerator {
 		"}\n";
 
     /**
-	 * Transform UML State Machine associated to a class (classifier behavior)
-	 * into a Quantum Framework XML file for the Quantum Modeler.
+	 * Process a UML State Machine associated to a class (classifier behavior)
+	 * to generate implementation files associated to a QM file.
 	 * 
 	 * The UML Class should:
 	 * - be inside a UML Package with stereotype cmdoModule
@@ -100,13 +100,11 @@ public class QmImplFiles implements IGenerator {
 		str += printIncludes();
 
 		for (String guardName : guardNames) {
-			str += String.format(GUARD_FUNCTION_SOURCE_TEMPLATE, smName, getFunctionName(guardName));
-			str += "\n";
+			str += printGuardFunction(smName, guardName);
 		}
 
 		for (String actionName : actionNames) {
-			str += String.format(ACTION_FUNCTION_SOURCE_TEMPLATE, smName, getFunctionName(actionName));
-			str += "\n";
+			str += printActionFunction(smName, actionName);
 		}
 
 		return str;
@@ -121,8 +119,8 @@ public class QmImplFiles implements IGenerator {
 		str += printIncludes();
 
 		str += "typedef struct " + smName + "_impl {\n" +
-			"	char machineName[128];\n" +
-			"	QActive *active;\n\n";
+				"	char machineName[128];\n" +
+				"	QActive *active;\n\n";
 
 		for (String guardName : guardNames) {
 			str += String.format("	bool %s;\n", getFunctionName(guardName));
@@ -143,16 +141,18 @@ public class QmImplFiles implements IGenerator {
 	}
 
 
-	public CharSequence printGuardFunction(final String guardName){
+	public CharSequence printGuardFunction(final String smName, final String guardName){
 		String str = "";
-
+		str += String.format(GUARD_FUNCTION_SOURCE_TEMPLATE, smName, getFunctionName(guardName));
+		str += "\n";
 		
-
 		return str;
 	}
-
-	public CharSequence printActionFunction(final String guardName){
+	
+	public CharSequence printActionFunction(final String smName, final String actionName){
 		String str = "";
+		str += String.format(ACTION_FUNCTION_SOURCE_TEMPLATE, smName, getFunctionName(actionName));
+		str += "\n";
 
 		return str;
 	}
