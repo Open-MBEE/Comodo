@@ -116,6 +116,7 @@ public class Qm implements IGenerator {
 		
 		str.append("<state_diagram size=\"80,50\"/>\n</statechart>\n");
 		str.append("  </class>\n </package>\n");
+		str.append(printFileTemplates(sm.getName()));
 		str.append(printDocumentEnd());
 		str.newLineIfNotEmpty();
 
@@ -594,5 +595,19 @@ public class Qm implements IGenerator {
 		return str.endsWith(";") ? str : str + ";";
 	}
 
+	public CharSequence printFileTemplates(final String smName) {
+		String str = " <directory name=\".\">\n";
+		str += "  <file name=\"" + smName + ".h\">\n";
+		str += "   <text>$declare${" + smName + "}</text>\n";
+		str += "  </file>";
+
+		str += "  <file name=\"" + smName + ".c\">\n";
+		str += "   <text>$define${" + smName + "}</text>\n";
+		str += "  </file>\n";
+
+		str += " </directory>\n";
+
+		return str;
+	}
 
 }
