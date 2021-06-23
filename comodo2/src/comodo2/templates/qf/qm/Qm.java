@@ -3,9 +3,7 @@ package comodo2.templates.qf.qm;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import comodo2.engine.Main;
-import comodo2.queries.QBehavior;
 import comodo2.queries.QClass;
-import comodo2.queries.QRegion;
 import comodo2.queries.QState;
 import comodo2.queries.QStateMachine;
 import comodo2.queries.QTransition;
@@ -42,7 +40,6 @@ public class Qm implements IGenerator {
 	@Inject
 	private QStateMachine mQStateMachine;
 
-
 	@Inject
 	private QState mQState;
 
@@ -55,8 +52,6 @@ public class Qm implements IGenerator {
 	@Inject
 	private FilesHelper mFilesHelper;
 
-	@Inject
-	private QBehavior mQBehavior;
 
 	/**
 	 * Transform UML State Machine associated to a class (classifier behavior)
