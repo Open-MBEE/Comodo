@@ -31,28 +31,30 @@ import org.eclipse.xtext.generator.IGenerator;
 public class Qm implements IGenerator {
 
 	private static final Logger mLogger = Logger.getLogger(Main.class);
+	
+	@Inject
+	private QStateMachine mQStateMachine;
+	
+	@Inject
+	private QState mQState;
+	
+	@Inject
+	private QTransition mQTransition;
+	
+	@Inject
+	private QClass mQClass;
+	
+	@Inject
+	private FilesHelper mFilesHelper;
+	
 
+	/* #########  QM-specific  ######## */
 	private final TreeSet<String>   timeEventsNameset = new TreeSet<String>();
 	private final TreeSet<String> signalEventsNameset = new TreeSet<String>();
 
 	private QmTree stateMachineRootNode;
 	private QmTree currentStateMachineNode;
-
-	@Inject
-	private QStateMachine mQStateMachine;
-
-	@Inject
-	private QState mQState;
-
-	@Inject
-	private QTransition mQTransition;
-
-	@Inject
-	private QClass mQClass;
-
-	@Inject
-	private FilesHelper mFilesHelper;
-
+	/* ################################ */
 
 	/**
 	 * Transform UML State Machine associated to a class (classifier behavior)
