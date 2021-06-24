@@ -32,7 +32,8 @@ public class Qm implements IGenerator {
 
 	private static final Logger mLogger = Logger.getLogger(Main.class);
 
-	private final TreeSet<String> timeEventsNameset = new TreeSet<String>();
+	private final TreeSet<String>   timeEventsNameset = new TreeSet<String>();
+	private final TreeSet<String> signalEventsNameset = new TreeSet<String>();
 
 	private QmTree stateMachineRootNode;
 	private QmTree currentStateMachineNode;
@@ -350,7 +351,7 @@ public class Qm implements IGenerator {
 				String sourceName = mQTransition.getSourceName(t);
 				String comodoId = UUID.randomUUID().toString();
 				
-				registerTimeEvent(t);
+				registerEvent(t);
 				stateMachineRootNode.getNodeByName(sourceName).addChild(comodoId);
 
 				str.append(printTransition(t, comodoId));
@@ -361,19 +362,24 @@ public class Qm implements IGenerator {
 	}
 
 	/**
-	 * Registers any TimeEvent within a transition so that it can later be added to the class declaration (QM needs it)
+	 * Registers any Event within a transition so that it can later be added to the class declaration (QM needs it)
 	 */
-	public void registerTimeEvent(Transition t){
-		String eventName  = timeEventNaming(mQTransition.getFirstEventName(t));
+	public void registerEvent(Transition t){
+		String eventName  = mQTransition.getFirstEventName(t);
 
 		if (!Objects.equal(eventName, "")) {
 			// Removing non alphanumeric characters since this will be the name of a C variable
-			timeEventsNameset.add(eventName);
+			
+			if (mQTransition.hasSignalEvent(t)) {
+				signalEventsNameset.add(eventName);
+			} else if (mQTransition.hasTimeEvent(t)) {
+				timeEventsNameset.add(eventName);
+			}
 		}
 	}
 
-	public String timeEventNaming(String timeEventName){
-		return timeEventName.replaceAll("[^A-Za-z0-9]", "").toUpperCase();
+	public String eventNaming(String timeEventName){
+		return timeEventName.replaceAll("[^A-Za-z0-9_]", "").toUpperCase();
 	}
 
 	public CharSequence printTimeEvents(){
@@ -441,7 +447,7 @@ public class Qm implements IGenerator {
 	 * On top of that, we need to print the actions
 	 */
 	public CharSequence printTransition(final Transition t, final String transitionComodoId) {
-		String eventName  = timeEventNaming(mQTransition.getFirstEventName(t)); 
+		String eventName  = mQTransition.getFirstEventName(t); 
 		String guard  = mQTransition.getResolvedGuardName(t);
 		String targetName = mQTransition.getTargetName(t); 
 		

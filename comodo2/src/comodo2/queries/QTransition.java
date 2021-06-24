@@ -14,6 +14,8 @@ import org.eclipse.uml2.uml.TimeEvent;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.TransitionKind;
 import org.eclipse.uml2.uml.Trigger;
+import org.eclipse.uml2.uml.internal.impl.SignalEventImpl;
+import org.eclipse.uml2.uml.internal.impl.TimeEventImpl;
 
 public class QTransition {
 	@Inject
@@ -265,4 +267,21 @@ public class QTransition {
 		}
 		return true;
 	}
+
+	public boolean hasSignalEvent(final Transition t) {
+		if (t.getTriggers().isEmpty()) {
+			return false;
+		} else {
+			return (t.getTriggers().get(0).getEvent().getClass() == SignalEventImpl.class);
+		}
+	}
+
+	public boolean hasTimeEvent(final Transition t) {
+		if (t.getTriggers().isEmpty()) {
+			return false;
+		} else {
+			return (t.getTriggers().get(0).getEvent().getClass() == TimeEventImpl.class);
+		}
+	}
+	
 }
