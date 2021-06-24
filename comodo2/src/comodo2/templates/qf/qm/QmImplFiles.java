@@ -46,15 +46,15 @@ public class QmImplFiles implements IGenerator {
 
 	// %1$s is impl_name      %2$s is funciton_name        "%%s" is escaping %s, which we want in the output
 	final private String GUARD_FUNCTION_SOURCE_TEMPLATE = "" +
-		"bool %1$s_impl_%2$s () {\n" +
-		"	bool rv = this.%2$s;\n" +
-		"	printf(\"%%s.%2$s() == %%s\", \"MISSING_ARGUMENT\");\n" +
+		"bool %1$s_impl_%2$s (%1$s_impl *mepl) {\n" +
+		"	bool rv = AttributeMapper_get(mepl, \"%2$s\");\n" +
+		"	printf(\"%%s.%2$s() == %%s\", mepl->machineName, AttributeMapper_booltostr(rv));\n" +
 		"	return rv;\n" +
 		"};\n";
 
 	final private String ACTION_FUNCTION_SOURCE_TEMPLATE = "" +
-		"void %1$s_impl_%2$s () {\n" +
-		"	printf(\"%%s.%2$s() default action implementation invoked\\n\", \"MISSING_ARGUMENT\");\n" +
+		"void %1$s_impl_%2$s (%1$s_impl *mepl) {\n" +
+		"	printf(\"%%s.%2$s() default action implementation invoked\\n\", mepl->machineName);\n" +
 		"}\n";
 
     /**
@@ -126,14 +126,18 @@ public class QmImplFiles implements IGenerator {
 			str += String.format("	bool %s;\n", getFunctionName(guardName));
 		}
 
-		str += "};\n\n";
+		str += "}" + smName + "_impl;\n\n";
+
+		str +=  "////////////////////////////////////////////\n" +
+				"// Action and guard implementation methods\n" +
+				"////////////////////////////////////////////\n";
 
 		for (String guardName : guardNames) {
-			str += String.format("bool %s_impl_%s();\n", smName, getFunctionName(guardName));
+			str += String.format("bool %s_impl_%s(" + smName + "_impl *mepl);\n", smName, getFunctionName(guardName));
 		}
 
 		for (String actionName : actionNames) {
-			str += String.format("void %s_impl_%s();", smName, getFunctionName(actionName));
+			str += String.format("void %s_impl_%s(" + smName + "_impl *mepl);", smName, getFunctionName(actionName));
 			str += "\n";
 		}
 		
