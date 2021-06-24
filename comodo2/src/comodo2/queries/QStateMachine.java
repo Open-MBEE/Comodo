@@ -74,6 +74,19 @@ public class QStateMachine {
 		return Iterables.<State>filter(sm.allOwnedElements(), State.class);
 	}
 
+	/**
+	 * This function returns all pseudostates contained in the
+	 * given state machine.
+	 * Needed for all transition guards of the SM because choice nodes are pseudostates.
+	 * 
+	 * @param sm State machine.
+	 * @return All states contained in the given state machine.
+	 */
+	public Iterable<Pseudostate> getAllPseudostates(final StateMachine sm) {
+		return Iterables.<Pseudostate>filter(sm.allOwnedElements(), Pseudostate.class);
+	}
+
+
 	public Iterable<State> getAllStatesSorted(final StateMachine sm) {
 		TreeSet<State> sortedStates = new TreeSet<State>(new StateComparator());
 		for (final State s : Iterables.<State>filter(sm.allOwnedElements(), State.class) ) {
@@ -221,6 +234,17 @@ public class QStateMachine {
 				}
 			}
 		}
+		// We also need to get all the outgoings from pseudostates
+		// because choice nodes are pseudostates, and have guards on outgoing transitions
+		for (final Pseudostate ps : getAllPseudostates(sm)) {
+			for (final Transition t : ps.getOutgoings()) {
+				if (mQTransition.hasGuard(t)) {
+					names.add(mQTransition.getGuardName(t));
+				}
+			}
+		}
+
+		
 		return names;
 	}
 }
