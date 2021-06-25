@@ -27,6 +27,7 @@ public class Config {
 	public final static  String TARGET_PLATFORM_SCXML   = "SCXML";      // SCXML only
 	public final static  String TARGET_PLATFORM_ELT_RAD = "ELT-RAD";    // RAD application (SCXML, MAL, rad.ev)
 	public final static  String TARGET_PLATFORM_ELT_MAL = "ELT-MAL";    // MAL ICD only
+	public final static  String TARGET_PLATFORM_QPC     = "QPC";        // QuantumProgramming/C only
 
 	/**
 	 * Platforms specific configuration options

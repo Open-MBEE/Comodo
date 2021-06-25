@@ -52,7 +52,7 @@ public class Main {
 		opt.addOption("d", "debug", false, "Enable printing of debug information.");	
 		opt.addOption("i", "input-model", true, "Filepath of the model to transform. Model should be in EMF XMI (.uml) format.");
 		opt.addOption("o", "output-path", true, "Output directory path.");
-		opt.addOption("t", "target-platform", true, "Target platform [SCXML|ELT-RAD|ELT-MAL].");		
+		opt.addOption("t", "target-platform", true, "Target platform [SCXML|QPC|ELT-RAD|ELT-MAL].");		
 		opt.addOption("c", "target-platform-config", true, "Configuration parameters specific to the target platform [NOACTIONSSTD].");
 		opt.addOption("g", "generation-mode", true, "Generation mode [DEFAULT|UPDATE|ALL].");
 		opt.addOption("n", "no-backup", false, "Disable automatic backup of overwritten files.");
