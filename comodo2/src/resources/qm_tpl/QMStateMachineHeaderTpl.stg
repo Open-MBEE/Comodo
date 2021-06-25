@@ -12,17 +12,6 @@ StateMachineHeader(smName, smNameUpperCase) ::= <<
 #include <%smName%_states.h>
 #include <%smName%_impl.h>
 
-/**
- * Declare the state machine struct, encapsulating the extended state variables.
- * It tracks any timers, owned orthogonal regions, history states, substates.
- */
-typedef struct %smName% {
-    QActive super;  // C-style inheritance
-    QActive *active;  // containing machine if this is a submachine instance
-    char objName[128];
-    %smName%_impl *impl;
-    enum %smName%_state myState;
-} %smName%;
 
 /** 
  * %smName% Constructor
