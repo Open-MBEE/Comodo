@@ -12,6 +12,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Region;
+import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
@@ -246,5 +247,37 @@ public class QStateMachine {
 
 		
 		return names;
+	}
+
+
+	/**
+	 * This function returns all pseudostates contained in the
+	 * given state machine.
+	 * Needed for all transition guards of the SM because choice nodes are pseudostates.
+	 * 
+	 * @param sm State machine.
+	 * @return All signals contained in the given state machine.
+	 */
+	public Iterable<String> getAllSignalNames(final StateMachine sm) {
+		TreeSet<String> sortedSignalNames = new TreeSet<String>();
+		for (Signal s : Iterables.<Signal>filter(sm.allOwnedElements(), Signal.class)){
+			sortedSignalNames.add(s.getName());
+		}
+		return sortedSignalNames;
+	}
+
+
+	/**
+	 * This function returns all states qualified name.
+	 * 
+	 * @param sm State machine.
+	 * @return All states contained in the given state machine.
+	 */
+	public Iterable<String> getAllStatesQualifiedName(final StateMachine sm) {
+		TreeSet<String> stateQualifiedNames = new TreeSet<String>();
+		for (State state : Iterables.<State>filter(sm.allOwnedElements(), State.class)){
+			stateQualifiedNames.add(mQState.getFullyQualifiedName(state));
+		}
+		return stateQualifiedNames;
 	}
 }
