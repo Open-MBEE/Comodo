@@ -1,27 +1,13 @@
 package comodo2.templates.qpc;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Iterables;
 import comodo2.engine.Main;
 import comodo2.queries.QClass;
-import comodo2.queries.QRegion;
-import comodo2.queries.QState;
-import comodo2.queries.QStateMachine;
-import comodo2.queries.QTransition;
-import comodo2.utils.FilesHelper;
-import comodo2.utils.StateComparator;
-import comodo2.utils.TransitionComparator;
-import java.util.TreeSet;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.uml2.uml.Pseudostate;
-import org.eclipse.uml2.uml.Region;
-import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
-import org.eclipse.uml2.uml.Transition;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
@@ -31,22 +17,7 @@ public class Qpc implements IGenerator {
 	private static final Logger mLogger = Logger.getLogger(Main.class);
 
 	@Inject
-	private QStateMachine mQStateMachine;
-
-	@Inject
-	private QRegion mQRegion;
-
-	@Inject
-	private QState mQState;
-
-	@Inject
-	private QTransition mQTransition;
-
-	@Inject
 	private QClass mQClass;
-
-	@Inject
-	private FilesHelper mFilesHelper;
 
 	/**
 	 * Transform UML State Machine associated to a class (classifier behavior)
