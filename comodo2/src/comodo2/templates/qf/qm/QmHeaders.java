@@ -76,7 +76,7 @@ public class QmHeaders implements IGenerator {
 	public CharSequence generateSignalsHeader(final String smName, final TreeSet<String> signalNames){
 		String str = "";
 
-		str += printIncludes();
+		//str += printIncludes();
 
 		str +=  "enum " + smName + "_signals {\n" +
 				"	/* \"During\" signal */\n" +
@@ -101,7 +101,7 @@ public class QmHeaders implements IGenerator {
 	public CharSequence generateStatesHeader(final String smName, final Iterable<String> statesQualifiedNames){
 		String str = "";
 
-		str += printIncludes();
+		//str += printIncludes();
 
 		str +=  "typedef enum " + smName + "_states {\n";
 		str += "	" + smName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
