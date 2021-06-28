@@ -75,14 +75,15 @@ public class QmImplFiles implements IGenerator {
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if ((mQClass.isToBeGenerated(e) && mQClass.hasStateMachines(e))) {
 				for (final StateMachine sm : mQClass.getStateMachines(e)) {
+					String smQualifiedName = e.getName() + "_" + sm.getName();
 					TreeSet<String> actionNames = new TreeSet<String>();
 					TreeSet<String> guardNames = new TreeSet<String>();
 
 					Iterables.<String>addAll(actionNames, mQStateMachine.getAllActionNames(sm));
 					Iterables.<String>addAll(guardNames, mQStateMachine.getAllGuardNames(sm));
 					
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(sm.getName() + "_impl.c"), this.generateImplSource(sm.getName(), actionNames, guardNames));						
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(sm.getName() + "_impl.h"), this.generateImplHeader(sm.getName(), actionNames, guardNames));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.c"), this.generateImplSource(smQualifiedName, actionNames, guardNames));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.h"), this.generateImplHeader(smQualifiedName, actionNames, guardNames));						
 				}
 
 			}

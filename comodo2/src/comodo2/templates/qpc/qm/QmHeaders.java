@@ -58,11 +58,12 @@ public class QmHeaders implements IGenerator {
 				TreeSet<String> signalNames = new TreeSet<String>();
 				for (final StateMachine sm : mQClass.getStateMachines(e)) {
 
+					String smQualifiedName = e.getName() + "_" + sm.getName();
 					Iterables.<String>addAll(signalNames, mQStateMachine.getAllSignalNames(sm));
 					
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(sm.getName() + "_signals.h"), this.generateSignalsHeader(sm.getName(), signalNames));						
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(sm.getName() + "_states.h"), this.generateStatesHeader(sm.getName(), mQStateMachine.getAllStatesQualifiedName(sm)));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_states.h"), this.generateStatesHeader(smQualifiedName, mQStateMachine.getAllStatesQualifiedName(sm)));						
 				}
+				fsa.generateFile(mFilesHelper.toQmImplFilePath(e.getName() + "_statechart_signals.h"), this.generateSignalsHeader(e.getName(), signalNames));						
 
 			}
 		}

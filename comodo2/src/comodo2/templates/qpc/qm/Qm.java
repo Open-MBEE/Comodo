@@ -57,6 +57,7 @@ public class Qm implements IGenerator {
 
 	private QmTree stateMachineRootNode;
 	private QmTree currentStateMachineNode;
+	private String smQualifiedName;
 	/* ################################ */
 
 	/**
@@ -79,8 +80,9 @@ public class Qm implements IGenerator {
 				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
 				if ((mQClass.isToBeGenerated(c) && mQClass.hasStateMachines(c))) {
 					for (final StateMachine sm : mQClass.getStateMachines(c)) {
+						smQualifiedName = c.getName() + "_" + sm.getName();
 						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(sm.getName())));
-						fsa.generateFile(mFilesHelper.toQmFilePath(sm.getName()), this.generate(sm));						
+						fsa.generateFile(mFilesHelper.toQmFilePath(smQualifiedName), this.generate(sm));						
 					}
 				}				
 			}
