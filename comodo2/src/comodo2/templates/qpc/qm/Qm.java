@@ -109,7 +109,9 @@ public class Qm implements IGenerator {
 		// Later, the plan will be to make use of the javax.xml.parsers libraries for this process to be more robust and understandable.
 		strTemp.append("   <statechart>\n");
 
-		strTemp.append(printInitial(mQStateMachine.getInitialStateName(sm), sm.getName()));
+		// placeholder for the QPC subscription of signals, will be replaced at the end of generation by C code
+		String initActionUUID = UUID.randomUUID().toString();
+		strTemp.append(printInitial(mQStateMachine.getInitialStateName(sm), initActionUUID, sm.getName()));
 		stateMachineRootNode.addChild("init" + sm.getName());
 
 		strTemp.newLineIfNotEmpty();
@@ -141,7 +143,7 @@ public class Qm implements IGenerator {
 							);
 		}
 
-		// TODO: Add a warning if we find a target="" in the file
+		result = result.replace(initActionUUID, this.printInitialSignalSubscription(sm.getName()));
 
 		return result;
 	}
@@ -233,7 +235,7 @@ public class Qm implements IGenerator {
 			
 			if (!Objects.equal(mQState.getInitialSubstateName(s), "")){
 				currentStateMachineNode.addChild("init" + s.getName());
-				str.append("  " + printInitial(mQState.getInitialSubstateName(s), s.getName()), "  ");
+				str.append("  " + printInitial(mQState.getInitialSubstateName(s), "", s.getName()), "  ");
 			}
 
 			str.newLineIfNotEmpty();
@@ -423,15 +425,13 @@ public class Qm implements IGenerator {
 	 * @param targetName
 	 * @return CharSequence
 	 */
-	public CharSequence printInitial(final String targetName, String initId) {
-
-		String init_code = "";
+	public CharSequence printInitial(final String targetName, String initCode, String initId) {
 
 		String str = "    " + "<initial target=\"" + targetName + "\" comodoId=\"init" + initId + "\">\n";
 		
-		if (!Objects.equal(init_code, "")) {	
+		if (!Objects.equal(initCode, "")) {	
 			str += "     " + "<action>";
-			str += init_code + "</action>\n";
+			str += initCode + "</action>\n";
 		}
 
 		str += printInitialGlyph();
@@ -622,6 +622,17 @@ public class Qm implements IGenerator {
 
 		str += " </directory>\n";
 
+		return str;
+	}
+
+	public String printInitialSignalSubscription(String smName){
+		String str = "// Subscribe to all the signals to which this state machine needs to respond.\n";
+		str += "if (me->active == (QActive *)me) {";
+
+		for (String signalName : this.signalEventsNameset){
+			str += "	QActive_subscribe(me->active, " + smName.toUpperCase() + "_" + signalName + "_SIG);\n";
+		}
+		str += "}";
 		return str;
 	}
 
