@@ -74,9 +74,9 @@ public class QmImplFiles implements IGenerator {
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if ((mQClass.isToBeGenerated(e) && mQClass.hasStateMachines(e))) {
-				TreeSet<String> actionNames = new TreeSet<String>();
-				TreeSet<String> guardNames = new TreeSet<String>();
 				for (final StateMachine sm : mQClass.getStateMachines(e)) {
+					TreeSet<String> actionNames = new TreeSet<String>();
+					TreeSet<String> guardNames = new TreeSet<String>();
 
 					Iterables.<String>addAll(actionNames, mQStateMachine.getAllActionNames(sm));
 					Iterables.<String>addAll(guardNames, mQStateMachine.getAllGuardNames(sm));
