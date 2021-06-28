@@ -1,4 +1,4 @@
-package comodo2.templates.qf.qm;
+package comodo2.templates.qpc.qm;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
