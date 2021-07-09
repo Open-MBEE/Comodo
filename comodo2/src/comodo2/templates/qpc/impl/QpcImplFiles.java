@@ -1,4 +1,4 @@
-package comodo2.templates.qpc.qm;
+package comodo2.templates.qpc.impl;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
@@ -32,7 +32,7 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 
 
-public class QmImplFiles implements IGenerator {
+public class QpcImplFiles implements IGenerator {
 
 
 	@Inject
