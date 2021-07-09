@@ -12,6 +12,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Region;
+import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
@@ -73,6 +74,19 @@ public class QStateMachine {
 	public Iterable<State> getAllStates(final StateMachine sm) {
 		return Iterables.<State>filter(sm.allOwnedElements(), State.class);
 	}
+
+	/**
+	 * This function returns all pseudostates contained in the
+	 * given state machine.
+	 * Needed for all transition guards of the SM because choice nodes are pseudostates.
+	 * 
+	 * @param sm State machine.
+	 * @return All states contained in the given state machine.
+	 */
+	public Iterable<Pseudostate> getAllPseudostates(final StateMachine sm) {
+		return Iterables.<Pseudostate>filter(sm.allOwnedElements(), Pseudostate.class);
+	}
+
 
 	public Iterable<State> getAllStatesSorted(final StateMachine sm) {
 		TreeSet<State> sortedStates = new TreeSet<State>(new StateComparator());
@@ -221,6 +235,49 @@ public class QStateMachine {
 				}
 			}
 		}
+		// We also need to get all the outgoings from pseudostates
+		// because choice nodes are pseudostates, and have guards on outgoing transitions
+		for (final Pseudostate ps : getAllPseudostates(sm)) {
+			for (final Transition t : ps.getOutgoings()) {
+				if (mQTransition.hasGuard(t)) {
+					names.add(mQTransition.getGuardName(t));
+				}
+			}
+		}
+
+		
 		return names;
+	}
+
+
+	/**
+	 * This function returns all pseudostates contained in the
+	 * given state machine.
+	 * Needed for all transition guards of the SM because choice nodes are pseudostates.
+	 * 
+	 * @param sm State machine.
+	 * @return All signals contained in the given state machine.
+	 */
+	public Iterable<String> getAllSignalNames(final StateMachine sm) {
+		TreeSet<String> sortedSignalNames = new TreeSet<String>();
+		for (Signal s : Iterables.<Signal>filter(sm.allOwnedElements(), Signal.class)){
+			sortedSignalNames.add(s.getName());
+		}
+		return sortedSignalNames;
+	}
+
+
+	/**
+	 * This function returns all states qualified name.
+	 * 
+	 * @param sm State machine.
+	 * @return All states contained in the given state machine.
+	 */
+	public Iterable<String> getAllStatesQualifiedName(final StateMachine sm) {
+		TreeSet<String> stateQualifiedNames = new TreeSet<String>();
+		for (State state : Iterables.<State>filter(sm.allOwnedElements(), State.class)){
+			stateQualifiedNames.add(mQState.getFullyQualifiedName(state));
+		}
+		return stateQualifiedNames;
 	}
 }

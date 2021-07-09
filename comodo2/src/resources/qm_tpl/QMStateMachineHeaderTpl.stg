@@ -1,0 +1,36 @@
+delimiters "%", "%"
+
+StateMachineHeader(smName, smNameUpperCase) ::= <<
+
+#ifndef %smNameUpperCase%_H_
+#define %smNameUpperCase%_H_
+
+#include <stdbool.h>
+#include <qf_port.h>
+#include <qassert.h>
+#include <%smName%_signals.h>
+#include <%smName%_states.h>
+#include <%smName%_impl.h>
+
+
+/** 
+ * %smName% Constructor
+ *
+ * This State machine constructor is responsible for initializing
+ * the object, allocating and initializing any orthogonal regions, 
+ * and initializing the timers.
+ */
+%smName% *%smName%_constructor (%smName% *me, const char *objNameNew, %smName%_impl *implObj, QActive *active);
+
+/**
+  * Returns the instance of the Implementation class for this QActive.
+  */
+%smName%_impl *%smName%_get_impl (%smName% *me);
+
+/**
+ * Returns the unique enum representing the current state of this machine.
+ */
+%smName%_state %smName%_get_current_state (%smName% *me);
+
+
+>>

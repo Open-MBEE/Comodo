@@ -7,12 +7,15 @@ import org.eclipse.uml2.uml.Event;
 import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Pseudostate;
+import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.TimeEvent;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.TransitionKind;
 import org.eclipse.uml2.uml.Trigger;
+import org.eclipse.uml2.uml.internal.impl.SignalEventImpl;
+import org.eclipse.uml2.uml.internal.impl.TimeEventImpl;
 
 public class QTransition {
 	@Inject
@@ -221,6 +224,22 @@ public class QTransition {
 		return false;
 	}
 
+	/**
+	 * Returns true if the transition points to a Choice pseudoState
+	 * This is needed for QF Target because QM has a different choice node structure.
+	 */
+	public boolean isChoiceTransition(final Transition t){
+		try {
+			Pseudostate ps = (Pseudostate) t.getTarget();
+			if (ps.getKind() == PseudostateKind.CHOICE_LITERAL){
+				return true;
+			}
+		} catch (ClassCastException e) {
+			return false;
+		}
+		return false;
+	}
+
 	public boolean hasEvent(final Transition t) {
 		if (Objects.equal(getFirstEventName(t), "")) {
 			return false;
@@ -248,4 +267,21 @@ public class QTransition {
 		}
 		return true;
 	}
+
+	public boolean hasSignalEvent(final Transition t) {
+		if (t.getTriggers().isEmpty()) {
+			return false;
+		} else {
+			return (t.getTriggers().get(0).getEvent().getClass() == SignalEventImpl.class);
+		}
+	}
+
+	public boolean hasTimeEvent(final Transition t) {
+		if (t.getTriggers().isEmpty()) {
+			return false;
+		} else {
+			return (t.getTriggers().get(0).getEvent().getClass() == TimeEventImpl.class);
+		}
+	}
+	
 }
