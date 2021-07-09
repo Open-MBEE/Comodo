@@ -1,9 +1,9 @@
 package comodo2.templates.qpc;
 
 import comodo2.engine.Config;
+import comodo2.templates.qpc.impl.QpcHeaders;
+import comodo2.templates.qpc.impl.QpcImplFiles;
 import comodo2.templates.qpc.qm.Qm;
-import comodo2.templates.qpc.qm.QmImplFiles;
-import comodo2.templates.qpc.qm.QmHeaders;
 
 import javax.inject.Inject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -16,17 +16,17 @@ public class Qpc implements IGenerator {
 	private Qm mQm;
     
 	@Inject
-	private QmImplFiles mQmImplFiles;
+	private QpcImplFiles mQpcImplFiles;
 
 	@Inject
-	private QmHeaders mQmHeaders;
+	private QpcHeaders mQpcHeaders;
 
     @Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
 		if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_QM)) {
 			mQm.doGenerate(input, fsa);
-			mQmImplFiles.doGenerate(input, fsa);
-			mQmHeaders.doGenerate(input, fsa);
+			mQpcImplFiles.doGenerate(input, fsa);
+			mQpcHeaders.doGenerate(input, fsa);
 		}
 	}
 
