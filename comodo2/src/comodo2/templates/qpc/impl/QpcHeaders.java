@@ -1,34 +1,21 @@
 package comodo2.templates.qpc.impl;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Iterables;
-import comodo2.engine.Main;
-import comodo2.queries.QBehavior;
-import comodo2.queries.QClass;
-import comodo2.queries.QRegion;
-import comodo2.queries.QState;
-import comodo2.queries.QStateMachine;
-import comodo2.queries.QTransition;
-import comodo2.utils.FilesHelper;
-import comodo2.utils.StateComparator;
-import comodo2.utils.TransitionComparator;
-
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import javax.inject.Inject;
-import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.TreeIterator;
+
+import com.google.common.collect.Iterables;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.uml2.uml.Pseudostate;
-import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
-import org.eclipse.uml2.uml.Transition;
-import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+
+import comodo2.queries.QClass;
+import comodo2.queries.QStateMachine;
+import comodo2.utils.FilesHelper;
 
 
 
