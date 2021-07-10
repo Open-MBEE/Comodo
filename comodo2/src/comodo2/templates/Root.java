@@ -39,7 +39,8 @@ public class Root implements IGenerator {
 			long startTime = System.nanoTime();	
 			if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_SCXML)) {
 				mScxmlTemplate.doGenerate(input, fsa);
-			} else if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_QM)) {
+			} else if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_QM) ||
+					   Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_C)) {
 				mQpcTemplate.doGenerate(input, fsa);
 			} else {
 				if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_ELT_RAD) || 

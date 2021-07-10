@@ -1,0 +1,26 @@
+delimiters "%", "%"
+
+StateMachine_InitialState(smQualifiedName) ::= <<
+
+/**
+ * initial state definition
+ */
+QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvent const *e) {
+    _INITIAL_STATE_PLACEHOLDER_FOR_SIGNAL_SUBSCRIPTION_
+}
+
+>>
+
+
+StateMachine_State(smQualifiedName, stateName, signalSwitchCase) ::= <<
+
+/**
+ * %stateName% state definition
+ */
+QState %smQualifiedName%_%stateName% (%smQualifiedName% *me, QEvent const *e) {
+    switch (e->sig) {
+        %signalSwitchCase%
+    }
+}
+
+>>
