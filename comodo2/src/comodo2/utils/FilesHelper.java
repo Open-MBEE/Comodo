@@ -54,6 +54,16 @@ public class FilesHelper {
 		return getRelativeConfigPath() + toFileName(className) + ".xml";
 	}
 
+	public String toQmFilePath(final String className) {
+		// QM files are XML files that open in the Quantum Modeler
+		return "/" + Config.getInstance().getCurrentModule() + "/" + toFileName(className) + ".qm";
+	}
+
+	public String toQmImplFilePath(final String fileName) {
+		// QM files are XML files that open in the Quantum Modeler
+		return "/" + Config.getInstance().getCurrentModule() + "/" + fileName;
+	}
+
 	/**
 	 * Checks if a given filename already exists,
 	 * in that case it creates a backup with filename:

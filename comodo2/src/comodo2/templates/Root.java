@@ -3,6 +3,7 @@ package comodo2.templates;
 import comodo2.engine.Config;
 import comodo2.templates.elt.Elt;
 import comodo2.templates.scxml.Scxml;
+import comodo2.templates.qpc.Qpc;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -15,6 +16,9 @@ public class Root implements IGenerator {
 
 	@Inject
 	private Elt mEltTemplate;
+
+	@Inject
+	private Qpc mQpcTemplate;
 
 	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
 
@@ -35,6 +39,8 @@ public class Root implements IGenerator {
 			long startTime = System.nanoTime();	
 			if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_SCXML)) {
 				mScxmlTemplate.doGenerate(input, fsa);
+			} else if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_QM)) {
+				mQpcTemplate.doGenerate(input, fsa);
 			} else {
 				if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_ELT_RAD) || 
 				    Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_ELT_MAL)) {
