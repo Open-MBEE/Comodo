@@ -1,6 +1,7 @@
 package comodo2.templates.qpc;
 
 import comodo2.engine.Config;
+import comodo2.templates.qpc.c.StateMachineHeader;
 import comodo2.templates.qpc.c.StateMachineSource;
 import comodo2.templates.qpc.impl.QpcHeaders;
 import comodo2.templates.qpc.impl.QpcImplFiles;
@@ -18,6 +19,9 @@ public class Qpc implements IGenerator {
     
 	@Inject
 	private StateMachineSource mStateMachineSource;
+
+	@Inject
+	private StateMachineHeader mStateMachineHeader;
     
 	@Inject
 	private QpcImplFiles mQpcImplFiles;
@@ -34,6 +38,7 @@ public class Qpc implements IGenerator {
 		}
 		else if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_C)) {
 			mStateMachineSource.doGenerate(input, fsa);
+			mStateMachineHeader.doGenerate(input, fsa);
 
 			// mQpcImplFiles.setSignalNameset(mStateMachineSource.getSignalNameSet()); ????
 			mQpcImplFiles.doGenerate(input, fsa);

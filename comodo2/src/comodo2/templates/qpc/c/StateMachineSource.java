@@ -131,7 +131,7 @@ public class StateMachineSource implements IGenerator {
 
 
 	public String printStateMachineIncludes(final String smName){
-        STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSourceTpl-includes.stg");
+        STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-includes.stg");
 		ST st = g.getInstanceOf("StateMachineSourceIncludes");
 		st.add("smName", smName);
 
@@ -139,7 +139,7 @@ public class StateMachineSource implements IGenerator {
     }
 
 	public String printStateMachineDefinitions(final String smName){
-        STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSourceTpl-definitions.stg");
+        STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-definitions.stg");
 		ST st = g.getInstanceOf("StateMachineSourceDefinitions");
 		st.add("smName", smName);
 		st.add("smNameUpperCase", smName.toUpperCase());
@@ -355,7 +355,7 @@ public class StateMachineSource implements IGenerator {
 	 */
 	public CharSequence printInitialState(final String targetName, String smName) {
 
-		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSourceTpl-state.stg");
+		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st = g.getInstanceOf("StateMachine_InitialState");
 
 		st.add("smQualifiedName", smQualifiedName);
