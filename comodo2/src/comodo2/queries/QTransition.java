@@ -229,13 +229,11 @@ public class QTransition {
 	 * This is needed for QF Target because QM has a different choice node structure.
 	 */
 	public boolean isChoiceTransition(final Transition t){
-		try {
+		if (t.getTarget() instanceof Pseudostate) {
 			Pseudostate ps = (Pseudostate) t.getTarget();
 			if (ps.getKind() == PseudostateKind.CHOICE_LITERAL){
 				return true;
 			}
-		} catch (ClassCastException e) {
-			return false;
 		}
 		return false;
 	}
