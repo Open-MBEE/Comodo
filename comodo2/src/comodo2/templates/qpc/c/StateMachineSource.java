@@ -94,28 +94,16 @@ public class StateMachineSource implements IGenerator {
 	public CharSequence generate(final StateMachine sm) {
 		StringConcatenation str = new StringConcatenation();
 
-		
-
 		str.append(printStateMachineIncludes(smQualifiedName));
 		
 		str.append(printNewlines(3));
 
 		str.append(printStateMachineDefinitions(smQualifiedName));
 
-
 		str.append(printInitialState(mQStateMachine.getInitialStateName(sm), sm.getName()));
 
 		str.append(exploreAllStates(sm));
 		
-
-		// str.append(printTimeEvents());
-		// str.newLineIfNotEmpty();
-
-
-
-		// str.append(printFileTemplates(sm.getName()));
-
-		str.newLineIfNotEmpty();
 
 
 		String result = str.toString();
@@ -153,11 +141,8 @@ public class StateMachineSource implements IGenerator {
 
 
 
-
-
-
 	/**
-	 * Start transformation from top level states.
+	 * Start transformation of all states.
 	 */
 	public CharSequence exploreAllStates(final StateMachine sm) {
 		StringConcatenation str = new StringConcatenation();
@@ -174,7 +159,7 @@ public class StateMachineSource implements IGenerator {
 
 
 	/**
-	 * Transform a simple state.
+	 * Transforms a state into QPC C code
 	 */
 	public CharSequence exploreState(final State s) {
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
@@ -182,11 +167,9 @@ public class StateMachineSource implements IGenerator {
 
 		if (mQState.isFinal(s)) {
 			// Final nodes do not exist in QM. Is there a need to handle them?
-			// str.append(printFinalState(s));
-			// str.newLineIfNotEmpty();
 			mLogger.warn("/!\\ Final state was found");
 		} else {
-			// Create a ST element and pass it to all functions?
+
 			st.add("smQualifiedName", smQualifiedName);
 			st.add("stateName", s.getName());
 			st.add("logging", USER_LOGGING);
@@ -196,7 +179,10 @@ public class StateMachineSource implements IGenerator {
 		return st.render();
 	}
 
-
+	/**
+	 * Prints all switch/cases of a state.
+	 * That includes Entry - Exit actions, transitions, ...
+	 */
 	public CharSequence printSwitchCaseStatements(final State s) {
 		StringConcatenation str = new StringConcatenation();
 		
@@ -212,7 +198,9 @@ public class StateMachineSource implements IGenerator {
 		return str;
 	}
 
-	
+	/**
+	 * Prints the initial case of a composite state.
+	 */
 	public CharSequence printInitialStateCase(final State s) {
 
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
@@ -222,11 +210,16 @@ public class StateMachineSource implements IGenerator {
 		st_init.add("logging", false);
 
 		// TODO: to parse init -> choice, need an if there and some abstraction like getInitialSubvertexName
-		try { st_init.add("returnStatement", transitionToStateMacro(mQState.getInitialSubstateName(s))); } catch (Exception e){  }
+		try { 
+			st_init.add("returnStatement", transitionToStateMacro(mQState.getInitialSubstateName(s))); 
+		} catch (Exception e){  }
 		
-		return st_init.render();	
+		return st_init.render();
 	}
 
+	/**
+	 * Prints the entry and exit (actions) cases of a state.
+	 */
 	public CharSequence printActions(final State s) {
 		String str = "";
 
@@ -259,6 +252,9 @@ public class StateMachineSource implements IGenerator {
 		return str;
 	}
 
+	/**
+	 * 
+	 */
 	public CharSequence printTransitions(final State s) {
 		String str = "";
 
@@ -310,12 +306,7 @@ public class StateMachineSource implements IGenerator {
 					st_tran.add("returnStatement", transitionToStateMacro(targetName));
 
 				} else {
-					System.out.println("Wohooooo");
-				}
-
-				if (mQTransition.hasAction(t)){
-					// Prints the name of the behavior as the code string
-					// str += printTransitionAction(checkTrailingSemicolon(mQTransition.getFirstActionName(t)));
+					System.out.println("DEBUGGING: Something is missing...");
 				}
 
 				str += st_tran.render();
@@ -348,8 +339,6 @@ public class StateMachineSource implements IGenerator {
 
 	/**
 	 * Prints the initial transition of a State machine
-	 * @param targetName
-	 * @return CharSequence
 	 */
 	public CharSequence printInitialState(final String targetName, String smName) {
 
@@ -366,12 +355,14 @@ public class StateMachineSource implements IGenerator {
 
 
 	/**
-	 * Returns CharSequence of Choice transitions
+	 * Returns the code string of transitions that points to a choice node.
+	 * This recursively goes down all the following choice nodes until it reaches a state.
 	 */
 	public CharSequence printChoices(final Transition t) {
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st_if_root = g.getInstanceOf("StateMachine_IfStatement");
 
+		// We need an else_tmp_str so that the else cases can be printed last.
 		String str = "";
 		String else_tmp_str = "";
 
@@ -419,6 +410,9 @@ public class StateMachineSource implements IGenerator {
 		return st_if_root.render();
 	}
 
+	/**
+	 * Returns the QPC transition notation from a state name.
+	 */
 	public CharSequence transitionToStateMacro(final String stateName){
 		return Q_TRAN + "(&" + smQualifiedName + "_" + stateName + ")";
 	}
@@ -428,7 +422,10 @@ public class StateMachineSource implements IGenerator {
 		return str.endsWith(";") ? str : str + ";";
 	}
 
-
+	/**
+	 * Returns the code string that needs to be injected in the Initial state of the State Machine.
+	 * This calls QPC-specific functions to subscribe to all events.
+	 */
 	public String printInitialSignalSubscription(String smName){
 		String str = "// Subscribe to all the signals to which this state machine needs to respond.\n";
 		str += "if (me->active == (QActive *)me) {";

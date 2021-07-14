@@ -5,7 +5,6 @@ import com.google.inject.Inject;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Event;
 import org.eclipse.uml2.uml.FunctionBehavior;
-import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Pseudostate;
@@ -124,6 +123,7 @@ public class QTransition {
 		return this.getGuardName(t);
 	}
 
+	// Needed for StringTemplate boolean logic
 	public String getGuardNameOrNull(final Transition t) {
 		if (this.getGuardName(t)=="") {
 			return null;
