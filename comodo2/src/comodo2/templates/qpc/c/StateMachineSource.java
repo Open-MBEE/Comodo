@@ -282,15 +282,13 @@ public class StateMachineSource implements IGenerator {
 				
 				String eventName  = mQTransition.getFirstEventName(t); 
 				String guard  = mQTransition.getResolvedGuardName(t);
-				String targetName = mQTransition.getTargetName(t);
 				String action = mQTransition.getFirstActionName(t);
-
+				// target is handled in getReturnStatement
 				
 				String signalName = formatSignalName(eventName);
 
 				st_tran.add("signalName", signalName);
 
-	
 				if (mQTransition.isChoiceTransition(t)) {
 					
 					st_tran.add("action", printChoices(t));
@@ -301,7 +299,7 @@ public class StateMachineSource implements IGenerator {
 					ST st_if = g.getInstanceOf("StateMachine_IfStatement");
 					st_if.add("guard", formatFunctionName(guard));
 					st_if.add("action", formatFunctionName(action));
-					st_if.add("returnStatement", transitionToStateMacro(targetName));
+					st_if.add("returnStatement", getReturnStatement(t));
 
 					st_tran.add("action", st_if.render());
 					st_tran.add("returnStatement", Q_HANDLED);
@@ -309,7 +307,7 @@ public class StateMachineSource implements IGenerator {
 				} else if (!Objects.equal(eventName, "")) {
 
 					st_tran.add("action", formatFunctionName(action));
-					st_tran.add("returnStatement", transitionToStateMacro(targetName));
+					st_tran.add("returnStatement", getReturnStatement(t));
 
 				} else {
 					System.out.println("DEBUGGING: Something is missing...");
@@ -425,9 +423,21 @@ public class StateMachineSource implements IGenerator {
 	}
 
 	/**
-	 * Returns the QPC transition notation from a state name.
+	 * Returns the returnStatement that a transition should have.
+	 * Q_HANDLED for internal transitions, Q_TRAN(< targetState >) for others
 	 */
-	public String transitionToStateMacro(final String stateName){
+	public String getReturnStatement(Transition t) {
+		if (mQTransition.isInternal(t)) {
+			return Q_HANDLED + "/*internal transition*/";
+		} else {
+			return transitionToStateMacro(mQTransition.getTargetName(t));
+		}
+	}
+
+	/**
+	 * Returns the QPC-specific return statement for a transition to stateName
+	 */
+	public String transitionToStateMacro(String stateName){
 		return Q_TRAN + "(&" + this.smQualifiedName + "_" + stateName + ")";
 	}
 
