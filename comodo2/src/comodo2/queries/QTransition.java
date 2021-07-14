@@ -4,6 +4,8 @@ import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Event;
+import org.eclipse.uml2.uml.FunctionBehavior;
+import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Pseudostate;
@@ -122,6 +124,14 @@ public class QTransition {
 		return this.getGuardName(t);
 	}
 
+	public String getGuardNameOrNull(final Transition t) {
+		if (this.getGuardName(t)=="") {
+			return null;
+		} else {
+			return this.getGuardName(t);
+		}
+	}
+
 	public String getGuardName(final Transition t) {
 		if (t.getGuard() == null) {
 			return "";
@@ -150,6 +160,9 @@ public class QTransition {
 		for (Element e : t.allOwnedElements()) {
 			if (e instanceof Activity) {
 				return ((Activity)e).getName();
+			}
+			if (e instanceof FunctionBehavior) {
+				return ((FunctionBehavior)e).getName();
 			}
 		}
 		return "";
