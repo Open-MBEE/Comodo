@@ -285,7 +285,6 @@ public class StateMachineSource implements IGenerator {
 				
 				String signalName = formatSignalName(eventName);
 
-			 	// TODO: This returns ACS_CTL_MODE instead of ACS_CTL
 				st_tran.add("signalName", signalName);
 
 	
@@ -359,8 +358,14 @@ public class StateMachineSource implements IGenerator {
 	/**
 	 * Returns the code string of transitions that points to a choice node.
 	 * This recursively goes down all the following choice nodes until it reaches a state.
+	 * @param Transition t that points to a choice node.
 	 */
 	public CharSequence printChoices(final Transition t) {
+		if (!(t.getTarget() instanceof Pseudostate)) {
+			mLogger.warn("An error occured while traversing the model. Transition " + t.toString() + " does not point to a choice node.");
+			return "";
+		}
+
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st_if_root = g.getInstanceOf("StateMachine_IfStatement");
 
@@ -431,12 +436,12 @@ public class StateMachineSource implements IGenerator {
 	 */
 	public String printInitialSignalSubscription(){
 		String str = "// Subscribe to all the signals to which this state machine needs to respond.\n";
-		str += "if (me->active == (QActive *)me) {\n";
+		str += "	if (me->active == (QActive *)me) {\n";
 
 		for (String signalName : this.signalEventsNameset){
-			str += "	QActive_subscribe(me->active, " + signalName + ");\n";
+			str += "		QActive_subscribe(me->active, " + signalName + ");\n";
 		}
-		str += "}";
+		str += "	}";
 		return str;
 	}
 
