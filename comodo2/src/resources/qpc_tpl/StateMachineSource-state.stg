@@ -12,15 +12,56 @@ QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvent const *e) {
 >>
 
 
-StateMachine_State(smQualifiedName, stateName, signalSwitchCase) ::= <<
+StateMachine_State(smQualifiedName, stateName, signalSwitchCase, logging) ::= <<
 
 /**
  * %stateName% state definition
  */
 QState %smQualifiedName%_%stateName% (%smQualifiedName% *me, QEvent const *e) {
+%if(logging)%
+    char stateName[128];
+    strncpy(stateName, me->objName, 128);
+    strncat(stateName, " %stateName%", 128-strlen(stateName)-1/*null-char*/);
+
+    char logMsg[256];
+    strncpy(logMsg, stateName, 256);  // strncat below null-terminates
+%endif%
     switch (e->sig) {
         %signalSwitchCase%
     }
 }
 
+>>
+
+
+StateMachine_SwitchStatement(signalName, action, returnStatement, onEntryStateEnum, logging) ::= <<
+case %signalName%:
+%if(onEntryStateEnum)%
+    me->myState = %onEntryStateEnum%;
+%endif%
+%if(logging)%
+    strncat(logMsg, " %signalName%", 256-strlen(logMsg)-1/*null-char*/);
+    LogEvent_log(logMsg);
+%endif%
+    %action%
+    return %returnStatement%;
+
+
+>>
+
+StateMachine_IfStatement(guard, action, returnStatement, isElseStatement, logging) ::= <<
+%if(isElseStatement)%
+else {
+    %action%
+    return %returnStatement%;
+}
+%elseif(guard)%
+if(%guard%){
+    %action%
+    return %returnStatement%;
+}
+%else%
+%action%
+return %returnStatement%;
+%endif%
 >>
