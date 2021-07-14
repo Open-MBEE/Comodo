@@ -53,6 +53,7 @@ public class StateMachineSource implements IGenerator {
 	private final TreeSet<String> signalEventsNameset = new TreeSet<String>();
 
 	private String smQualifiedName;
+	private String smClassName;
 	private final boolean USER_LOGGING = true;
 	private final String Q_HANDLED = "Q_HANDLED()";
 	private final String Q_TRAN = "Q_TRAN";
@@ -81,9 +82,10 @@ public class StateMachineSource implements IGenerator {
 				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
 				if ((mQClass.isToBeGenerated(c) && mQClass.hasStateMachines(c))) {
 					for (final StateMachine sm : mQClass.getStateMachines(c)) {
-						smQualifiedName = c.getName() + "_" + sm.getName();
+						this.smClassName = c.getName();
+						this.smQualifiedName = this.smClassName + "_" + sm.getName();
 						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(sm.getName())));
-						fsa.generateFile(mFilesHelper.toCFilePath(smQualifiedName), this.generate(sm));						
+						fsa.generateFile(mFilesHelper.toCFilePath(this.smQualifiedName), this.generate(sm));						
 					}
 				}				
 			}
@@ -94,11 +96,11 @@ public class StateMachineSource implements IGenerator {
 	public CharSequence generate(final StateMachine sm) {
 		StringConcatenation str = new StringConcatenation();
 
-		str.append(printStateMachineIncludes(smQualifiedName));
+		str.append(printStateMachineIncludes(this.smQualifiedName));
 		
 		str.append(printNewlines(3));
 
-		str.append(printStateMachineDefinitions(smQualifiedName));
+		str.append(printStateMachineDefinitions(this.smQualifiedName));
 
 		str.append(printInitialState(mQStateMachine.getInitialStateName(sm), sm.getName()));
 
@@ -107,7 +109,7 @@ public class StateMachineSource implements IGenerator {
 
 
 		String result = str.toString();
-		result = result.replace("_INITIAL_STATE_PLACEHOLDER_FOR_SIGNAL_SUBSCRIPTION_", this.printInitialSignalSubscription(sm.getName()));
+		result = result.replace("_INITIAL_STATE_PLACEHOLDER_FOR_SIGNAL_SUBSCRIPTION_", this.printInitialSignalSubscription());
 
 
 		return result;
@@ -170,7 +172,7 @@ public class StateMachineSource implements IGenerator {
 			mLogger.warn("/!\\ Final state was found");
 		} else {
 
-			st.add("smQualifiedName", smQualifiedName);
+			st.add("smQualifiedName", this.smQualifiedName);
 			st.add("stateName", s.getName());
 			st.add("logging", USER_LOGGING);
 
@@ -229,7 +231,7 @@ public class StateMachineSource implements IGenerator {
 		
 		st_entry.add("signalName", Q_ENTRY_SIG);
 		st_entry.add("logging", USER_LOGGING);
-		st_entry.add("onEntryStateEnum", smQualifiedName.toUpperCase() + "_" + mQState.getFullyQualifiedName(s).replaceAll("::", "_").toUpperCase());
+		st_entry.add("onEntryStateEnum", this.smQualifiedName.toUpperCase() + "_" + mQState.getFullyQualifiedName(s).replaceAll("::", "_").toUpperCase());
 		st_entry.add("returnStatement", Q_HANDLED);
 		st_exit.add("signalName", Q_EXIT_SIG);
 		st_exit.add("logging", USER_LOGGING);
@@ -281,7 +283,7 @@ public class StateMachineSource implements IGenerator {
 				String action = mQTransition.getFirstActionName(t);
 
 				
-				String signalName = smQualifiedName.toUpperCase() + "_" + eventName + "_SIG";
+				String signalName = formatSignalName(eventName);
 
 			 	// TODO: This returns ACS_CTL_MODE instead of ACS_CTL
 				st_tran.add("signalName", signalName);
@@ -325,9 +327,9 @@ public class StateMachineSource implements IGenerator {
 			// Removing non alphanumeric characters since this will be the name of a C variable
 			
 			if (mQTransition.hasSignalEvent(t)) {
-				// signalEventsNameset.add(eventName);
+				signalEventsNameset.add(formatSignalName(eventName));
 			} else if (mQTransition.hasTimeEvent(t)) {
-				// timeEventsNameset.add(eventName);
+				//timeEventsNameset.add(eventName);
 			}
 		}
 	}
@@ -345,7 +347,7 @@ public class StateMachineSource implements IGenerator {
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st = g.getInstanceOf("StateMachine_InitialState");
 
-		st.add("smQualifiedName", smQualifiedName);
+		st.add("smQualifiedName", this.smQualifiedName);
 
         return st.render();
 	}
@@ -376,8 +378,9 @@ public class StateMachineSource implements IGenerator {
 
 
 		for (Transition outgoing : choicePseudoState.getOutgoings()){
-			
+			// If the transition points to a choice node, recursively re-iterate
 			if (mQTransition.isChoiceTransition(outgoing)){
+				// If the guard is "else", we store it and add it at the very end
 				if (Objects.equal(mQTransition.getGuardNameOrNull(outgoing), "else")){
 					else_tmp_str += printChoices(outgoing);
 				} else{
@@ -388,13 +391,13 @@ public class StateMachineSource implements IGenerator {
 				String out_guard  = mQTransition.getGuardNameOrNull(outgoing);
 				String out_action = mQTransition.getFirstActionName(outgoing);
 
-
 				ST st_if = g.getInstanceOf("StateMachine_IfStatement");
 				st_if.add("guard", out_guard);
 				st_if.add("isElseStatement", Objects.equal(out_guard, "else"));
 				st_if.add("action", out_action);
 				st_if.add("returnStatement", transitionToStateMacro(out_targetName));
 
+				// If the guard is "else", we store it and add it at the very end
 				if (Objects.equal(out_guard, "else")){
 					else_tmp_str += st_if.render();
 				} else {
@@ -414,7 +417,7 @@ public class StateMachineSource implements IGenerator {
 	 * Returns the QPC transition notation from a state name.
 	 */
 	public CharSequence transitionToStateMacro(final String stateName){
-		return Q_TRAN + "(&" + smQualifiedName + "_" + stateName + ")";
+		return Q_TRAN + "(&" + this.smQualifiedName + "_" + stateName + ")";
 	}
 
 
@@ -426,15 +429,23 @@ public class StateMachineSource implements IGenerator {
 	 * Returns the code string that needs to be injected in the Initial state of the State Machine.
 	 * This calls QPC-specific functions to subscribe to all events.
 	 */
-	public String printInitialSignalSubscription(String smName){
+	public String printInitialSignalSubscription(){
 		String str = "// Subscribe to all the signals to which this state machine needs to respond.\n";
-		str += "if (me->active == (QActive *)me) {";
+		str += "if (me->active == (QActive *)me) {\n";
 
 		for (String signalName : this.signalEventsNameset){
-			str += "	QActive_subscribe(me->active, " + smName.toUpperCase() + "_" + signalName + "_SIG);\n";
+			str += "	QActive_subscribe(me->active, " + signalName + ");\n";
 		}
 		str += "}";
 		return str;
+	}
+
+	/**
+	 * Takes in an event name and format it in the appropriate format for QPC use of signals.
+	 * This uses the name of the comodo component (class) containing the state machine.
+	 */
+	private String formatSignalName(String eventName) {
+		return this.smClassName.toUpperCase() + "_" + eventName + "_SIG";
 	}
 
 }
