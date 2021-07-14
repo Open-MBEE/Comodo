@@ -189,7 +189,7 @@ public class StateMachineSource implements IGenerator {
 		StringConcatenation str = new StringConcatenation();
 		
 		if (s.isComposite()) {
-			str.append(printInitialStateCase(s));
+			str.append(printInitialSubstateCase(s));
 		}
 
 		str.append(printActions(s));
@@ -203,7 +203,7 @@ public class StateMachineSource implements IGenerator {
 	/**
 	 * Prints the initial case of a composite state.
 	 */
-	public CharSequence printInitialStateCase(final State s) {
+	public CharSequence printInitialSubstateCase(final State s) {
 
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st_init = g.getInstanceOf("StateMachine_SwitchStatement");
@@ -211,10 +211,13 @@ public class StateMachineSource implements IGenerator {
 		st_init.add("signalName", Q_INIT_SIG);
 		st_init.add("logging", false);
 
-		// TODO: to parse init -> choice, need an if there and some abstraction like getInitialSubvertexName
 		try { 
+			// If the initial node points to a pseudostate (like a choice node), this will throw a ClassCastException
 			st_init.add("returnStatement", transitionToStateMacro(mQState.getInitialSubstateName(s))); 
-		} catch (Exception e){  }
+		} catch (ClassCastException e){
+			// We know that we need to printChoices on the first transition instead
+			st_init.add("action", printChoices(mQState.getInitialSubstateTransition(s)));
+		}
 		
 		return st_init.render();
 	}

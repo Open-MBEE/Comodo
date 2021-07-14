@@ -108,6 +108,24 @@ public class QState {
 	}
 
 	/**
+	 * Returns the initial transition of a composite state.
+	 * This is used when the initial transition of a composite state points to a pseudostate (like a choice node)
+	 * which makes getInitialSubstateName(s) throws a ClassCastException.
+	 */
+	public Transition getInitialSubstateTransition(final State s) {
+		Iterable<Pseudostate> _filter = Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class);		
+		for (final Pseudostate ps : _filter) {
+			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
+					Objects.equal(ps.getContainer().getOwner(), s)) && 
+					(ps.getOutgoings().size() == 1)) && 
+					(Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget() != null))) {
+				return ps.getOutgoings().get(0);
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * @return all the composite substates of 's'.
 	 */
 	public Iterable<State> getCompositeSubstates(final State s) {
