@@ -294,6 +294,7 @@ public class StateMachineSource implements IGenerator {
 				if (mQTransition.isChoiceTransition(t)) {
 					
 					st_tran.add("action", printChoices(t));
+					st_tran.add("returnStatement", Q_HANDLED);
 
 				} else if (!Objects.equal(guard, "")) {
 
@@ -303,6 +304,7 @@ public class StateMachineSource implements IGenerator {
 					st_if.add("returnStatement", transitionToStateMacro(targetName));
 
 					st_tran.add("action", st_if.render());
+					st_tran.add("returnStatement", Q_HANDLED);
 
 				} else if (!Objects.equal(eventName, "")) {
 
