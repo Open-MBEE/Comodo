@@ -345,17 +345,6 @@ public class StateMachineSource implements IGenerator {
 		return timeEventName.replaceAll("[^A-Za-z0-9_]", "").toUpperCase();
 	}
 
-	public CharSequence printTimeEvents(){
-		String str = "";
-
-		// for (final String eventName : timeEventsNameset){
-			str += "<attribute name=\"" + "timeEvent"  + "\"  type=\"QTimeEvt\"/>";
-		// }
-
-		return str;
-	}
-
-
 
 	/**
 	 * Prints the initial transition of a State machine
