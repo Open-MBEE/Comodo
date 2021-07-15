@@ -251,17 +251,18 @@ public class QStateMachine {
 
 
 	/**
-	 * This function returns all pseudostates contained in the
-	 * given state machine.
-	 * Needed for all transition guards of the SM because choice nodes are pseudostates.
-	 * 
-	 * @param sm State machine.
-	 * @return All signals contained in the given state machine.
+	 * This function returns all signals contained in the Statemachine plus
+	 * all the signals that are triggers on the statemachine's transitions
 	 */
 	public Iterable<String> getAllSignalNames(final StateMachine sm) {
 		TreeSet<String> sortedSignalNames = new TreeSet<String>();
 		for (Signal s : Iterables.<Signal>filter(sm.allOwnedElements(), Signal.class)){
 			sortedSignalNames.add(s.getName());
+		}
+		for (final Transition t : Iterables.<Transition>filter(sm.allOwnedElements(), Transition.class)){
+			if (mQTransition.hasSignalEvent(t)){
+				sortedSignalNames.add(mQTransition.getFirstEventName(t));
+			}
 		}
 		return sortedSignalNames;
 	}
