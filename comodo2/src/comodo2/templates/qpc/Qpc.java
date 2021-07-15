@@ -38,10 +38,7 @@ public class Qpc implements IGenerator {
 			mStateMachineSource.doGenerate(input, fsa);
 			mStateMachineHeader.doGenerate(input, fsa);
 		}
-
-		// Passing the signalEvents that were registered in mStateMachineSource to mQpcHeaders for header generation
-		mQpcHeaders.setSignalEventsNameset(mStateMachineSource.getSignalEventsNameset());
-
+		
 		mQpcImplFiles.doGenerate(input, fsa);
 		mQpcHeaders.doGenerate(input, fsa);
 	}

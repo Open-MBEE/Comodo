@@ -65,11 +65,6 @@ public class StateMachineSource implements IGenerator {
 	/* ################################ */
 
 
-	public TreeSet<String> getSignalEventsNameset(){
-		return this.signalEventsNameset;
-	}
-
-
 	/**
 	 * Transform UML State Machine associated to a class (classifier behavior)
 	 * into a Quantum Framework XML file for the Quantum Modeler.

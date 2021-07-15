@@ -31,12 +31,6 @@ public class QpcHeaders implements IGenerator {
 	@Inject
 	private QStateMachine mQStateMachine;
 
-	// Will be passed 
-	private TreeSet<String> signalEventsNameset;
-
-	public void setSignalEventsNameset(TreeSet<String> signalEventsNameset){
-		this.signalEventsNameset = signalEventsNameset;
-	}
 
     /**
 	 * Generates headers file for execution of the state machine.
@@ -57,7 +51,7 @@ public class QpcHeaders implements IGenerator {
 					
 					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_states.h"), this.generateStatesHeader(smQualifiedName, mQStateMachine.getAllStatesQualifiedName(sm)));						
 				}
-				fsa.generateFile(mFilesHelper.toQmImplFilePath(e.getName() + "_statechart_signals.h"), this.generateSignalsHeader(e.getName(), signalEventsNameset));						
+				fsa.generateFile(mFilesHelper.toQmImplFilePath(e.getName() + "_statechart_signals.h"), this.generateSignalsHeader(e.getName(), signalNames));						
 
 			}
 		}
@@ -68,18 +62,18 @@ public class QpcHeaders implements IGenerator {
 	/**
 	 * Generates the header file for the enumeration of signals
 	 */
-	public CharSequence generateSignalsHeader(final String smName, final TreeSet<String> signalNames){
+	public CharSequence generateSignalsHeader(final String className, final TreeSet<String> signalNames){
 		String str = "";
 
 		//str += printIncludes();
 
-		str +=  "enum " + smName + "_signals {\n" +
+		str +=  "enum " + className + "_signals {\n" +
 				"	/* \"During\" signal */\n" +
 				"	DURING = Q_USER_SIG,\n\n" + 
 				"	/* User defined signals */\n" ;
 
 		for (String signalName : signalNames) {
-			str += "	" + signalName + ",\n";
+			str += "	" + className.toUpperCase() + "_" + signalName + "_SIG,\n";
 		}
 		
 		str +=  "\n	/* Maximum signal id */\n" +
