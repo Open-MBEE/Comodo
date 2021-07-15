@@ -70,6 +70,7 @@ The following target platforms are supported:
   - *SCXML* Transforms the input model into SCXML document(s). The generated SCXML document can be executed by an SCXML interpreted.
   - *ELT-MAL* Transforms the input model into XML/MAL ICD. The generated XML file can be transformed into code using CII tools.
   - *ELT-RAD* Transforms the input model into C++ code, SCXML, XML/MAL ICD, for the Rapid Application Development toolkit (RAD). The generated code can be compiled and executed on a machine installed with the ELT Development Environment and RAD.
+  - *QPC-C* Transofrms the input model into C code representing the state machine logic and structure, using the [Quantum Framework (QP/C)](https://www.state-machine.com/qpc/). 
   - *QPC-QM* Transofrms the input model into a QM file for the [Quantum Modeler](https://www.state-machine.com/qm/). This also generates implementation files that are used for the C code QM will generate.
    
 Generation Modes
