@@ -339,7 +339,7 @@ public class StateMachineSource implements IGenerator {
 			if (mQTransition.hasSignalEvent(t)) {
 				signalEventsNameset.add(mQUtils.formatSignalName(eventName, this.smClassName));
 			} else if (mQTransition.hasTimeEvent(t)) {
-				timeEventsNameset.add(eventName);
+				timeEventsNameset.add(mQUtils.formatSignalName(eventName, this.smClassName));
 			}
 		}
 	}
