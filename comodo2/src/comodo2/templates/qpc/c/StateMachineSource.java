@@ -56,7 +56,7 @@ public class StateMachineSource implements IGenerator {
 	private String smClassName;
 
 	private boolean USER_LOGGING = true;
-
+	
 	private final String Q_HANDLED = "Q_HANDLED()";
 	private final String Q_TRAN = "Q_TRAN";
 	private final String Q_INIT_SIG = "Q_INIT_SIG";
@@ -225,6 +225,7 @@ public class StateMachineSource implements IGenerator {
 		} catch (ClassCastException e){
 			// We know that we need to printChoices on the first transition instead
 			st_init.add("action", printChoices(mQState.getInitialSubstateTransition(s)));
+			st_init.add("returnStatement", Q_HANDLED + "/*no choice matched*/"); 
 		}
 		
 		return st_init.render();
