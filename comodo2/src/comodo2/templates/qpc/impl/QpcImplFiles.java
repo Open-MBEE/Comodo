@@ -167,6 +167,6 @@ public class QpcImplFiles implements IGenerator {
 	public CharSequence getFunctionName(String str){
 		// TODO: this is very brittle and shall be replaced with a more robust regex
 		// It basically only takes what's before the first set of parentheses
-		return str.replaceAll("(?s)\\(\\).*","");
+		return str.trim().replaceAll("(?s)\\(.*\\).*","");
 	}
 }
