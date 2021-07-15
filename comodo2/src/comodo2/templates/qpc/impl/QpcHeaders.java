@@ -96,7 +96,7 @@ public class QpcHeaders implements IGenerator {
 
 		//str += printIncludes();
 
-		str +=  "typedef enum " + smQualifiedName + "_states {\n";
+		str +=  "typedef enum " + smQualifiedName + "_state {\n";
 		str += "	" + smQualifiedName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
 		for (String stateQualifiedName : statesQualifiedNames) {
 			str += "	" + mUtils.formatStateName(stateQualifiedName, smQualifiedName) + ",\n";
