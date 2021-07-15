@@ -392,9 +392,6 @@ public class Qm implements IGenerator {
 		}
 	}
 
-	public String eventNaming(String timeEventName){
-		return timeEventName.replaceAll("[^A-Za-z0-9_]", "").toUpperCase();
-	}
 
 	public CharSequence printTimeEvents(){
 		String str = "";

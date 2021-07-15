@@ -7,6 +7,7 @@ import comodo2.queries.QClass;
 import comodo2.queries.QState;
 import comodo2.queries.QStateMachine;
 import comodo2.queries.QTransition;
+import comodo2.templates.qpc.QUtils;
 import comodo2.utils.FilesHelper;
 import comodo2.utils.StateComparator;
 import comodo2.utils.TransitionComparator;
@@ -44,6 +45,9 @@ public class StateMachineSource implements IGenerator {
 	@Inject
 	private QClass mQClass;
 	
+	@Inject
+	private QUtils mQUtils;
+
 	@Inject
 	private FilesHelper mFilesHelper;
 	
@@ -238,21 +242,21 @@ public class StateMachineSource implements IGenerator {
 		
 		st_entry.add("signalName", Q_ENTRY_SIG);
 		st_entry.add("logging", USER_LOGGING);
-		st_entry.add("onEntryStateEnum", this.smQualifiedName.toUpperCase() + "_" + mQState.getFullyQualifiedName(s).replaceAll("::", "_").toUpperCase());
+		st_entry.add("onEntryStateEnum", mQUtils.formatStateName(mQState.getFullyQualifiedName(s), this.smQualifiedName));
 		st_entry.add("returnStatement", Q_HANDLED);
 		st_exit.add("signalName", Q_EXIT_SIG);
 		st_exit.add("logging", USER_LOGGING);
 		st_exit.add("returnStatement", Q_HANDLED);
 
 		if (mQState.hasOnEntryActions(s) || mQState.hasTimerTransition(s)) {
-			st_entry.add("action", formatActionName(s.getEntry().getName()));
+			st_entry.add("action", mQUtils.formatActionName(s.getEntry().getName(), this.smQualifiedName));
 		}		
 		if (mQState.hasDoActivities(s)) {
 			mLogger.warn("SKIPPED -- Do activities are not supported in QPC" +
 			 				"(found in state " + s.getName() + ")");
 		}
 		if (mQState.hasOnExitActions(s) || mQState.hasTimerTransition(s)) {
-			st_exit.add("action", formatActionName(s.getExit().getName()));
+			st_exit.add("action", mQUtils.formatActionName(s.getExit().getName(), this.smQualifiedName));
 		}
 
 		str += st_entry.render();
@@ -289,7 +293,7 @@ public class StateMachineSource implements IGenerator {
 				String action = mQTransition.getFirstActionName(t);
 				// target is handled in getReturnStatement
 				
-				String signalName = formatSignalName(eventName);
+				String signalName = mQUtils.formatSignalName(eventName, this.smClassName);
 
 				st_tran.add("signalName", signalName);
 
@@ -301,8 +305,8 @@ public class StateMachineSource implements IGenerator {
 				} else if (!Objects.equal(guard, "")) {
 
 					ST st_if = g.getInstanceOf("StateMachine_IfStatement");
-					st_if.add("guard", formatGuardName(guard));
-					st_if.add("action", formatActionName(action));
+					st_if.add("guard", mQUtils.formatGuardName(guard, this.smQualifiedName));
+					st_if.add("action", mQUtils.formatActionName(action, this.smQualifiedName));
 					st_if.add("returnStatement", getReturnStatement(t));
 
 					st_tran.add("action", st_if.render());
@@ -310,7 +314,7 @@ public class StateMachineSource implements IGenerator {
 
 				} else if (!Objects.equal(eventName, "")) {
 
-					st_tran.add("action", formatActionName(action));
+					st_tran.add("action", mQUtils.formatActionName(action, this.smQualifiedName));
 					st_tran.add("returnStatement", getReturnStatement(t));
 
 				} else {
@@ -333,15 +337,11 @@ public class StateMachineSource implements IGenerator {
 			// Removing non alphanumeric characters since this will be the name of a C variable
 			
 			if (mQTransition.hasSignalEvent(t)) {
-				signalEventsNameset.add(formatSignalName(eventName));
+				signalEventsNameset.add(mQUtils.formatSignalName(eventName, this.smClassName));
 			} else if (mQTransition.hasTimeEvent(t)) {
 				timeEventsNameset.add(eventName);
 			}
 		}
-	}
-
-	public String eventNaming(String timeEventName){
-		return timeEventName.replaceAll("[^A-Za-z0-9_]", "").toUpperCase();
 	}
 
 
@@ -387,7 +387,7 @@ public class StateMachineSource implements IGenerator {
 
 		// isElseStatement is a boolean to indicate whether to use an "if(guard)" or an "else" statement
 		st_if_root.add("isElseStatement", Objects.equal(guard, "else"));
-		st_if_root.add("guard", formatGuardName(guard));
+		st_if_root.add("guard", mQUtils.formatGuardName(guard, this.smQualifiedName));
 
 
 		for (Transition outgoing : choicePseudoState.getOutgoings()){
@@ -406,8 +406,8 @@ public class StateMachineSource implements IGenerator {
 
 				ST st_if = g.getInstanceOf("StateMachine_IfStatement");
 				st_if.add("isElseStatement", Objects.equal(out_guard, "else"));
-				st_if.add("guard", formatGuardName(out_guard));
-				st_if.add("action", formatActionName(out_action));
+				st_if.add("guard", mQUtils.formatGuardName(out_guard, this.smQualifiedName));
+				st_if.add("action", mQUtils.formatActionName(out_action, this.smQualifiedName));
 				st_if.add("returnStatement", transitionToStateMacro(out_targetName));
 
 				// If the guard is "else", we store it and add it at the very end
@@ -449,10 +449,6 @@ public class StateMachineSource implements IGenerator {
 	}
 
 
-	public String checkTrailingSemicolon(String str) {
-		return str.endsWith(";") ? str : str + ";";
-	}
-
 	/**
 	 * Returns the code string that needs to be injected in the Initial state of the State Machine.
 	 * This calls QPC-specific functions to subscribe to all events.
@@ -468,31 +464,4 @@ public class StateMachineSource implements IGenerator {
 		return str;
 	}
 
-	/**
-	 * Takes in an event name and format it in the appropriate format for QPC use of signals.
-	 * This uses the name of the comodo component (class) containing the state machine.
-	 */
-	private String formatSignalName(String eventName) {
-		return this.smClassName.toUpperCase() + "_" + eventName + "_SIG";
-	}
-
-	/**
-	 * Takes in an action name and format it in the appropriate format for QPC use of actions.
-	 */
-	private String formatActionName(String actionName) {
-		if (Objects.equal(actionName, "") || actionName == null){
-			return null;
-		}
-		return checkTrailingSemicolon(this.smQualifiedName + "_impl_" + actionName.trim());
-	}
-
-	/**
-	 * Takes in a guard name and format it in the appropriate format for QPC use of guards.
-	 */
-	private String formatGuardName(String guardName) {
-		if (Objects.equal(guardName, "") || guardName == null){
-			return null;
-		}
-		return this.smQualifiedName + "_impl_" + guardName.trim();
-	}
 }

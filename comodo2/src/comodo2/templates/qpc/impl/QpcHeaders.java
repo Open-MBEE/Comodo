@@ -15,6 +15,7 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
+import comodo2.templates.qpc.QUtils;
 import comodo2.utils.FilesHelper;
 
 
@@ -30,6 +31,9 @@ public class QpcHeaders implements IGenerator {
 
 	@Inject
 	private QStateMachine mQStateMachine;
+
+	@Inject
+	private QUtils mQUtils;
 
 
     /**
@@ -67,13 +71,13 @@ public class QpcHeaders implements IGenerator {
 
 		//str += printIncludes();
 
-		str +=  "enum " + className + "_signals {\n" +
+		str +=  "enum " + className + "_statechart_signals {\n" +
 				"	/* \"During\" signal */\n" +
 				"	DURING = Q_USER_SIG,\n\n" + 
 				"	/* User defined signals */\n" ;
 
 		for (String signalName : signalNames) {
-			str += "	" + className.toUpperCase() + "_" + signalName + "_SIG,\n";
+			str += "	" + mQUtils.formatSignalName(signalName, className) + ",\n";
 		}
 		
 		str +=  "\n	/* Maximum signal id */\n" +
@@ -87,18 +91,18 @@ public class QpcHeaders implements IGenerator {
 	/**
 	 * Generates the header file for the enumeration of states
 	 */
-	public CharSequence generateStatesHeader(final String smName, final Iterable<String> statesQualifiedNames){
+	public CharSequence generateStatesHeader(final String smQualifiedName, final Iterable<String> statesQualifiedNames){
 		String str = "";
 
 		//str += printIncludes();
 
-		str +=  "typedef enum " + smName + "_states {\n";
-		str += "	" + smName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
+		str +=  "typedef enum " + smQualifiedName + "_states {\n";
+		str += "	" + smQualifiedName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
 		for (String stateQualifiedName : statesQualifiedNames) {
-			str += "	" + smName.toUpperCase() + "_" + stateQualifiedName.toUpperCase().replaceAll("::", "_") + ",\n";
+			str += "	" + mQUtils.formatStateName(stateQualifiedName, smQualifiedName) + ",\n";
 		}
 		
-		str += "} " + smName + "_states;\n";
+		str += "} " + smQualifiedName + "_states;\n";
 
 		return str;
 	}
