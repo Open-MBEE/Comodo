@@ -64,7 +64,7 @@ public class StateMachineSource implements IGenerator {
 	private final String Q_EXIT_SIG = "Q_EXIT_SIG";
 	/* ################################ */
 
-	
+
 	public TreeSet<String> getSignalEventsNameset(){
 		return this.signalEventsNameset;
 	}
@@ -446,6 +446,9 @@ public class StateMachineSource implements IGenerator {
 	 * Returns the QPC-specific return statement for a transition to stateName
 	 */
 	public String transitionToStateMacro(String stateName){
+		if (Objects.equal(stateName, "") || stateName == null){
+			return null;
+		}
 		return Q_TRAN + "(&" + this.smQualifiedName + "_" + stateName + ")";
 	}
 

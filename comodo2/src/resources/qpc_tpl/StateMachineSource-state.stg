@@ -50,17 +50,24 @@ case %signalName%:
 >>
 
 StateMachine_IfStatement(guard, action, returnStatement, isElseStatement, logging) ::= <<
-%if(isElseStatement)%
+%if(isElseStatement%
 else {
     %action%
+%if(returnStatement)%
     return %returnStatement%;
+%endif%
 }
 %elseif(guard)%
-if(%guard%){
+if (%guard%){
     %action%
+%if(returnStatement)%
     return %returnStatement%;
+%endif%
 }
 %else%
 %action%
+%if(returnStatement)%
+    return %returnStatement%;
+%endif%
 %endif%
 >>
