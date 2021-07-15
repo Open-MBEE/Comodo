@@ -85,6 +85,7 @@ public class QpcImplFiles implements IGenerator {
 	public CharSequence generateImplSource(final String smName, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
 		String str = "";
 
+		str += "#include <" + smName + "_impl.h>\n";
 		str += printIncludes();
 
 		for (String guardName : guardNames) {
