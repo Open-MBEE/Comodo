@@ -241,14 +241,14 @@ public class StateMachineSource implements IGenerator {
 		st_exit.add("returnStatement", Q_HANDLED);
 
 		if (mQState.hasOnEntryActions(s) || mQState.hasTimerTransition(s)) {
-			st_entry.add("action", formatFunctionName(s.getEntry().getName()));
+			st_entry.add("action", formatActionName(s.getEntry().getName()));
 		}		
 		if (mQState.hasDoActivities(s)) {
 			mLogger.warn("SKIPPED -- Do activities are not supported in QPC" +
 			 				"(found in state " + s.getName() + ")");
 		}
 		if (mQState.hasOnExitActions(s) || mQState.hasTimerTransition(s)) {
-			st_exit.add("action", formatFunctionName(s.getExit().getName()));
+			st_exit.add("action", formatActionName(s.getExit().getName()));
 		}
 
 		str += st_entry.render();
@@ -297,8 +297,8 @@ public class StateMachineSource implements IGenerator {
 				} else if (!Objects.equal(guard, "")) {
 
 					ST st_if = g.getInstanceOf("StateMachine_IfStatement");
-					st_if.add("guard", formatFunctionName(guard));
-					st_if.add("action", formatFunctionName(action));
+					st_if.add("guard", formatGuardName(guard));
+					st_if.add("action", formatActionName(action));
 					st_if.add("returnStatement", getReturnStatement(t));
 
 					st_tran.add("action", st_if.render());
@@ -306,7 +306,7 @@ public class StateMachineSource implements IGenerator {
 
 				} else if (!Objects.equal(eventName, "")) {
 
-					st_tran.add("action", formatFunctionName(action));
+					st_tran.add("action", formatActionName(action));
 					st_tran.add("returnStatement", getReturnStatement(t));
 
 				} else {
@@ -383,7 +383,7 @@ public class StateMachineSource implements IGenerator {
 
 		// isElseStatement is a boolean to indicate whether to use an "if(guard)" or an "else" statement
 		st_if_root.add("isElseStatement", Objects.equal(guard, "else"));
-		st_if_root.add("guard", formatFunctionName(guard));
+		st_if_root.add("guard", formatGuardName(guard));
 
 
 		for (Transition outgoing : choicePseudoState.getOutgoings()){
@@ -402,8 +402,8 @@ public class StateMachineSource implements IGenerator {
 
 				ST st_if = g.getInstanceOf("StateMachine_IfStatement");
 				st_if.add("isElseStatement", Objects.equal(out_guard, "else"));
-				st_if.add("guard", formatFunctionName(out_guard));
-				st_if.add("action", formatFunctionName(out_action));
+				st_if.add("guard", formatGuardName(out_guard));
+				st_if.add("action", formatActionName(out_action));
 				st_if.add("returnStatement", transitionToStateMacro(out_targetName));
 
 				// If the guard is "else", we store it and add it at the very end
@@ -472,7 +472,20 @@ public class StateMachineSource implements IGenerator {
 	/**
 	 * Takes in an action name and format it in the appropriate format for QPC use of actions.
 	 */
-	private String formatFunctionName(String actionName) {
-		return this.smQualifiedName + "_impl_" + actionName;
+	private String formatActionName(String actionName) {
+		if (Objects.equal(actionName, "") || actionName == null){
+			return null;
+		}
+		return checkTrailingSemicolon(this.smQualifiedName + "_impl_" + actionName.trim());
+	}
+
+	/**
+	 * Takes in a guard name and format it in the appropriate format for QPC use of guards.
+	 */
+	private String formatGuardName(String guardName) {
+		if (Objects.equal(guardName, "") || guardName == null){
+			return null;
+		}
+		return this.smQualifiedName + "_impl_" + guardName.trim();
 	}
 }
