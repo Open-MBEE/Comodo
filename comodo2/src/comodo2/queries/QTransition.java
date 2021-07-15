@@ -282,6 +282,8 @@ public class QTransition {
 	public boolean hasSignalEvent(final Transition t) {
 		if (t.getTriggers().isEmpty()) {
 			return false;
+		} else if (t.getTriggers().get(0).getEvent()==null) {
+			return false;
 		} else {
 			return (t.getTriggers().get(0).getEvent().getClass() == SignalEventImpl.class);
 		}
@@ -289,6 +291,8 @@ public class QTransition {
 
 	public boolean hasTimeEvent(final Transition t) {
 		if (t.getTriggers().isEmpty()) {
+			return false;
+		} else if (t.getTriggers().get(0).getEvent()==null) {
 			return false;
 		} else {
 			return (t.getTriggers().get(0).getEvent().getClass() == TimeEventImpl.class);
