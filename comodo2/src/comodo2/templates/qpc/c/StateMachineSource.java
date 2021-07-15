@@ -49,18 +49,26 @@ public class StateMachineSource implements IGenerator {
 	
 
 	/* #########  QPC-specific  ######## */
-	// private final TreeSet<String>   timeEventsNameset = new TreeSet<String>();
+	private final TreeSet<String>   timeEventsNameset = new TreeSet<String>();
 	private final TreeSet<String> signalEventsNameset = new TreeSet<String>();
 
 	private String smQualifiedName;
 	private String smClassName;
-	private final boolean USER_LOGGING = true;
+
+	private boolean USER_LOGGING = true;
+
 	private final String Q_HANDLED = "Q_HANDLED()";
 	private final String Q_TRAN = "Q_TRAN";
 	private final String Q_INIT_SIG = "Q_INIT_SIG";
 	private final String Q_ENTRY_SIG = "Q_ENTRY_SIG";
 	private final String Q_EXIT_SIG = "Q_EXIT_SIG";
 	/* ################################ */
+
+	
+	public TreeSet<String> getSignalEventsNameset(){
+		return this.signalEventsNameset;
+	}
+
 
 	/**
 	 * Transform UML State Machine associated to a class (classifier behavior)
@@ -331,7 +339,7 @@ public class StateMachineSource implements IGenerator {
 			if (mQTransition.hasSignalEvent(t)) {
 				signalEventsNameset.add(formatSignalName(eventName));
 			} else if (mQTransition.hasTimeEvent(t)) {
-				//timeEventsNameset.add(eventName);
+				timeEventsNameset.add(eventName);
 			}
 		}
 	}

@@ -33,17 +33,17 @@ public class Qpc implements IGenerator {
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
 		if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_QM)) {
 			mQm.doGenerate(input, fsa);
-			mQpcImplFiles.doGenerate(input, fsa);
-			mQpcHeaders.doGenerate(input, fsa);
 		}
 		else if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_C)) {
 			mStateMachineSource.doGenerate(input, fsa);
 			mStateMachineHeader.doGenerate(input, fsa);
-
-			// mQpcImplFiles.setSignalNameset(mStateMachineSource.getSignalNameSet()); ????
-			mQpcImplFiles.doGenerate(input, fsa);
-			mQpcHeaders.doGenerate(input, fsa);
 		}
+
+		// Passing the signalEvents that were registered in mStateMachineSource to mQpcHeaders for header generation
+		mQpcHeaders.setSignalEventsNameset(mStateMachineSource.getSignalEventsNameset());
+
+		mQpcImplFiles.doGenerate(input, fsa);
+		mQpcHeaders.doGenerate(input, fsa);
 	}
 
 

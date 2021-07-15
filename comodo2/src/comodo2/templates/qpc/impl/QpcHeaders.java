@@ -31,6 +31,13 @@ public class QpcHeaders implements IGenerator {
 	@Inject
 	private QStateMachine mQStateMachine;
 
+	// Will be passed 
+	private TreeSet<String> signalEventsNameset;
+
+	public void setSignalEventsNameset(TreeSet<String> signalEventsNameset){
+		this.signalEventsNameset = signalEventsNameset;
+	}
+
     /**
 	 * Generates headers file for execution of the state machine.
 	 * This contains, among others, signal and state enumerations.
@@ -50,7 +57,7 @@ public class QpcHeaders implements IGenerator {
 					
 					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_states.h"), this.generateStatesHeader(smQualifiedName, mQStateMachine.getAllStatesQualifiedName(sm)));						
 				}
-				fsa.generateFile(mFilesHelper.toQmImplFilePath(e.getName() + "_statechart_signals.h"), this.generateSignalsHeader(e.getName(), signalNames));						
+				fsa.generateFile(mFilesHelper.toQmImplFilePath(e.getName() + "_statechart_signals.h"), this.generateSignalsHeader(e.getName(), signalEventsNameset));						
 
 			}
 		}
@@ -72,7 +79,7 @@ public class QpcHeaders implements IGenerator {
 				"	/* User defined signals */\n" ;
 
 		for (String signalName : signalNames) {
-			str += "	" + smName.toUpperCase() + "_" + signalName + "_SIG,\n";
+			str += "	" + signalName + ",\n";
 		}
 		
 		str +=  "\n	/* Maximum signal id */\n" +
