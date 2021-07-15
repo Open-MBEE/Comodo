@@ -15,7 +15,7 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
-import comodo2.templates.qpc.QUtils;
+import comodo2.templates.qpc.Utils;
 import comodo2.utils.FilesHelper;
 
 
@@ -33,7 +33,7 @@ public class QpcHeaders implements IGenerator {
 	private QStateMachine mQStateMachine;
 
 	@Inject
-	private QUtils mQUtils;
+	private Utils mUtils;
 
 
     /**
@@ -77,7 +77,7 @@ public class QpcHeaders implements IGenerator {
 				"	/* User defined signals */\n" ;
 
 		for (String signalName : signalNames) {
-			str += "	" + mQUtils.formatSignalName(signalName, className) + ",\n";
+			str += "	" + mUtils.formatSignalName(signalName, className) + ",\n";
 		}
 		
 		str +=  "\n	/* Maximum signal id */\n" +
@@ -99,7 +99,7 @@ public class QpcHeaders implements IGenerator {
 		str +=  "typedef enum " + smQualifiedName + "_states {\n";
 		str += "	" + smQualifiedName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
 		for (String stateQualifiedName : statesQualifiedNames) {
-			str += "	" + mQUtils.formatStateName(stateQualifiedName, smQualifiedName) + ",\n";
+			str += "	" + mUtils.formatStateName(stateQualifiedName, smQualifiedName) + ",\n";
 		}
 		
 		str += "} " + smQualifiedName + "_states;\n";

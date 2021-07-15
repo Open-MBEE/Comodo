@@ -7,7 +7,7 @@ import comodo2.queries.QClass;
 import comodo2.queries.QState;
 import comodo2.queries.QStateMachine;
 import comodo2.queries.QTransition;
-import comodo2.templates.qpc.QUtils;
+import comodo2.templates.qpc.Utils;
 import comodo2.utils.FilesHelper;
 import comodo2.utils.StateComparator;
 import comodo2.utils.TransitionComparator;
@@ -46,7 +46,7 @@ public class StateMachineSource implements IGenerator {
 	private QClass mQClass;
 	
 	@Inject
-	private QUtils mQUtils;
+	private Utils mUtils;
 
 	@Inject
 	private FilesHelper mFilesHelper;
@@ -242,21 +242,21 @@ public class StateMachineSource implements IGenerator {
 		
 		st_entry.add("signalName", Q_ENTRY_SIG);
 		st_entry.add("logging", USER_LOGGING);
-		st_entry.add("onEntryStateEnum", mQUtils.formatStateName(mQState.getFullyQualifiedName(s), this.smQualifiedName));
+		st_entry.add("onEntryStateEnum", mUtils.formatStateName(mQState.getFullyQualifiedName(s), this.smQualifiedName));
 		st_entry.add("returnStatement", Q_HANDLED);
 		st_exit.add("signalName", Q_EXIT_SIG);
 		st_exit.add("logging", USER_LOGGING);
 		st_exit.add("returnStatement", Q_HANDLED);
 
 		if (mQState.hasOnEntryActions(s) || mQState.hasTimerTransition(s)) {
-			st_entry.add("action", mQUtils.formatActionName(s.getEntry().getName(), this.smQualifiedName));
+			st_entry.add("action", mUtils.formatActionName(s.getEntry().getName(), this.smQualifiedName));
 		}		
 		if (mQState.hasDoActivities(s)) {
 			mLogger.warn("SKIPPED -- Do activities are not supported in QPC" +
 			 				"(found in state " + s.getName() + ")");
 		}
 		if (mQState.hasOnExitActions(s) || mQState.hasTimerTransition(s)) {
-			st_exit.add("action", mQUtils.formatActionName(s.getExit().getName(), this.smQualifiedName));
+			st_exit.add("action", mUtils.formatActionName(s.getExit().getName(), this.smQualifiedName));
 		}
 
 		str += st_entry.render();
@@ -293,7 +293,7 @@ public class StateMachineSource implements IGenerator {
 				String action = mQTransition.getFirstActionName(t);
 				// target is handled in getReturnStatement
 				
-				String signalName = mQUtils.formatSignalName(eventName, this.smClassName);
+				String signalName = mUtils.formatSignalName(eventName, this.smClassName);
 
 				st_tran.add("signalName", signalName);
 
@@ -305,8 +305,8 @@ public class StateMachineSource implements IGenerator {
 				} else if (!Objects.equal(guard, "")) {
 
 					ST st_if = g.getInstanceOf("StateMachine_IfStatement");
-					st_if.add("guard", mQUtils.formatGuardName(guard, this.smQualifiedName));
-					st_if.add("action", mQUtils.formatActionName(action, this.smQualifiedName));
+					st_if.add("guard", mUtils.formatGuardName(guard, this.smQualifiedName));
+					st_if.add("action", mUtils.formatActionName(action, this.smQualifiedName));
 					st_if.add("returnStatement", getReturnStatement(t));
 
 					st_tran.add("action", st_if.render());
@@ -314,7 +314,7 @@ public class StateMachineSource implements IGenerator {
 
 				} else if (!Objects.equal(eventName, "")) {
 
-					st_tran.add("action", mQUtils.formatActionName(action, this.smQualifiedName));
+					st_tran.add("action", mUtils.formatActionName(action, this.smQualifiedName));
 					st_tran.add("returnStatement", getReturnStatement(t));
 
 				} else {
@@ -337,9 +337,9 @@ public class StateMachineSource implements IGenerator {
 			// Removing non alphanumeric characters since this will be the name of a C variable
 			
 			if (mQTransition.hasSignalEvent(t)) {
-				signalEventsNameset.add(mQUtils.formatSignalName(eventName, this.smClassName));
+				signalEventsNameset.add(mUtils.formatSignalName(eventName, this.smClassName));
 			} else if (mQTransition.hasTimeEvent(t)) {
-				timeEventsNameset.add(mQUtils.formatSignalName(eventName, this.smClassName));
+				timeEventsNameset.add(mUtils.formatSignalName(eventName, this.smClassName));
 			}
 		}
 	}
@@ -387,7 +387,7 @@ public class StateMachineSource implements IGenerator {
 
 		// isElseStatement is a boolean to indicate whether to use an "if(guard)" or an "else" statement
 		st_if_root.add("isElseStatement", Objects.equal(guard, "else"));
-		st_if_root.add("guard", mQUtils.formatGuardName(guard, this.smQualifiedName));
+		st_if_root.add("guard", mUtils.formatGuardName(guard, this.smQualifiedName));
 
 
 		for (Transition outgoing : choicePseudoState.getOutgoings()){
@@ -406,8 +406,8 @@ public class StateMachineSource implements IGenerator {
 
 				ST st_if = g.getInstanceOf("StateMachine_IfStatement");
 				st_if.add("isElseStatement", Objects.equal(out_guard, "else"));
-				st_if.add("guard", mQUtils.formatGuardName(out_guard, this.smQualifiedName));
-				st_if.add("action", mQUtils.formatActionName(out_action, this.smQualifiedName));
+				st_if.add("guard", mUtils.formatGuardName(out_guard, this.smQualifiedName));
+				st_if.add("action", mUtils.formatActionName(out_action, this.smQualifiedName));
 				st_if.add("returnStatement", transitionToStateMacro(out_targetName));
 
 				// If the guard is "else", we store it and add it at the very end

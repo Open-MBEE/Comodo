@@ -3,7 +3,7 @@ package comodo2.templates.qpc;
 import com.google.common.base.Objects;
 
 
-public class QUtils {
+public class Utils {
     
     /**
 	 * Takes in a guard name and format it in the appropriate format for QPC use of guards.
