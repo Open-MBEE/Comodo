@@ -33,13 +33,16 @@ public class Utils {
 	 * Takes in an action name and format it in the appropriate format for QPC use of actions.
 	 * That is: smQualifiedName _impl_ functionName (me->impl) FOR EACH functionName in actionName
 	 */
-	public String formatActionName(String actionName, String smQualifiedName) {
+	public String formatActionName(String actionName, String smQualifiedName, String smClassName) {
 		if (Objects.equal(actionName, "") || actionName == null){
 			return "";
 		}
 		String str = "";
 		for (String function : getAllFunctionsFromAction(actionName, false)) {
 			str += checkTrailingSemicolon(smQualifiedName + "_impl_" + insertImplArg(function.trim())) + "\n";
+		}
+		for (String signalName : getAllSentSignalsFromAction(actionName)) {
+			str += "QF_publish(" + formatSignalName(signalName, smClassName) + ");\n";
 		}
 		return str;
 	}
@@ -79,6 +82,23 @@ public class Utils {
 
 		Pattern r = Pattern.compile(".*\\(.*\\)");
 		Matcher m = r.matcher(tmp_str);
+
+		while(m.find()){
+			functionList.add(m.group().trim());
+		}
+
+		return functionList;
+	}
+
+	/**
+	 * Returns list of all signals sent in an action string.
+	 * This regexes everything that is not followed by parentheses, in all caps
+	 */
+	public List<String> getAllSentSignalsFromAction(String actionString) {
+		List<String> functionList = new ArrayList<String>();
+
+		Pattern r = Pattern.compile("(?<=\\b)[A-Z1-9_]+(?=\\b(?![\\(\\), ]))");
+		Matcher m = r.matcher(actionString);
 
 		while(m.find()){
 			functionList.add(m.group().trim());
