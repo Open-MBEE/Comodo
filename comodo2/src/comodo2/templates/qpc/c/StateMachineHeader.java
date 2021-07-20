@@ -13,12 +13,16 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
 import comodo2.queries.QClass;
+import comodo2.queries.QStateMachine;
 import comodo2.utils.FilesHelper;
 
 public class StateMachineHeader implements IGenerator {
 	
 	@Inject
 	private QClass mQClass;
+
+	@Inject
+	private QStateMachine mQStateMachine;
 	
 	@Inject
 	private FilesHelper mFilesHelper;
@@ -40,7 +44,7 @@ public class StateMachineHeader implements IGenerator {
 					for (final StateMachine sm : mQClass.getStateMachines(c)) {
 						String smQualifiedName = c.getName() + "_" + sm.getName();
 						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(sm.getName())));
-						fsa.generateFile(mFilesHelper.toHFilePath(smQualifiedName), this.generate(smQualifiedName, c.getName()));						
+						fsa.generateFile(mFilesHelper.toHFilePath(smQualifiedName), this.generate(sm, smQualifiedName, c.getName()));						
 					}
 				}				
 			}
@@ -48,12 +52,16 @@ public class StateMachineHeader implements IGenerator {
 	}
 
 
-	public CharSequence generate(String smQualifiedName, String className) {
+	public CharSequence generate(StateMachine sm, String smQualifiedName, String className) {
         STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineHeader.stg");
 		ST st = g.getInstanceOf("StateMachineHeader");
 		st.add("className", className);
 		st.add("smQualifiedName", smQualifiedName);
 		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
+
+		// StringTemplate is able to run a forEach on lists, and get the "name" attribute with getName()
+		// which is defined for a State element. See https://github.com/antlr/stringtemplate4/blob/master/doc/templates.md
+		st.add("statesList", mQStateMachine.getAllStatesSorted(sm));
 
         return st.render();
 	}
