@@ -12,6 +12,9 @@ import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
 
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
@@ -67,59 +70,41 @@ public class QpcHeaders implements IGenerator {
 	 * Generates the header file for the enumeration of signals
 	 */
 	public CharSequence generateSignalsHeader(final String className, final TreeSet<String> signalNames){
-		String str = "";
-
-		//str += printIncludes();
-
-		str +=  "enum " + className + "_statechart_signals {\n" +
-				"	/* \"During\" signal */\n" +
-				"	DURING = Q_USER_SIG,\n\n" + 
-				"	/* User defined signals */\n" ;
-
-		for (String signalName : signalNames) {
-			str += "	" + mUtils.formatSignalName(signalName, className) + ",\n";
-		}
+		String signalsEnumString = "";
 		
-		str +=  "\n	/* Maximum signal id */\n" +
-				"	Q_BAIL_SIG = 0x7FFFFFF-1 /* Internal: terminate region/submachine */,\n" +
-				"	MAX_SIG    = 0x7FFFFFF   /* Last possible ID! */\n";
-		str += "};\n";
+		for (String signalName : signalNames) {
+			signalsEnumString += mUtils.formatSignalName(signalName, className) + ",\n";
+		}
 
-		return str;
+		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
+		ST st = g.getInstanceOf("SignalsHeader");
+
+		st.add("className", className);
+		st.add("classNameUpperCase", className.toUpperCase());
+		st.add("signalsEnumDefinition", signalsEnumString);
+
+		return st.render();
 	}
 
 	/**
 	 * Generates the header file for the enumeration of states
 	 */
 	public CharSequence generateStatesHeader(final String smQualifiedName, final Iterable<String> statesQualifiedNames){
-		String str = "";
+		String statesEnumString = "";
 
-		//str += printIncludes();
-
-		str +=  "typedef enum " + smQualifiedName + "_state {\n";
-		str += "	" + smQualifiedName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
+		statesEnumString += smQualifiedName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
 		for (String stateQualifiedName : statesQualifiedNames) {
-			str += "	" + mUtils.formatStateName(stateQualifiedName, smQualifiedName) + ",\n";
+			statesEnumString += mUtils.formatStateName(stateQualifiedName, smQualifiedName) + ",\n";
 		}
+
+		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
+		ST st = g.getInstanceOf("StatesHeader");
+
+		st.add("smQualifiedName", smQualifiedName);
+		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
+		st.add("statesEnumDefinition", statesEnumString);
 		
-		str += "} " + smQualifiedName + "_states;\n";
-
-		return str;
-	}
-
-
-	public CharSequence printIncludes(){
-		String str = "";
-
-		str += "#include <stdio.h>\n";
-		str += "#include <stdlib.h>\n";
-		str += "#include <string.h>\n";
-		str += "#include <assert.h>\n";
-		str += "#include <stdbool.h>\n";
-
-		str += "\n\n";
-
-		return str;
+		return st.render();
 	}
 
 }
