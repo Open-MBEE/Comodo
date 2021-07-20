@@ -1,5 +1,11 @@
 package comodo2.templates.qpc;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 import com.google.common.base.Objects;
 
 
@@ -12,7 +18,7 @@ public class Utils {
 		if (Objects.equal(guardName, "") || guardName == null){
 			return null;
 		}
-		return smQualifiedName + "_impl_" + guardName.trim();
+		return smQualifiedName + "_impl_" + insertImplArg(guardName.trim());
 	}
 
     /**
@@ -25,12 +31,17 @@ public class Utils {
 
 	/**
 	 * Takes in an action name and format it in the appropriate format for QPC use of actions.
+	 * That is: smQualifiedName _impl_ functionName (me->impl) FOR EACH functionName in actionName
 	 */
 	public String formatActionName(String actionName, String smQualifiedName) {
 		if (Objects.equal(actionName, "") || actionName == null){
-			return null;
+			return "";
 		}
-		return checkTrailingSemicolon(smQualifiedName + "_impl_" + actionName.trim());
+		String str = "";
+		for (String function : getAllFunctionsFromAction(actionName, false)) {
+			str += checkTrailingSemicolon(smQualifiedName + "_impl_" + insertImplArg(function.trim())) + "\n";
+		}
+		return str;
 	}
 
 	public String formatStateName(String stateQualifiedName, String smQualifiedName){
@@ -41,7 +52,54 @@ public class Utils {
 		return str.endsWith(";") ? str : str + ";";
 	}
 
-	public String eventNaming(String timeEventName){
-		return timeEventName.replaceAll("[^A-Za-z0-9_]", "").toUpperCase();
+	/**
+	 * Takes in a TreeSet of all action names and return a TreeSet of all the functions
+	 * that the actions use. This is needed because one action can call multiple functions,
+	 * and the same function can be re-used between actions.
+	 */
+	public TreeSet<String> getAllActionFunctionNames(TreeSet<String> actionNames) {
+		TreeSet<String> functionNames = new TreeSet<String>();
+		for (String action : actionNames){
+			functionNames.addAll(getAllFunctionsFromAction(action, true));
+		}
+		return functionNames;
+	}
+
+	/**
+	 * Returns list of all functions used in an action string.
+	 */
+	public List<String> getAllFunctionsFromAction(String str, Boolean removeArgs) {
+		String tmp_str = str;
+		List<String> functionList = new ArrayList<String>();
+
+		// remove arguments between parenthesis
+		if (removeArgs){
+			tmp_str = tmp_str.replaceAll("\\(.*\\)","()");
+		}
+
+		Pattern r = Pattern.compile(".*\\(.*\\)");
+		Matcher m = r.matcher(tmp_str);
+
+		while(m.find()){
+			functionList.add(m.group().trim());
+		}
+
+		return functionList;
+	}
+
+	/**
+	 * Non regex-heavy implementation, so might be edge cases where it fails...
+	 * @param functionStr string representing a function call
+	 * @return same function call with the me->impl parameter inserted in first place
+	 */
+	public String insertImplArg(String functionStr){
+		int firstParenthesis = functionStr.indexOf("(");
+		// Matches empty parentheses
+		Matcher m = Pattern.compile(".*\\(\\s*\\)").matcher(functionStr);
+		if (m.find()){
+			return functionStr.substring(0, firstParenthesis + 1) + "me->impl" + functionStr.substring(firstParenthesis + 1, functionStr.length());
+		} else {
+			return functionStr.substring(0, firstParenthesis + 1) + "me->impl, " + functionStr.substring(firstParenthesis + 1, functionStr.length());
+		}
 	}
 }

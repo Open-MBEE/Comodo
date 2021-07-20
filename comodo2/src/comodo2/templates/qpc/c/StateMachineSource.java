@@ -420,7 +420,8 @@ public class StateMachineSource implements IGenerator {
 			}
 		}
 		str += else_tmp_str;
-		st_if_root.add("action", action + "\n" + str);
+		// st_if_root.add("action", action + "\n" + str);
+		st_if_root.add("action", mUtils.formatActionName(action, this.smQualifiedName) + "\n" + str);
 
 
 		return st_if_root.render();

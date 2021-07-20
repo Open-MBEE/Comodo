@@ -15,6 +15,7 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
+import comodo2.templates.qpc.Utils;
 import comodo2.utils.FilesHelper;
 
 
@@ -30,6 +31,9 @@ public class QpcImplFiles implements IGenerator {
 
 	@Inject
 	private QStateMachine mQStateMachine;
+
+	@Inject
+	private Utils mUtils;
 
 	// %1$s is impl_name      %2$s is funciton_name        "%%s" is escaping %s, which we want in the output
 	final private String GUARD_FUNCTION_SOURCE_TEMPLATE = "" +
@@ -63,14 +67,14 @@ public class QpcImplFiles implements IGenerator {
 			if ((mQClass.isToBeGenerated(e) && mQClass.hasStateMachines(e))) {
 				for (final StateMachine sm : mQClass.getStateMachines(e)) {
 					String smQualifiedName = e.getName() + "_" + sm.getName();
-					TreeSet<String> actionNames = new TreeSet<String>();
-					TreeSet<String> guardNames = new TreeSet<String>();
 
-					Iterables.<String>addAll(actionNames, mQStateMachine.getAllActionNames(sm));
-					Iterables.<String>addAll(guardNames, mQStateMachine.getAllGuardNames(sm));
+					TreeSet<String> functionNames = mUtils.getAllActionFunctionNames(mQStateMachine.getAllActionNames(sm));
+					TreeSet<String> guardNames = mQStateMachine.getAllGuardNames(sm);
+					guardNames.remove("else"); // remove "else" guards which are not needed
 					
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.c"), this.generateImplSource(smQualifiedName, actionNames, guardNames));						
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.h"), this.generateImplHeader(smQualifiedName, actionNames, guardNames));						
+
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.c"), this.generateImplSource(smQualifiedName, functionNames, guardNames));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.h"), this.generateImplHeader(smQualifiedName, functionNames, guardNames));						
 				}
 
 			}
@@ -165,8 +169,8 @@ public class QpcImplFiles implements IGenerator {
 	}
 
 	public CharSequence getFunctionName(String str){
-		// TODO: this is very brittle and shall be replaced with a more robust regex
-		// It basically only takes what's before the first set of parentheses
+		//  This only takes what's before the first set of parentheses
+		// Ok because we are passed a pre-processed list
 		return str.trim().replaceAll("(?s)\\(.*\\).*","");
 	}
 }
