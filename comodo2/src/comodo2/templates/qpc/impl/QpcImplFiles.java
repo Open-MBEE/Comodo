@@ -12,6 +12,9 @@ import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
 
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
@@ -72,8 +75,9 @@ public class QpcImplFiles implements IGenerator {
 					TreeSet<String> guardNames = mQStateMachine.getAllGuardNames(sm);
 					guardNames.remove("else"); // remove "else" guards which are not needed
 					
+					System.out.println(mQStateMachine.getAllActionNames(sm).toString());
 
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.c"), this.generateImplSource(smQualifiedName, functionNames, guardNames));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.c"), this.generateImplSource(smQualifiedName, e.getName(), functionNames, guardNames));						
 					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.h"), this.generateImplHeader(smQualifiedName, functionNames, guardNames));						
 				}
 
@@ -86,89 +90,76 @@ public class QpcImplFiles implements IGenerator {
 	/**
 	 * Generates the source file for the implementation of actions and guards in the model
 	 */
-	public CharSequence generateImplSource(final String smName, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
-		String str = "";
+	public CharSequence generateImplSource(final String smQualifiedName, final String className, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
+		STGroup g = new STGroupFile("resources/qpc_tpl/QpcImplFiles.stg");
+		ST st = g.getInstanceOf("StateMachineImplSource");
 
-		str += "#include <" + smName + "_impl.h>\n";
-		str += printIncludes();
+		String methodsCodeString = "";
+		TreeSet<String> guardNamesNoParenthesis = new TreeSet<String>();
 
 		for (String guardName : guardNames) {
-			str += printGuardFunction(smName, guardName);
+			methodsCodeString += printGuardFunction(smQualifiedName, guardName);
+			guardNamesNoParenthesis.add(getFunctionName(guardName));
 		}
 
 		for (String actionName : actionNames) {
-			str += printActionFunction(smName, actionName);
+			methodsCodeString += printActionFunction(smQualifiedName, actionName);
 		}
 
-		return str;
+		st.add("className", className);
+		st.add("smQualifiedName", smQualifiedName);
+		st.add("guardNameList", guardNamesNoParenthesis);
+		st.add("implementationMethodsCodeString", methodsCodeString);
+
+		return st.render();
 	}
 
 	/**
 	 * Generates the header file for the implementation of behaviors and guards in the model
 	 */
-	public CharSequence generateImplHeader(final String smName, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
-		String str = "";
+	public CharSequence generateImplHeader(final String smQualifiedName, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
+		STGroup g = new STGroupFile("resources/qpc_tpl/QpcImplFiles.stg");
+		ST st = g.getInstanceOf("StateMachineImplHeader");
+		
+		TreeSet<String> guardNamesNoParenthesis = new TreeSet<String>();
 
-		str += printIncludes();
-
-		str += "typedef struct " + smName + "_impl {\n" +
-				"	char machineName[128];\n" +
-				"	QActive *active;\n\n";
-
+		String methodsDefinition = "";
+		
 		for (String guardName : guardNames) {
-			str += String.format("	bool %s;\n", getFunctionName(guardName));
-		}
-
-		str += "}" + smName + "_impl;\n\n";
-
-		str +=  "////////////////////////////////////////////\n" +
-				"// Action and guard implementation methods\n" +
-				"////////////////////////////////////////////\n";
-
-		for (String guardName : guardNames) {
-			str += String.format("bool %s_impl_%s(" + smName + "_impl *mepl);\n", smName, getFunctionName(guardName));
-		}
-
-		for (String actionName : actionNames) {
-			str += String.format("void %s_impl_%s(" + smName + "_impl *mepl);", smName, getFunctionName(actionName));
-			str += "\n";
+			guardNamesNoParenthesis.add(getFunctionName(guardName));
+			methodsDefinition += String.format("bool %s_impl_%s(" + smQualifiedName + "_impl *mepl);\n", smQualifiedName, getFunctionName(guardName));
 		}
 		
-		return str;
+		for (String actionName : actionNames) {
+			methodsDefinition += String.format("void %s_impl_%s(" + smQualifiedName + "_impl *mepl);\n", smQualifiedName, getFunctionName(actionName));
+		}
+		
+		st.add("smQualifiedName", smQualifiedName);
+		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
+		st.add("guardNameList", guardNamesNoParenthesis);
+		st.add("methodsDefinition", methodsDefinition);
+		
+		return st.render();
 	}
 
 
-	public CharSequence printGuardFunction(final String smName, final String guardName){
+	public CharSequence printGuardFunction(final String smQualifiedName, final String guardName){
 		String str = "";
-		str += String.format(GUARD_FUNCTION_SOURCE_TEMPLATE, smName, getFunctionName(guardName));
+		str += String.format(GUARD_FUNCTION_SOURCE_TEMPLATE, smQualifiedName, getFunctionName(guardName));
 		str += "\n";
 		
 		return str;
 	}
 	
-	public CharSequence printActionFunction(final String smName, final String actionName){
+	public CharSequence printActionFunction(final String smQualifiedName, final String actionName){
 		String str = "";
-		str += String.format(ACTION_FUNCTION_SOURCE_TEMPLATE, smName, getFunctionName(actionName));
+		str += String.format(ACTION_FUNCTION_SOURCE_TEMPLATE, smQualifiedName, getFunctionName(actionName));
 		str += "\n";
 
 		return str;
 	}
 
-	public CharSequence printIncludes(){
-		String str = "";
-
-		str += "#include <stdio.h>\n";
-		str += "#include <stdlib.h>\n";
-		str += "#include <string.h>\n";
-		str += "#include <assert.h>\n";
-		str += "#include <stdbool.h>\n";
-
-		str += "\n\n";
-
-		return str;
-	}
-
-	public CharSequence getFunctionName(String str){
+	public String getFunctionName(String str){
 		//  This only takes what's before the first set of parentheses
 		// Ok because we are passed a pre-processed list
 		return str.trim().replaceAll("(?s)\\(.*\\).*","");
