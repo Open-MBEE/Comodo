@@ -205,6 +205,15 @@ public class QStateMachine {
 				}
 			}
 		}
+		// We also need to get all the outgoings from pseudostates
+		// because choice nodes are pseudostates, and have actions on outgoing transitions
+		for (final Pseudostate ps : getAllPseudostates(sm)) {
+			for (final Transition t : ps.getOutgoings()) {
+				if (mQTransition.hasAction(t)) {
+					names.add(mQTransition.getFirstActionName(t));
+				}
+			}
+		}
 		return names;
 	}
 
