@@ -74,8 +74,6 @@ public class QpcImplFiles implements IGenerator {
 					TreeSet<String> functionNames = mUtils.getAllActionFunctionNames(mQStateMachine.getAllActionNames(sm));
 					TreeSet<String> guardNames = mQStateMachine.getAllGuardNames(sm);
 					guardNames.remove("else"); // remove "else" guards which are not needed
-					
-					System.out.println(mQStateMachine.getAllActionNames(sm).toString());
 
 					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.c"), this.generateImplSource(smQualifiedName, e.getName(), functionNames, guardNames));						
 					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.h"), this.generateImplHeader(smQualifiedName, functionNames, guardNames));						
