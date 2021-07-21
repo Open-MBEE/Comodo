@@ -1,12 +1,14 @@
 delimiters "%", "%"
 
-StateMachine_InitialState(smQualifiedName) ::= <<
+StateMachine_InitialState(smQualifiedName, returnStatement) ::= <<
 
 /**
  * initial state definition
  */
 QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvent const *e) {
     _INITIAL_STATE_PLACEHOLDER_FOR_SIGNAL_SUBSCRIPTION_
+
+    return %returnStatement%;
 }
 
 >>

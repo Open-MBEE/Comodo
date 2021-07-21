@@ -361,6 +361,7 @@ public class StateMachineSource implements IGenerator {
 		ST st = g.getInstanceOf("StateMachine_InitialState");
 
 		st.add("smQualifiedName", this.smQualifiedName);
+		st.add("returnStatement", transitionToStateMacro(targetName));
 
         return st.render();
 	}
