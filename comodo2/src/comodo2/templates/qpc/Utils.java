@@ -42,7 +42,8 @@ public class Utils {
 			str += checkTrailingSemicolon(smQualifiedName + "_impl_" + insertImplArg(function.trim())) + "\n";
 		}
 		for (String signalName : getAllSentSignalsFromAction(actionName)) {
-			str += "QF_publish(" + formatSignalName(signalName, smClassName) + ");\n";
+			str += "QEvent *newEv = Q_NEW(QEvent, " + formatSignalName(signalName, smClassName) + ");\n";
+			str += "QF_publish(newEv);\n";
 		}
 		return str;
 	}
