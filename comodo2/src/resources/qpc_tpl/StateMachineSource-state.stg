@@ -12,7 +12,7 @@ QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvent const *e) {
 >>
 
 
-StateMachine_State(smQualifiedName, stateName, signalSwitchCase, logging) ::= <<
+StateMachine_State(smQualifiedName, stateName, signalSwitchCase, superState, logging) ::= <<
 
 /**
  * %stateName% state definition
@@ -29,6 +29,7 @@ QState %smQualifiedName%_%stateName% (%smQualifiedName% *me, QEvent const *e) {
     switch (e->sig) {
         %signalSwitchCase%
     }
+    return Q_SUPER(&%superState%);
 }
 
 >>

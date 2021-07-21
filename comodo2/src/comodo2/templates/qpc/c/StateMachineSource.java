@@ -66,6 +66,7 @@ public class StateMachineSource implements IGenerator {
 	private final String Q_INIT_SIG = "Q_INIT_SIG";
 	private final String Q_ENTRY_SIG = "Q_ENTRY_SIG";
 	private final String Q_EXIT_SIG = "Q_EXIT_SIG";
+	private final String Q_TOP_STATE = "QHsm_top";
 	/* ################################ */
 
 
@@ -184,6 +185,12 @@ public class StateMachineSource implements IGenerator {
 			st.add("logging", USER_LOGGING);
 
 			st.add("signalSwitchCase", printSwitchCaseStatements(s));
+
+			if (mQState.isTopState(s)){
+				st.add("superState", Q_TOP_STATE);
+			} else {
+				st.add("superState", this.smQualifiedName + "_" + mQState.getParentState(s).getName());
+			}
 		}
 		return st.render();
 	}
