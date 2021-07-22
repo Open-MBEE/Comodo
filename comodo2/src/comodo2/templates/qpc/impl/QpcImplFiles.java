@@ -69,14 +69,16 @@ public class QpcImplFiles implements IGenerator {
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if ((mQClass.isToBeGenerated(e) && mQClass.hasStateMachines(e))) {
 				for (final StateMachine sm : mQClass.getStateMachines(e)) {
-					String smQualifiedName = e.getName() + "_" + sm.getName();
+					String className = e.getName();
+					String smName = sm.getName();
+					String smQualifiedName = className + "_" + smName;
 
 					TreeSet<String> functionNames = mUtils.getAllActionFunctionNames(mQStateMachine.getAllActionNames(sm));
 					TreeSet<String> guardNames = mQStateMachine.getAllGuardNames(sm);
 					guardNames.remove("else"); // remove "else" guards which are not needed
 
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.c"), this.generateImplSource(smQualifiedName, e.getName(), functionNames, guardNames));						
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.h"), this.generateImplHeader(smQualifiedName, functionNames, guardNames));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.c"), this.generateImplSource(smQualifiedName, className, smName, functionNames, guardNames));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.h"), this.generateImplHeader(smQualifiedName, className, smName, functionNames, guardNames));						
 				}
 
 			}
@@ -88,7 +90,7 @@ public class QpcImplFiles implements IGenerator {
 	/**
 	 * Generates the source file for the implementation of actions and guards in the model
 	 */
-	public CharSequence generateImplSource(final String smQualifiedName, final String className, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
+	public CharSequence generateImplSource(final String smQualifiedName, final String className, final String smName, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
 		STGroup g = new STGroupFile("resources/qpc_tpl/QpcImplFiles.stg");
 		ST st = g.getInstanceOf("StateMachineImplSource");
 
@@ -104,6 +106,7 @@ public class QpcImplFiles implements IGenerator {
 			methodsCodeString += printActionFunction(smQualifiedName, actionName);
 		}
 
+		st.add("fileDescriptionHeader", mUtils.generateFileDescriptionHeader(className, smName, false));
 		st.add("className", className);
 		st.add("smQualifiedName", smQualifiedName);
 		st.add("guardNameList", guardNamesNoParenthesis);
@@ -115,7 +118,7 @@ public class QpcImplFiles implements IGenerator {
 	/**
 	 * Generates the header file for the implementation of behaviors and guards in the model
 	 */
-	public CharSequence generateImplHeader(final String smQualifiedName, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
+	public CharSequence generateImplHeader(final String smQualifiedName, final String className, final String smName, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
 		STGroup g = new STGroupFile("resources/qpc_tpl/QpcImplFiles.stg");
 		ST st = g.getInstanceOf("StateMachineImplHeader");
 		
@@ -132,6 +135,7 @@ public class QpcImplFiles implements IGenerator {
 			methodsDefinition += String.format("void %s_impl_%s(" + smQualifiedName + "_impl *mepl);\n", smQualifiedName, getFunctionName(actionName));
 		}
 		
+		st.add("fileDescriptionHeader", mUtils.generateFileDescriptionHeader(className, smName, false));
 		st.add("smQualifiedName", smQualifiedName);
 		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
 		st.add("guardNameList", guardNamesNoParenthesis);

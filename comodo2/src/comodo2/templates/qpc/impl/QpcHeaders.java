@@ -56,7 +56,7 @@ public class QpcHeaders implements IGenerator {
 					String smQualifiedName = e.getName() + "_" + sm.getName();
 					Iterables.<String>addAll(signalNames, mQStateMachine.getAllSignalNames(sm));
 					
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_states.h"), this.generateStatesHeader(smQualifiedName, mQStateMachine.getAllStatesQualifiedName(sm)));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_states.h"), this.generateStatesHeader(smQualifiedName, sm.getName(), e.getName(), mQStateMachine.getAllStatesQualifiedName(sm)));						
 				}
 				fsa.generateFile(mFilesHelper.toQmImplFilePath(e.getName() + "_statechart_signals.h"), this.generateSignalsHeader(e.getName(), signalNames));						
 
@@ -79,6 +79,7 @@ public class QpcHeaders implements IGenerator {
 		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
 		ST st = g.getInstanceOf("SignalsHeader");
 
+		st.add("fileDescriptionHeader", mUtils.generateFileDescriptionHeader(className, null, false));
 		st.add("className", className);
 		st.add("classNameUpperCase", className.toUpperCase());
 		st.add("signalsEnumDefinition", signalsEnumString);
@@ -89,7 +90,7 @@ public class QpcHeaders implements IGenerator {
 	/**
 	 * Generates the header file for the enumeration of states
 	 */
-	public CharSequence generateStatesHeader(final String smQualifiedName, final Iterable<String> statesQualifiedNames){
+	public CharSequence generateStatesHeader(final String smQualifiedName, final String smName, final String className, final Iterable<String> statesQualifiedNames){
 		String statesEnumString = "";
 
 		statesEnumString += smQualifiedName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
@@ -100,6 +101,7 @@ public class QpcHeaders implements IGenerator {
 		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
 		ST st = g.getInstanceOf("StatesHeader");
 
+		st.add("fileDescriptionHeader", mUtils.generateFileDescriptionHeader(className, smName, false));
 		st.add("smQualifiedName", smQualifiedName);
 		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
 		st.add("statesEnumDefinition", statesEnumString);

@@ -104,6 +104,7 @@ public class StateMachineSource implements IGenerator {
 	public CharSequence generate(final StateMachine sm) {
 		StringConcatenation str = new StringConcatenation();
 
+		str.append(mUtils.generateFileDescriptionHeader(this.smClassName, sm.getName(), true));
 		str.append(printStateMachineIncludes(this.smQualifiedName));
 		
 		str.append(printNewlines(3));
