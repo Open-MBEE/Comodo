@@ -56,7 +56,7 @@ QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvent const *e);
 /**
  * State methods
  */
-%statesList :{ state | QState %smQualifiedName%_impl_%state.name%(%smQualifiedName% *me, QEvent const *e); %\n%}%
+%statesList :{ state | QState %smQualifiedName%_%state.name%(%smQualifiedName% *me, QEvent const *e); %\n%}%
 
 #endif /* %smQualifiedNameUpperCase%_H_ */
 
