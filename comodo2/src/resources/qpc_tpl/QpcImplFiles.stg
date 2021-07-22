@@ -22,9 +22,9 @@ StateMachineImplSource(smQualifiedName, className, guardNameList, implementation
     strncpy(mepl->machineName, "%smQualifiedName%", 128);
     mepl->machineName[128-1] = '\0';  // null-terminate to be sure
 
-    AttributeMapper_init(mepl);
+    // AttributeMapper_init(mepl);
 
-    %guardNameList :{ guard | AttributeMapper_set(mepl, "%guard%", 0); %\n%}%
+    %guardNameList :{ guard | // AttributeMapper_set(mepl, "%guard%", 0); %\n%}%
     %guardNameList :{ guard | mepl->%guard% = 0; %\n%}%
 
     return mepl;

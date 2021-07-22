@@ -41,10 +41,10 @@ public class QpcImplFiles implements IGenerator {
 	// %1$s is impl_name      %2$s is funciton_name        "%%s" is escaping %s, which we want in the output
 	final private String GUARD_FUNCTION_SOURCE_TEMPLATE = "" +
 		"bool %1$s_impl_%2$s (%1$s_impl *mepl) {\n" +
-		"	bool rv = AttributeMapper_get(mepl, \"%2$s\");\n" +
-		"	printf(\"%%s.%2$s() == %%s\", mepl->machineName, AttributeMapper_booltostr(rv));\n" +
-		"	return rv;\n" +
-		"};\n";
+		"	// bool rv = AttributeMapper_get(mepl, \"%2$s\");\n" +
+		"	printf(\"%%s.%2$s() == %%d\", mepl->machineName, mepl->%2$s);\n" +
+		"	return mepl->%2$s;\n" +
+		"}\n";
 
 	final private String ACTION_FUNCTION_SOURCE_TEMPLATE = "" +
 		"void %1$s_impl_%2$s (%1$s_impl *mepl) {\n" +
