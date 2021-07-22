@@ -31,12 +31,12 @@ enum %className%_statechart_signals {
  */
 typedef union {
     struct {
-        QEvent super;  // C-style inheritance: QEvent is base type
+        QEvt super;  // C-style inheritance: QEvt is base type
         int32_t substate;   // containing substate for Submachine completion
         int32_t exitPoint;  // exitPoint used to exit Submachine, if applicable
     } completion_evt;
 
-    QEvent base_evt;  // Mission-defined base event
+    QEvt base_evt;  // Mission-defined base event
 } QCompletionEvt;
 
 #endif /* %classNameUpperCase%_STATECHART_SIGNALS_H_ */

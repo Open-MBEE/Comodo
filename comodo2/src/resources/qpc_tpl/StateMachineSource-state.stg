@@ -5,7 +5,7 @@ StateMachine_InitialState(smQualifiedName, returnStatement) ::= <<
 /**
  * initial state definition
  */
-QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvent const *e) {
+QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvt const *e) {
     _INITIAL_STATE_PLACEHOLDER_FOR_SIGNAL_SUBSCRIPTION_
 
     return %returnStatement%;
@@ -19,7 +19,7 @@ StateMachine_State(smQualifiedName, stateName, signalSwitchCase, superState, log
 /**
  * %stateName% state definition
  */
-QState %smQualifiedName%_%stateName% (%smQualifiedName% *me, QEvent const *e) {
+QState %smQualifiedName%_%stateName% (%smQualifiedName% *me, QEvt const *e) {
 %if(logging)%
     char stateName[128];
     strncpy(stateName, me->objName, 128);

@@ -51,12 +51,12 @@ typedef struct %smQualifiedName% {
 /**
  * Method to initialize state machine (equivalent to initial pseudostate)
  */
-QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvent const *e);
+QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvt const *e);
 
 /**
  * State methods
  */
-%statesList :{ state | QState %smQualifiedName%_%state.name%(%smQualifiedName% *me, QEvent const *e); %\n%}%
+%statesList :{ state | QState %smQualifiedName%_%state.name%(%smQualifiedName% *me, QEvt const *e); %\n%}%
 
 #endif /* %smQualifiedNameUpperCase%_H_ */
 
