@@ -43,7 +43,7 @@ public class Utils {
 		}
 		for (String signalName : getAllSentSignalsFromAction(actionName)) {
 			str += "QEvt *newEv = Q_NEW(QEvt, " + formatSignalName(signalName, smClassName) + ");\n";
-			str += "QF_publish(newEv);\n";
+			str += "QF_publish_(newEv);\n";
 		}
 		return str;
 	}
