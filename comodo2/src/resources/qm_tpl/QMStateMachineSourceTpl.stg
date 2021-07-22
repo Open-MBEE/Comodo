@@ -25,7 +25,7 @@ StateMachineSource(smName, smNameUpperCase) ::= <<
     %smName%_impl_set_qactive(me->impl, me->active);  // give impl access to parent QActive
 
     // State is initially at TOP
-    me->myState = %smNameUpperCase%_MODE__TOP__;
+    me->myState = %smNameUpperCase%__TOP__;
 
     return me;
 }
