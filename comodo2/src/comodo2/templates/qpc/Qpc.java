@@ -1,6 +1,7 @@
 package comodo2.templates.qpc;
 
 import comodo2.engine.Config;
+import comodo2.templates.qpc.c.AnalysisContext;
 import comodo2.templates.qpc.c.StateMachineHeader;
 import comodo2.templates.qpc.c.StateMachineSource;
 import comodo2.templates.qpc.impl.QpcHeaders;
@@ -29,6 +30,9 @@ public class Qpc implements IGenerator {
 	@Inject
 	private QpcHeaders mQpcHeaders;
 
+	@Inject
+	private AnalysisContext mAnalysisContext;
+
     @Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
 		if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_QM)) {
@@ -41,6 +45,8 @@ public class Qpc implements IGenerator {
 		
 		mQpcImplFiles.doGenerate(input, fsa);
 		mQpcHeaders.doGenerate(input, fsa);
+
+		mAnalysisContext.doGenerate(input, fsa);
 	}
 
 
