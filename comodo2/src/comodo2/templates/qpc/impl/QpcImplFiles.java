@@ -19,6 +19,7 @@ import org.stringtemplate.v4.STGroupFile;
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
 import comodo2.templates.qpc.Utils;
+import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 
 
@@ -37,6 +38,8 @@ public class QpcImplFiles implements IGenerator {
 
 	@Inject
 	private Utils mUtils;
+
+	private FileDescriptionHeader mFileDescHeader;
 
 	// %1$s is impl_name      %2$s is funciton_name        "%%s" is escaping %s, which we want in the output
 	final private String GUARD_FUNCTION_SOURCE_TEMPLATE = "" +
@@ -106,7 +109,7 @@ public class QpcImplFiles implements IGenerator {
 			methodsCodeString += printActionFunction(smQualifiedName, actionName);
 		}
 
-		st.add("fileDescriptionHeader", mUtils.generateFileDescriptionHeader(className, smName, false));
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(className, smName, false));
 		st.add("className", className);
 		st.add("smQualifiedName", smQualifiedName);
 		st.add("guardNameList", guardNamesNoParenthesis);
@@ -135,7 +138,7 @@ public class QpcImplFiles implements IGenerator {
 			methodsDefinition += String.format("void %s_impl_%s(" + smQualifiedName + "_impl *mepl);\n", smQualifiedName, getFunctionName(actionName));
 		}
 		
-		st.add("fileDescriptionHeader", mUtils.generateFileDescriptionHeader(className, smName, false));
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(className, smName, false));
 		st.add("smQualifiedName", smQualifiedName);
 		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
 		st.add("guardNameList", guardNamesNoParenthesis);

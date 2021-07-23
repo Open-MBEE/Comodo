@@ -8,6 +8,7 @@ import comodo2.queries.QState;
 import comodo2.queries.QStateMachine;
 import comodo2.queries.QTransition;
 import comodo2.templates.qpc.Utils;
+import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 import comodo2.utils.StateComparator;
 import comodo2.utils.TransitionComparator;
@@ -47,6 +48,9 @@ public class StateMachineSource implements IGenerator {
 	
 	@Inject
 	private Utils mUtils;
+
+	@Inject
+	private FileDescriptionHeader mFileDescHeader;
 
 	@Inject
 	private FilesHelper mFilesHelper;
@@ -104,7 +108,7 @@ public class StateMachineSource implements IGenerator {
 	public CharSequence generate(final StateMachine sm) {
 		StringConcatenation str = new StringConcatenation();
 
-		str.append(mUtils.generateFileDescriptionHeader(this.smClassName, sm.getName(), true));
+		str.append(mFileDescHeader.generateFileDescriptionHeader(this.smClassName, sm.getName(), true));
 		str.append(printStateMachineIncludes(this.smQualifiedName));
 		
 		str.append(printNewlines(3));

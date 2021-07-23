@@ -19,6 +19,7 @@ import org.stringtemplate.v4.STGroupFile;
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
 import comodo2.templates.qpc.Utils;
+import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 
 
@@ -37,6 +38,8 @@ public class QpcHeaders implements IGenerator {
 
 	@Inject
 	private Utils mUtils;
+	
+	private FileDescriptionHeader mFileDescHeader;
 
 
     /**
@@ -79,7 +82,7 @@ public class QpcHeaders implements IGenerator {
 		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
 		ST st = g.getInstanceOf("SignalsHeader");
 
-		st.add("fileDescriptionHeader", mUtils.generateFileDescriptionHeader(className, null, false));
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(className, null, false));
 		st.add("className", className);
 		st.add("classNameUpperCase", className.toUpperCase());
 		st.add("signalsEnumDefinition", signalsEnumString);
@@ -101,7 +104,7 @@ public class QpcHeaders implements IGenerator {
 		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
 		ST st = g.getInstanceOf("StatesHeader");
 
-		st.add("fileDescriptionHeader", mUtils.generateFileDescriptionHeader(className, smName, false));
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(className, smName, false));
 		st.add("smQualifiedName", smQualifiedName);
 		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
 		st.add("statesEnumDefinition", statesEnumString);

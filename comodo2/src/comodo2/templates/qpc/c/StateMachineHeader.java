@@ -14,7 +14,7 @@ import org.stringtemplate.v4.STGroupFile;
 
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
-import comodo2.templates.qpc.Utils;
+import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 
 public class StateMachineHeader implements IGenerator {
@@ -29,7 +29,7 @@ public class StateMachineHeader implements IGenerator {
 	private FilesHelper mFilesHelper;
 	
 	@Inject
-	private Utils mUtils;
+	private FileDescriptionHeader mFileDescHeader;
 
 	/**
 	 * Generates the header file for the State Machine source file.
@@ -57,7 +57,7 @@ public class StateMachineHeader implements IGenerator {
 	public CharSequence generate(StateMachine sm, String smQualifiedName, String className) {
         STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineHeader.stg");
 		ST st = g.getInstanceOf("StateMachineHeader");
-		st.add("fileDescriptionHeader", mUtils.generateFileDescriptionHeader(className, sm.getName(), true));
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(className, sm.getName(), true));
 		st.add("className", className);
 		st.add("smQualifiedName", smQualifiedName);
 		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
