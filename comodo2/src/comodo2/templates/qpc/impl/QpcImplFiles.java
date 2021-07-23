@@ -39,6 +39,7 @@ public class QpcImplFiles implements IGenerator {
 	@Inject
 	private Utils mUtils;
 
+	@Inject
 	private FileDescriptionHeader mFileDescHeader;
 
 	// %1$s is impl_name      %2$s is funciton_name        "%%s" is escaping %s, which we want in the output

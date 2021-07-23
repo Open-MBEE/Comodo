@@ -39,6 +39,7 @@ public class QpcHeaders implements IGenerator {
 	@Inject
 	private Utils mUtils;
 	
+	@Inject
 	private FileDescriptionHeader mFileDescHeader;
 
 
