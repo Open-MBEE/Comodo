@@ -12,6 +12,7 @@ FileDescriptionHeader(className, smName, requirementsList) ::= <<
  *      %smName%
  * %endif%%if(requirementsList)%
 %requirementsList%%endif%
+ 
  */
 
 
@@ -22,7 +23,7 @@ RequirementsList(requirements) ::= <<
  *
  * ############### Requirements ###############
  *  Implements: 
- *%requirements :{ req |  - %req% %\n% *}%
+ *%requirements :{ req |  - https://cae-jama.jpl.nasa.gov/rest/latest/items/%req% %\n% *}%
  * ############################################
  *
 >>

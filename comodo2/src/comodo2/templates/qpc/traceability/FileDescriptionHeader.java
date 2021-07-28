@@ -24,7 +24,7 @@ public class FileDescriptionHeader {
 		STGroup g = new STGroupFile("resources/qpc_tpl/FileDescriptionHeader.stg");
 		ST st = g.getInstanceOf("RequirementsList");
 
-		String[] reqList = {"<requirement 162>", "<requirement 177>"};
+		String[] reqList = {"724776", "724777"};
 		st.add("requirements", reqList);
 
 		return st.render();
