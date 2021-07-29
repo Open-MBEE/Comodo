@@ -55,7 +55,7 @@ public class Utils {
 			str += "QEvt *newEv = Q_NEW(QEvt, " + formatSignalName(signalName, smClassName) + ");\n";
 			str += "QF_publish_(newEv);\n";
 		}
-		return str;
+		return str.trim();
 	}
 
 	/**
