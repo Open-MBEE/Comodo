@@ -63,7 +63,7 @@ public class StateMachineSource implements IGenerator {
 	private String smQualifiedName;
 	private String smClassName;
 
-	private boolean USER_LOGGING = true;
+	private boolean USER_LOGGING = false;
 	
 	private final String Q_HANDLED = "Q_HANDLED()";
 	private final String Q_TRAN = "Q_TRAN";
@@ -434,7 +434,7 @@ public class StateMachineSource implements IGenerator {
 		}
 		str += else_tmp_str;
 		// st_if_root.add("action", action + "\n" + str);
-		st_if_root.add("action", mUtils.formatActionName(action, this.smQualifiedName, this.smClassName) + "\n" + str);
+		st_if_root.add("action", (mUtils.formatActionName(action, this.smQualifiedName, this.smClassName) + "\n" + str).trim());
 
 
 		return st_if_root.render();
