@@ -117,6 +117,7 @@ public class FunctionCall implements Comparable<FunctionCall> {
             int c = 1;
             for (String arg : argList){
                 str += ", int32_t arg" + c;
+                c++;
             }
             return str;
     }
