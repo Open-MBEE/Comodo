@@ -78,3 +78,28 @@ void %smQualifiedName%_impl_set_qactive (%smQualifiedName%_impl *mepl, QActive *
 
 
 >>
+
+
+ActionFunction(smQualifiedName, functionName, argStr) ::= <<
+void %smQualifiedName%_impl_%functionName% (%smQualifiedName%_impl *mepl%argStr%) {
+	printf("\%s%\u002E%%functionName%() default action implementation invoked\n", mepl->machineName);
+}
+%\n%
+>>
+
+GuardFunction(smQualifiedName, guardName, argStr) ::= <<
+bool %smQualifiedName%_impl_%guardName% (%smQualifiedName%_impl *mepl%argStr%) {
+	printf("\%s%\u002E%%guardName%() == \%d", mepl->machineName, mepl->%guardName%);
+	return mepl->%guardName%;
+}
+%\n%
+>>
+
+ActionFunctionDeclaration(smQualifiedName, functionName, argStr) ::= <<
+void %smQualifiedName%_impl_%functionName% (%smQualifiedName%_impl *mepl%argStr%); %\n%
+>>
+
+GuardFunctionDeclaration(smQualifiedName, guardName, argStr) ::= <<
+bool %smQualifiedName%_impl_%guardName% (%smQualifiedName%_impl *mepl%argStr%); %\n%
+>>
+

@@ -8,6 +8,8 @@ import java.util.regex.Matcher;
 
 import com.google.common.base.Objects;
 
+import comodo2.templates.qpc.model.FunctionCall;
+
 
 public class Utils {
     
@@ -122,6 +124,37 @@ public class Utils {
 		} else {
 			return functionStr.substring(0, firstParenthesis + 1) + "me->impl, " + functionStr.substring(firstParenthesis + 1, functionStr.length());
 		}
+	}
+
+
+	/**
+	 * Takes in a TreeSet of functionStrings and return a TreeSet of all the functions
+	 * that the actions use, in the form of FunctionCall objects. 
+	 * This is needed because one action can call multiple functions.
+	 */
+	public TreeSet<FunctionCall> getAllFunctionCalls(TreeSet<String> functionStrings) {
+		TreeSet<FunctionCall> functionNames = new TreeSet<FunctionCall>();
+		for (String funcStr : functionStrings){
+			functionNames.addAll(getAllFunctionCallsFromFunctionString(funcStr));
+		}
+		return functionNames;
+	}
+
+	/**
+	 * Returns list of all functions used in an function string, as FunctionCall objects.
+	 */
+	public List<FunctionCall> getAllFunctionCallsFromFunctionString(String funcStr) {
+		String tmp_str = funcStr;
+		List<FunctionCall> functionCallList = new ArrayList<FunctionCall>();
+
+		Pattern r = Pattern.compile(".*\\(.*\\)");
+		Matcher m = r.matcher(tmp_str);
+
+		while(m.find()){
+			functionCallList.add(new FunctionCall(m.group().trim(), false));
+		}
+
+		return functionCallList;
 	}
 
 }
