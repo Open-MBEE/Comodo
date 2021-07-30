@@ -14,6 +14,7 @@ import org.stringtemplate.v4.STGroupFile;
 
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
+import comodo2.templates.qpc.model.CurrentGeneration;
 import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 
@@ -31,6 +32,8 @@ public class StateMachineHeader implements IGenerator {
 	@Inject
 	private FileDescriptionHeader mFileDescHeader;
 
+	public CurrentGeneration current;
+
 	/**
 	 * Generates the header file for the State Machine source file.
 	 */
@@ -44,9 +47,11 @@ public class StateMachineHeader implements IGenerator {
 				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
 				if ((mQClass.isToBeGenerated(c) && mQClass.hasStateMachines(c))) {
 					for (final StateMachine sm : mQClass.getStateMachines(c)) {
-						String smQualifiedName = c.getName() + "_" + sm.getName();
-						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(sm.getName())));
-						fsa.generateFile(mFilesHelper.toHFilePath(smQualifiedName), this.generate(sm, smQualifiedName, c.getName()));						
+						// Sets current generation context
+						current = new CurrentGeneration(c.getName(), sm.getName());
+
+						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(current.getSmQualifiedName())));
+						fsa.generateFile(mFilesHelper.toHFilePath(current.getSmQualifiedName()), this.generate(sm, current));						
 					}
 				}				
 			}
@@ -54,13 +59,13 @@ public class StateMachineHeader implements IGenerator {
 	}
 
 
-	public CharSequence generate(StateMachine sm, String smQualifiedName, String className) {
+	public CharSequence generate(StateMachine sm, CurrentGeneration current) {
         STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineHeader.stg");
 		ST st = g.getInstanceOf("StateMachineHeader");
-		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(className, sm.getName(), true));
-		st.add("className", className);
-		st.add("smQualifiedName", smQualifiedName);
-		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(current.getClassName(), sm.getName(), true));
+		st.add("className", current.getClassName());
+		st.add("smQualifiedName", current.getSmQualifiedName());
+		st.add("smQualifiedNameUpperCase", current.getSmQualifiedName().toUpperCase());
 
 		// StringTemplate is able to run a forEach on lists, and get the "name" attribute with getName()
 		// which is defined for a State element. See https://github.com/antlr/stringtemplate4/blob/master/doc/templates.md

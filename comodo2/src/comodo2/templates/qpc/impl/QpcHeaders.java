@@ -19,6 +19,7 @@ import org.stringtemplate.v4.STGroupFile;
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
 import comodo2.templates.qpc.Utils;
+import comodo2.templates.qpc.model.CurrentGeneration;
 import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 
@@ -26,6 +27,7 @@ import comodo2.utils.FilesHelper;
 
 public class QpcHeaders implements IGenerator {
 
+	public CurrentGeneration current;
 
 	@Inject
 	private FilesHelper mFilesHelper;
@@ -52,17 +54,18 @@ public class QpcHeaders implements IGenerator {
 
 
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
-		for (final org.eclipse.uml2.uml.Class e : _filter) {
-			if ((mQClass.isToBeGenerated(e) && mQClass.hasStateMachines(e))) {
+		for (final org.eclipse.uml2.uml.Class c : _filter) {
+			if ((mQClass.isToBeGenerated(c) && mQClass.hasStateMachines(c))) {
 				TreeSet<String> signalNames = new TreeSet<String>();
-				for (final StateMachine sm : mQClass.getStateMachines(e)) {
+				for (final StateMachine sm : mQClass.getStateMachines(c)) {
 
-					String smQualifiedName = e.getName() + "_" + sm.getName();
+					current = new CurrentGeneration(c.getName(), sm.getName());
+
 					Iterables.<String>addAll(signalNames, mQStateMachine.getAllSignalNames(sm));
 					
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_states.h"), this.generateStatesHeader(smQualifiedName, sm.getName(), e.getName(), mQStateMachine.getAllStatesQualifiedName(sm)));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(current.getSmQualifiedName() + "_states.h"), this.generateStatesHeader(current, mQStateMachine.getAllStatesQualifiedName(sm)));						
 				}
-				fsa.generateFile(mFilesHelper.toQmImplFilePath(e.getName() + "_statechart_signals.h"), this.generateSignalsHeader(e.getName(), signalNames));						
+				fsa.generateFile(mFilesHelper.toQmImplFilePath(current.getClassName() + "_statechart_signals.h"), this.generateSignalsHeader(current.getClassName(), signalNames));						
 
 			}
 		}
@@ -94,20 +97,20 @@ public class QpcHeaders implements IGenerator {
 	/**
 	 * Generates the header file for the enumeration of states
 	 */
-	public CharSequence generateStatesHeader(final String smQualifiedName, final String smName, final String className, final Iterable<String> statesQualifiedNames){
+	public CharSequence generateStatesHeader(final CurrentGeneration current, final Iterable<String> statesQualifiedNames){
 		String statesEnumString = "";
 
-		statesEnumString += smQualifiedName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
+		statesEnumString += current.getSmQualifiedName().toUpperCase() + "__TOP__, /* Top = 0 */\n";
 		for (String stateQualifiedName : statesQualifiedNames) {
-			statesEnumString += mUtils.formatStateName(stateQualifiedName, smQualifiedName) + ",\n";
+			statesEnumString += mUtils.formatStateName(stateQualifiedName, current.getSmQualifiedName()) + ",\n";
 		}
 
 		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
 		ST st = g.getInstanceOf("StatesHeader");
 
-		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(className, smName, false));
-		st.add("smQualifiedName", smQualifiedName);
-		st.add("smQualifiedNameUpperCase", smQualifiedName.toUpperCase());
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(current.getClassName(), current.getSmName(), false));
+		st.add("smQualifiedName", current.getSmQualifiedName());
+		st.add("smQualifiedNameUpperCase", current.getSmQualifiedName().toUpperCase());
 		st.add("statesEnumDefinition", statesEnumString);
 		
 		return st.render();
