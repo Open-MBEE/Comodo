@@ -51,9 +51,11 @@ public class Utils {
 		for (FunctionCall function : getAllFunctionCallsFromFunctionString(actionName)) {
 			str += checkTrailingSemicolon(smQualifiedName + "_impl_" + insertImplArg(function.toString().trim())) + "\n";
 		}
+		Integer counter = 0;
 		for (String signalName : getAllSentSignalsFromAction(actionName)) {
-			str += "QEvt *newEv = Q_NEW(QEvt, " + formatSignalName(signalName, smClassName) + ");\n";
-			str += "QF_publish_(newEv);\n";
+			str += "QEvt *newEv" + counter + " = Q_NEW(QEvt, " + formatSignalName(signalName, smClassName) + ");\n";
+			str += "QF_publish_(newEv" + counter + ");\n";
+			counter++;
 		}
 		return str.trim();
 	}
