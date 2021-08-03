@@ -125,7 +125,7 @@ public class QpcHeaders implements IGenerator {
 	}
 
 	/**
-	 * ∂
+	 * Queries for all final states and return a list of all completiom event names for QPC.
 	 */
 	public TreeSet<String> getAllCompletionEventSignalNames(StateMachine sm) {
 		TreeSet<String> completionEventSignalNames = new TreeSet<String>();
