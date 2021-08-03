@@ -23,6 +23,9 @@ typedef struct %smQualifiedName% {
     char objName[128];
     %smQualifiedName%_impl *impl;
     enum %smQualifiedName%_state myState;
+
+    /* Completion event for exiting from composite/orthogonal/submachine state */
+    QCompletionEvt %smQualifiedNameUpperCase%_COMPLETION_EVENT_;
 } %smQualifiedName%;
 
 

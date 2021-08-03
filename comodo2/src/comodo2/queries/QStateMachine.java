@@ -276,6 +276,20 @@ public class QStateMachine {
 		return sortedSignalNames;
 	}
 
+	/**
+	 * Used in QpcHeaders only.
+	 * @return All final states within a given state machine.
+	 */
+	public Iterable<State> getAllFinalStates(final StateMachine sm) {
+		BasicEList<State> finalStates = new BasicEList<State>();
+		for (final State s : Iterables.<State>filter(sm.allOwnedElements(), State.class)){
+			if (mQState.isFinal(s)){
+				finalStates.add(s);
+			}
+		}
+		return finalStates;
+	}
+
 
 	/**
 	 * This function returns all states qualified name.

@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.uml2.uml.FinalState;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
@@ -58,19 +59,19 @@ public class StateMachineSource implements IGenerator {
 	
 
 	/* #########  QPC-specific  ######## */
-	private final TreeSet<String>   timeEventsNameset = new TreeSet<String>();
-	private final TreeSet<String> signalEventsNameset = new TreeSet<String>();
 
-	public CurrentGeneration current;
+	// current serves as a container for variables corresponding to the current state machine in generation.
+	private CurrentGeneration current;
 
-	private boolean USER_LOGGING = false;
+	private boolean USER_LOGGING = true;
 	
-	private final String Q_HANDLED = "Q_HANDLED()";
-	private final String Q_TRAN = "Q_TRAN";
-	private final String Q_INIT_SIG = "Q_INIT_SIG";
-	private final String Q_ENTRY_SIG = "Q_ENTRY_SIG";
-	private final String Q_EXIT_SIG = "Q_EXIT_SIG";
-	private final String Q_TOP_STATE = "QHsm_top";
+	private final static String Q_HANDLED = "Q_HANDLED()";
+	private final static String Q_TRAN = "Q_TRAN";
+	private final static String Q_INIT_SIG = "Q_INIT_SIG";
+	private final static String Q_ENTRY_SIG = "Q_ENTRY_SIG";
+	private final static String Q_EXIT_SIG = "Q_EXIT_SIG";
+	private final static String Q_TOP_STATE = "QHsm_top";
+
 	/* ################################ */
 
 
@@ -97,7 +98,7 @@ public class StateMachineSource implements IGenerator {
 						// Sets current generation context
 						current = new CurrentGeneration(c.getName(), sm.getName());
 
-						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(sm.getName())));
+						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(current.getSmQualifiedName())));
 						fsa.generateFile(mFilesHelper.toCFilePath(current.getSmQualifiedName()), this.generate(sm));						
 					}
 				}				
@@ -159,14 +160,28 @@ public class StateMachineSource implements IGenerator {
 
 	/**
 	 * Start transformation of all states.
+	 * IMPORTANT: Before actually traversing all the states, we check for
+	 * final and unnamed states. If they are unnamed, we actually go ahead and 
+	 * modify the State object, by giving it a name.
 	 */
 	public CharSequence exploreAllStates(final StateMachine sm) {
 		StringConcatenation str = new StringConcatenation();
 
 		TreeSet<State> sortedStates = new TreeSet<State>(new StateComparator());
-		for (final State s : Iterables.<State>filter(sm.allOwnedElements(), State.class)) {
+		for (State s : Iterables.<State>filter(sm.allOwnedElements(), State.class)) {
+
+			// loop through all states and rename the unnamed states with an unique name.
+			if (mQState.isFinal(s) && s.getName().equals("")){
+				s.setName("finalState" + current.getFinalStateCounter());
+				current.incrementFinalStateCounter();
+			} else if (s.getName().equals("")){
+				mLogger.warn("An unnamed state was found. Renamed unnamed" + current.getUnNamedStateCounter());
+				s.setName("unnamedState" + current.getUnNamedStateCounter());
+				current.incrementUnNamedStateCounter();
+			}
 			sortedStates.add(s);
 		}
+
 		for (final State s : sortedStates) {
 			str.append(exploreState(s));		
 		}
@@ -181,23 +196,17 @@ public class StateMachineSource implements IGenerator {
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st = g.getInstanceOf("StateMachine_State");
 
-		if (mQState.isFinal(s)) {
-			// Final nodes do not exist in QM. Is there a need to handle them?
-			mLogger.warn("/!\\ Final state was found");
+		st.add("stateName", s.getName());
+		st.add("smQualifiedName", current.getSmQualifiedName());
+		st.add("logging", USER_LOGGING);
+		st.add("signalSwitchCase", printSwitchCaseStatements(s));
+
+		if (mQState.isTopState(s)){
+			st.add("superState", Q_TOP_STATE);
 		} else {
-
-			st.add("smQualifiedName", current.getSmQualifiedName());
-			st.add("stateName", s.getName());
-			st.add("logging", USER_LOGGING);
-
-			st.add("signalSwitchCase", printSwitchCaseStatements(s));
-
-			if (mQState.isTopState(s)){
-				st.add("superState", Q_TOP_STATE);
-			} else {
-				st.add("superState", current.getSmQualifiedName() + "_" + mQState.getParentState(s).getName());
-			}
+			st.add("superState", current.getSmQualifiedName() + "_" + mQState.getParentState(s).getName());
 		}
+
 		return st.render();
 	}
 
@@ -210,14 +219,36 @@ public class StateMachineSource implements IGenerator {
 		
 		if (s.isComposite()) {
 			str.append(printInitialSubstateCase(s));
+		} else if (mQState.isFinal(s)) {
+			str.append(printFinalStateCase(s));
 		}
 
 		str.append(printActions(s));
 
 		str.append(printTransitions(s));
 		
-
 		return str;
+	}
+
+	/**
+	 * Returns the special case corresponding to a final state.
+	 */
+	public String printFinalStateCase(final State s){
+		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
+		ST st_final = g.getInstanceOf("StateMachine_SwitchStatement");
+		String completionSig;
+
+		if (mQState.isTopState(s)){ // state machine wide final node
+			completionSig = "_SIG_" + current.getSmQualifiedName().toUpperCase() + "_COMPLETE_";
+		} else { // if final state is within a composite state
+			completionSig = "_SIG_" + mUtils.formatStateName(mQState.getFullyQualifiedName(mQState.getParentState(s)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
+		}
+
+		current.addSignalEventsNameset(completionSig);
+
+		st_final.add("signalName", completionSig);
+		st_final.add("returnStatement", Q_HANDLED);
+		return st_final.render();
 	}
 
 	/**
@@ -279,7 +310,8 @@ public class StateMachineSource implements IGenerator {
 	}
 
 	/**
-	 * 
+	 * Returns the code string of all the outgoing transitions of a state,
+	 * as switch-case statements.
 	 */
 	public CharSequence printTransitions(final State s) {
 		String str = "";
@@ -295,91 +327,62 @@ public class StateMachineSource implements IGenerator {
 				" has no trigger event and no guard, skipped since could introduce infinite loop!");
 
 			} else {
-				STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
-				ST st_tran = g.getInstanceOf("StateMachine_SwitchStatement");
-				st_tran.add("logging", USER_LOGGING);
-				
+				str += printTransition(t);
 				registerEvent(t);
-				
-				String eventName  = mQTransition.getFirstEventName(t); 
-				String guard  = mQTransition.getResolvedGuardName(t);
-				String action = mQTransition.getFirstActionName(t);
-				// target is handled in getReturnStatement
-				
-				String signalName = mUtils.formatSignalName(eventName, current.getClassName());
-
-				st_tran.add("signalName", signalName);
-
-				if (mQTransition.isChoiceTransition(t)) {
-					
-					st_tran.add("action", printChoices(t));
-					st_tran.add("returnStatement", Q_HANDLED);
-
-				} else if (!Objects.equal(guard, "")) {
-
-					ST st_if = g.getInstanceOf("StateMachine_IfStatement");
-					st_if.add("guard", mUtils.formatGuardName(guard, current.getSmQualifiedName()));
-					st_if.add("action", mUtils.formatActionName(action, current.getSmQualifiedName(), current.getClassName()));
-					st_if.add("returnStatement", getReturnStatement(t));
-
-					st_tran.add("action", st_if.render());
-					st_tran.add("returnStatement", Q_HANDLED);
-
-				} else if (!Objects.equal(eventName, "")) {
-
-					st_tran.add("action", mUtils.formatActionName(action, current.getSmQualifiedName(), current.getClassName()));
-					st_tran.add("returnStatement", getReturnStatement(t));
-
-				} else {
-					System.out.println("DEBUGGING: Something is missing...");
-				}
-
-				str += st_tran.render();
 			}
 		}
 		return str;
 	}
-
-	/**
-	 * Registers any Event within a transition so that it can later be added to the class declaration (QM needs it)
-	 */
-	public void registerEvent(Transition t){
-		String eventName  = mQTransition.getFirstEventName(t);
-
-		if (!Objects.equal(eventName, "")) {
-			// Removing non alphanumeric characters since this will be the name of a C variable
-			
-			if (mQTransition.hasSignalEvent(t)) {
-				signalEventsNameset.add(mUtils.formatSignalName(eventName, current.getClassName()));
-			} else if (mQTransition.hasTimeEvent(t)) {
-				timeEventsNameset.add(mUtils.formatSignalName(eventName, current.getClassName()));
-			}
-		}
-	}
-
-
-	/**
-	 * Prints the initial transition of a State machine
-	 */
-	public CharSequence printInitialState(final String targetName, String smName) {
-
-		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
-		ST st = g.getInstanceOf("StateMachine_InitialState");
-
-		st.add("smQualifiedName", current.getSmQualifiedName());
-		st.add("returnStatement", transitionToStateMacro(targetName));
-
-        return st.render();
-	}
 	
+	/**
+	 * @return Code string for the switch-case of transition t.
+	 */
+	public String printTransition(final Transition t){
+		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
+		ST st_tran = g.getInstanceOf("StateMachine_SwitchStatement");
+		st_tran.add("logging", USER_LOGGING);
+		
+		String eventName  = mQTransition.getFirstEventName(t); 
+		String guard  = mQTransition.getResolvedGuardName(t);
+		String action = mQTransition.getFirstActionName(t);
+		// target is handled in getReturnStatement
+		
+		String signalName = mUtils.formatSignalName(eventName, current.getClassName());
+		
+		st_tran.add("signalName", signalName);
 
-
+		if (mQTransition.isChoiceTransition(t)) {
+			
+			st_tran.add("action", printChoices(t));
+			st_tran.add("returnStatement", Q_HANDLED);
+			
+		} else if (!Objects.equal(guard, "")) {
+			
+			ST st_if = g.getInstanceOf("StateMachine_IfStatement");
+			st_if.add("guard", mUtils.formatGuardName(guard, current.getSmQualifiedName()));
+			st_if.add("action", mUtils.formatActionName(action, current.getSmQualifiedName(), current.getClassName()));
+			st_if.add("returnStatement", getReturnStatement(t));
+			appendFinalStateAction(t, st_if); // has an effect only if transition points to a final state
+			
+			st_tran.add("action", st_if.render());
+			st_tran.add("returnStatement", Q_HANDLED);
+			
+		} else if (!Objects.equal(eventName, "")) {
+			st_tran.add("action", mUtils.formatActionName(action, current.getSmQualifiedName(), current.getClassName()));
+			st_tran.add("returnStatement", getReturnStatement(t));
+			appendFinalStateAction(t, st_tran); // has an effect only if transition points to a final state
+		} else {
+			mLogger.warn("SKIPPED: Empty transition (no guard, no trigger) was found going out of state: " + t.getSource().getName());
+		} // end of if-else
+		
+		return st_tran.render();
+	}
 
 
 	/**
 	 * Returns the code string of transitions that points to a choice node.
 	 * This recursively goes down all the following choice nodes until it reaches a state.
-	 * @param Transition t that points to a choice node.
+	 * @param t Transition that points to a choice node.
 	 */
 	public CharSequence printChoices(final Transition t) {
 		if (!(t.getTarget() instanceof Pseudostate)) {
@@ -423,6 +426,7 @@ public class StateMachineSource implements IGenerator {
 				st_if.add("guard", mUtils.formatGuardName(out_guard, current.getSmQualifiedName()));
 				st_if.add("action", mUtils.formatActionName(out_action, current.getSmQualifiedName(), current.getClassName()));
 				st_if.add("returnStatement", transitionToStateMacro(out_targetName));
+				appendFinalStateAction(outgoing, st_if); // has an effect only if transition points to a final state
 
 				// If the guard is "else", we store it and add it at the very end
 				if (Objects.equal(out_guard, "else")){
@@ -439,6 +443,60 @@ public class StateMachineSource implements IGenerator {
 
 
 		return st_if_root.render();
+	}
+
+	/**
+	 * IF Transition t points to a FinalState, appends to the "action" field of st_original 
+	 * the code string responsible for dealing with final states. ELSE, does nothing.
+	 */
+	public void appendFinalStateAction(final Transition t, ST st_original){
+		if (t.getTarget() instanceof FinalState){
+			STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
+			ST st_final_action = g.getInstanceOf("FinalTransitionAction");
+			st_final_action.add("smQualifiedNameUpperCase", current.getSmQualifiedName().toUpperCase());
+
+			String completionSig;
+			State finalState = (State) t.getTarget();
+			if (mQState.isTopState(finalState)){
+				completionSig = "_SIG_" + current.getSmQualifiedName().toUpperCase() + "_COMPLETE_";
+			} else { // need to retrieve the parent state name for completion event.
+				completionSig = "_SIG_" + mUtils.formatStateName(mQState.getFullyQualifiedName(mQState.getParentState(finalState)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
+			}
+			st_final_action.add("completionSig", completionSig);
+			st_original.add("action", st_final_action.render());
+		}
+	}
+
+	/**
+	 * Registers any Event within a transition so that it can later be added to the class declaration.
+	 */
+	public void registerEvent(Transition t){
+		String eventName  = mQTransition.getFirstEventName(t);
+
+		if (!Objects.equal(eventName, "")) {
+			// Removing non alphanumeric characters since this will be the name of a C variable
+			
+			if (mQTransition.hasSignalEvent(t)) {
+				current.addSignalEventsNameset(mUtils.formatSignalName(eventName, current.getClassName()));
+			} else if (mQTransition.hasTimeEvent(t)) {
+				mLogger.warn("SKIPPED: TimeEvent detected - not supported (outbound from state " + t.getSource().getName() + ")");
+			}
+		}
+	}
+
+
+	/**
+	 * Prints the initial transition of a State machine
+	 */
+	public CharSequence printInitialState(final String targetName, String smName) {
+
+		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
+		ST st = g.getInstanceOf("StateMachine_InitialState");
+
+		st.add("smQualifiedName", current.getSmQualifiedName());
+		st.add("returnStatement", transitionToStateMacro(targetName));
+
+		return st.render();
 	}
 
 	/**
@@ -472,7 +530,7 @@ public class StateMachineSource implements IGenerator {
 		String str = "// Subscribe to all the signals to which this state machine needs to respond.\n";
 		str += "	if (me->active == (QActive *)me) {\n";
 
-		for (String signalName : this.signalEventsNameset){
+		for (String signalName : current.getSignalEventsNameset()){
 			str += "		QActive_subscribe(me->active, " + signalName + ");\n";
 		}
 		str += "	}";

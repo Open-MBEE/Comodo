@@ -74,7 +74,7 @@ public class FunctionCall implements Comparable<FunctionCall> {
         if (this.getName() == null && otherObj.getName() != null) {
             return -1;  // a < b
         }
-        // TODO: extend ArgumentedFunctionCall or something, to use in StateMachineSource.
+        // This would be if we wanted to have unique objects in a TreeSet for each arguments.
         // if (this.getName().equals(otherObj.getName())) {
         //     // if name flag is the same, check guard
         //     if (this.getArgs() == null && otherObj.getArgs() == null) {

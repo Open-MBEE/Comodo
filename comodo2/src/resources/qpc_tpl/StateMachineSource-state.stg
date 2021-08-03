@@ -74,3 +74,11 @@ if (%guard%){
 %endif%
 %endif%
 >>
+
+
+FinalTransitionAction(smQualifiedNameUpperCase, completionSig) ::= <<
+
+me->%smQualifiedNameUpperCase%_COMPLETION_EVENT_.completion_evt.super.sig = %completionSig%;
+me->%smQualifiedNameUpperCase%_COMPLETION_EVENT_.completion_evt.substate = null;  // Comodo functionality not implemented
+QF_publish_(&(me->%smQualifiedNameUpperCase%_COMPLETION_EVENT_.base_evt));
+>>

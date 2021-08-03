@@ -39,6 +39,8 @@ public class Qpc implements IGenerator {
 			mQm.doGenerate(input, fsa);
 		}
 		else if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_C)) {
+			// mStateMachineSource.doGenerate() modifies final and unnamed states to give them a name.
+			// This function should be the first one called for this target platform.
 			mStateMachineSource.doGenerate(input, fsa);
 			mStateMachineHeader.doGenerate(input, fsa);
 		}
