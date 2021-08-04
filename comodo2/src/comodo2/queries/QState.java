@@ -93,6 +93,20 @@ public class QState {
 		return res;		
 	}
 
+	public Boolean hasInitialSubstate(final State s) {
+		Iterable<Pseudostate> _filter = Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class);		
+		for (final Pseudostate ps : _filter) {
+			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
+					Objects.equal(ps.getContainer().getOwner(), s)) && 
+					(ps.getOutgoings().size() == 1)) && 
+					(Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget() != null))) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 	public String getInitialSubstateName(final State s) {
 		Iterable<Pseudostate> _filter = Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class);		
 		for (final Pseudostate ps : _filter) {

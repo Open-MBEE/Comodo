@@ -218,7 +218,9 @@ public class StateMachineSource implements IGenerator {
 		StringConcatenation str = new StringConcatenation();
 		
 		if (s.isComposite()) {
-			str.append(printInitialSubstateCase(s));
+			if (mQState.hasInitialSubstate(s)){
+				str.append(printInitialSubstateCase(s));
+			}
 		} else if (mQState.isFinal(s)) {
 			str.append(printFinalStateCase(s));
 		}
