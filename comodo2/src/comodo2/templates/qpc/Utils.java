@@ -20,7 +20,7 @@ public class Utils {
 		if (Objects.equal(guardName, "") || guardName == null){
 			return null;
 		}
-		return smQualifiedName + "_impl_" + removeTrailingSemicolon(insertImplArg(guardName.trim()));
+		return smQualifiedName + "_impl_" + insertImplArg(removeTrailingSemicolon(guardName.trim()));
 	}
 
     /**
