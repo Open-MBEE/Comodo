@@ -135,12 +135,13 @@ public class StateMachineSource implements IGenerator {
 	}
 
 	/**
-	 * Before actually traversing all the states, we check for
-	 * final and unnamed states. If they are unnamed, we actually go ahead and 
-	 * modify the State object, by giving it a name.
+	 * Before actually traversing the state machine, we do some minimal transformation
+	 * on unnamed elements. 
+	 * - unnamed states are renamed with a unique name
+	 * - unnamed history pseudostates are renamed with a unique name.
 	 */
 	public void preprocessStateMachine(final StateMachine sm, CurrentGeneration current) {
-
+		// Loop through all states and rename unnamed states (special name for final states).
 		for (State s : Iterables.<State>filter(sm.allOwnedElements(), State.class)) {
 			// loop through all states and rename the unnamed states with an unique name.
 			if (mQState.isFinal(s) && s.getName().equals("")){
@@ -151,7 +152,7 @@ public class StateMachineSource implements IGenerator {
 				s.setName("unnamedState" + unamedCounter);
 			}
 		}
-
+		// Loop through all pseudostates and rename unnamed history pseudostates.
 		for (Pseudostate ps : Iterables.<Pseudostate>filter(sm.allOwnedElements(), Pseudostate.class)) {
 			if (mQState.isHistoryState(ps)){
 				if (ps.getName().equals("")){
@@ -305,18 +306,19 @@ public class StateMachineSource implements IGenerator {
 		st_exit.add("logging", USER_LOGGING);
 		st_exit.add("returnStatement", Q_HANDLED);
 
+		// Handling of History pseudostates
 		BasicEList<Pseudostate> historiyList = mQState.getAllParentHistoryNodes(s);
 		if (!historiyList.isEmpty()){
 			st_entry.add("historyList", historiyList);
 			st_entry.add("stateQualifiedName", mUtils.formatStateName(s.getName(), current.getSmQualifiedName()));
-		}
+		} // Handling of Entry actions
 		if (mQState.hasOnEntryActions(s) || mQState.hasTimerTransition(s)) {
 			st_entry.add("action", mUtils.formatActionName(s.getEntry().getName(), current.getSmQualifiedName(), current.getClassName()));
-		}		
+		} // Do activities are not supported in QF
 		if (mQState.hasDoActivities(s)) {
 			mLogger.warn("SKIPPED -- Do activities are not supported in QPC" +
 			 				"(found in state " + s.getName() + ")");
-		}
+		} // Handling of Exit actions
 		if (mQState.hasOnExitActions(s) || mQState.hasTimerTransition(s)) {
 			st_exit.add("action", mUtils.formatActionName(s.getExit().getName(), current.getSmQualifiedName(), current.getClassName()));
 		}
@@ -360,35 +362,38 @@ public class StateMachineSource implements IGenerator {
 		ST st_tran = g.getInstanceOf("StateMachine_SwitchStatement");
 		st_tran.add("logging", USER_LOGGING);
 		
-		String eventName  = mQTransition.getFirstEventName(t); 
 		String guard  = mQTransition.getResolvedGuardName(t);
 		String action = mQTransition.getFirstActionName(t);
-		// target is handled in getReturnStatement
-		
+		String eventName  = mQTransition.getFirstEventName(t); 
 		String signalName = mUtils.formatSignalName(eventName, current.getClassName());
-		
 		st_tran.add("signalName", signalName);
 
+		// if-else
 		if (mQTransition.isChoiceTransition(t)) {
-			
+			// Case where the transition points to a choice node: recursively goes down all paths
+
 			st_tran.add("action", printChoices(t));
 			st_tran.add("returnStatement", Q_HANDLED);
-			
+		
 		} else if (!Objects.equal(guard, "")) {
-			
+			// Case where there is a guard on the transition
+
 			ST st_if = g.getInstanceOf("StateMachine_IfStatement");
 			st_if.add("guard", mUtils.formatGuardName(guard, current.getSmQualifiedName()));
 			st_if.add("action", mUtils.formatActionName(action, current.getSmQualifiedName(), current.getClassName()));
 			st_if.add("returnStatement", getReturnStatement(t));
-			appendFinalStateAction(t, st_if); // has an effect only if transition points to a final state
+			appendFinalStateAction(t, st_if); // handles the cases where the transition points to a final state
 			
 			st_tran.add("action", st_if.render());
 			st_tran.add("returnStatement", Q_HANDLED);
 			
 		} else if (!Objects.equal(eventName, "")) {
+			// Case where there is no guard, only a triggerring event.
+
 			st_tran.add("action", mUtils.formatActionName(action, current.getSmQualifiedName(), current.getClassName()));
 			st_tran.add("returnStatement", getReturnStatement(t));
-			appendFinalStateAction(t, st_tran); // has an effect only if transition points to a final state
+			appendFinalStateAction(t, st_tran); // handles the cases where the transition points to a final state
+		
 		} else {
 			mLogger.warn("SKIPPED: Empty transition (no guard, no trigger) was found going out of state: " + t.getSource().getName());
 		} // end of if-else
@@ -418,7 +423,7 @@ public class StateMachineSource implements IGenerator {
 		Pseudostate choicePseudoState = (Pseudostate) t.getTarget();
 
 		String guard  = mQTransition.getGuardNameOrNull(t);
-		String action = mQTransition.getFirstActionName(t);
+		String root_action = mQTransition.getFirstActionName(t);
 
 		// isElseStatement is a boolean to indicate whether to use an "if(guard)" or an "else" statement
 		st_if_root.add("isElseStatement", Objects.equal(guard, "else"));
@@ -444,7 +449,7 @@ public class StateMachineSource implements IGenerator {
 				st_if.add("guard", mUtils.formatGuardName(out_guard, current.getSmQualifiedName()));
 				st_if.add("action", mUtils.formatActionName(out_action, current.getSmQualifiedName(), current.getClassName()));
 				st_if.add("returnStatement", getReturnStatement(outgoing));
-				appendFinalStateAction(outgoing, st_if); // has an effect only if transition points to a final state
+				appendFinalStateAction(outgoing, st_if); // handles the cases where the transition points to a final state
 
 				// If the guard is "else", we store it and add it at the very end
 				if (Objects.equal(out_guard, "else")){
@@ -455,10 +460,10 @@ public class StateMachineSource implements IGenerator {
 
 			}
 		}
+		// add the else case at the end
 		str += else_tmp_str;
-		// st_if_root.add("action", action + "\n" + str);
-		st_if_root.add("action", (mUtils.formatActionName(action, current.getSmQualifiedName(), current.getClassName()) + "\n" + str).trim());
-
+		// add root_action at the beginning of the choice if-else string.
+		st_if_root.add("action", (mUtils.formatActionName(root_action, current.getSmQualifiedName(), current.getClassName()) + "\n" + str).trim());
 
 		return st_if_root.render();
 	}
