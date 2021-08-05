@@ -148,7 +148,7 @@ public class StateMachineSource implements IGenerator {
 				s.setName("finalState" + current.getFinalStateCounter());
 			} else if (s.getName().equals("")){
 				Integer unamedCounter = current.getUnNamedStateCounter();
-				mLogger.warn("An unnamed state was found in State Machine: \"" + sm.getName() + "\". Renamed unnamed" + unamedCounter);
+				mLogger.info("An unnamed state was found in State Machine: \"" + sm.getName() + "\". Renamed unnamed" + unamedCounter);
 				s.setName("unnamedState" + unamedCounter);
 			}
 		}
@@ -529,13 +529,28 @@ public class StateMachineSource implements IGenerator {
 	public String getReturnStatement(Transition t) {
 		String targetName = mQTransition.getTargetName(t);
 		
+		// Internal transition
 		if (mQTransition.isInternal(t)) {
 			return Q_HANDLED + "/*internal transition*/";
-		} else if (mQTransition.pointsToHistoryPseudostate(t)){
+		} 
+		// History pseudostate
+		else if (mQTransition.pointsToHistoryPseudostate(t)){
 			return transitionToHistoryMacro(targetName);
-		} else if (t.getTarget() instanceof State){
+		} 
+		// Entry/Exit pseudostate
+		else if (mQTransition.pointsToEntryOrExitPseudostate(t)) {
+			if (mQTransition.getEntryOrExitTargetName(t).equals("")){
+				mLogger.error("Entry/Exit pseudostate points to unnamed pseudostate (Outbound from state \"" + t.getSource().getName() + "\"). This is likely caused by an unsupported pattern (e.g. points to choice node)." +
+								" Generated code will have a malformed return statement.");
+			}
+			return transitionToStateMacro(t.getTarget().getOutgoings().get(0).getTarget().getName());
+		}
+		// Regular state
+		else if (t.getTarget() instanceof State){
 			return transitionToStateMacro(targetName);
-		} else {
+		} 
+		// Unsupported pattern?
+		else {
 			throw new RuntimeException( "Transition outbound from state \"" + t.getSource().getName() + 
 						"\" has an unsupporeted target type (target element: " + t.getTarget().toString() + ").");
 		}

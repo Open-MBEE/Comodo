@@ -303,7 +303,14 @@ public class QState {
 
 		BasicEList<Pseudostate> res = new BasicEList<Pseudostate>();		
 		for (Pseudostate ps : Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class)) {
-			if (ps.getContainer().getState().equals(s)){
+			if (ps.getKind() == PseudostateKind.ENTRY_POINT_LITERAL || 
+				ps.getKind() == PseudostateKind.EXIT_POINT_LITERAL){
+				// Entry and exit points are directly owned by the composite state
+					if (((State)ps.getOwner()).equals(s)) {
+					res.add(ps);
+				}
+			// other pseudostates are owned by the state's region
+			} else if (ps.getContainer().getState().equals(s)){
 				res.add(ps);
 			}
 		}

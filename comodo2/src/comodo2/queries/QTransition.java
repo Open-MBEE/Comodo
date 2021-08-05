@@ -252,14 +252,38 @@ public class QTransition {
 	}
 
 	/**
-	 * Returns true if the transition points to a Choice pseudoState
-	 * This is needed for QF Target because QM has a different choice node structure.
+	 * Returns true if the transition points to a entry or exit pseudoState
+	 */
+	public boolean pointsToEntryOrExitPseudostate(final Transition t){
+		if (t.getTarget() instanceof Pseudostate) {
+			Pseudostate ps = (Pseudostate) t.getTarget();
+			if (ps.getKind() == PseudostateKind.ENTRY_POINT_LITERAL || 
+				ps.getKind() == PseudostateKind.EXIT_POINT_LITERAL) {
+					return true;
+				}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true if the transition points to a history pseudoState
 	 */
 	public boolean pointsToHistoryPseudostate(final Transition t){
 		if (t.getTarget() instanceof Pseudostate) {
 			return mQState.isHistoryState((Pseudostate) t.getTarget());
 		}
 		return false;
+	}
+
+	/**
+	 * Returns the target name of the Entry/exit node pointed by t
+	 */
+	public String getEntryOrExitTargetName(final Transition t){
+		if (t.getTarget().getOutgoings().isEmpty()){
+			throw new RuntimeException("Malformed Entry/Exit pseudostate found (no state targeted by pseudostate) outbound from state: " + t.getSource().getName());
+		}
+		return t.getTarget().getOutgoings().get(0).getTarget().getName();
+		
 	}
 
 	public boolean hasEvent(final Transition t) {
