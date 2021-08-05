@@ -70,6 +70,7 @@ public class StateMachineHeader implements IGenerator {
 		// StringTemplate is able to run a forEach on lists, and get the "name" attribute with getName()
 		// which is defined for a State element. See https://github.com/antlr/stringtemplate4/blob/master/doc/templates.md
 		st.add("statesList", mQStateMachine.getAllStatesSorted(sm));
+		st.add("historyPseudostatesList", mQStateMachine.getAllHistoryPseudostates(sm));
 
         return st.render();
 	}

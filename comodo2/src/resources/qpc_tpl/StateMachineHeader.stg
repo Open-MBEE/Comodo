@@ -1,6 +1,6 @@
 delimiters "%", "%"
 
-StateMachineHeader(smQualifiedName, smQualifiedNameUpperCase, className, statesList, fileDescriptionHeader) ::= <<
+StateMachineHeader(smQualifiedName, smQualifiedNameUpperCase, className, statesList, historyPseudostatesList, fileDescriptionHeader) ::= <<
 %fileDescriptionHeader%
 
 #ifndef %smQualifiedNameUpperCase%_H_
@@ -26,6 +26,11 @@ typedef struct %smQualifiedName% {
 
     /* Completion event for exiting from composite/orthogonal/submachine state */
     QCompletionEvt %smQualifiedNameUpperCase%_COMPLETION_EVENT_;
+
+%if(historyPseudostatesList)%
+    /* History state variables */
+    %historyPseudostatesList :{ history | QStateHandler %history.name%;%\n%}%
+%endif%
 } %smQualifiedName%;
 
 

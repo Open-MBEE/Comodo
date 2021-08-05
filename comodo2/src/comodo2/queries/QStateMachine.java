@@ -304,4 +304,19 @@ public class QStateMachine {
 		}
 		return stateQualifiedNames;
 	}
+
+	/**
+	 * @param sm State machine.
+	 * @return All history pseudostates contained in the given state machine.
+	 */
+	public Iterable<Pseudostate> getAllHistoryPseudostates(final StateMachine sm) {
+		BasicEList<Pseudostate> historyPs = new BasicEList<Pseudostate>();
+		for (final Pseudostate ps : getAllPseudostates(sm)) {
+			if (mQState.isHistoryState(ps)) {
+				historyPs.add(ps);
+			}
+		}
+		return historyPs;
+	}
+
 }

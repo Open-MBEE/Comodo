@@ -110,7 +110,7 @@ public class QpcHeaders implements IGenerator {
 
 		statesEnumString += current.getSmQualifiedName().toUpperCase() + "__TOP__, /* Top = 0 */\n";
 		for (String stateQualifiedName : statesQualifiedNames) {
-			statesEnumString += mUtils.formatStateName(stateQualifiedName, current.getSmQualifiedName()) + ",\n";
+			statesEnumString += mUtils.formatStateEnum(stateQualifiedName, current.getSmQualifiedName()) + ",\n";
 		}
 
 		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
@@ -134,7 +134,7 @@ public class QpcHeaders implements IGenerator {
 			if (mQState.isTopState(finalState)){
 				completionSig = "_SIG_" + current.getSmQualifiedName().toUpperCase() + "_COMPLETE_";
 			} else { // need to retrieve the parent state name for completion event.
-				completionSig = "_SIG_" + mUtils.formatStateName(mQState.getFullyQualifiedName(mQState.getParentState(finalState)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
+				completionSig = "_SIG_" + mUtils.formatStateEnum(mQState.getFullyQualifiedName(mQState.getParentState(finalState)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
 			}
 			completionEventSignalNames.add(completionSig);
 		}

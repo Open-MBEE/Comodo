@@ -13,6 +13,7 @@ public class CurrentGeneration {
 	private String smQualifiedName;
 	private Integer finalStateCounter;
 	private Integer unNamedStateCounter;
+	private Integer historyCounter;
     
     private TreeSet<String> signalEventsNameset;
 
@@ -22,6 +23,7 @@ public class CurrentGeneration {
         this.smName = sanitizeName(smName);
         this.finalStateCounter = 0;
         this.unNamedStateCounter = 0;
+        this.historyCounter = 0;
         this.signalEventsNameset = new TreeSet<String>();
     }
 
@@ -33,20 +35,25 @@ public class CurrentGeneration {
         return smName;
     }
 
+    /**
+     * Returns AND increment counter.
+     */
     public Integer getFinalStateCounter() {
-        return finalStateCounter;
+        return finalStateCounter++;
     }
 
-    public void incrementFinalStateCounter() {
-        finalStateCounter++;
-    }
-
+    /**
+     * Returns AND increment counter.
+     */    
     public Integer getUnNamedStateCounter() {
-        return unNamedStateCounter;
+        return unNamedStateCounter++;
     }
 
-    public void incrementUnNamedStateCounter() {
-        unNamedStateCounter++;
+    /**
+     * Returns AND increment counter.
+     */    
+    public Integer getHistoryCounter() {
+        return historyCounter++;
     }
 
     public String getClassName() {

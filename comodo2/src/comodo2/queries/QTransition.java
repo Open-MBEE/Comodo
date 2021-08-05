@@ -251,6 +251,17 @@ public class QTransition {
 		return false;
 	}
 
+	/**
+	 * Returns true if the transition points to a Choice pseudoState
+	 * This is needed for QF Target because QM has a different choice node structure.
+	 */
+	public boolean pointsToHistoryPseudostate(final Transition t){
+		if (t.getTarget() instanceof Pseudostate) {
+			return mQState.isHistoryState((Pseudostate) t.getTarget());
+		}
+		return false;
+	}
+
 	public boolean hasEvent(final Transition t) {
 		if (Objects.equal(getFirstEventName(t), "")) {
 			return false;

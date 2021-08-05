@@ -14,12 +14,12 @@ QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvt const *e) {
 >>
 
 
-StateMachine_State(smQualifiedName, stateName, signalSwitchCase, superState, logging) ::= <<
+StateMachine_State(stateQualifiedName, smQualifiedName, stateName, signalSwitchCase, superState, logging) ::= <<
 
 /**
  * %stateName% state definition
  */
-QState %smQualifiedName%_%stateName% (%smQualifiedName% *me, QEvt const *e) {
+QState %stateQualifiedName% (%smQualifiedName% *me, QEvt const *e) {
 %if(logging)%
     char stateName[128];
     strncpy(stateName, me->objName, 128);
@@ -37,10 +37,13 @@ QState %smQualifiedName%_%stateName% (%smQualifiedName% *me, QEvt const *e) {
 >>
 
 
-StateMachine_SwitchStatement(signalName, action, returnStatement, onEntryStateEnum, logging) ::= <<
+StateMachine_SwitchStatement(signalName, action, returnStatement, onEntryStateEnum, historyList, stateQualifiedName, logging) ::= <<
 case %signalName%:
 %if(onEntryStateEnum)%
     me->myState = %onEntryStateEnum%;
+%endif%
+%if(historyList)%
+    %historyList :{ history | me->%history.name% = (QStateHandler)&%stateQualifiedName%;%\n%}%
 %endif%
 %if(logging)%
     strncat(logMsg, " %signalName%", 256-strlen(logMsg)-1/*null-char*/);

@@ -295,4 +295,54 @@ public class QState {
 		}
 		return false;
 	}
+
+	/**
+	 * Returns all the pseudostates that are directly owned by State s.
+	 */
+	public Iterable<Pseudostate> getAllDirectlyOwnedPseudostates(final State s) {
+
+		BasicEList<Pseudostate> res = new BasicEList<Pseudostate>();		
+		for (Pseudostate ps : Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class)) {
+			if (ps.getContainer().getState().equals(s)){
+				res.add(ps);
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Returns all the substates that are directly owned by State s.
+	 */
+	public Iterable<State> getAllDirectSubstates(final State s) {
+		BasicEList<State> res = new BasicEList<State>();
+		for (State e : Iterables.<State>filter(s.allOwnedElements(), State.class)) {
+			if (Objects.equal(getParentState(e), s)) {
+				res.add(e);
+			}
+		}
+		return res;		
+	}
+
+	/**
+	 * Returns all the History nodes that this state is tracked by.
+	 * That is, shallowHistory at depth +1 and all deepHistory that are owned by
+	 * a composite state that also owns this state.
+	 */
+	public BasicEList<Pseudostate> getAllParentHistoryNodes(final State s) {
+		BasicEList<Pseudostate> res = new BasicEList<Pseudostate>();		
+		State p = getParentState(s);
+		Integer depth = 1;
+
+		while (p!=null){
+			for (Pseudostate ps : getAllDirectlyOwnedPseudostates(p)) {
+				// We care about shallow history only at depth 0
+				if ((isHistoryState(ps) && depth <= 1) || ps.getKind() == PseudostateKind.DEEP_HISTORY_LITERAL) {
+					res.add(ps);
+				}
+			}
+			p = getParentState(p);
+			depth++;
+		}
+		return res;
+	}
 }

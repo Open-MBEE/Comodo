@@ -17,6 +17,7 @@ import comodo2.utils.TransitionComparator;
 import java.util.TreeSet;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -95,8 +96,11 @@ public class StateMachineSource implements IGenerator {
 				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
 				if ((mQClass.isToBeGenerated(c) && mQClass.hasStateMachines(c))) {
 					for (final StateMachine sm : mQClass.getStateMachines(c)) {
+						
 						// Sets current generation context
 						current = new CurrentGeneration(c.getName(), sm.getName());
+						
+						preprocessStateMachine(sm, current);
 
 						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toQmFilePath(current.getSmQualifiedName())));
 						fsa.generateFile(mFilesHelper.toCFilePath(current.getSmQualifiedName()), this.generate(sm));						
@@ -130,73 +134,80 @@ public class StateMachineSource implements IGenerator {
 		return result;
 	}
 
+	/**
+	 * Before actually traversing all the states, we check for
+	 * final and unnamed states. If they are unnamed, we actually go ahead and 
+	 * modify the State object, by giving it a name.
+	 */
+	public void preprocessStateMachine(final StateMachine sm, CurrentGeneration current) {
 
+		for (State s : Iterables.<State>filter(sm.allOwnedElements(), State.class)) {
+			// loop through all states and rename the unnamed states with an unique name.
+			if (mQState.isFinal(s) && s.getName().equals("")){
+				s.setName("finalState" + current.getFinalStateCounter());
+			} else if (s.getName().equals("")){
+				Integer unamedCounter = current.getUnNamedStateCounter();
+				mLogger.warn("An unnamed state was found in State Machine: \"" + sm.getName() + "\". Renamed unnamed" + unamedCounter);
+				s.setName("unnamedState" + unamedCounter);
+			}
+		}
 
-	public CharSequence printNewlines(Integer n){
-		return new String(new char[n]).replace("\0", "\n");
+		for (Pseudostate ps : Iterables.<Pseudostate>filter(sm.allOwnedElements(), Pseudostate.class)) {
+			if (mQState.isHistoryState(ps)){
+				if (ps.getName().equals("")){
+					String psName = mQState.getParentState(ps).getName() + mQState.getHistoryTypeName(ps) + "History" + current.getHistoryCounter();
+					ps.setName(psName); // we could remove the counter if we knew states had a unique name.
+				}
+			}
+		}
 	}
-
-
-	public String printStateMachineIncludes(final String smName){
-        STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-includes.stg");
-		ST st = g.getInstanceOf("StateMachineSourceIncludes");
-		st.add("smName", smName);
-
-        return st.render();
-    }
-
-	public String printStateMachineDefinitions(final String smName){
-        STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-definitions.stg");
-		ST st = g.getInstanceOf("StateMachineSourceDefinitions");
-		st.add("smName", smName);
-		st.add("smNameUpperCase", smName.toUpperCase());
-
-        return st.render();
-    }
-
-
-
-
 
 	/**
 	 * Start transformation of all states.
-	 * IMPORTANT: Before actually traversing all the states, we check for
-	 * final and unnamed states. If they are unnamed, we actually go ahead and 
-	 * modify the State object, by giving it a name.
 	 */
 	public CharSequence exploreAllStates(final StateMachine sm) {
 		StringConcatenation str = new StringConcatenation();
 
-		TreeSet<State> sortedStates = new TreeSet<State>(new StateComparator());
-		for (State s : Iterables.<State>filter(sm.allOwnedElements(), State.class)) {
+		TreeSet<State> sortedTopStates = new TreeSet<State>(new StateComparator());
 
-			// loop through all states and rename the unnamed states with an unique name.
-			if (mQState.isFinal(s) && s.getName().equals("")){
-				s.setName("finalState" + current.getFinalStateCounter());
-				current.incrementFinalStateCounter();
-			} else if (s.getName().equals("")){
-				mLogger.warn("An unnamed state was found. Renamed unnamed" + current.getUnNamedStateCounter());
-				s.setName("unnamedState" + current.getUnNamedStateCounter());
-				current.incrementUnNamedStateCounter();
+		for (State s : Iterables.<State>filter(sm.allOwnedElements(), State.class)) {
+			if (mQState.isTopState(s)){
+				sortedTopStates.add(s);
 			}
-			sortedStates.add(s);
 		}
 
-		for (final State s : sortedStates) {
-			str.append(exploreState(s));		
+		for (final State s : sortedTopStates) {
+			str.append(exploreState(s));
 		}
 		return str;
 	}
 
-
 	/**
-	 * Transforms a state into QPC C code
+	 * Transforms a state and all its sub-states into QPC C code
 	 */
 	public CharSequence exploreState(final State s) {
+		String full_state_string = "";
+
+		full_state_string += printState(s);
+
+		if (s.isComposite()){
+			for (State substate : mQState.getAllDirectSubstates(s)){
+				full_state_string += exploreState(substate);
+			}
+		}
+
+		return full_state_string;
+	}
+
+	/**
+	 * Transforms a single state into QPC C code
+	 */
+	public CharSequence printState(final State s) {
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st = g.getInstanceOf("StateMachine_State");
-
-		st.add("stateName", s.getName());
+		
+		st.add("stateName", s.getName()); 
+		st.add("stateQualifiedName", mUtils.formatStateName(s.getName(), current.getSmQualifiedName()));
 		st.add("smQualifiedName", current.getSmQualifiedName());
 		st.add("logging", USER_LOGGING);
 		st.add("signalSwitchCase", printSwitchCaseStatements(s));
@@ -243,7 +254,7 @@ public class StateMachineSource implements IGenerator {
 		if (mQState.isTopState(s)){ // state machine wide final node
 			completionSig = "_SIG_" + current.getSmQualifiedName().toUpperCase() + "_COMPLETE_";
 		} else { // if final state is within a composite state
-			completionSig = "_SIG_" + mUtils.formatStateName(mQState.getFullyQualifiedName(mQState.getParentState(s)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
+			completionSig = "_SIG_" + mUtils.formatStateEnum(mQState.getFullyQualifiedName(mQState.getParentState(s)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
 		}
 
 		current.addSignalEventsNameset(completionSig);
@@ -288,12 +299,17 @@ public class StateMachineSource implements IGenerator {
 		
 		st_entry.add("signalName", Q_ENTRY_SIG);
 		st_entry.add("logging", USER_LOGGING);
-		st_entry.add("onEntryStateEnum", mUtils.formatStateName(mQState.getFullyQualifiedName(s), current.getSmQualifiedName()));
+		st_entry.add("onEntryStateEnum", mUtils.formatStateEnum(s.getName(), current.getSmQualifiedName()));
 		st_entry.add("returnStatement", Q_HANDLED);
 		st_exit.add("signalName", Q_EXIT_SIG);
 		st_exit.add("logging", USER_LOGGING);
 		st_exit.add("returnStatement", Q_HANDLED);
 
+		BasicEList<Pseudostate> historiyList = mQState.getAllParentHistoryNodes(s);
+		if (!historiyList.isEmpty()){
+			st_entry.add("historyList", historiyList);
+			st_entry.add("stateQualifiedName", mUtils.formatStateName(s.getName(), current.getSmQualifiedName()));
+		}
 		if (mQState.hasOnEntryActions(s) || mQState.hasTimerTransition(s)) {
 			st_entry.add("action", mUtils.formatActionName(s.getEntry().getName(), current.getSmQualifiedName(), current.getClassName()));
 		}		
@@ -419,7 +435,7 @@ public class StateMachineSource implements IGenerator {
 					str += printChoices(outgoing);
 				}
 			} else {
-				String out_targetName = mQTransition.getTargetName(outgoing); 
+				// String out_targetName = mQTransition.getTargetName(outgoing); 
 				String out_guard  = mQTransition.getGuardNameOrNull(outgoing);
 				String out_action = mQTransition.getFirstActionName(outgoing);
 
@@ -427,7 +443,7 @@ public class StateMachineSource implements IGenerator {
 				st_if.add("isElseStatement", Objects.equal(out_guard, "else"));
 				st_if.add("guard", mUtils.formatGuardName(out_guard, current.getSmQualifiedName()));
 				st_if.add("action", mUtils.formatActionName(out_action, current.getSmQualifiedName(), current.getClassName()));
-				st_if.add("returnStatement", transitionToStateMacro(out_targetName));
+				st_if.add("returnStatement", getReturnStatement(outgoing));
 				appendFinalStateAction(outgoing, st_if); // has an effect only if transition points to a final state
 
 				// If the guard is "else", we store it and add it at the very end
@@ -462,7 +478,7 @@ public class StateMachineSource implements IGenerator {
 			if (mQState.isTopState(finalState)){
 				completionSig = "_SIG_" + current.getSmQualifiedName().toUpperCase() + "_COMPLETE_";
 			} else { // need to retrieve the parent state name for completion event.
-				completionSig = "_SIG_" + mUtils.formatStateName(mQState.getFullyQualifiedName(mQState.getParentState(finalState)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
+				completionSig = "_SIG_" + mUtils.formatStateEnum(mQState.getFullyQualifiedName(mQState.getParentState(finalState)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
 			}
 			st_final_action.add("completionSig", completionSig);
 			st_original.add("action", st_final_action.render());
@@ -503,13 +519,20 @@ public class StateMachineSource implements IGenerator {
 
 	/**
 	 * Returns the returnStatement that a transition should have.
-	 * Q_HANDLED for internal transitions, Q_TRAN(< targetState >) for others
+	 * This depends on the type of the targeted vertex.
 	 */
 	public String getReturnStatement(Transition t) {
+		String targetName = mQTransition.getTargetName(t);
+		
 		if (mQTransition.isInternal(t)) {
 			return Q_HANDLED + "/*internal transition*/";
+		} else if (mQTransition.pointsToHistoryPseudostate(t)){
+			return transitionToHistoryMacro(targetName);
+		} else if (t.getTarget() instanceof State){
+			return transitionToStateMacro(targetName);
 		} else {
-			return transitionToStateMacro(mQTransition.getTargetName(t));
+			throw new RuntimeException( "Transition outbound from state \"" + t.getSource().getName() + 
+						"\" has an unsupporeted target type (target element: " + t.getTarget().toString() + ").");
 		}
 	}
 
@@ -518,11 +541,22 @@ public class StateMachineSource implements IGenerator {
 	 */
 	public String transitionToStateMacro(String stateName){
 		if (Objects.equal(stateName, "") || stateName == null){
+			
 			return null;
 		}
 		return Q_TRAN + "(&" + current.getSmQualifiedName() + "_" + stateName + ")";
 	}
 
+	/**
+	 * Returns the QPC-specific return statement for a transition to stateName
+	 */
+	public String transitionToHistoryMacro(String historyStateName){
+		if (Objects.equal(historyStateName, "") || historyStateName == null){
+			
+			return null;
+		}
+		return Q_TRAN + "(me->" + historyStateName + ")";
+	}
 
 	/**
 	 * Returns the code string that needs to be injected in the Initial state of the State Machine.
@@ -540,4 +574,25 @@ public class StateMachineSource implements IGenerator {
 		return str;
 	}
 
+	public CharSequence printNewlines(Integer n){
+		return new String(new char[n]).replace("\0", "\n");
+	}
+
+
+	public String printStateMachineIncludes(final String smName){
+        STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-includes.stg");
+		ST st = g.getInstanceOf("StateMachineSourceIncludes");
+		st.add("smName", smName);
+
+        return st.render();
+    }
+
+	public String printStateMachineDefinitions(final String smName){
+        STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-definitions.stg");
+		ST st = g.getInstanceOf("StateMachineSourceDefinitions");
+		st.add("smName", smName);
+		st.add("smNameUpperCase", smName.toUpperCase());
+
+        return st.render();
+    }
 }

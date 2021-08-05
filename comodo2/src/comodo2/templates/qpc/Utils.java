@@ -32,7 +32,11 @@ public class Utils {
 	}
 
 	public String formatStateName(String stateQualifiedName, String smQualifiedName){
-		return smQualifiedName.toUpperCase() + "_" + stateQualifiedName.toUpperCase().replaceAll("::", "_");
+		return (smQualifiedName + "_" + stateQualifiedName).replaceAll("::", "_");
+	}
+    
+	public String formatStateEnum(String stateQualifiedName, String smQualifiedName){
+		return formatStateName(stateQualifiedName, smQualifiedName).toUpperCase();
 	}
     
     public String checkTrailingSemicolon(String str) {
