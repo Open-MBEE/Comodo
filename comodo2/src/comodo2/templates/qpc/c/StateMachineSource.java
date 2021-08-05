@@ -362,42 +362,48 @@ public class StateMachineSource implements IGenerator {
 		ST st_tran = g.getInstanceOf("StateMachine_SwitchStatement");
 		st_tran.add("logging", USER_LOGGING);
 		
-		String guard  = mQTransition.getResolvedGuardName(t);
-		String action = mQTransition.getFirstActionName(t);
+		String guardName  = mQTransition.getResolvedGuardName(t);
+		String actionName = mQTransition.getFirstActionName(t);
 		String eventName  = mQTransition.getFirstEventName(t); 
 		String signalName = mUtils.formatSignalName(eventName, current.getClassName());
 		st_tran.add("signalName", signalName);
 
-		// if-else
+		String actionStr;
+		String returnStr;
+		
+		// if-else: depending on the type of the transition, actionStr and returnStr will be formed differently
 		if (mQTransition.isChoiceTransition(t)) {
 			// Case where the transition points to a choice node: recursively goes down all paths
-
-			st_tran.add("action", printChoices(t));
-			st_tran.add("returnStatement", Q_HANDLED);
+			actionStr = printChoices(t);
+			returnStr = Q_HANDLED;
 		
-		} else if (!Objects.equal(guard, "")) {
+		} else if (!Objects.equal(guardName, "")) {
 			// Case where there is a guard on the transition
-
 			ST st_if = g.getInstanceOf("StateMachine_IfStatement");
-			st_if.add("guard", mUtils.formatGuardName(guard, current.getSmQualifiedName()));
-			st_if.add("action", mUtils.formatActionName(action, current.getSmQualifiedName(), current.getClassName()));
+			st_if.add("guard", mUtils.formatGuardName(guardName, current.getSmQualifiedName()));
+			st_if.add("action", mUtils.formatActionName(actionName, current.getSmQualifiedName(), current.getClassName()));
 			st_if.add("returnStatement", getReturnStatement(t));
-			appendFinalStateAction(t, st_if); // handles the cases where the transition points to a final state
 			
-			st_tran.add("action", st_if.render());
-			st_tran.add("returnStatement", Q_HANDLED);
+			actionStr = st_if.render();
+			returnStr = Q_HANDLED;
 			
 		} else if (!Objects.equal(eventName, "")) {
 			// Case where there is no guard, only a triggerring event.
-
-			st_tran.add("action", mUtils.formatActionName(action, current.getSmQualifiedName(), current.getClassName()));
-			st_tran.add("returnStatement", getReturnStatement(t));
-			appendFinalStateAction(t, st_tran); // handles the cases where the transition points to a final state
+			actionStr = mUtils.formatActionName(actionName, current.getSmQualifiedName(), current.getClassName());
+			returnStr = getReturnStatement(t);
 		
 		} else {
 			mLogger.warn("SKIPPED: Empty transition (no guard, no trigger) was found going out of state: " + t.getSource().getName());
+			return "// NOT GENERATED: An empty transition was found on event: " + eventName + "\n";
 		} // end of if-else
 		
+		// handles the cases where the transition points to a final state
+		actionStr += appendFinalStateAction(t); 
+		
+		st_tran.add("action", actionStr);
+		st_tran.add("returnStatement", returnStr);
+
+
 		return st_tran.render();
 	}
 
@@ -407,7 +413,7 @@ public class StateMachineSource implements IGenerator {
 	 * This recursively goes down all the following choice nodes until it reaches a state.
 	 * @param t Transition that points to a choice node.
 	 */
-	public CharSequence printChoices(final Transition t) {
+	public String printChoices(final Transition t) {
 		if (!(t.getTarget() instanceof Pseudostate)) {
 			mLogger.warn("An error occured while traversing the model. Transition " + t.toString() + " does not point to a choice node.");
 			return "";
@@ -441,18 +447,21 @@ public class StateMachineSource implements IGenerator {
 				}
 			} else {
 				// String out_targetName = mQTransition.getTargetName(outgoing); 
-				String out_guard  = mQTransition.getGuardNameOrNull(outgoing);
-				String out_action = mQTransition.getFirstActionName(outgoing);
+				String out_guardName  = mQTransition.getGuardNameOrNull(outgoing);
+				String out_actionName = mQTransition.getFirstActionName(outgoing);
 
+				String actionStr = mUtils.formatActionName(out_actionName, current.getSmQualifiedName(), current.getClassName());
+				// handles the cases where the transition points to a final state
+				actionStr += appendFinalStateAction(outgoing);
+				
 				ST st_if = g.getInstanceOf("StateMachine_IfStatement");
-				st_if.add("isElseStatement", Objects.equal(out_guard, "else"));
-				st_if.add("guard", mUtils.formatGuardName(out_guard, current.getSmQualifiedName()));
-				st_if.add("action", mUtils.formatActionName(out_action, current.getSmQualifiedName(), current.getClassName()));
+				st_if.add("isElseStatement", Objects.equal(out_guardName, "else"));
+				st_if.add("guard", mUtils.formatGuardName(out_guardName, current.getSmQualifiedName()));
+				st_if.add("action", actionStr);
 				st_if.add("returnStatement", getReturnStatement(outgoing));
-				appendFinalStateAction(outgoing, st_if); // handles the cases where the transition points to a final state
-
+				
 				// If the guard is "else", we store it and add it at the very end
-				if (Objects.equal(out_guard, "else")){
+				if (Objects.equal(out_guardName, "else")){
 					else_tmp_str += st_if.render();
 				} else {
 					str += st_if.render();
@@ -472,7 +481,7 @@ public class StateMachineSource implements IGenerator {
 	 * IF Transition t points to a FinalState, appends to the "action" field of st_original 
 	 * the code string responsible for dealing with final states. ELSE, does nothing.
 	 */
-	public void appendFinalStateAction(final Transition t, ST st_original){
+	public String appendFinalStateAction(final Transition t){
 		if (t.getTarget() instanceof FinalState){
 			STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 			ST st_final_action = g.getInstanceOf("FinalTransitionAction");
@@ -486,7 +495,9 @@ public class StateMachineSource implements IGenerator {
 				completionSig = "_SIG_" + mUtils.formatStateEnum(mQState.getFullyQualifiedName(mQState.getParentState(finalState)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
 			}
 			st_final_action.add("completionSig", completionSig);
-			st_original.add("action", st_final_action.render());
+			return st_final_action.render();
+		} else {
+			return "";
 		}
 	}
 
