@@ -20,7 +20,7 @@ public class Utils {
 		if (Objects.equal(guardName, "") || guardName == null){
 			return null;
 		}
-		return smQualifiedName + "_impl_" + insertImplArg(guardName.trim());
+		return smQualifiedName + "_impl_" + removeTrailingSemicolon(insertImplArg(guardName.trim()));
 	}
 
     /**
@@ -41,6 +41,10 @@ public class Utils {
     
     public String checkTrailingSemicolon(String str) {
 		return str.endsWith(";") ? str : str + ";";
+	}
+
+	public String removeTrailingSemicolon(String str) {
+		return str.endsWith(";") ? str.substring(0, str.length()-1) : str;
 	}
 
 	/**
