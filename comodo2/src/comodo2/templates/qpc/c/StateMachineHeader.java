@@ -71,6 +71,7 @@ public class StateMachineHeader implements IGenerator {
 		// which is defined for a State element. See https://github.com/antlr/stringtemplate4/blob/master/doc/templates.md
 		st.add("statesList", mQStateMachine.getAllStatesSorted(sm));
 		st.add("historyPseudostatesList", mQStateMachine.getAllHistoryPseudostates(sm));
+		st.add("timeEventList", mQStateMachine.getAllStatesWithTimeEvents(sm));
 
         return st.render();
 	}

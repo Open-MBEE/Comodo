@@ -1,6 +1,6 @@
 delimiters "%", "%"
 
-StateMachineHeader(smQualifiedName, smQualifiedNameUpperCase, className, statesList, historyPseudostatesList, fileDescriptionHeader) ::= <<
+StateMachineHeader(smQualifiedName, smQualifiedNameUpperCase, className, statesList, historyPseudostatesList, timeEventList, fileDescriptionHeader) ::= <<
 %fileDescriptionHeader%
 
 #ifndef %smQualifiedNameUpperCase%_H_
@@ -31,6 +31,11 @@ typedef struct %smQualifiedName% {
     /* History state variables */
     %historyPseudostatesList :{ history | QStateHandler %history.name%;%\n%}%
 %endif%
+%if(timeEventList)%
+    /* TimeEvents object instances (only relative timers are supported) */
+    %timeEventList :{ stateName | QTimeEvt %stateName%RelativeTimer;%\n%}%
+%endif%
+
 } %smQualifiedName%;
 
 

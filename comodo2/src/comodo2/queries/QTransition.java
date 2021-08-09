@@ -119,6 +119,24 @@ public class QTransition {
 */		
 	}
 
+	/**
+	 * @return Duration string (e.g.: "5s") of the TimeEvent within the transition t.
+	 */
+	public String getFirstTimeEventDurationString(final Transition t) {
+		if (t.getTriggers().isEmpty()) {
+			return null;
+		}
+		for (Trigger trig : t.getTriggers()){
+			Event e = trig.getEvent();
+			if (e instanceof TimeEvent){
+				return mQEvent.getTimeEventDurationString((TimeEvent)e);
+			}
+		}
+		return null;
+	}
+
+	
+
 	public String getResolvedGuardName(final Transition t) {
 		return this.getGuardName(t);
 	}
@@ -198,6 +216,16 @@ public class QTransition {
 		if (hasEvent(t)) {
 			return false;
 		}
+		if (t.getTriggers().isEmpty() == true) {
+			return false;
+		}
+		return mQEvent.isTimeEvent(t.getTriggers().get(0).getEvent());
+	}
+
+	/** 
+	 * Used for QPC target, instead of isTimerTransition
+	 */
+	public boolean isTimerTransition_v2(final Transition t) {
 		if (t.getTriggers().isEmpty() == true) {
 			return false;
 		}

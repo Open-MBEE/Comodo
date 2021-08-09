@@ -31,6 +31,10 @@ public class Utils {
 		return smClassName.toUpperCase() + "_" + eventName + "_SIG";
 	}
 
+	public String formatTimeEventName(String stateName) {
+		return stateName.toUpperCase() + "_TIMER_SIG";
+	}
+
 	public String formatStateName(String stateQualifiedName, String smQualifiedName){
 		return (smQualifiedName + "_" + stateQualifiedName).replaceAll("::", "_");
 	}

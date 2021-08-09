@@ -1,6 +1,6 @@
 delimiters "%", "%"
 
-StateMachineSourceDefinitions(smName, smNameUpperCase) ::= <<
+StateMachineSourceDefinitions(smName, smNameUpperCase, timeEventInitString) ::= <<
 
 /**
  * %smName% Constructor
@@ -16,6 +16,11 @@ StateMachineSourceDefinitions(smName, smNameUpperCase) ::= <<
         me->active = active;
     }
     %smName%_impl_set_qactive(me->impl, me->active);  // give impl access to parent QActive
+
+%if(timeEventInitString)%    
+    // Timer events initialized here
+    %timeEventInitString%
+%endif%
 
     // State is initially at TOP
     me->myState = %smNameUpperCase%__TOP__;

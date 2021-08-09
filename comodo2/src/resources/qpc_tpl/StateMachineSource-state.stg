@@ -37,16 +37,22 @@ QState %stateQualifiedName% (%smQualifiedName% *me, QEvt const *e) {
 >>
 
 
-StateMachine_SwitchStatement(signalName, action, returnStatement, onEntryStateEnum, historyList, stateQualifiedName, logging) ::= <<
-case %signalName%:
+StateMachine_SwitchStatement(triggerEventName, action, returnStatement, onEntryStateEnum, historyList, stateQualifiedName, timerDuration, disarmTimeEvent, stateName, logging) ::= <<
+case %triggerEventName%:
 %if(onEntryStateEnum)%
     me->myState = %onEntryStateEnum%;
 %endif%
 %if(historyList)%
     %historyList :{ history | me->%history.name% = (QStateHandler)&%stateQualifiedName%;%\n%}%
 %endif%
+%if(timerDuration)%
+    QTimeEvt_postIn(&(me->%stateName%RelativeTimer), me->active, %timerDuration%);
+%endif%
+%if(disarmTimeEvent)%
+    QTimeEvt_disarm(&(me->%stateName%RelativeTimer));
+%endif%
 %if(logging)%
-    strncat(logMsg, " %signalName%", 256-strlen(logMsg)-1/*null-char*/);
+    strncat(logMsg, " %triggerEventName%", 256-strlen(logMsg)-1/*null-char*/);
     LogEvent_log(logMsg);
 %endif%
     %action%

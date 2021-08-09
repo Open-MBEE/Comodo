@@ -63,16 +63,19 @@ public class QpcHeaders implements IGenerator {
 			if ((mQClass.isToBeGenerated(c) && mQClass.hasStateMachines(c))) {
 				TreeSet<String> signalNames = new TreeSet<String>();
 				TreeSet<String> completionEventSignalNames = new TreeSet<String>();
+				TreeSet<String> statesWithTimeEvent = new TreeSet<String>();
 				for (final StateMachine sm : mQClass.getStateMachines(c)) {
 					
 					current = new CurrentGeneration(c.getName(), sm.getName());
 
 					Iterables.<String>addAll(signalNames, mQStateMachine.getAllSignalNames(sm));
 					Iterables.<String>addAll(completionEventSignalNames, getAllCompletionEventSignalNames(sm));
+					Iterables.<String>addAll(statesWithTimeEvent, mQStateMachine.getAllStatesWithTimeEvents(sm));
+
 
 					fsa.generateFile(mFilesHelper.toQmImplFilePath(current.getSmQualifiedName() + "_states.h"), this.generateStatesHeader(current, mQStateMachine.getAllStatesQualifiedName(sm)));						
 				}
-				fsa.generateFile(mFilesHelper.toQmImplFilePath(current.getClassName() + "_statechart_signals.h"), this.generateSignalsHeader(current.getClassName(), signalNames, completionEventSignalNames));						
+				fsa.generateFile(mFilesHelper.toQmImplFilePath(current.getClassName() + "_statechart_signals.h"), this.generateSignalsHeader(current.getClassName(), signalNames, completionEventSignalNames, statesWithTimeEvent));						
 
 			}
 		}
@@ -83,11 +86,16 @@ public class QpcHeaders implements IGenerator {
 	/**
 	 * Generates the header file for the enumeration of signals
 	 */
-	public CharSequence generateSignalsHeader(final String className, final TreeSet<String> signalNames, final TreeSet<String> completionEventNames){
+	public CharSequence generateSignalsHeader(final String className, final TreeSet<String> signalNames, final TreeSet<String> completionEventNames, final TreeSet<String> statesWithTimeEvent){
 		String signalsEnumString = "";
+		String timeEventEnumString = "";
 		
 		for (String signalName : signalNames) {
 			signalsEnumString += mUtils.formatSignalName(signalName, className) + ",\n";
+		}
+
+		for (String stateName : statesWithTimeEvent) {
+			timeEventEnumString += mUtils.formatTimeEventName(stateName) + ",\n";
 		}
 
 		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
@@ -98,6 +106,11 @@ public class QpcHeaders implements IGenerator {
 		st.add("classNameUpperCase", className.toUpperCase());
 		st.add("signalsEnumDefinition", signalsEnumString);
 		st.add("completionEventNames", completionEventNames);
+		if (!timeEventEnumString.equals("")){
+			st.add("timeEventEnumString", timeEventEnumString);
+		}
+		
+
 
 		return st.render();
 	}

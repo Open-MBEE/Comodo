@@ -278,6 +278,18 @@ public class QState {
 		return false;
 	}
 
+	/**
+	 * @return True if State s has at least one outgoing transition that carries a TimeEvent. False otherwise.
+	 */
+	public boolean hasOutgoingTimerTransition(final State s) {
+		for (Transition t : s.getOutgoings()){
+			if (mQTransition.isTimerTransition_v2(t)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean hasHistory(final State s) {
 		if (s.isComposite() == false) {
 			return false;
@@ -351,5 +363,18 @@ public class QState {
 			depth++;
 		}
 		return res;
+	}	
+	
+	/**
+	 * Returns the duration string of the first TimeEvent that the transitions of the state carry.
+	 * A state should only have one TimeEvent transition.
+	 */
+	public String getFirstTimeEventDurationString(final State s) {		
+		for (Transition t : s.getOutgoings()){
+			if (mQTransition.hasTimeEvent(t)){
+				return mQTransition.getFirstTimeEventDurationString(t);
+			}
+		}
+		return null;
 	}
 }

@@ -319,4 +319,17 @@ public class QStateMachine {
 		return historyPs;
 	}
 
+	/**
+	 * @param sm State machine.
+	 * @return List of all the names of the states that contain an outgoing transition with a TimeEventState
+	 */
+	public Iterable<String> getAllStatesWithTimeEvents(final StateMachine sm) {
+		BasicEList<String> timedStates = new BasicEList<String>();
+		for (final State s : getAllStates(sm)) {
+			if (mQState.hasOutgoingTimerTransition(s)) {
+				timedStates.add(s.getName());
+			}
+		}
+		return timedStates;
+	}
 }

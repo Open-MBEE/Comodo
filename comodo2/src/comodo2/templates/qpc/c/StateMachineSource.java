@@ -64,7 +64,7 @@ public class StateMachineSource implements IGenerator {
 	// current serves as a container for variables corresponding to the current state machine in generation.
 	private CurrentGeneration current;
 
-	private boolean USER_LOGGING = true;
+	private boolean USER_LOGGING = false;
 	
 	private final static String Q_HANDLED = "Q_HANDLED()";
 	private final static String Q_TRAN = "Q_TRAN";
@@ -119,9 +119,9 @@ public class StateMachineSource implements IGenerator {
 		
 		str.append(printNewlines(3));
 
-		str.append(printStateMachineDefinitions(current.getSmQualifiedName()));
+		str.append(printStateMachineDefinitions(current.getSmQualifiedName(), sm));
 
-		str.append(printInitialState(mQStateMachine.getInitialStateName(sm), sm.getName()));
+		str.append(printInitialState(sm));
 
 		str.append(exploreAllStates(sm));
 		
@@ -196,7 +196,6 @@ public class StateMachineSource implements IGenerator {
 				full_state_string += exploreState(substate);
 			}
 		}
-
 		return full_state_string;
 	}
 
@@ -260,7 +259,7 @@ public class StateMachineSource implements IGenerator {
 
 		current.addSignalEventsNameset(completionSig);
 
-		st_final.add("signalName", completionSig);
+		st_final.add("triggerEventName", completionSig);
 		st_final.add("returnStatement", Q_HANDLED);
 		return st_final.render();
 	}
@@ -273,7 +272,7 @@ public class StateMachineSource implements IGenerator {
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st_init = g.getInstanceOf("StateMachine_SwitchStatement");
 
-		st_init.add("signalName", Q_INIT_SIG);
+		st_init.add("triggerEventName", Q_INIT_SIG);
 		st_init.add("logging", false);
 
 		try { 
@@ -284,12 +283,13 @@ public class StateMachineSource implements IGenerator {
 			st_init.add("action", printChoices(mQState.getInitialSubstateTransition(s)));
 			st_init.add("returnStatement", Q_HANDLED + "/*no choice matched*/"); 
 		}
-		
 		return st_init.render();
 	}
 
 	/**
 	 * Prints the entry and exit (actions) cases of a state.
+	 * Because of QF architecture, this also implies dealing with history pseudostates,
+	 * TimeEvents, and other types of state-specific things.
 	 */
 	public CharSequence printActions(final State s) {
 		String str = "";
@@ -298,29 +298,39 @@ public class StateMachineSource implements IGenerator {
 		ST st_entry = g.getInstanceOf("StateMachine_SwitchStatement");
 		ST st_exit = g.getInstanceOf("StateMachine_SwitchStatement");
 		
-		st_entry.add("signalName", Q_ENTRY_SIG);
+		st_entry.add("triggerEventName", Q_ENTRY_SIG);
 		st_entry.add("logging", USER_LOGGING);
 		st_entry.add("onEntryStateEnum", mUtils.formatStateEnum(s.getName(), current.getSmQualifiedName()));
 		st_entry.add("returnStatement", Q_HANDLED);
-		st_exit.add("signalName", Q_EXIT_SIG);
+		st_exit.add("triggerEventName", Q_EXIT_SIG);
 		st_exit.add("logging", USER_LOGGING);
 		st_exit.add("returnStatement", Q_HANDLED);
 
-		// Handling of History pseudostates
-		BasicEList<Pseudostate> historiyList = mQState.getAllParentHistoryNodes(s);
-		if (!historiyList.isEmpty()){
-			st_entry.add("historyList", historiyList);
-			st_entry.add("stateQualifiedName", mUtils.formatStateName(s.getName(), current.getSmQualifiedName()));
-		} // Handling of Entry actions
-		if (mQState.hasOnEntryActions(s) || mQState.hasTimerTransition(s)) {
+		// Handling of Entry actions
+		if (mQState.hasOnEntryActions(s)) {
 			st_entry.add("action", mUtils.formatActionName(s.getEntry().getName(), current.getSmQualifiedName(), current.getClassName()));
 		} // Do activities are not supported in QF
 		if (mQState.hasDoActivities(s)) {
 			mLogger.warn("SKIPPED -- Do activities are not supported in QPC" +
 			 				"(found in state " + s.getName() + ")");
 		} // Handling of Exit actions
-		if (mQState.hasOnExitActions(s) || mQState.hasTimerTransition(s)) {
+		if (mQState.hasOnExitActions(s)) {
 			st_exit.add("action", mUtils.formatActionName(s.getExit().getName(), current.getSmQualifiedName(), current.getClassName()));
+		}
+
+		// Handling of History pseudostates
+		BasicEList<Pseudostate> historiyList = mQState.getAllParentHistoryNodes(s);
+		if (!historiyList.isEmpty()){
+			st_entry.add("historyList", historiyList);
+			st_entry.add("stateQualifiedName", mUtils.formatStateName(s.getName(), current.getSmQualifiedName()));
+		}
+		// Handling of relative TimeEvents
+		String timeEventDuration = mQState.getFirstTimeEventDurationString(s);
+		if (timeEventDuration != null){
+			st_entry.add("stateName", s.getName());
+			st_entry.add("timerDuration", timeEventDuration);
+			st_exit.add("stateName", s.getName());
+			st_exit.add("disarmTimeEvent", true);
 		}
 
 		str += st_entry.render();
@@ -345,7 +355,6 @@ public class StateMachineSource implements IGenerator {
 				mLogger.warn("Internal transition from state " + 
 				mQState.getStateName(s) + 
 				" has no trigger event and no guard, skipped since could introduce infinite loop!");
-
 			} else {
 				str += printTransition(t);
 				registerEvent(t);
@@ -365,9 +374,14 @@ public class StateMachineSource implements IGenerator {
 		String guardName  = mQTransition.getResolvedGuardName(t);
 		String actionName = mQTransition.getFirstActionName(t);
 		String eventName  = mQTransition.getFirstEventName(t); 
-		String signalName = mUtils.formatSignalName(eventName, current.getClassName());
-		st_tran.add("signalName", signalName);
-
+		
+		if (mQTransition.hasSignalEvent(t)){
+			String signalName = mUtils.formatSignalName(eventName, current.getClassName());
+			st_tran.add("triggerEventName", signalName);
+		} else if (mQTransition.hasTimeEvent(t)){
+			String timeEventName = mUtils.formatTimeEventName(t.getSource().getName());
+			st_tran.add("triggerEventName", timeEventName);
+		}
 		String actionStr;
 		String returnStr;
 		
@@ -402,7 +416,6 @@ public class StateMachineSource implements IGenerator {
 		
 		st_tran.add("action", actionStr);
 		st_tran.add("returnStatement", returnStr);
-
 
 		return st_tran.render();
 	}
@@ -466,7 +479,6 @@ public class StateMachineSource implements IGenerator {
 				} else {
 					str += st_if.render();
 				}
-
 			}
 		}
 		// add the else case at the end
@@ -513,7 +525,7 @@ public class StateMachineSource implements IGenerator {
 			if (mQTransition.hasSignalEvent(t)) {
 				current.addSignalEventsNameset(mUtils.formatSignalName(eventName, current.getClassName()));
 			} else if (mQTransition.hasTimeEvent(t)) {
-				mLogger.warn("SKIPPED: TimeEvent detected - not supported (outbound from state " + t.getSource().getName() + ")");
+				// mLogger.warn("SKIPPED: TimeEvent detected - not supported (outbound from state " + t.getSource().getName() + ")");
 			}
 		}
 	}
@@ -522,13 +534,13 @@ public class StateMachineSource implements IGenerator {
 	/**
 	 * Prints the initial transition of a State machine
 	 */
-	public CharSequence printInitialState(final String targetName, String smName) {
+	public CharSequence printInitialState(final StateMachine sm) {
 
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st = g.getInstanceOf("StateMachine_InitialState");
 
 		st.add("smQualifiedName", current.getSmQualifiedName());
-		st.add("returnStatement", transitionToStateMacro(targetName));
+		st.add("returnStatement", transitionToStateMacro(mQStateMachine.getInitialStateName(sm)));
 
 		return st.render();
 	}
@@ -601,7 +613,9 @@ public class StateMachineSource implements IGenerator {
 			str += "		QActive_subscribe(me->active, " + signalName + ");\n";
 		}
 		str += "	}";
-		// TODO: // Do NOT subscribe to events if in a submachine
+		// TODO: 
+		// - Do NOT subscribe to events if in a submachine??
+		// - refactor getSignalEventsNameset() to query the model and not current.
 		return str;
 	}
 
@@ -618,11 +632,21 @@ public class StateMachineSource implements IGenerator {
         return st.render();
     }
 
-	public String printStateMachineDefinitions(final String smName){
+	public String printStateMachineDefinitions(final String smName, final StateMachine sm){
         STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-definitions.stg");
 		ST st = g.getInstanceOf("StateMachineSourceDefinitions");
 		st.add("smName", smName);
 		st.add("smNameUpperCase", smName.toUpperCase());
+		
+		// TimeEvents initialization (constructor call)
+		String timeEventInitString = "";
+		for (String stateName : mQStateMachine.getAllStatesWithTimeEvents(sm)){
+			timeEventInitString += "QTimeEvt_ctor(&(me->" + stateName + "RelativeTimer), " + mUtils.formatTimeEventName(stateName) + ");\n";
+		}
+		if (!timeEventInitString.equals("")){
+			st.add("timeEventInitString", timeEventInitString);
+		} // end of TimeEvents
+		
 
         return st.render();
     }

@@ -1,6 +1,6 @@
 delimiters "%", "%"
 
-SignalsHeader(className, classNameUpperCase, signalsEnumDefinition, fileDescriptionHeader, completionEventNames) ::= <<
+SignalsHeader(className, classNameUpperCase, signalsEnumDefinition, fileDescriptionHeader, completionEventNames, timeEventEnumString) ::= <<
 %fileDescriptionHeader%
 
 #ifndef %classNameUpperCase%_STATECHART_SIGNALS_H_
@@ -12,10 +12,14 @@ enum %className%_statechart_signals {
 
     /* User defined signals */
     %signalsEnumDefinition%
-
+%if(timeEventEnumString)%
+    /* Timer Event signals */
+    %timeEventEnumString%
+%endif%
+%if(completionEventNames)%
     /* State-Machine internal signals */
-    %completionEventNames :{ completionEvent | %completionEvent% %\n%}%
-
+    %completionEventNames :{ completionEvent | %completionEvent%, %\n%}%
+%endif%
     /* Maximum signal id */
     Q_BAIL_SIG = 0x7FFFFFF-1 /* Internal: terminate region/submachine */,
     MAX_SIG    = 0x7FFFFFF   /* Last possible ID! */
