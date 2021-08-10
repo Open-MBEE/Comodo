@@ -112,13 +112,14 @@ public class FunctionCall implements Comparable<FunctionCall> {
         return str + ")";
     }
 
+    /**
+     * @return a string that gets injected into the implementation argument list.
+     */
     public String getImplementationArgsString(){
-            String str = "";
-            int c = 1;
-            for (String arg : argList){
-                str += ", int32_t arg" + c;
-                c++;
-            }
-            return str;
-    }
+        String str = "";
+        for (int i=0; i < this.argList.length; i++){
+            str += ", int32_t arg" + i;
+        }
+        return str;
+}
 }
