@@ -207,7 +207,7 @@ public class StateMachineSource implements IGenerator {
 		ST st = g.getInstanceOf("StateMachine_State");
 		
 		st.add("stateName", s.getName()); 
-		st.add("stateQualifiedName", mUtils.formatStateName(s.getName(), current.getSmQualifiedName()));
+		st.add("stateQualifiedName", mUtils.formatStateName(mQState.getFullyQualifiedName(s), current.getSmQualifiedName()));
 		st.add("smQualifiedName", current.getSmQualifiedName());
 		st.add("logging", USER_LOGGING);
 		st.add("signalSwitchCase", printSwitchCaseStatements(s));
@@ -300,7 +300,7 @@ public class StateMachineSource implements IGenerator {
 		
 		st_entry.add("triggerEventName", Q_ENTRY_SIG);
 		st_entry.add("logging", USER_LOGGING);
-		st_entry.add("onEntryStateEnum", mUtils.formatStateEnum(s.getName(), current.getSmQualifiedName()));
+		st_entry.add("onEntryStateEnum", mUtils.formatStateEnum(mQState.getFullyQualifiedName(s), current.getSmQualifiedName()));
 		st_entry.add("returnStatement", Q_HANDLED);
 		st_exit.add("triggerEventName", Q_EXIT_SIG);
 		st_exit.add("logging", USER_LOGGING);
@@ -322,7 +322,7 @@ public class StateMachineSource implements IGenerator {
 		BasicEList<Pseudostate> historiyList = mQState.getAllParentHistoryNodes(s);
 		if (!historiyList.isEmpty()){
 			st_entry.add("historyList", historiyList);
-			st_entry.add("stateQualifiedName", mUtils.formatStateName(s.getName(), current.getSmQualifiedName()));
+			st_entry.add("stateQualifiedName", mUtils.formatStateName(mQState.getFullyQualifiedName(s), current.getSmQualifiedName()));
 		}
 		// Handling of relative TimeEvents
 		String timeEventDuration = mQState.getFirstTimeEventDurationString(s);
@@ -591,7 +591,7 @@ public class StateMachineSource implements IGenerator {
 	}
 
 	/**
-	 * Returns the QPC-specific return statement for a transition to stateName
+	 * Returns the QPC-specific return statement for a transition to historyStateName.
 	 */
 	public String transitionToHistoryMacro(String historyStateName){
 		if (Objects.equal(historyStateName, "") || historyStateName == null){
