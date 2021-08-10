@@ -36,7 +36,7 @@ public class Utils {
 	}
 
 	public String formatStateName(String stateQualifiedName, String smQualifiedName){
-		return (smQualifiedName + "_" + stateQualifiedName).replaceAll("::", "_");
+		return (smQualifiedName + "_" + stateQualifiedName).replaceAll("::", "_").replaceAll(":", "_");
 	}
     
 	public String formatStateEnum(String stateQualifiedName, String smQualifiedName){

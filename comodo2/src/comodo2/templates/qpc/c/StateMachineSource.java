@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.FinalState;
 import org.eclipse.uml2.uml.Pseudostate;
+import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
@@ -121,7 +122,7 @@ public class StateMachineSource implements IGenerator {
 
 		str.append(printStateMachineDefinitions(current.getSmQualifiedName(), sm));
 
-		str.append(printInitialState(sm));
+		str.append(printInitialTransition(sm));
 
 		str.append(exploreAllStates(sm));
 		
@@ -187,15 +188,51 @@ public class StateMachineSource implements IGenerator {
 	 * Transforms a state and all its sub-states into QPC C code
 	 */
 	public CharSequence exploreState(final State s) {
+		
+		if (s.isComposite()){
+			return exploreCompositeState(s);
+		} else if (s.isSimple()) {
+			return printState(s);
+		} else {
+			throw new RuntimeException("Error transforming state \"" + s.getName() + "\". Not simple nor composite.");
+		}
+	}
+
+	/**
+	 * Explore a composite state.
+	 */
+	public CharSequence exploreCompositeState(final State s) {
+		if (s.isOrthogonal()){
+			return exploreOrthogonalState(s);
+		} else if (s.isComposite()){
+			String full_state_string = "";
+			full_state_string += printState(s);
+			for (State substate : mQState.getAllDirectSubstates(s)){
+				full_state_string += exploreState(substate);
+			}
+			return full_state_string;
+		} else {
+			throw new RuntimeException("Error transforming state \"" + s.getName() + "\". Thought to be composite.");
+		}
+	}
+
+	/**
+	 * Explore an orthogonal's state regions.
+	 */
+	public CharSequence exploreOrthogonalState(final State s) {
 		String full_state_string = "";
 
 		full_state_string += printState(s);
 
-		if (s.isComposite()){
-			for (State substate : mQState.getAllDirectSubstates(s)){
-				full_state_string += exploreState(substate);
+		for (Region r : Iterables.<Region>filter(s.allOwnedElements(), Region.class)){
+
+			for(final State substate : Iterables.<State>filter(r.allOwnedElements(), State.class)) {
+				if (Objects.equal(substate.getOwner(), r)) {
+					full_state_string += exploreState(substate);
+				}
 			}
 		}
+
 		return full_state_string;
 	}
 
@@ -215,7 +252,7 @@ public class StateMachineSource implements IGenerator {
 		if (mQState.isTopState(s)){
 			st.add("superState", Q_TOP_STATE);
 		} else {
-			st.add("superState", current.getSmQualifiedName() + "_" + mQState.getParentState(s).getName());
+			st.add("superState", mUtils.formatStateName(mQState.getFullyQualifiedName(mQState.getParentState(s)), current.getSmQualifiedName()));
 		}
 
 		return st.render();
@@ -277,7 +314,7 @@ public class StateMachineSource implements IGenerator {
 
 		try { 
 			// If the initial node points to a pseudostate (like a choice node), this will throw a ClassCastException
-			st_init.add("returnStatement", transitionToStateMacro(mQState.getInitialSubstateName(s))); 
+			st_init.add("returnStatement", transitionToStateMacro(mQState.getInitialSubstate(s))); 
 		} catch (ClassCastException e){
 			// We know that we need to printChoices on the first transition instead
 			st_init.add("action", printChoices(mQState.getInitialSubstateTransition(s)));
@@ -292,8 +329,6 @@ public class StateMachineSource implements IGenerator {
 	 * TimeEvents, and other types of state-specific things.
 	 */
 	public CharSequence printActions(final State s) {
-		String str = "";
-
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st_entry = g.getInstanceOf("StateMachine_SwitchStatement");
 		ST st_exit = g.getInstanceOf("StateMachine_SwitchStatement");
@@ -333,10 +368,7 @@ public class StateMachineSource implements IGenerator {
 			st_exit.add("disarmTimeEvent", true);
 		}
 
-		str += st_entry.render();
-		str += st_exit.render();
-
-		return str;
+		return st_entry.render() + st_exit.render();
 	}
 
 	/**
@@ -344,7 +376,7 @@ public class StateMachineSource implements IGenerator {
 	 * as switch-case statements.
 	 */
 	public CharSequence printTransitions(final State s) {
-		String str = "";
+		StringConcatenation str = new StringConcatenation();
 
 		TreeSet<Transition> sortedTrans = new TreeSet<Transition>(new TransitionComparator());
 		for (final Transition t : s.getOutgoings()) {
@@ -356,7 +388,7 @@ public class StateMachineSource implements IGenerator {
 				mQState.getStateName(s) + 
 				" has no trigger event and no guard, skipped since could introduce infinite loop!");
 			} else {
-				str += printTransition(t);
+				str.append(printTransition(t));
 				registerEvent(t);
 			}
 		}
@@ -366,7 +398,7 @@ public class StateMachineSource implements IGenerator {
 	/**
 	 * @return Code string for the switch-case of transition t.
 	 */
-	public String printTransition(final Transition t){
+	public CharSequence printTransition(final Transition t){
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st_tran = g.getInstanceOf("StateMachine_SwitchStatement");
 		st_tran.add("logging", USER_LOGGING);
@@ -534,13 +566,13 @@ public class StateMachineSource implements IGenerator {
 	/**
 	 * Prints the initial transition of a State machine
 	 */
-	public CharSequence printInitialState(final StateMachine sm) {
+	public CharSequence printInitialTransition(final StateMachine sm) {
 
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st = g.getInstanceOf("StateMachine_InitialState");
 
 		st.add("smQualifiedName", current.getSmQualifiedName());
-		st.add("returnStatement", transitionToStateMacro(mQStateMachine.getInitialStateName(sm)));
+		st.add("returnStatement", transitionToStateMacro(mQStateMachine.getInitialState(sm)));
 
 		return st.render();
 	}
@@ -550,27 +582,28 @@ public class StateMachineSource implements IGenerator {
 	 * This depends on the type of the targeted vertex.
 	 */
 	public String getReturnStatement(Transition t) {
-		String targetName = mQTransition.getTargetName(t);
-		
+
 		// Internal transition
 		if (mQTransition.isInternal(t)) {
 			return Q_HANDLED + "/*internal transition*/";
 		} 
 		// History pseudostate
 		else if (mQTransition.pointsToHistoryPseudostate(t)){
-			return transitionToHistoryMacro(targetName);
+			// the history pseudostate carries the name of the property
+			return transitionToHistoryMacro(mQTransition.getTargetName(t));
 		} 
 		// Entry/Exit pseudostate
 		else if (mQTransition.pointsToEntryOrExitPseudostate(t)) {
 			if (mQTransition.getEntryOrExitTargetName(t).equals("")){
-				mLogger.error("Entry/Exit pseudostate points to unnamed pseudostate (Outbound from state \"" + t.getSource().getName() + "\"). This is likely caused by an unsupported pattern (e.g. points to choice node)." +
-								" Generated code will have a malformed return statement.");
+				mLogger.error("Entry/Exit pseudostate points to unnamed pseudostate (Outbound from state \"" + t.getSource().getName() + "\"). This is likely caused by an unsupported pattern (e.g. points to choice node).");
+				return "NULL; // NOT GENERATED: Malformed Entry/Exit pseudostate";
 			}
-			return transitionToStateMacro(t.getTarget().getOutgoings().get(0).getTarget().getName());
+			// Most likely points to a regular state
+			return getReturnStatement(t.getTarget().getOutgoings().get(0));
 		}
 		// Regular state
 		else if (t.getTarget() instanceof State){
-			return transitionToStateMacro(targetName);
+			return transitionToStateMacro((State) t.getTarget());
 		} 
 		// Unsupported pattern?
 		else {
@@ -582,12 +615,11 @@ public class StateMachineSource implements IGenerator {
 	/**
 	 * Returns the QPC-specific return statement for a transition to stateName
 	 */
-	public String transitionToStateMacro(String stateName){
-		if (Objects.equal(stateName, "") || stateName == null){
-			
+	public String transitionToStateMacro(State s){
+		if (Objects.equal(s.getName(), "")){
 			return null;
 		}
-		return Q_TRAN + "(&" + current.getSmQualifiedName() + "_" + stateName + ")";
+		return Q_TRAN + "(&" + mUtils.formatStateName(mQState.getFullyQualifiedName(s), current.getSmQualifiedName()) + ")";
 	}
 
 	/**

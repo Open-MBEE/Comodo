@@ -65,6 +65,28 @@ public class QStateMachine {
 	}
 
 	/**
+	 * This method looks for the initial state of a State Machine.
+	 * It takes the "initial" pseudo-state (kind == "initial")
+	 * at the level of the SM (container.owner == sm)
+	 * and returns the destination state of the associated
+	 * transition.
+	 * @param sm State Machine
+	 * @return The initial state instance if it exists, null otherwise.
+	 */
+	public State getInitialState(final StateMachine sm) {
+		for (final Pseudostate ps : Iterables.<Pseudostate>filter(sm.allOwnedElements(), Pseudostate.class)) {
+			if ((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
+					Objects.equal(ps.getContainer().getOwner(), sm)) && 
+					(ps.getOutgoings().size() == 1))) {
+				if (ps.getOutgoings().get(0).getTarget() != null) {
+					return (State)ps.getOutgoings().get(0).getTarget();
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * This function returns all states contained in the
 	 * given state machine.
 	 * 

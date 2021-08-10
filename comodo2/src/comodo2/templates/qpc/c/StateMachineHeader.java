@@ -1,7 +1,7 @@
 package comodo2.templates.qpc.c;
 
 import javax.inject.Inject;
-
+import java.util.TreeSet;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -14,6 +14,7 @@ import org.stringtemplate.v4.STGroupFile;
 
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
+import comodo2.templates.qpc.Utils;
 import comodo2.templates.qpc.model.CurrentGeneration;
 import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
@@ -22,6 +23,9 @@ public class StateMachineHeader implements IGenerator {
 	
 	@Inject
 	private QClass mQClass;
+
+	@Inject
+	private Utils mUtils;
 
 	@Inject
 	private QStateMachine mQStateMachine;
@@ -67,9 +71,15 @@ public class StateMachineHeader implements IGenerator {
 		st.add("smQualifiedName", current.getSmQualifiedName());
 		st.add("smQualifiedNameUpperCase", current.getSmQualifiedName().toUpperCase());
 
+		// retrieve states qualified name and format them
+		TreeSet<String> statesList = new TreeSet<String>();
+		for (String stateQfName : mQStateMachine.getAllStatesQualifiedName(sm)){
+			statesList.add(mUtils.formatStateName(stateQfName, current.getSmQualifiedName()));
+		}
+
 		// StringTemplate is able to run a forEach on lists, and get the "name" attribute with getName()
 		// which is defined for a State element. See https://github.com/antlr/stringtemplate4/blob/master/doc/templates.md
-		st.add("statesList", mQStateMachine.getAllStatesSorted(sm));
+		st.add("statesList", statesList);
 		st.add("historyPseudostatesList", mQStateMachine.getAllHistoryPseudostates(sm));
 		st.add("timeEventList", mQStateMachine.getAllStatesWithTimeEvents(sm));
 
