@@ -394,4 +394,30 @@ public class QState {
 		}
 		return null;
 	}
+
+	/**
+	 * Returns the orthogonal region (belonging to an orthogonal state) that State s
+	 * is in, if any. If s in not within any orthogonal region, returns null.
+	 */
+	public Region getParentOrthogonalRegion(final State s) {
+
+		Region parent_region = getParentRegion(s);
+		State parent_state = null;
+
+		if (parent_region == null) {
+			return null;
+		}
+
+		while (parent_region!=null){
+			parent_state = mQRegion.getParentState(parent_region);
+			if (parent_state==null){
+				return null;
+			}
+			if (parent_state.isOrthogonal()){
+				return parent_region;
+			}
+			parent_region = getParentRegion(parent_state);
+		}
+		return null;
+	}
 }

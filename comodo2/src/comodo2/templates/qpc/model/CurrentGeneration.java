@@ -14,6 +14,7 @@ public class CurrentGeneration {
 	private Integer finalStateCounter;
 	private Integer unNamedStateCounter;
 	private Integer historyCounter;
+	private Integer regionCounter;
     
     private TreeSet<String> signalEventsNameset;
 
@@ -24,6 +25,7 @@ public class CurrentGeneration {
         this.finalStateCounter = 0;
         this.unNamedStateCounter = 0;
         this.historyCounter = 0;
+        this.regionCounter = 1;
         this.signalEventsNameset = new TreeSet<String>();
     }
 
@@ -33,6 +35,14 @@ public class CurrentGeneration {
 
     public String getSmName() {
         return smName;
+    }
+
+
+    /**
+     * Returns AND increment counter.
+     */
+    public Integer getRegionCounter() {
+        return regionCounter++;
     }
 
     /**

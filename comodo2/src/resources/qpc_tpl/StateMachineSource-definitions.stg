@@ -1,6 +1,13 @@
 delimiters "%", "%"
 
-StateMachineSourceDefinitions(smName, smNameUpperCase, timeEventInitString) ::= <<
+StateMachineSourceDefinitions(smName, smNameUpperCase, timeEventInitString, orthogonalRegions) ::= <<
+
+%if(orthogonalRegions)%
+// Orthogonal regions initialized here
+%orthogonalRegions :{ region |
+%region.qualifiedName% %region.qualifiedName%_inst;%\n%}%
+%endif%
+
 
 /**
  * %smName% Constructor
@@ -17,9 +24,15 @@ StateMachineSourceDefinitions(smName, smNameUpperCase, timeEventInitString) ::= 
     }
     %smName%_impl_set_qactive(me->impl, me->active);  // give impl access to parent QActive
 
-%if(timeEventInitString)%    
+%if(timeEventInitString)%
     // Timer events initialized here
     %timeEventInitString%
+%endif%
+%if(orthogonalRegions)%
+    // Orthogonal regions initialized here
+%orthogonalRegions :{ region |
+    me->%region.name% = &%region.qualifiedName%_inst;
+    (void)%region.qualifiedName%_constructor(me->%region.name%, me->impl, me->active, me);%\n%}%
 %endif%
 
     // State is initially at TOP

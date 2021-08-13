@@ -43,6 +43,10 @@ public class Utils {
 		return formatStateName(stateQualifiedName, smQualifiedName).toUpperCase();
 	}
     
+	public String formatRegionName(String regionQualifiedName){
+		return regionQualifiedName.replaceAll("::", "_").replaceAll(":", "_");
+	}
+
     public String checkTrailingSemicolon(String str) {
 		return str.endsWith(";") ? str : str + ";";
 	}

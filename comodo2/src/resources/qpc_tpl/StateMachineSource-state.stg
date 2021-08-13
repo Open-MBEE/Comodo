@@ -14,12 +14,12 @@ QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvt const *e) {
 >>
 
 
-StateMachine_State(stateQualifiedName, smQualifiedName, stateName, signalSwitchCase, superState, logging) ::= <<
+StateMachine_State(stateQualifiedName, activeObject, stateName, signalSwitchCase, superState, logging) ::= <<
 
 /**
  * %stateName% state definition
  */
-QState %stateQualifiedName% (%smQualifiedName% *me, QEvt const *e) {
+QState %stateQualifiedName% (%activeObject% *me, QEvt const *e) {
 %if(logging)%
     char stateName[128];
     strncpy(stateName, me->objName, 128);
@@ -37,7 +37,9 @@ QState %stateQualifiedName% (%smQualifiedName% *me, QEvt const *e) {
 >>
 
 
-StateMachine_SwitchStatement(triggerEventName, action, returnStatement, onEntryStateEnum, historyList, stateQualifiedName, timerDuration, disarmTimeEvent, stateName, logging) ::= <<
+StateMachine_SwitchStatement(triggerEventName, action, returnStatement, 
+                            onEntryStateEnum, historyList, stateQualifiedName, timerDuration, disarmTimeEvent, stateName, 
+                            entryOrthogonalStateWrapper, exitOrthogonalStateWrapper, regionDispatchList, logging) ::= <<
 case %triggerEventName%:
 %if(onEntryStateEnum)%
     me->myState = %onEntryStateEnum%;
@@ -55,11 +57,25 @@ case %triggerEventName%:
     strncat(logMsg, " %triggerEventName%", 256-strlen(logMsg)-1/*null-char*/);
     LogEvent_log(logMsg);
 %endif%
+%if(entryOrthogonalStateWrapper)%
+    %entryOrthogonalStateWrapper.regions :{ region | QF_ACTIVE_INIT_((QHsm *)(me->%region.name%), e);%\n%}%
+%endif%
+%if(exitOrthogonalStateWrapper)%
+    %exitOrthogonalStateWrapper.regions :{ 
+    region | QF_ACTIVE_DISPATCH_((QHsm *)(me->%region.name%),
+                            &(me->%exitOrthogonalStateWrapper.bailEvent%));
+%exitOrthogonalStateWrapper.stateQualifiedName%_%region.name%_reinit(me->%region.name%);%\n%}%
+%endif%
+%if(regionDispatchList)%
+    %regionDispatchList :{ regionName | QF_ACTIVE_DISPATCH_((QHsm *)(me->%regionName%), e);%\n%}%
+%endif%
     %action%
     return %returnStatement%;
 
 
 >>
+
+
 
 StateMachine_IfStatement(guard, action, returnStatement, isElseStatement, logging) ::= <<
 %if(isElseStatement)%
@@ -88,6 +104,6 @@ if (%guard%){
 FinalTransitionAction(smQualifiedNameUpperCase, completionSig) ::= <<
 
 me->%smQualifiedNameUpperCase%_COMPLETION_EVENT_.completion_evt.super.sig = %completionSig%;
-me->%smQualifiedNameUpperCase%_COMPLETION_EVENT_.completion_evt.substate = null;  // Comodo functionality not implemented
+me->%smQualifiedNameUpperCase%_COMPLETION_EVENT_.completion_evt.substate = NULL;  // Comodo functionality not implemented
 QF_publish_(&(me->%smQualifiedNameUpperCase%_COMPLETION_EVENT_.base_evt));
 >>

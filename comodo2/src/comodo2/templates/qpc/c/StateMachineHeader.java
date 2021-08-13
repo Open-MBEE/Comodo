@@ -1,10 +1,13 @@
 package comodo2.templates.qpc.c;
 
 import javax.inject.Inject;
-import java.util.TreeSet;
+
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.uml2.uml.Region;
+import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
@@ -13,9 +16,13 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
 import comodo2.queries.QClass;
+import comodo2.queries.QRegion;
+import comodo2.queries.QState;
 import comodo2.queries.QStateMachine;
 import comodo2.templates.qpc.Utils;
 import comodo2.templates.qpc.model.CurrentGeneration;
+import comodo2.templates.qpc.model.OrthogonalStateWrapper;
+import comodo2.templates.qpc.model.RegionWrapper;
 import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 
@@ -23,6 +30,12 @@ public class StateMachineHeader implements IGenerator {
 	
 	@Inject
 	private QClass mQClass;
+
+	@Inject
+	private QState mQState;
+
+	@Inject
+	private QRegion mQRegion;
 
 	@Inject
 	private Utils mUtils;
@@ -72,18 +85,45 @@ public class StateMachineHeader implements IGenerator {
 		st.add("smQualifiedNameUpperCase", current.getSmQualifiedName().toUpperCase());
 
 		// retrieve states qualified name and format them
-		TreeSet<String> statesList = new TreeSet<String>();
-		for (String stateQfName : mQStateMachine.getAllStatesQualifiedName(sm)){
-			statesList.add(mUtils.formatStateName(stateQfName, current.getSmQualifiedName()));
+		BasicEList<String> statesList = new BasicEList<String>();
+		BasicEList<String> activeObjectList = new BasicEList<String>();
+		for (State s : mQStateMachine.getAllStates(sm)){
+			statesList.add(mUtils.formatStateName(mQState.getFullyQualifiedName(s), current.getSmQualifiedName()));
+			activeObjectList.add(getActiveObjectName(s));
 		}
 
-		// StringTemplate is able to run a forEach on lists, and get the "name" attribute with getName()
-		// which is defined for a State element. See https://github.com/antlr/stringtemplate4/blob/master/doc/templates.md
+		// Orthogonal regions definitions
+		BasicEList<RegionWrapper> orthogonalRegions = new BasicEList<RegionWrapper>();
+		for (State s : mQStateMachine.getAllOrthogonalStates(sm)){
+			OrthogonalStateWrapper orthogonalStateWrapper = new OrthogonalStateWrapper(s, current);
+			orthogonalRegions.addAll(orthogonalStateWrapper.getWrappedRegions());
+		}
+		if (!orthogonalRegions.isEmpty()){
+			st.add("orthogonalRegions", orthogonalRegions);
+		} // end of orthogonal regions definitions
+
+
 		st.add("statesList", statesList);
+		st.add("activeObjectList", activeObjectList);
 		st.add("historyPseudostatesList", mQStateMachine.getAllHistoryPseudostates(sm));
 		st.add("timeEventList", mQStateMachine.getAllStatesWithTimeEvents(sm));
 
         return st.render();
 	}
 
+	/**
+	 * This varies based on whether the state is part of an orthogonal region or not.
+	 * If part of an orthogonal region, the ActiveObject will be the one of the region.
+	 * If not, the ActiveObject will be the one of the state machine.
+	 * @param s State
+	 * @return name of the ActiveObject that this state definition takes as an input.
+	 */
+	public String getActiveObjectName(final State s){
+		Region r = mQState.getParentOrthogonalRegion(s);
+		if (r!=null){
+			return mUtils.formatRegionName(mQRegion.getFullyQualifiedName(r));
+		} else {
+			return current.getSmQualifiedName();
+		}
+	}
 }

@@ -4,16 +4,21 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import comodo2.engine.Main;
 import comodo2.queries.QClass;
+import comodo2.queries.QRegion;
 import comodo2.queries.QState;
 import comodo2.queries.QStateMachine;
 import comodo2.queries.QTransition;
 import comodo2.templates.qpc.Utils;
 import comodo2.templates.qpc.model.CurrentGeneration;
+import comodo2.templates.qpc.model.OrthogonalStateWrapper;
+import comodo2.templates.qpc.model.RegionWrapper;
 import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 import comodo2.utils.StateComparator;
 import comodo2.utils.TransitionComparator;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeSet;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
@@ -43,6 +48,9 @@ public class StateMachineSource implements IGenerator {
 	
 	@Inject
 	private QState mQState;
+
+	@Inject
+	private QRegion mQRegion;
 	
 	@Inject
 	private QTransition mQTransition;
@@ -67,19 +75,20 @@ public class StateMachineSource implements IGenerator {
 
 	private boolean USER_LOGGING = false;
 	
-	private final static String Q_HANDLED = "Q_HANDLED()";
-	private final static String Q_TRAN = "Q_TRAN";
-	private final static String Q_INIT_SIG = "Q_INIT_SIG";
-	private final static String Q_ENTRY_SIG = "Q_ENTRY_SIG";
-	private final static String Q_EXIT_SIG = "Q_EXIT_SIG";
-	private final static String Q_TOP_STATE = "QHsm_top";
+	private static final String Q_HANDLED = "Q_HANDLED()";
+	private static final String Q_TRAN = "Q_TRAN";
+	private static final String Q_INIT_SIG = "Q_INIT_SIG";
+	private static final String Q_ENTRY_SIG = "Q_ENTRY_SIG";
+	private static final String Q_EXIT_SIG = "Q_EXIT_SIG";
+	private static final String Q_BAIL_SIG = "Q_BAIL_SIG";
+	private static final String Q_TOP_STATE = "QHsm_top";
 
 	/* ################################ */
 
 
 	/**
 	 * Transform UML State Machine associated to a class (classifier behavior)
-	 * into a Quantum Framework XML file for the Quantum Modeler.
+	 * into a Quantum Framework C source file.
 	 * 
 	 * The UML Class should:
 	 * - be inside a UML Package with stereotype cmdoModule
@@ -140,6 +149,7 @@ public class StateMachineSource implements IGenerator {
 	 * on unnamed elements. 
 	 * - unnamed states are renamed with a unique name
 	 * - unnamed history pseudostates are renamed with a unique name.
+	 * - unnamed orthogonal regions are renamed with a unique name.
 	 */
 	public void preprocessStateMachine(final StateMachine sm, CurrentGeneration current) {
 		// Loop through all states and rename unnamed states (special name for final states).
@@ -159,6 +169,14 @@ public class StateMachineSource implements IGenerator {
 				if (ps.getName().equals("")){
 					String psName = mQState.getParentState(ps).getName() + mQState.getHistoryTypeName(ps) + "History" + current.getHistoryCounter();
 					ps.setName(psName); // we could remove the counter if we knew states had a unique name.
+				}
+			}
+		}
+		// Rename unnamed orthogonal regions
+		for (Region r : Iterables.<Region>filter(sm.allOwnedElements(), Region.class)){
+			if (mQRegion.getParentState(r)!=null && mQRegion.getParentState(r).isOrthogonal()){
+				if (Objects.equal(r.getName(), "")){
+					r.setName("region" + current.getRegionCounter());
 				}
 			}
 		}
@@ -205,35 +223,46 @@ public class StateMachineSource implements IGenerator {
 		if (s.isOrthogonal()){
 			return exploreOrthogonalState(s);
 		} else if (s.isComposite()){
-			String full_state_string = "";
-			full_state_string += printState(s);
+			StringConcatenation compositeStateString = new StringConcatenation();
+			compositeStateString.append(printState(s));
 			for (State substate : mQState.getAllDirectSubstates(s)){
-				full_state_string += exploreState(substate);
+				compositeStateString.append(exploreState(substate));
 			}
-			return full_state_string;
+			return compositeStateString;
 		} else {
 			throw new RuntimeException("Error transforming state \"" + s.getName() + "\". Thought to be composite.");
 		}
 	}
 
 	/**
-	 * Explore an orthogonal's state regions.
+	 * Explore all regions of an orthogonal state.
 	 */
 	public CharSequence exploreOrthogonalState(final State s) {
-		String full_state_string = "";
+		StringConcatenation orthogonalStateString = new StringConcatenation();
 
-		full_state_string += printState(s);
+		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-orthogonalState.stg");
 
-		for (Region r : Iterables.<Region>filter(s.allOwnedElements(), Region.class)){
+		orthogonalStateString.append(printState(s));
+
+		for (Region r : Iterables.<Region>filter(s.allOwnedElements(), Region.class)) {
+			ST st_region = g.getInstanceOf("OrthogonalRegionMethodDefinitions");
+
+			st_region.add("logging", USER_LOGGING);
+			st_region.add("regionQualifiedName", mUtils.formatRegionName(mQRegion.getFullyQualifiedName(r)));
+			st_region.add("smQualifiedName", current.getSmQualifiedName());
+			st_region.add("smQualifiedNameUppercase", current.getSmQualifiedName().toUpperCase());
+			st_region.add("initialState", transitionToStateMacro(mQRegion.getInitialState(r)));
+
+			orthogonalStateString.append(st_region.render());
 
 			for(final State substate : Iterables.<State>filter(r.allOwnedElements(), State.class)) {
 				if (Objects.equal(substate.getOwner(), r)) {
-					full_state_string += exploreState(substate);
+					orthogonalStateString.append( exploreState(substate) );
 				}
 			}
 		}
 
-		return full_state_string;
+		return orthogonalStateString;
 	}
 
 	/**
@@ -242,13 +271,14 @@ public class StateMachineSource implements IGenerator {
 	public CharSequence printState(final State s) {
 		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
 		ST st = g.getInstanceOf("StateMachine_State");
-		
+
 		st.add("stateName", s.getName()); 
 		st.add("stateQualifiedName", mUtils.formatStateName(mQState.getFullyQualifiedName(s), current.getSmQualifiedName()));
-		st.add("smQualifiedName", current.getSmQualifiedName());
 		st.add("logging", USER_LOGGING);
+		st.add("activeObject", getActiveObjectName(s));
 		st.add("signalSwitchCase", printSwitchCaseStatements(s));
 
+		// Default case if switch check fails
 		if (mQState.isTopState(s)){
 			st.add("superState", Q_TOP_STATE);
 		} else {
@@ -260,18 +290,30 @@ public class StateMachineSource implements IGenerator {
 
 	/**
 	 * Prints all switch/cases of a state.
-	 * That includes Entry - Exit actions, transitions, ...
+	 * That includes Entry - Exit actions, transitions, and special cases based on the state type.
 	 */
 	public CharSequence printSwitchCaseStatements(final State s) {
 		StringConcatenation str = new StringConcatenation();
 		
-		if (s.isComposite()) {
+		// Orthogonal state. This handles the passing of signals to submachines.
+		if (s.isOrthogonal()){
+			str.append(printOrthogonalSignalDispatches(s));
+		} 
+		else if (s.isComposite()) {
+			/*  Only for composite states that are not orthogonal. This is because
+				orthogonal states have mutiple initial substates, which are dealt with differently. */
 			if (mQState.hasInitialSubstate(s)){
 				str.append(printInitialSubstateCase(s));
 			}
-		} else if (mQState.isFinal(s)) {
+		} 
+		// Final state
+		if (mQState.isFinal(s)) {
 			str.append(printFinalStateCase(s));
 		}
+		// If s is contained within an orthogonal state
+		if (mQState.getParentOrthogonalRegion(s)!=null){
+			str.append(printBailingCase(s, mQState.getParentOrthogonalRegion(s)));
+		} 
 
 		str.append(printActions(s));
 
@@ -324,6 +366,20 @@ public class StateMachineSource implements IGenerator {
 	}
 
 	/**
+	 * Returns the special case for bailing out of an orthogonal state.
+	 * This should only be printed when the state is part of an orthogonal state.
+	 */
+	public String printBailingCase(final State s, final Region parentOrthogonalRegion){
+		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
+		ST st_final = g.getInstanceOf("StateMachine_SwitchStatement");
+		
+		String stateHandlerFunction = mUtils.formatStateName(mQRegion.getFullyQualifiedName(parentOrthogonalRegion), current.getSmQualifiedName());
+		st_final.add("triggerEventName", Q_BAIL_SIG);
+		st_final.add("returnStatement", Q_TRAN + "(&" + stateHandlerFunction + "_final)");
+		return st_final.render();
+	}
+
+	/**
 	 * Prints the entry and exit (actions) cases of a state.
 	 * Because of QF architecture, this also implies dealing with history pseudostates,
 	 * TimeEvents, and other types of state-specific things.
@@ -366,6 +422,12 @@ public class StateMachineSource implements IGenerator {
 			st_entry.add("timerDuration", timeEventDuration);
 			st_exit.add("stateName", s.getName());
 			st_exit.add("disarmTimeEvent", true);
+		}
+		// Handling of orthogonal states. These need to pass along signals to their regions etc..
+		if (s.isOrthogonal()){
+			OrthogonalStateWrapper orthogonalStateWrapper = new OrthogonalStateWrapper(s, current);
+			st_entry.add("entryOrthogonalStateWrapper", orthogonalStateWrapper);
+			st_exit.add("exitOrthogonalStateWrapper", orthogonalStateWrapper);
 		}
 
 		return st_entry.render() + st_exit.render();
@@ -444,7 +506,9 @@ public class StateMachineSource implements IGenerator {
 		} // end of if-else
 		
 		// handles the cases where the transition points to a final state
-		actionStr += appendFinalStateAction(t); 
+		if (t.getTarget() instanceof FinalState){
+			actionStr += appendFinalStateAction(t); 
+		} // end of final state handling
 		
 		st_tran.add("action", actionStr);
 		st_tran.add("returnStatement", returnStr);
@@ -496,8 +560,11 @@ public class StateMachineSource implements IGenerator {
 				String out_actionName = mQTransition.getFirstActionName(outgoing);
 
 				String actionStr = mUtils.formatActionName(out_actionName, current.getSmQualifiedName(), current.getClassName());
+				
 				// handles the cases where the transition points to a final state
-				actionStr += appendFinalStateAction(outgoing);
+				if (outgoing.getTarget() instanceof FinalState){
+					actionStr += appendFinalStateAction(outgoing);
+				}
 				
 				ST st_if = g.getInstanceOf("StateMachine_IfStatement");
 				st_if.add("isElseStatement", Objects.equal(out_guardName, "else"));
@@ -520,6 +587,32 @@ public class StateMachineSource implements IGenerator {
 
 		return st_if_root.render();
 	}
+
+
+	/**
+	 * Returns the special cases for an orthogonal state, that will dispatch the signals it receives
+	 * to its children regions that need to handle the signal.
+	 */
+	public CharSequence printOrthogonalSignalDispatches(final State s){
+		STGroup g = new STGroupFile("resources/qpc_tpl/StateMachineSource-state.stg");
+		StringConcatenation str = new StringConcatenation();
+		
+		OrthogonalStateWrapper orthogonalStateWrapper = new OrthogonalStateWrapper(s, current);
+		HashMap<String, ArrayList<String>> signalDispatchMap = getSignalDispatches(orthogonalStateWrapper);
+
+		for (String triggerEventName : signalDispatchMap.keySet()) {
+			ST st_final = g.getInstanceOf("StateMachine_SwitchStatement");
+			
+			st_final.add("triggerEventName", triggerEventName);
+			st_final.add("returnStatement", Q_HANDLED);
+			st_final.add("regionDispatchList", signalDispatchMap.get(triggerEventName));
+
+			str.append(st_final.render());
+		}
+
+		return str.toString();
+	}
+
 
 	/**
 	 * IF Transition t points to a FinalState, appends to the "action" field of st_original 
@@ -678,8 +771,71 @@ public class StateMachineSource implements IGenerator {
 		if (!timeEventInitString.equals("")){
 			st.add("timeEventInitString", timeEventInitString);
 		} // end of TimeEvents
-		
+
+		// Orthogonal regions definitions
+		BasicEList<RegionWrapper> orthogonalRegions = new BasicEList<RegionWrapper>();
+		for (State s : mQStateMachine.getAllOrthogonalStates(sm)){
+			OrthogonalStateWrapper orthogonalStateWrapper = new OrthogonalStateWrapper(s, current);
+			orthogonalRegions.addAll(orthogonalStateWrapper.getWrappedRegions());
+		}
+		if (!orthogonalRegions.isEmpty()){
+			st.add("orthogonalRegions", orthogonalRegions);
+		}
+		// end of orthogonal regions definitions
 
         return st.render();
+    }
+
+	/**
+	 * This varies based on whether the state is part of an orthogonal region or not.
+	 * If part of an orthogonal region, the ActiveObject will be the one of the region.
+	 * If not, the ActiveObject will be the one of the state machine.
+	 * @param s State
+	 * @return name of the ActiveObject that this state definition takes as an input.
+	 */
+	public String getActiveObjectName(final State s){
+		Region r = mQState.getParentOrthogonalRegion(s);
+		if (r!=null){
+			return mUtils.formatRegionName(mQRegion.getFullyQualifiedName(r));
+		} else {
+			return current.getSmQualifiedName();
+		}
+	}
+
+
+
+
+
+
+	/**
+	 *    /!\  This method should ideally be in the OrthogonalStateWrapper class, but calling mQTransition.getFirstEventName(t)
+	 * from there led to some nullPointerException that I do not fully understand. Will dig into it later,
+	 * and for now this is acceptable.
+	 * This method returns a HashMap of the signals that should get passed through to subregions in an orthogonal state.
+	 */
+	public HashMap<String, ArrayList<String>> getSignalDispatches(OrthogonalStateWrapper orthogonalStateWrapper){
+        HashMap<String, ArrayList<String>> signalDispatches = new HashMap<String, ArrayList<String>>();
+
+        for (Region r : orthogonalStateWrapper.getRegions()){
+            for (Transition t : Iterables.<Transition>filter(r.allOwnedElements(), Transition.class)) {
+                String triggerEvent = null;
+                if (mQTransition.hasSignalEvent(t)){
+                    triggerEvent = mUtils.formatSignalName(mQTransition.getFirstEventName(t), current.getClassName());
+                } else if (mQTransition.hasTimeEvent(t)){
+                    triggerEvent = mUtils.formatTimeEventName(t.getSource().getName());
+                }
+                
+                if (triggerEvent!=null) {
+                    if (signalDispatches.containsKey(triggerEvent)) {
+                        signalDispatches.get(triggerEvent).add(r.getName());
+                    } else {
+                        signalDispatches.put(triggerEvent, new ArrayList<String>());
+                        signalDispatches.get(triggerEvent).add(r.getName());
+                    }
+                    
+                }
+            }
+        }
+        return signalDispatches;
     }
 }

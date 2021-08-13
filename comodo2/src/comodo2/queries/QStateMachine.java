@@ -354,4 +354,21 @@ public class QStateMachine {
 		}
 		return timedStates;
 	}
+
+	/**
+	 * This function returns all states contained in the
+	 * given state machine.
+	 * 
+	 * @param sm State machine.
+	 * @return All states contained in the given state machine.
+	 */
+	public Iterable<State> getAllOrthogonalStates(final StateMachine sm) {
+		BasicEList<State> orthStates = new BasicEList<State>();
+		for (State s: Iterables.<State>filter(sm.allOwnedElements(), State.class)) {
+			if (s.isOrthogonal()){
+				orthStates.add(s);
+			}
+		}
+		return orthStates;
+	}
 }

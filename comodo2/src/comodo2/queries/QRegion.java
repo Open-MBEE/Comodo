@@ -62,6 +62,20 @@ public class QRegion {
 		return "";
 	}
 
+	public State getInitialState(final Region r) {
+		for (final Pseudostate ps : Iterables.<Pseudostate>filter(r.allOwnedElements(), Pseudostate.class)) {
+			if ((ps.getKind() == PseudostateKind.INITIAL_LITERAL) &&
+			    Objects.equal(ps.getContainer().getOwner(), this.getParentState(r)) &&
+				(ps.getOutgoings().size() == 1)) {
+				Vertex v = ps.getOutgoings().get(0).getTarget();
+				if (v != null) {
+					return  (State)v;
+				}
+			}
+		}
+		return null;
+	}
+
 	public boolean isTopState(final Region r) {
 		return Objects.equal(r.getOwner(), r.containingStateMachine());
 	}
