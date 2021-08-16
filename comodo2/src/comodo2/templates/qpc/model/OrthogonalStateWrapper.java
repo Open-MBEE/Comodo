@@ -11,8 +11,8 @@ import comodo2.templates.qpc.Utils;
 
 
 /**
- * This class will just serve as a container structure for multiple variables
- * that describe the current generation of a statemachine.
+ * This class serves as a wrapper for Othrogonal states.
+ * This initializes some variable names and does logic on regions.
  */
 public class OrthogonalStateWrapper {
 
