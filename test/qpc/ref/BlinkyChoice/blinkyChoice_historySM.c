@@ -11,8 +11,8 @@
  *
  * ############### Requirements ###############
  *  Implements: 
- * - https://cae-jama.jpl.nasa.gov/rest/latest/items/724776 
- * - https://cae-jama.jpl.nasa.gov/rest/latest/items/724777 
+ * - https://<traceability-service-hostname>/724776 
+ * - https://<traceability-service-hostname>/724777 
  *
  * ############################################
  *
