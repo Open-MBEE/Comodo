@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_bDKFGf7oEeuunNBPCU_pFQ">
+  <uml:Profile xmi:id="_19_0_3_3040124_1566541415494_672325_13410" name="sysphs_profile" visibility="public" URI="http://www.omg.org/spec/SysPhS/20171215" metamodelReference="_19_0_3_3040124_1566541415529_673730_13411">
+    <eAnnotations xmi:id="_bDJeMv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <contents xmi:type="ecore:EPackage" xmi:id="_bDJeM_7oEeuunNBPCU_pFQ" name="sysphs_profile" nsURI="http://www.omg.org/spec/SysPhS/20171215" nsPrefix="sysphs_profile">
+        <eAnnotations xmi:id="_bDJeNP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/4.0.0/UML">
+          <references xmi:type="uml:Profile" href="MD_Customization_for_SysML.additional_stereotypes.profile.uml#_12_0EAPbeta_be00301_1161869751943_478405_658_convert"/>
+        </eAnnotations>
+        <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJeNf7oEeuunNBPCU_pFQ" name="additional_stereotypes_ExternalModel">
+          <eAnnotations xmi:id="_bDJeNv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+            <references xmi:type="uml:Stereotype" href="MD_Customization_for_SysML.additional_stereotypes.profile.uml#_19_0_3_3040124_1561639293475_777791_13402"/>
+          </eAnnotations>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeN_7oEeuunNBPCU_pFQ" name="base_Element" ordered="false" lowerBound="1">
+            <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Element"/>
+          </eStructuralFeatures>
+          <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJeOf7oEeuunNBPCU_pFQ" name="url" ordered="false" lowerBound="1">
+            <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+          </eStructuralFeatures>
+        </eClassifiers>
+        <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJeO_7oEeuunNBPCU_pFQ" name="PhSConstant">
+          <eAnnotations xmi:id="_bDJePP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="PhSConstant"/>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJePf7oEeuunNBPCU_pFQ" name="base_Property" ordered="false" lowerBound="1">
+            <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Property"/>
+          </eStructuralFeatures>
+        </eClassifiers>
+        <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJeP_7oEeuunNBPCU_pFQ" name="PhSVariable">
+          <eAnnotations xmi:id="_bDJeQP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="PhSVariable"/>
+          <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeQf7oEeuunNBPCU_pFQ" name="base_Property" ordered="false" lowerBound="1">
+            <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Property"/>
+          </eStructuralFeatures>
+          <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJeQ_7oEeuunNBPCU_pFQ" name="isContinuous" ordered="false" lowerBound="1" defaultValueLiteral="true">
+            <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//Boolean"/>
+          </eStructuralFeatures>
+          <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJeRf7oEeuunNBPCU_pFQ" name="isConserved" ordered="false" lowerBound="1" defaultValueLiteral="false">
+            <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//Boolean"/>
+          </eStructuralFeatures>
+          <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJeR_7oEeuunNBPCU_pFQ" name="changeCycle" ordered="false" lowerBound="1" defaultValueLiteral="0.0">
+            <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+          </eStructuralFeatures>
+        </eClassifiers>
+        <eSubpackages xmi:id="_bDJeSf7oEeuunNBPCU_pFQ" name="SysPhSPlatformProfile" nsURI="http://www.omg.org/spec/SysPhS/20171215/SysPhSPlatformProfile" nsPrefix="sysphs_profile.SysPhSPlatformProfile">
+          <eAnnotations xmi:id="_bDJeSv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_19_0_3_3040124_1566541555057_375659_14477"/>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJeS_7oEeuunNBPCU_pFQ" name="ModelicaPort">
+            <eAnnotations xmi:id="_bDJeTP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="ModelicaPort"/>
+            <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJeTf7oEeuunNBPCU_pFQ" name="name" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeT_7oEeuunNBPCU_pFQ" name="base_Port" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Port"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJeUf7oEeuunNBPCU_pFQ" name="SimulinkPort">
+            <eAnnotations xmi:id="_bDJeUv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="SimulinkPort"/>
+            <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJeU_7oEeuunNBPCU_pFQ" name="name" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeVf7oEeuunNBPCU_pFQ" name="base_Port" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Port"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJeV_7oEeuunNBPCU_pFQ" name="MultidimensionalElement">
+            <eAnnotations xmi:id="_bDJeWP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="MultidimensionalElement"/>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeWf7oEeuunNBPCU_pFQ" name="base_MultiplicityElement" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//MultiplicityElement"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeW_7oEeuunNBPCU_pFQ" name="base_Slot" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Slot"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJeXf7oEeuunNBPCU_pFQ" name="dimension" unique="false" lowerBound="1" upperBound="-1">
+              <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//UnlimitedNatural"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJeX_7oEeuunNBPCU_pFQ" name="ModelicaBlock" eSuperTypes="_bDJeNf7oEeuunNBPCU_pFQ">
+            <eAnnotations xmi:id="_bDJeYP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="ModelicaBlock"/>
+            <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJeYf7oEeuunNBPCU_pFQ" name="name" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeY_7oEeuunNBPCU_pFQ" name="base_Class" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJeZv7oEeuunNBPCU_pFQ" name="ModelicaParameter" eSuperTypes="_bDJeO_7oEeuunNBPCU_pFQ">
+            <eAnnotations xmi:id="_bDJeZ_7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="ModelicaParameter"/>
+            <eAnnotations xmi:id="_bDJeaP7oEeuunNBPCU_pFQ" source="duplicates">
+              <contents xmi:type="ecore:EReference" xmi:id="_bDJeaf7oEeuunNBPCU_pFQ" name="base_Property" ordered="false" lowerBound="1">
+                <eAnnotations xmi:id="_bDJeav7oEeuunNBPCU_pFQ" source="redefines" references="_bDJePf7oEeuunNBPCU_pFQ"/>
+                <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Property"/>
+              </contents>
+            </eAnnotations>
+            <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJebP7oEeuunNBPCU_pFQ" name="name" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJebv7oEeuunNBPCU_pFQ" name="value" ordered="false">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//ValueSpecification"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJecf7oEeuunNBPCU_pFQ" name="SimulinkParameter" eSuperTypes="_bDJeO_7oEeuunNBPCU_pFQ">
+            <eAnnotations xmi:id="_bDJecv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="SimulinkParameter"/>
+            <eAnnotations xmi:id="_bDJec_7oEeuunNBPCU_pFQ" source="duplicates">
+              <contents xmi:type="ecore:EReference" xmi:id="_bDJedP7oEeuunNBPCU_pFQ" name="base_Property" ordered="false" lowerBound="1">
+                <eAnnotations xmi:id="_bDJedf7oEeuunNBPCU_pFQ" source="redefines" references="_bDJePf7oEeuunNBPCU_pFQ"/>
+                <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Property"/>
+              </contents>
+            </eAnnotations>
+            <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJed_7oEeuunNBPCU_pFQ" name="name" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeef7oEeuunNBPCU_pFQ" name="value" ordered="false">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//ValueSpecification"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJefP7oEeuunNBPCU_pFQ" name="SimulinkBlock" eSuperTypes="_bDJeNf7oEeuunNBPCU_pFQ">
+            <eAnnotations xmi:id="_bDJeff7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="SimulinkBlock"/>
+            <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDJefv7oEeuunNBPCU_pFQ" name="name" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJegP7oEeuunNBPCU_pFQ" name="base_Class" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+        </eSubpackages>
+        <eSubpackages xmi:id="_bDJeg_7oEeuunNBPCU_pFQ" name="SysPhSExtended" nsURI="http://www.omg.org/spec/SysPhSExtended/20171215" nsPrefix="sysphs_profile.SysPhSExtended">
+          <eAnnotations xmi:id="_bDJehP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_19_0_3_3040124_1566541720369_81908_14482"/>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJehf7oEeuunNBPCU_pFQ" name="InitialValueReference">
+            <eAnnotations xmi:id="_bDJehv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="InitialValueReference"/>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeh_7oEeuunNBPCU_pFQ" name="base_Slot" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Slot"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJeif7oEeuunNBPCU_pFQ" name="propertyPath" ordered="false" lowerBound="1" upperBound="-1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Property"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJei_7oEeuunNBPCU_pFQ" name="SimulationVertex">
+            <eAnnotations xmi:id="_bDJejP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="SimulationVertex"/>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJejf7oEeuunNBPCU_pFQ" name="base_Vertex" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Vertex"/>
+            </eStructuralFeatures>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJej_7oEeuunNBPCU_pFQ" name="transitionPriority" lowerBound="1" upperBound="-1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Transition"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+          <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDJekf7oEeuunNBPCU_pFQ" name="InitialValuesSpecification">
+            <eAnnotations xmi:id="_bDJekv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="InitialValuesSpecification"/>
+            <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDJek_7oEeuunNBPCU_pFQ" name="base_Usage" ordered="false" lowerBound="1">
+              <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Usage"/>
+            </eStructuralFeatures>
+          </eClassifiers>
+        </eSubpackages>
+      </contents>
+    </eAnnotations>
+    <packageImport xmi:id="_19_0_3_3040124_1566541415529_673730_13411">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_packageImport.1">
+      <importedPackage xmi:type="uml:Profile" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147434586638_637562_1900"/>
+    </packageImport>
+    <packageImport xmi:id="_0primitiveTypessysphs_profile">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypessysphs_profile">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_19_0_3_3040124_1566541555057_375659_14477" name="SysPhSPlatformProfile" visibility="public" URI="http://www.omg.org/spec/SysPhS/20171215/SysPhSPlatformProfile">
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="ModelicaPort" name="ModelicaPort" visibility="public">
+        <ownedAttribute xmi:id="ModelicaPort-name" name="name" visibility="public">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ModelicaPort-base_Port" name="base_Port" visibility="private" association="ModelicaPort_Port">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Port"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="ModelicaPort_Port" name="" visibility="public" memberEnd="ModelicaPort-base_Port ModelicaPort_Port-extension_ModelicaPort" navigableOwnedEnd="ModelicaPort_Port-extension_ModelicaPort">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="ModelicaPort_Port-extension_ModelicaPort" name="extension_ModelicaPort" visibility="private" type="ModelicaPort" aggregation="composite" association="ModelicaPort_Port">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_0_1_85c026e_1411680089777_772948_13105" name="" visibility="public"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="SimulinkPort" name="SimulinkPort" visibility="public">
+        <ownedAttribute xmi:id="SimulinkPort-name" name="name" visibility="public">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="SimulinkPort-base_Port" name="base_Port" visibility="private" association="SimulinkPort_Port">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Port"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="SimulinkPort_Port" name="" visibility="public" memberEnd="SimulinkPort-base_Port SimulinkPort_Port-extension_SimulinkPort" navigableOwnedEnd="SimulinkPort_Port-extension_SimulinkPort">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="SimulinkPort_Port-extension_SimulinkPort" name="extension_SimulinkPort" visibility="private" type="SimulinkPort" aggregation="composite" association="SimulinkPort_Port">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_0_1_85c026e_1411680099044_469108_13116" name="" visibility="public"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="MultiplicityElement_MultidimensionalElement" name="" visibility="public" memberEnd="MultidimensionalElement-base_MultiplicityElement MultiplicityElement_MultidimensionalElement-extension_MultidimensionalElement" navigableOwnedEnd="MultiplicityElement_MultidimensionalElement-extension_MultidimensionalElement">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="MultiplicityElement_MultidimensionalElement-extension_MultidimensionalElement" name="extension_MultidimensionalElement" type="MultidimensionalElement" aggregation="composite" association="MultiplicityElement_MultidimensionalElement">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_862784_16" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_748015_17" name="" visibility="public" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="Slot_MultidimensionalElement" name="" visibility="public" memberEnd="MultidimensionalElement-base_Slot Slot_MultidimensionalElement-extension_MultidimensionalElement" navigableOwnedEnd="Slot_MultidimensionalElement-extension_MultidimensionalElement">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="Slot_MultidimensionalElement-extension_MultidimensionalElement" name="extension_MultidimensionalElement" type="MultidimensionalElement" aggregation="composite" association="Slot_MultidimensionalElement">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_512438_5" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_491713_6" name="" visibility="public" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="MultidimensionalElement" name="MultidimensionalElement" visibility="public">
+        <ownedAttribute xmi:id="MultidimensionalElement-base_MultiplicityElement" name="base_MultiplicityElement" association="MultiplicityElement_MultidimensionalElement">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#MultiplicityElement"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_526896_19" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_103612_20" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="MultidimensionalElement-base_Slot" name="base_Slot" association="Slot_MultidimensionalElement">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Slot"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_965889_13" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_550808_14" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="MultidimensionalElement-dimensions" name="dimension" isOrdered="true" isUnique="false">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#UnlimitedNatural"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_164540_15" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="MultidimensionalElement-dimensions-upperValue" name="" visibility="public" value="*"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="ModelicaBlock" name="ModelicaBlock" visibility="public">
+        <generalization xmi:id="_19_0_3_4240184_1568263087318_834947_13420">
+          <general xmi:type="uml:Stereotype" href="MD_Customization_for_SysML.additional_stereotypes.profile.uml#_19_0_3_3040124_1561639293475_777791_13402"/>
+        </generalization>
+        <ownedAttribute xmi:id="ModelicaBlock-name" name="name" visibility="public">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ModelicaBlock-base_Class" name="base_Class" visibility="private" association="ModelicaBlock_Class">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="ModelicaBlock_Class" name="" visibility="public" memberEnd="ModelicaBlock-base_Class ModelicaBlock_Class-extension_ModelicaBlock" navigableOwnedEnd="ModelicaBlock_Class-extension_ModelicaBlock">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="ModelicaBlock_Class-extension_ModelicaBlock" name="extension_ModelicaBlock" visibility="private" type="ModelicaBlock" aggregation="composite" association="ModelicaBlock_Class">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_0_1_85c026e_1411680018925_45383_13055" name="" visibility="public"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="ModelicaParameter" name="ModelicaParameter" visibility="public">
+        <generalization xmi:id="_18_5_1_85c026e_1507061593541_20446_15349" general="PhSConstant"/>
+        <ownedAttribute xmi:id="ModelicaParameter-name" name="name" visibility="public">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ModelicaParameter-value" name="value" visibility="public">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#ValueSpecification"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_5_1_85c026e_1507060758640_746915_15557" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_1_85c026e_1507060758640_457232_15558" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="ModelicaParameter-base_Property" name="base_Property" visibility="private" association="ModelicaParameter_Property">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="ModelicaParameter_Property" name="" visibility="public" memberEnd="ModelicaParameter-base_Property ModelicaParameter_Property-extension_ModelicaParameter" navigableOwnedEnd="ModelicaParameter_Property-extension_ModelicaParameter">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="ModelicaParameter_Property-extension_ModelicaParameter" name="extension_ModelicaParameter" visibility="private" type="ModelicaParameter" aggregation="composite" association="ModelicaParameter_Property">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_0_1_85c026e_1411680055768_773801_13083" name="" visibility="public"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="SimulinkParameter" name="SimulinkParameter" visibility="public">
+        <generalization xmi:id="_18_5_1_85c026e_1507061743049_200680_15368" general="PhSConstant"/>
+        <ownedAttribute xmi:id="SimulinkParameter-name" name="name" visibility="public">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="SimulinkParameter-value" name="value" visibility="public">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#ValueSpecification"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_5_1_85c026e_1507060744374_374825_15549" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_5_1_85c026e_1507060744375_295046_15550" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="SimulinkParameter-base_Property" name="base_Property" visibility="private" association="SimulinkParameter_Property">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="SimulinkParameter_Property" name="" visibility="public" memberEnd="SimulinkParameter-base_Property SimulinkParameter_Property-extension_SimulinkParameter" navigableOwnedEnd="SimulinkParameter_Property-extension_SimulinkParameter">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="SimulinkParameter_Property-extension_SimulinkParameter" name="extension_SimulinkParameter" visibility="private" type="SimulinkParameter" aggregation="composite" association="SimulinkParameter_Property">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_0_1_85c026e_1411680073947_660157_13094" name="" visibility="public"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="SimulinkBlock" name="SimulinkBlock" visibility="public">
+        <generalization xmi:id="_19_0_3_3040124_1566542786810_829517_13410">
+          <general xmi:type="uml:Stereotype" href="MD_Customization_for_SysML.additional_stereotypes.profile.uml#_19_0_3_3040124_1561639293475_777791_13402"/>
+        </generalization>
+        <ownedAttribute xmi:id="SimulinkBlock-name" name="name" visibility="public">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="SimulinkBlock-base_Class" name="base_Class" visibility="private" association="SimulinkBlock_Class">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="SimulinkBlock_Class" name="" visibility="public" memberEnd="SimulinkBlock-base_Class SimulinkBlock_Class-extension_SimulinkBlock" navigableOwnedEnd="SimulinkBlock_Class-extension_SimulinkBlock">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="SimulinkBlock_Class-extension_SimulinkBlock" name="extension_SimulinkBlock" visibility="private" type="SimulinkBlock" aggregation="composite" association="SimulinkBlock_Class">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_0_1_85c026e_1411680036639_942510_13066" name="" visibility="public"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Extension" xmi:id="Property_PhSVariable" name="" visibility="public" memberEnd="PhSVariable-base_Property Property_PhSVariable-extension_PhSVariable" navigableOwnedEnd="Property_PhSVariable-extension_PhSVariable">
+      <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="Property_PhSVariable-extension_PhSVariable" name="extension_PhSVariable" type="PhSVariable" aggregation="composite" association="Property_PhSVariable">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="Property_PhSVariable-extension_PhSVariable-lowerValue" name="" visibility="public"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989178215_307588_5" name="" visibility="public" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="PhSVariable" name="PhSVariable" visibility="public">
+      <ownedAttribute xmi:id="PhSVariable-base_Property" name="base_Property" association="Property_PhSVariable">
+        <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989178215_438414_1" name="" visibility="public" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989178215_919276_2" name="" visibility="public" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="PhSVariable-isContinuous" name="isContinuous">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989178215_460116_7" name="" visibility="public" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989178215_525018_8" name="" visibility="public" value="1"/>
+        <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="PhSVariable-isContinuous-defaultValue" name="" visibility="public" value="true"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="PhSVariable-isConserved" name="isConserved">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989178215_214123_9" name="" visibility="public" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989178215_157251_10" name="" visibility="public" value="1"/>
+        <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="PhSVariable-isConserved-defaultValue" name="" visibility="public"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="PhSVariable-changeCycle" name="changeCycle">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#double"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989178215_454298_11" name="" visibility="public" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989178215_263255_12" name="" visibility="public" value="1"/>
+        <defaultValue xmi:type="uml:LiteralReal" xmi:id="PhSVariable-changeCycle-defaultValue" name="" visibility="public"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Extension" xmi:id="Property_PhSConstant" name="" visibility="public" memberEnd="PhSConstant-base_Property Property_PhSConstant-extension_PhSConstant" navigableOwnedEnd="Property_PhSConstant-extension_PhSConstant">
+      <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="Property_PhSConstant-extension_PhSConstant" name="extension_PhSConstant" visibility="private" type="PhSConstant" aggregation="composite" association="Property_PhSConstant">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="Property_PhSConstant-extension_PhSConstant-lowerValue" name="" visibility="public"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989178215_985515_6" name="" visibility="public" value="1"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="PhSConstant" name="PhSConstant" visibility="public">
+      <ownedAttribute xmi:id="PhSConstant-base_Property" name="base_Property" association="Property_PhSConstant">
+        <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989178215_533942_3" name="" visibility="public" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989178215_714824_4" name="" visibility="public" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_19_0_3_3040124_1566541720369_81908_14482" name="SysPhSExtended" visibility="public" URI="http://www.omg.org/spec/SysPhSExtended/20171215">
+      <packageImport xmi:id="_packageImport.01">
+        <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+      </packageImport>
+      <packageImport xmi:id="_packageImport.11">
+        <importedPackage xmi:type="uml:Profile" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147434586638_637562_1900"/>
+      </packageImport>
+      <packagedElement xmi:type="uml:Extension" xmi:id="SimulationVertex_Vertex" name="" visibility="public" memberEnd="SimulationVertex-base_Vertex SimulationVertex_Vertex-extension_SimulationVertex" navigableOwnedEnd="SimulationVertex_Vertex-extension_SimulationVertex">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="SimulationVertex_Vertex-extension_SimulationVertex" name="extension_SimulationVertex" type="SimulationVertex" aggregation="composite" association="SimulationVertex_Vertex">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="SimulationVertex_Vertex-extension_SimulationVertex-lowerValue" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_146423_4" name="" visibility="public" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="InitialValueReference" name="InitialValueReference" visibility="public">
+        <ownedAttribute xmi:id="InitialValueReference-base_Slot" name="base_Slot" association="InitialValueReference_Slot">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Slot"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_116263_8" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_571157_9" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="InitialValueReference-propertyPath" name="propertyPath">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Property"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_516536_3" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="InitialValueReference-propertyPath-upperValue" name="" visibility="public" value="*"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="InitialValueReference_Slot" name="" visibility="public" memberEnd="InitialValueReference-base_Slot InitialValueReference_Slot-extension_InitialValueReference" navigableOwnedEnd="InitialValueReference_Slot-extension_InitialValueReference">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="InitialValueReference_Slot-extension_InitialValueReference" name="extension_InitialValueReference" type="InitialValueReference" aggregation="composite" association="InitialValueReference_Slot">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="InitialValueReference_Slot-extension_InitialValueReference-lowerValue" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_762665_7" name="" visibility="public" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="SimulationVertex" name="SimulationVertex" visibility="public">
+        <ownedAttribute xmi:id="SimulationVertex-base_Vertex" name="base_Vertex" association="SimulationVertex_Vertex">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Vertex"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_732842_1" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_9200_2" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="SimulationVertex-transitionPriority" name="transitionPriority" isOrdered="true">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Transition"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_605737_18" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="SimulationVertex-transitionPriority-upperValue" name="" visibility="public" value="*"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Stereotype" xmi:id="InitialValuesSpecification" name="InitialValuesSpecification" visibility="public">
+        <ownedAttribute xmi:id="InitialValuesSpecification-base_Usage" name="base_Usage" association="InitialValueReference_Usage">
+          <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Usage"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_19_0_8c4028a_1545989276405_374680_10" name="" visibility="public" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_280880_11" name="" visibility="public" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Extension" xmi:id="InitialValueReference_Usage" name="" visibility="public" memberEnd="InitialValuesSpecification-base_Usage InitialValueReference_Usage-extension_InitialValueReference" navigableOwnedEnd="InitialValueReference_Usage-extension_InitialValueReference">
+        <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="InitialValueReference_Usage-extension_InitialValueReference" name="extension_InitialValueReference" type="InitialValuesSpecification" aggregation="composite" association="InitialValueReference_Usage">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="InitialValueReference_Usage-extension_InitialValueReference-lowerValue" name="" visibility="public"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_19_0_8c4028a_1545989276405_730637_12" name="" visibility="public" value="1"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_be00301_1073394351331_445580_2profileApplicationsysphs_profile">
+      <eAnnotations xmi:id="_bGMKtf7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_bDKFGf7oEeuunNBPCU_pFQ"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
+    </profileApplication>
+  </uml:Profile>
+  <MagicDrawProfile:additionalPackageImport xmi:id="_bGMxwP7oEeuunNBPCU_pFQ" base_Element="_19_0_3_3040124_1566541415529_673730_13411" base_PackageImport="_19_0_3_3040124_1566541415529_673730_13411"/>
+</xmi:XMI>

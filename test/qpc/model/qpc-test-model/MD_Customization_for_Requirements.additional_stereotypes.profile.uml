@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_18_0beta_8f90291_1391001597107_586303_6259" name="additional_stereotypes" visibility="public" URI="http://www.magicdraw.com/spec/Customization/180/Requirements" metamodelReference="_18_0beta_8f90291_1391001597108_594438_6260">
+  <eAnnotations xmi:id="_bDPkk_7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+    <contents xmi:type="ecore:EPackage" xmi:id="_bDPklP7oEeuunNBPCU_pFQ" name="additional_stereotypes" nsURI="http://www.magicdraw.com/spec/Customization/180/Requirements" nsPrefix="additional_stereotypes">
+      <eAnnotations xmi:id="_bDPklf7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/4.0.0/UML">
+        <references xmi:type="uml:Profile" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDPklv7oEeuunNBPCU_pFQ" name="numberOwner" eSuperTypes="_bDPko_7oEeuunNBPCU_pFQ">
+        <eAnnotations xmi:id="_bDPkl_7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_16_5beta1_2104050f_1236679108375_756172_3723"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDPkmP7oEeuunNBPCU_pFQ" name="base_Package" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Package"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDPkmv7oEeuunNBPCU_pFQ" name="base_Class" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Class"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDPknP7oEeuunNBPCU_pFQ" name="numberingStyle" ordered="false" eType="_bDPkqP7oEeuunNBPCU_pFQ" defaultValueLiteral="nested"/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDPknv7oEeuunNBPCU_pFQ" name="prefix" ordered="false" eType="_bDPkrP7oEeuunNBPCU_pFQ" defaultValueLiteral=""/>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDPkoP7oEeuunNBPCU_pFQ" name="separator" ordered="false" eType="_bDPkrP7oEeuunNBPCU_pFQ" defaultValueLiteral="."/>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDPko_7oEeuunNBPCU_pFQ" name="MagicDrawProfile_InvisibleStereotype">
+        <eAnnotations xmi:id="_bDPkpP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+          <details xmi:id="_bDPkpf7oEeuunNBPCU_pFQ" key="originalName" value="MagicDraw Profile_InvisibleStereotype"/>
+          <references xmi:type="uml:Stereotype" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_9_0_be00301_1108044721245_236588_411"/>
+        </eAnnotations>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDPkpv7oEeuunNBPCU_pFQ" name="base_Element" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Element"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EEnum" xmi:id="_bDPkqP7oEeuunNBPCU_pFQ" name="NumberingStyle">
+        <eAnnotations xmi:id="_bDPkqf7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_16_5beta1_2104050f_1236679155093_134579_3750"/>
+        <eLiterals xmi:id="_bDPkqv7oEeuunNBPCU_pFQ" name="nested"/>
+        <eLiterals xmi:id="_bDPkq_7oEeuunNBPCU_pFQ" name="normal" value="1"/>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EDataType" xmi:id="_bDPkrP7oEeuunNBPCU_pFQ" name="ReqNumber" instanceClassName="java.lang.String">
+        <eAnnotations xmi:id="_bDPkrf7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_16_5beta1_2104050f_1236679155109_265508_3751"/>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDPkrv7oEeuunNBPCU_pFQ" name="RequirementTable">
+        <eAnnotations xmi:id="_bDPkr_7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_16_6beta_bb002ea_1245402130171_170238_5692"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDPksP7oEeuunNBPCU_pFQ" name="base_Diagram" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Element"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDPksv7oEeuunNBPCU_pFQ" name="showColumns" ordered="false" upperBound="-1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//Boolean"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDPktP7oEeuunNBPCU_pFQ" name="columnsWidth" ordered="false" upperBound="-1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//Integer"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDPktv7oEeuunNBPCU_pFQ" name="customColumnElements" upperBound="-1" changeable="false" derived="true">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Element"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDPkuP7oEeuunNBPCU_pFQ" name="showCustomColumns" upperBound="-1" changeable="false" derived="true">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//Boolean"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDPkuv7oEeuunNBPCU_pFQ" name="RequirementTerms">
+        <eAnnotations xmi:id="_bDPku_7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_18_4beta_9250292_1457443991636_873761_6733"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDPkvP7oEeuunNBPCU_pFQ" name="base_Diagram" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Element"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <packageImport xmi:id="_18_0beta_8f90291_1391001597108_594438_6260">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_0primitiveTypesadditional_stereotypes">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_0javaPrimitiveTypesadditional_stereotypes">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_16_5beta1_2104050f_1236679108375_756172_3723" name="numberOwner" visibility="public">
+    <generalization xmi:id="_16_5beta1_2104050f_1236679332546_503939_3770">
+      <general xmi:type="uml:Stereotype" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_9_0_be00301_1108044721245_236588_411"/>
+    </generalization>
+    <ownedAttribute xmi:id="_16_5beta1_2104050f_1236679108390_743029_3741" name="base_Package" visibility="private" association="_16_5beta1_2104050f_1236679108390_113753_3740">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Package"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_16_5beta1_2104050f_1236679108406_757053_3746" name="base_Class" visibility="private" association="_16_5beta1_2104050f_1236679108406_675490_3745">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Class"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_16_5beta1_2104050f_1236679108390_21594_3725" name="numberingStyle" visibility="private" type="_16_5beta1_2104050f_1236679155093_134579_3750">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_5beta2_2104050f_1237371767828_978012_4197" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_5beta2_2104050f_1237371767828_683923_4198" name="" visibility="public" value="1"/>
+      <defaultValue xmi:type="uml:InstanceValue" xmi:id="_16_5beta1_2104050f_1236679108390_315156_3731" name="" visibility="public" instance="_16_5beta1_2104050f_1236679155109_541851_3752"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_16_5beta1_2104050f_1236679108390_633652_3726" name="prefix" visibility="private" type="_16_5beta1_2104050f_1236679155109_265508_3751">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_5beta2_2104050f_1237371777062_960154_4199" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_5beta2_2104050f_1237371777062_550397_4200" name="" visibility="public" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_16_5beta1_2104050f_1236679108390_175471_3734" name="" visibility="public" value=""/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_16_5beta1_2104050f_1236679108390_247961_3727" name="separator" visibility="private" type="_16_5beta1_2104050f_1236679155109_265508_3751">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_5beta2_2104050f_1237371781531_379690_4201" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_5beta2_2104050f_1237371781531_582366_4202" name="" visibility="public" value="1"/>
+      <defaultValue xmi:type="uml:LiteralString" xmi:id="_16_5beta1_2104050f_1236679108390_457363_3737" name="" visibility="public" value="."/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_16_5beta1_2104050f_1236679108390_113753_3740" name="" visibility="public" memberEnd="_16_5beta1_2104050f_1236679108390_805254_3742 _16_5beta1_2104050f_1236679108390_743029_3741" navigableOwnedEnd="_16_5beta1_2104050f_1236679108390_805254_3742">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_16_5beta1_2104050f_1236679108390_805254_3742" name="extension_numberOwner" visibility="private" type="_16_5beta1_2104050f_1236679108375_756172_3723" aggregation="composite" association="_16_5beta1_2104050f_1236679108390_113753_3740">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_5beta1_2104050f_1236679108390_664898_3743" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_5beta1_2104050f_1236679108390_268584_3744" name="" visibility="public" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_16_5beta1_2104050f_1236679108406_675490_3745" name="" visibility="public" memberEnd="_16_5beta1_2104050f_1236679108406_621574_3747 _16_5beta1_2104050f_1236679108406_757053_3746" navigableOwnedEnd="_16_5beta1_2104050f_1236679108406_621574_3747">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_16_5beta1_2104050f_1236679108406_621574_3747" name="extension_numberOwner" visibility="private" type="_16_5beta1_2104050f_1236679108375_756172_3723" aggregation="composite" association="_16_5beta1_2104050f_1236679108406_675490_3745">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_5beta1_2104050f_1236679108406_744625_3748" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_5beta1_2104050f_1236679108406_625638_3749" name="" visibility="public" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_16_6beta_bb002ea_1245402187328_327249_5698" name="" visibility="public" memberEnd="_16_6beta_bb002ea_1245402187328_873224_5700 _16_6beta_bb002ea_1245402187328_735136_5699" navigableOwnedEnd="_16_6beta_bb002ea_1245402187328_873224_5700">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_16_6beta_bb002ea_1245402187328_873224_5700" name="extension_RequirementTable" visibility="private" type="_16_6beta_bb002ea_1245402130171_170238_5692" aggregation="composite" association="_16_6beta_bb002ea_1245402187328_327249_5698">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_6beta_bb002ea_1245402187328_179200_5701" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_6beta_bb002ea_1245402187328_421763_5702" name="" visibility="public" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_16_5beta1_2104050f_1236679155093_134579_3750" name="NumberingStyle" visibility="public">
+    <ownedLiteral xmi:id="_16_5beta1_2104050f_1236679155109_541851_3752" name="nested" visibility="public"/>
+    <ownedLiteral xmi:id="_16_5beta1_2104050f_1236679155109_541706_3753" name="normal" visibility="public"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_16_6beta_bb002ea_1245402130171_170238_5692" name="RequirementTable" visibility="public">
+    <ownedComment xmi:id="_16_6_bb002ea_1255588528187_359462_5723" annotatedElement="_16_6beta_bb002ea_1245402130171_170238_5692" body="&lt;html>&#xA;  &lt;head>&#xA;&#x9;&#x9;&lt;style>&#xA;&#x9;&#x9;&#x9;p {padding:0px; margin:0px;}&#xA;&#x9;&#x9;&lt;/style>&#xA;&#x9;&lt;/head>&#xA;  &lt;body>&#xA;&lt;b>A Requirements Table&lt;/b> allows you to organize your requirements in a tabular form. As requirements are text-based, this table provides a convenient way for filling-in requirements' information using a spreadsheet-like tabular format, instead of limited-size boxes in a diagram. Each row in the table represents a requirement. The table columns represents the properties of each requirement in the table. With this table, you can:&#xA;    &lt;ul>&#xA;      &lt;li>&#xA;Create new requirements directly in the table, or import the existing ones from your model to the table.&#xA;&#xA;      &lt;/li>&#xA;      &lt;li>&#xA;Directly edit the properties of the requirements in the table.&#xA;&#xA;      &lt;/li>&#xA;      &lt;li>&#xA;Directly generate requirement reports, renumber requirements' IDs, or export the table into CSV or HTML format.&#xA;&#xA;      &lt;/li>&#xA;    &lt;/ul>&#xA;    &lt;p>&#xA;&amp;#160;&#xA;&#xA;    &lt;/p>&#xA;&#xA;    &lt;p>&#xA;There are 3 methods to add requirement(s) to the table:&#xA;&#xA;    &lt;/p>&#xA;&#xA;    &lt;p>&#xA;1. Create a new requirement and add to the table.&#xA;&#xA;    &lt;/p>&#xA;&#xA;    &lt;ul>&#xA;      &lt;li>&#xA;Click the &lt;b>&amp;quot;Add New&amp;quot;&lt;/b> button on the table toolbar, and then select a requirement types you would like to create from the drop-down menu. The owner of the newly-created requirement will be similar to the owner of the table.&#xA;&#xA;      &lt;/li>&#xA;      &lt;li>&#xA;To select a different owner, hold Shift and then select a requirement type from the drop-down menu.&#xA;&#xA;      &lt;/li>&#xA;      &lt;li>&#xA;Shortcut: &lt;b>Insert&lt;/b> (&lt;b>Cmd+I&lt;/b> on MAC)&#xA;&#xA;      &lt;/li>&#xA;    &lt;/ul>&#xA;    &lt;p>&#xA;&amp;#160;&#xA;&#xA;    &lt;/p>&#xA;&#xA;    &lt;p>&#xA;2. Create a new nested requirement and add to the table.&#xA;&#xA;    &lt;/p>&#xA;&#xA;    &lt;ul>&#xA;      &lt;li>&#xA;Click the &lt;b>&amp;quot;Add Nested&amp;quot;&lt;/b> button on the table toolbar while an existing requirement is highlighted in the table, and then select a requirement types you would like to create from the drop-down menu. The owner of the newly-created requirement will be the highlighted requirement.&#xA;&#xA;      &lt;/li>&#xA;      &lt;li>&#xA;Alternatively, just right-click the requirement row in the table, and then select &lt;b>Add Nested&lt;/b> option in the displayed shortcut menu.&#xA;&#xA;      &lt;/li>&#xA;      &lt;li>&#xA;Shortcut: &lt;b>Alt+Insert &lt;/b>(&lt;b>Alt+I&lt;/b> on MAC).&#xA;&#xA;      &lt;/li>&#xA;    &lt;/ul>&#xA;    &lt;p>&#xA;&amp;#160;&#xA;&#xA;    &lt;/p>&#xA;&#xA;    &lt;p>&#xA;3. Add existing requirement(s) to the table.&#xA;&#xA;    &lt;/p>&#xA;&#xA;    &lt;ul>&#xA;      &lt;li>&#xA;Click &lt;b>&amp;quot;Add Existing&amp;quot;&lt;/b> button. In the dialog, select requirement(s) already existed in your model to display it(them) in the table.&#xA;&#xA;      &lt;/li>&#xA;      &lt;li>&#xA;Or, directly drag existing requirement(s) from a browser to the table.&#xA;&#xA;      &lt;/li>&#xA;      &lt;li>&#xA;Shortcut: &lt;b>Ctrl+Insert&lt;/b> (&lt;b>Cmd+E&lt;/b> on MAC) Additional commands are available when right-click on a cell in the table.&#xA;&#xA;      &lt;/li>&#xA;    &lt;/ul>&#xA;&lt;/body>&#xA;&lt;/html>"/>
+    <ownedAttribute xmi:id="_16_6beta_bb002ea_1245402187328_735136_5699" name="base_Diagram" visibility="private" association="_16_6beta_bb002ea_1245402187328_327249_5698">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_16_6beta_bb002ea_1248324604468_934425_5694" name="showColumns" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_6beta_bb002ea_1248330242843_885743_5696" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_6beta_bb002ea_1248330242843_732942_5697" name="" visibility="public" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_16_6beta_bb002ea_1248324751875_107210_5696" name="columnsWidth" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_6beta_bb002ea_1248330236187_33918_5694" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_6beta_bb002ea_1248330236187_754049_5695" name="" visibility="public" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_16_9_e9b034a_1280812406093_936685_25241" name="customColumnElements" visibility="private" isOrdered="true" isReadOnly="true" isDerived="true">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_e9b034a_1280812428265_114478_25260" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_e9b034a_1280812428265_669454_25261" name="" visibility="public" value="*"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_16_9_e9b034a_1280812472515_493457_25267" name="showCustomColumns" visibility="private" isOrdered="true" isReadOnly="true" isDerived="true">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_e9b034a_1280812504359_90614_25280" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_e9b034a_1280812504359_247565_25281" name="" visibility="public" value="*"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_16_5beta1_2104050f_1236679155109_265508_3751" name="ReqNumber" visibility="public"/>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_18_4beta_9250292_1457443991636_873761_6733" name="RequirementTerms" visibility="public">
+    <ownedAttribute xmi:id="_18_4beta_9250292_1457443991638_209534_6735" name="base_Diagram" visibility="private" association="_18_4beta_9250292_1457443991637_705866_6734">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_18_4beta_9250292_1457443991637_705866_6734" name="" visibility="public" memberEnd="_18_4beta_9250292_1457443991638_209534_6735 _18_4beta_9250292_1457443991638_839411_6736" navigableOwnedEnd="_18_4beta_9250292_1457443991638_839411_6736">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_18_4beta_9250292_1457443991638_839411_6736" name="extension_RequirementTerms" visibility="private" type="_18_4beta_9250292_1457443991636_873761_6733" aggregation="composite" association="_18_4beta_9250292_1457443991637_705866_6734">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_18_4beta_9250292_1457443991639_622197_6738" name="" visibility="public"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_18_4beta_9250292_1457443991639_214100_6737" name="" visibility="public" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Profile>
