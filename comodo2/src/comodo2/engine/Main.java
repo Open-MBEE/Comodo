@@ -18,8 +18,14 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.mwe2.language.Mwe2StandaloneSetup;
-import org.eclipse.emf.mwe2.launch.runtime.Mwe2Runner;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.generator.GeneratorDelegate;
+import org.eclipse.xtext.generator.JavaIoFileSystemAccess;
+import org.eclipse.xtext.resource.XtextResourceSet;
+
+import comodo2.templates.Root;
+import comodo2.workflows.GeneratorConfig;
+import comodo2.workflows.GeneratorStandaloneSetup;
 
 import com.google.inject.Injector;
 
@@ -214,10 +220,31 @@ public class Main {
 			// check  OperationCanceledException is accessible
 			OperationCanceledException.class.getName();
 
-			Injector injector = new Mwe2StandaloneSetup().createInjectorAndDoEMFRegistration();
-			Mwe2Runner mweRunner = injector.getInstance(Mwe2Runner.class);
+			GeneratorConfig config = new GeneratorConfig(); 
+			config.setOutputPath(outputPath);
+
+			GeneratorStandaloneSetup setup = new GeneratorStandaloneSetup(); 
+			setup.setConfig(config);
+			setup.setDoInit(true);
+
+			Injector injector = setup.createInjectorAndDoEMFRegistration();
+
+			// File System Access for file generation
+			JavaIoFileSystemAccess fsa = injector.getInstance(JavaIoFileSystemAccess.class);
+			fsa.setOutputPath(outputPath);
 			
-			mweRunner.run(URI.createURI(urlWorkflow.toString()), params);
+			// retrieves the model by URI. This also loads all its dependencies when needed
+			XtextResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
+			Resource inputModel = resourceSet.getResource(URI.createFileURI(modelFilePath.toAbsolutePath().toString()), true);
+
+			/**
+			 * GENERATION
+			 * Could also use injector.getInstance(GeneratorDelegate.class) but using Root
+			 * improves readability.
+			 */
+			Root templatesRoot = injector.getInstance(Root.class);
+			templatesRoot.doGenerate(inputModel, fsa);
+
 			mLogger.info("Execution completed (" + (System.nanoTime() - startTime)/1e9 + "s).");			
 		} catch(NoClassDefFoundError e) {
 			if ("org/eclipse/core/runtime/OperationCanceledException".equals(e.getMessage())) {
