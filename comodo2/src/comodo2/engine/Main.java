@@ -1,6 +1,5 @@
 package comodo2.engine;
 
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
@@ -19,7 +18,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.generator.GeneratorDelegate;
 import org.eclipse.xtext.generator.JavaIoFileSystemAccess;
 import org.eclipse.xtext.resource.XtextResourceSet;
 
@@ -124,11 +122,8 @@ public class Main {
 			mLogger.debug("Use fully qualified names: " + Config.getInstance().generateFullyQualifiedStateNames());
 
 			/*
-			 * Get input model and use class loader to resolve 
-			 * file locations.
+			 * Get model name and file locations
 			 */
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
 			String modelName = "";
 			if (line.hasOption('i') == false) {
 				throw new ParseException("Missing input model.");				
@@ -200,18 +195,6 @@ public class Main {
 			params.put("outputPath", outputPath);
 			params.put("modelPath", modelDirPath.toString());
 
-			/*
-			 * Run the workflow
-			 */
-			String workflowPath = Config.getInstance().getWorkflowFilename();
-			//System.out.println("ClassLoader: " + classLoader.getClass().toString());
-			URL urlWorkflow = classLoader.getResource(workflowPath);
-			if (urlWorkflow == null) {
-				mLogger.error("MWE " + workflowPath + " not found!");
-				// TODO throw exception 
-				return;
-			}
-			mLogger.debug("Workflow: " + workflowPath);
 
 			mLogger.info("Starting transformation " + Config.getInstance().getTargetPlatform() 
 					+ " on model " + modelFilePath + " for modules " + Config.getInstance().getModulesStr());
@@ -220,6 +203,9 @@ public class Main {
 			// check  OperationCanceledException is accessible
 			OperationCanceledException.class.getName();
 
+			/**
+			 * Transformation configuration.
+			 */
 			GeneratorConfig config = new GeneratorConfig(); 
 			config.setOutputPath(outputPath);
 
