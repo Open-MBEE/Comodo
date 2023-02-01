@@ -36,12 +36,6 @@ public class Config {
 	public final static  String ELT_RAD_OPT_NOACTIONSTD = "NOACTIONSSTD";      // Don't add hard coded actionsStd implementation
 	
 	/**
-	 * MWE Workflow
-	 */
-	//private final static String GENERATOR_WORKFLOW = "comodo2/workflows/GeneratorWorkflow.mwe2";
-	private final static String GENERATOR_WORKFLOW = "resources/GeneratorWorkflow.mwe2";
-
-	/**
 	 * Configuration Parameters
 	 */
 	private String mCurrentModule = "";
@@ -138,10 +132,6 @@ public class Config {
 
 	public Boolean hasTargetPlatformCfgOption(String option) {
 		return mTargetPlatformCfg.contains(option);
-	}
-
-	public String getWorkflowFilename() {
-		return GENERATOR_WORKFLOW;
 	}
 	
 	public String getGenerationMode() {
