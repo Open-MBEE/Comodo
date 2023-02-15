@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+def urlFile = { url, name ->
+    File file = new File("$buildDir/downloads/${name}.jar")
+    file.parentFile.mkdirs()
+    if (!file.exists()) {
+        new URL(url).withInputStream { downloadStream ->
+            file.withOutputStream { fileOut ->
+                fileOut << downloadStream
+            }
+        }
+    }
+    files(file.absolutePath)
+}
+
+dependencies {
+    implementation group: 'javax.inject', name: 'javax.inject', version: '1'
+    // https://mvnrepository.com/artifact/commons-cli/commons-cli
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    implementation group: 'com.google.guava', name: 'guava', version: '21.0'
+    // https://mvnrepository.com/artifact/com.google.inject/guice
+    implementation group: 'com.google.inject', name: 'guice', version: '3.0'
+    // https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.common
+    implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.common', version: '2.15.0'
+    // https://mvnrepository.com/artifact/org.antlr/ST4
+    implementation group: 'org.antlr', name: 'ST4', version: '4.3.1'
+    // https://mvnrepository.com/artifact/org.eclipse.xtext/org.eclipse.xtext
+    implementation group: 'org.eclipse.xtext', name: 'org.eclipse.xtext', version: '2.19.0'
+    
+    // Eclipse doesn't manage a Maven repo, so we use this function to get the JAR from direct download
+    implementation urlFile('https://download.eclipse.org/modeling/mdt/uml2/updates/5.5/R202211161811/plugins/org.eclipse.uml2.uml_5.5.0.v20221116-1811.jar', 'org.eclipse.uml2.uml_5.5.0')
+
+    // implementation fileTree(dir: 'libs', include: 'org.eclipse.xtend.*.jar')
+    // implementation fileTree(dir: 'libs', include: 'org.eclipse.uml2.*.jar')// {exclude 'META-INF/*.RSA', 'META-INF/*.SF'}
+
+}
+
+mainClassName = 'comodo2.engine.Main'
+
+sourceSets {
+    main.java.srcDirs = ['comodo2/src/comodo2']
+    main.resources.srcDirs = ['comodo2/src/resources']
+}
+
+jar {
+    duplicatesStrategy = 'exclude'
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    } {exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'}
+}
