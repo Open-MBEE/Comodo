@@ -39,13 +39,18 @@ dependencies {
     
     // Eclipse doesn't manage a Maven repo, so we use this function to get the JAR from direct download
     implementation urlFile('https://download.eclipse.org/modeling/mdt/uml2/updates/5.5/R202211161811/plugins/org.eclipse.uml2.uml_5.5.0.v20221116-1811.jar', 'org.eclipse.uml2.uml_5.5.0')
-
-    // implementation fileTree(dir: 'libs', include: 'org.eclipse.xtend.*.jar')
-    // implementation fileTree(dir: 'libs', include: 'org.eclipse.uml2.*.jar')// {exclude 'META-INF/*.RSA', 'META-INF/*.SF'}
+    implementation urlFile('https://download.eclipse.org/modeling/mdt/uml2/updates/5.5milestones/S202211161811/plugins/org.eclipse.uml2.common_2.5.0.v20221116-1811.jar', 'org.eclipse.uml2.common_2.5.0.jar')
+    implementation urlFile('https://download.eclipse.org/modeling/mdt/uml2/updates/5.5milestones/S202211161811/plugins/org.eclipse.uml2.types_2.5.0.v20221116-1811.jar', 'org.eclipse.uml2.types_2.5.0.jar')
+    implementation urlFile('https://download.eclipse.org/modeling/mdt/uml2/updates/5.5milestones/S202211161811/plugins/org.eclipse.uml2.uml.profile.standard_1.5.0.v20221116-1811.jar', 'org.eclipse.uml2.uml.profile.standard_1.5.0.jar')
+    implementation urlFile('https://download.eclipse.org/modeling/mdt/uml2/updates/5.5milestones/S202211161811/plugins/org.eclipse.uml2.uml.resources_5.5.0.v20221116-1811.jar', 'org.eclipse.uml2.uml.resources_5.5.0.jar')
 
 }
 
 mainClassName = 'comodo2.engine.Main'
+
+application {
+    mainClass = mainClassName
+}
 
 sourceSets {
     main.java.srcDirs = ['comodo2/src/comodo2']
@@ -62,4 +67,8 @@ jar {
             it.isDirectory() ? it : zipTree(it)
         }
     } {exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'}
+    from(sourceSets.main.output.resourcesDir) {
+        include '**/*'
+        into('resources')
+    }
 }
