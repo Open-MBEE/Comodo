@@ -53,8 +53,8 @@ application {
 }
 
 sourceSets {
-    main.java.srcDirs = ['comodo2/src/comodo2']
-    main.resources.srcDirs = ['comodo2/src/resources']
+    main.java.srcDirs = ['comodo2/src']
+    main.resources.srcDirs = ['comodo2/src']
 }
 
 jar {
@@ -67,8 +67,8 @@ jar {
             it.isDirectory() ? it : zipTree(it)
         }
     } {exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'}
-    from(sourceSets.main.output.resourcesDir) {
-        include '**/*'
-        into('resources')
-    }
+    // from(sourceSets.main.output.resourcesDir) {
+    //     include '**/*'
+    //     into('resources')
+    // }
 }
