@@ -212,20 +212,14 @@ public class QTransition {
 		return "";
 	}
 
-	public boolean isTimerTransition(final Transition t) {
+	public boolean isTimerTransitionWithEvent(final Transition t) {
 		if (hasEvent(t)) {
 			return false;
 		}
-		if (t.getTriggers().isEmpty() == true) {
-			return false;
-		}
-		return mQEvent.isTimeEvent(t.getTriggers().get(0).getEvent());
+		return this.isTimerTransition(t);
 	}
 
-	/** 
-	 * Used for QPC target, instead of isTimerTransition
-	 */
-	public boolean isTimerTransition_v2(final Transition t) {
+	public boolean isTimerTransition(final Transition t) {
 		if (t.getTriggers().isEmpty() == true) {
 			return false;
 		}

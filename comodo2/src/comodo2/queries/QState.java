@@ -94,30 +94,18 @@ public class QState {
 	}
 
 	public Boolean hasInitialSubstate(final State s) {
-		Iterable<Pseudostate> _filter = Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class);		
-		for (final Pseudostate ps : _filter) {
-			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
-					Objects.equal(ps.getContainer().getOwner(), s)) && 
-					(ps.getOutgoings().size() == 1)) && 
-					(Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget() != null))) {
-				return true;
-			}
-		}
-		
+		State sub = this.getInitialSubstate(s);
+		if (sub != null) {
+			return true;
+		}		
 		return false;
 	}
 
 	public String getInitialSubstateName(final State s) {
-		Iterable<Pseudostate> _filter = Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class);		
-		for (final Pseudostate ps : _filter) {
-			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
-					Objects.equal(ps.getContainer().getOwner(), s)) && 
-					(ps.getOutgoings().size() == 1)) && 
-					(Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget() != null))) {
-				return getStateName( ((State) Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget()) );
-			}
-		}
-		
+		State sub = this.getInitialSubstate(s);
+		if (sub != null) {
+			return getStateName(sub);
+		}		
 		return "";
 	}
 
@@ -283,12 +271,12 @@ public class QState {
 		}
 		/*
 		final Function1<Transition, Boolean> _function = (Transition e) -> {
-			return Boolean.valueOf((mQTransition.isTimerTransition(e) && e.getSource().getName().matches(s.getName())));
+			return Boolean.valueOf((mQTransition.isTimerTransitionWithEvent(e) && e.getSource().getName().matches(s.getName())));
 		};
 		return !IterableExtensions.isEmpty(IterableExtensions.<Transition>filter(Iterables.<Transition>filter(this.getParentState(s).allOwnedElements(), Transition.class), _function));
 		*/
 		for (Transition e : Iterables.<Transition>filter(getParentState(s).allOwnedElements(), Transition.class)) {
-			if (mQTransition.isTimerTransition(e) && e.getSource().getName().matches(s.getName())) {
+			if (mQTransition.isTimerTransitionWithEvent(e) && e.getSource().getName().matches(s.getName())) {
 				return true;
 			}
 		}
@@ -300,7 +288,7 @@ public class QState {
 	 */
 	public boolean hasOutgoingTimerTransition(final State s) {
 		for (Transition t : s.getOutgoings()){
-			if (mQTransition.isTimerTransition_v2(t)) {
+			if (mQTransition.isTimerTransition(t)) {
 				return true;
 			}
 		}

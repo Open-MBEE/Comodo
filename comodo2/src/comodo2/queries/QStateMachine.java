@@ -44,22 +44,9 @@ public class QStateMachine {
 	 * @return The name of initial state if it exists, "" otherwise.
 	 */
 	public String getInitialStateName(final StateMachine sm) {
-		for (final Pseudostate ps : Iterables.<Pseudostate>filter(sm.allOwnedElements(), Pseudostate.class)) {
-			/*
-			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
-					Objects.equal(ps.getContainer().getOwner(), sm)) && 
-					(ps.getOutgoings().size() == 1)) && 
-					(IterableExtensions.<Transition>head(ps.getOutgoings()).getTarget() != null))) {
-				return mQState.getStateName(((State) IterableExtensions.<Transition>head(ps.getOutgoings()).getTarget()));
-			}
-			*/
-			if ((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
-					Objects.equal(ps.getContainer().getOwner(), sm)) && 
-					(ps.getOutgoings().size() == 1))) {
-				if (ps.getOutgoings().get(0).getTarget() != null) {
-					return mQState.getStateName((State)ps.getOutgoings().get(0).getTarget());
-				}
-			}
+		State s = this.getInitialState(sm);
+		if (s != null) {
+			return mQState.getStateName(s);
 		}
 		return "";
 	}
@@ -299,7 +286,7 @@ public class QStateMachine {
 	}
 
 	/**
-	 * Used in QpcHeaders only.
+	 * This function returns all final states contained in the given state machine.
 	 * @return All final states within a given state machine.
 	 */
 	public Iterable<State> getAllFinalStates(final StateMachine sm) {
