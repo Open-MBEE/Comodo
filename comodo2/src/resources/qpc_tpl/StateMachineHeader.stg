@@ -1,0 +1,147 @@
+delimiters "%", "%"
+
+StateMachineHeader(smQualifiedName, smQualifiedNameUpperCase, className, statesList, activeObjectList, historyPseudostatesList, timeEventList, orthogonalRegions, fileDescriptionHeader) ::= <<
+%fileDescriptionHeader%
+
+#ifndef %smQualifiedNameUpperCase%_H_
+#define %smQualifiedNameUpperCase%_H_
+
+#include <stdbool.h>
+#include <qf_port.h>
+#include <qassert.h>
+#include <%className%_statechart_signals.h>
+#include <%smQualifiedName%_states.h>
+#include <%smQualifiedName%_impl.h>
+
+
+%if(orthogonalRegions)%
+/* Forward declarations for orthogonal-region struct field of containing SM */
+%orthogonalRegions :{ regionWrapper | 
+typedef struct %regionWrapper.qualifiedName% %regionWrapper.qualifiedName%;}%
+%endif%
+
+/**
+ * Declare the state machine struct, encapsulating the extended state variables.
+ * It tracks any timers, owned orthogonal regions, history states, substates.
+ */
+typedef struct %smQualifiedName% {
+    QActive super;  // C-style inheritance
+    QActive *active;  // containing machine if this is a submachine instance
+    char objName[128];
+    %smQualifiedName%_impl *impl;
+    enum %smQualifiedName%_state myState;
+
+%if(orthogonalRegions)%
+    /* Orthogonal region instance pointers */
+%orthogonalRegions :{ regionWrapper | 
+    %regionWrapper.qualifiedName% *%regionWrapper.name%;}%
+%endif%
+
+    /* Completion event for exiting from composite/orthogonal/submachine state */
+    QCompletionEvt %smQualifiedNameUpperCase%_COMPLETION_EVENT_;
+
+    /* Bail event to terminate orthogonal/submachine substate */
+    QEvt %smQualifiedNameUpperCase%_BAIL_EVENT_;
+
+%if(historyPseudostatesList)%
+    /* History state variables */
+    %historyPseudostatesList :{ history | QStateHandler %history.name%;%\n%}%
+%endif%
+%if(timeEventList)%
+    /* TimeEvents object instances (only relative timers are supported) */
+    %timeEventList :{ stateName | QTimeEvt %stateName%RelativeTimer;%\n%}%
+%endif%
+
+} %smQualifiedName%;
+
+
+/** 
+ * %smQualifiedName% Constructor
+ *
+ * This State machine constructor is responsible for initializing
+ * the object, allocating and initializing any orthogonal regions, 
+ * and initializing the timers.
+ */
+%smQualifiedName% *%smQualifiedName%_constructor (%smQualifiedName% *me, const char *objNameNew, %smQualifiedName%_impl *implObj, QActive *active);
+
+/**
+  * Returns the instance of the Implementation class for this QActive.
+  */
+%smQualifiedName%_impl *%smQualifiedName%_get_impl (%smQualifiedName% *me);
+
+/**
+ * Returns the unique enum representing the current state of this machine.
+ */
+%smQualifiedName%_state %smQualifiedName%_get_current_state (%smQualifiedName% *me);
+
+/**
+ * Method to initialize state machine (equivalent to initial pseudostate)
+ */
+QState %smQualifiedName%_initial (%smQualifiedName% *me, QEvt const *e);
+
+/**
+ * State methods
+ */
+%statesList, activeObjectList :{ stateQualifiedName, activeObject | QState %stateQualifiedName%(%activeObject% *me, QEvt const *e); %\n%}%
+
+%!##################################################################################!%
+%!########################   ORTHOGONAL REGION definitions   #######################!%
+%!##################################################################################!%
+%! This will only get generated if there is an orthogonal state in the State Machine!%
+%!##################################################################################!%
+
+%if(orthogonalRegions)%
+%orthogonalRegions :{ regionWrapper | 
+/**
+ * Declare the state machine struct, encapsulating the extended state variables.
+ * It tracks any timers, owned orthogonal regions, history states, substates.
+ */
+struct %regionWrapper.qualifiedName% %\u007B%
+    QHsm super;  // C-style inheritance
+    QActive *active;  // containing machine if this is a submachine instance
+    %smQualifiedName% *parent;  // parent active machine for access to timers
+    %smQualifiedName%_impl *impl;
+    enum %smQualifiedName%_state myState;
+%\u007D%;  
+
+/** 
+ * Orthogonal-region constructor for %regionWrapper.qualifiedName%
+ *
+ * This State machine constructor is responsible for initializing
+ * the object, allocating and initializing any orthogonal regions, 
+ * and initializing the timers.
+ */
+%regionWrapper.qualifiedName% *%regionWrapper.qualifiedName%_constructor (%regionWrapper.qualifiedName% *me, %smQualifiedName%_impl *implObj, QActive *active, %smQualifiedName% *parent);
+
+/**
+ * Returns the unique enum representing current state within this region.
+ */
+orthogonal_state %regionWrapper.qualifiedName%_get_current_state (%regionWrapper.qualifiedName% *me);
+
+/**
+ * Re-initializes a region, invoked upon exit from region.
+ */
+void %regionWrapper.qualifiedName%_reinit (%regionWrapper.qualifiedName% *me);
+
+/**
+ * Method to initialize region to initial pseudostates
+ */
+QState %smQualifiedName%_%regionWrapper.qualifiedName%_initial (%regionWrapper.qualifiedName% *me, QEvt const *e);
+
+/**
+ * Method representing state machine final state
+ * This will get autogenerated even if the rergion doesn't have a final node.
+ */
+QState %smQualifiedName%_%regionWrapper.qualifiedName%_final (%regionWrapper.qualifiedName% *me, QEvt const *e); 
+
+}%
+
+%endif%
+%!######################## END OF ORTHOGONAL REGIONS definitions #######################!%
+
+
+#endif /* %smQualifiedNameUpperCase%_H_ */
+
+>>
+
+

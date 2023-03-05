@@ -365,7 +365,7 @@ public class Scxml implements IGenerator {
 		};
 		List<Transition> _sortBy = IterableExtensions.<Transition, String>sortBy(s.getOutgoings(), _function);
 		for (final Transition t : _sortBy) {
-			if (mQTransition.isTimerTransition(t)) {
+			if (mQTransition.isTimerTransitionWithEvent(t)) {
 				str.append("<send target=\"\" type=\"scxml\" sendid=\"\'" + mQState.getStateName(s) + "_" + mQTransition.getEventName(t));
 				str.append("\'\" event=\"\'" + mQTransition.getEventName(t) + "\'\" delay=\"\'" + mQTransition.getTimeEventDuration(t) + "\'\"/>");
 				str.newLineIfNotEmpty();
@@ -373,7 +373,7 @@ public class Scxml implements IGenerator {
 		}
 		 */
 		for (final Transition t : s.getOutgoings()) {
-			if (mQTransition.isTimerTransition(t)) {
+			if (mQTransition.isTimerTransitionWithEvent(t)) {
 				str.append("<send target=\"\" type=\"scxml\" sendid=\"\'" + mQState.getStateName(s) + "_" + mQTransition.getEventName(t));
 				str.append("\'\" event=\"\'" + mQTransition.getEventName(t) + "\'\" delay=\"\'" + mQTransition.getTimeEventDuration(t) + "\'\"/>");
 				str.newLineIfNotEmpty();
@@ -397,7 +397,7 @@ public class Scxml implements IGenerator {
 		};
 		List<Transition> _sortBy = IterableExtensions.<Transition, String>sortBy(s.getOutgoings(), _function);
 		for (final Transition t : _sortBy) {
-			if (mQTransition.isTimerTransition(t)) {
+			if (mQTransition.isTimerTransitionWithEvent(t)) {
 				str.append("<cancel sendid=\"\'");
 				str.append(mQState.getStateName(s));
 				str.append("_");
@@ -408,7 +408,7 @@ public class Scxml implements IGenerator {
 		}
 		 */
 		for (final Transition t : s.getOutgoings()) {
-			if (mQTransition.isTimerTransition(t)) {
+			if (mQTransition.isTimerTransitionWithEvent(t)) {
 				str.append("<cancel sendid=\"\'");
 				str.append(mQState.getStateName(s));
 				str.append("_");

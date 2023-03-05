@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Event;
+import org.eclipse.uml2.uml.FunctionBehavior;
 import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Pseudostate;
@@ -118,8 +119,35 @@ public class QTransition {
 */		
 	}
 
+	/**
+	 * @return Duration string (e.g.: "5s") of the TimeEvent within the transition t.
+	 */
+	public String getFirstTimeEventDurationString(final Transition t) {
+		if (t.getTriggers().isEmpty()) {
+			return null;
+		}
+		for (Trigger trig : t.getTriggers()){
+			Event e = trig.getEvent();
+			if (e instanceof TimeEvent){
+				return mQEvent.getTimeEventDurationString((TimeEvent)e);
+			}
+		}
+		return null;
+	}
+
+	
+
 	public String getResolvedGuardName(final Transition t) {
 		return this.getGuardName(t);
+	}
+
+	// Needed for StringTemplate boolean logic
+	public String getGuardNameOrNull(final Transition t) {
+		if (this.getGuardName(t)=="") {
+			return null;
+		} else {
+			return this.getGuardName(t);
+		}
 	}
 
 	public String getGuardName(final Transition t) {
@@ -151,6 +179,9 @@ public class QTransition {
 			if (e instanceof Activity) {
 				return ((Activity)e).getName();
 			}
+			if (e instanceof FunctionBehavior) {
+				return ((FunctionBehavior)e).getName();
+			}
 		}
 		return "";
 	}
@@ -181,10 +212,14 @@ public class QTransition {
 		return "";
 	}
 
-	public boolean isTimerTransition(final Transition t) {
+	public boolean isTimerTransitionWithEvent(final Transition t) {
 		if (hasEvent(t)) {
 			return false;
 		}
+		return this.isTimerTransition(t);
+	}
+
+	public boolean isTimerTransition(final Transition t) {
 		if (t.getTriggers().isEmpty() == true) {
 			return false;
 		}
@@ -229,15 +264,48 @@ public class QTransition {
 	 * This is needed for QF Target because QM has a different choice node structure.
 	 */
 	public boolean isChoiceTransition(final Transition t){
-		try {
+		if (t.getTarget() instanceof Pseudostate) {
 			Pseudostate ps = (Pseudostate) t.getTarget();
 			if (ps.getKind() == PseudostateKind.CHOICE_LITERAL){
 				return true;
 			}
-		} catch (ClassCastException e) {
-			return false;
 		}
 		return false;
+	}
+
+	/**
+	 * Returns true if the transition points to a entry or exit pseudoState
+	 */
+	public boolean pointsToEntryOrExitPseudostate(final Transition t){
+		if (t.getTarget() instanceof Pseudostate) {
+			Pseudostate ps = (Pseudostate) t.getTarget();
+			if (ps.getKind() == PseudostateKind.ENTRY_POINT_LITERAL || 
+				ps.getKind() == PseudostateKind.EXIT_POINT_LITERAL) {
+					return true;
+				}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true if the transition points to a history pseudoState
+	 */
+	public boolean pointsToHistoryPseudostate(final Transition t){
+		if (t.getTarget() instanceof Pseudostate) {
+			return mQState.isHistoryState((Pseudostate) t.getTarget());
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the target name of the Entry/exit node pointed by t
+	 */
+	public String getEntryOrExitTargetName(final Transition t){
+		if (t.getTarget().getOutgoings().isEmpty()){
+			throw new RuntimeException("Malformed Entry/Exit pseudostate found (no state targeted by pseudostate) outbound from state: " + t.getSource().getName());
+		}
+		return t.getTarget().getOutgoings().get(0).getTarget().getName();
+		
 	}
 
 	public boolean hasEvent(final Transition t) {
@@ -271,6 +339,8 @@ public class QTransition {
 	public boolean hasSignalEvent(final Transition t) {
 		if (t.getTriggers().isEmpty()) {
 			return false;
+		} else if (t.getTriggers().get(0).getEvent()==null) {
+			return false;
 		} else {
 			return (t.getTriggers().get(0).getEvent().getClass() == SignalEventImpl.class);
 		}
@@ -278,6 +348,8 @@ public class QTransition {
 
 	public boolean hasTimeEvent(final Transition t) {
 		if (t.getTriggers().isEmpty()) {
+			return false;
+		} else if (t.getTriggers().get(0).getEvent()==null) {
 			return false;
 		} else {
 			return (t.getTriggers().get(0).getEvent().getClass() == TimeEventImpl.class);

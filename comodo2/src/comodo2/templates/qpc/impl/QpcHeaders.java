@@ -8,19 +8,28 @@ import com.google.common.collect.Iterables;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
 
 import comodo2.queries.QClass;
+import comodo2.queries.QState;
 import comodo2.queries.QStateMachine;
+import comodo2.templates.qpc.Utils;
+import comodo2.templates.qpc.model.CurrentGeneration;
+import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 
 
 
 public class QpcHeaders implements IGenerator {
 
+	public CurrentGeneration current;
 
 	@Inject
 	private FilesHelper mFilesHelper;
@@ -29,7 +38,17 @@ public class QpcHeaders implements IGenerator {
 	private QClass mQClass;
 
 	@Inject
+	private QState mQState;
+
+	@Inject
 	private QStateMachine mQStateMachine;
+
+	@Inject
+	private Utils mUtils;
+	
+	@Inject
+	private FileDescriptionHeader mFileDescHeader;
+
 
     /**
 	 * Generates headers file for execution of the state machine.
@@ -40,17 +59,23 @@ public class QpcHeaders implements IGenerator {
 
 
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
-		for (final org.eclipse.uml2.uml.Class e : _filter) {
-			if ((mQClass.isToBeGenerated(e) && mQClass.hasStateMachines(e))) {
+		for (final org.eclipse.uml2.uml.Class c : _filter) {
+			if ((mQClass.isToBeGenerated(c) && mQClass.hasStateMachines(c))) {
 				TreeSet<String> signalNames = new TreeSet<String>();
-				for (final StateMachine sm : mQClass.getStateMachines(e)) {
-
-					String smQualifiedName = e.getName() + "_" + sm.getName();
-					Iterables.<String>addAll(signalNames, mQStateMachine.getAllSignalNames(sm));
+				TreeSet<String> completionEventSignalNames = new TreeSet<String>();
+				TreeSet<String> statesWithTimeEvent = new TreeSet<String>();
+				for (final StateMachine sm : mQClass.getStateMachines(c)) {
 					
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_states.h"), this.generateStatesHeader(smQualifiedName, mQStateMachine.getAllStatesQualifiedName(sm)));						
+					current = new CurrentGeneration(c.getName(), sm.getName());
+
+					Iterables.<String>addAll(signalNames, mQStateMachine.getAllSignalNames(sm));
+					Iterables.<String>addAll(completionEventSignalNames, getAllCompletionEventSignalNames(sm));
+					Iterables.<String>addAll(statesWithTimeEvent, mQStateMachine.getAllStatesWithTimeEvents(sm));
+
+
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(current.getSmQualifiedName() + "_states.h"), this.generateStatesHeader(current, mQStateMachine.getAllStatesQualifiedName(sm)));						
 				}
-				fsa.generateFile(mFilesHelper.toQmImplFilePath(e.getName() + "_statechart_signals.h"), this.generateSignalsHeader(e.getName(), signalNames));						
+				fsa.generateFile(mFilesHelper.toQmImplFilePath(current.getClassName() + "_statechart_signals.h"), this.generateSignalsHeader(current.getClassName(), signalNames, completionEventSignalNames, statesWithTimeEvent));						
 
 			}
 		}
@@ -61,60 +86,72 @@ public class QpcHeaders implements IGenerator {
 	/**
 	 * Generates the header file for the enumeration of signals
 	 */
-	public CharSequence generateSignalsHeader(final String smName, final TreeSet<String> signalNames){
-		String str = "";
-
-		//str += printIncludes();
-
-		str +=  "enum " + smName + "_signals {\n" +
-				"	/* \"During\" signal */\n" +
-				"	DURING = Q_USER_SIG,\n\n" + 
-				"	/* User defined signals */\n" ;
-
+	public CharSequence generateSignalsHeader(final String className, final TreeSet<String> signalNames, final TreeSet<String> completionEventNames, final TreeSet<String> statesWithTimeEvent){
+		String signalsEnumString = "";
+		String timeEventEnumString = "";
+		
 		for (String signalName : signalNames) {
-			str += "	" + smName.toUpperCase() + "_" + signalName + "_SIG,\n";
+			signalsEnumString += mUtils.formatSignalName(signalName, className) + ",\n";
+		}
+
+		for (String stateName : statesWithTimeEvent) {
+			timeEventEnumString += mUtils.formatTimeEventName(stateName) + ",\n";
+		}
+
+		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
+		ST st = g.getInstanceOf("SignalsHeader");
+
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(className, null, false));
+		st.add("className", className);
+		st.add("classNameUpperCase", className.toUpperCase());
+		st.add("signalsEnumDefinition", signalsEnumString);
+		st.add("completionEventNames", completionEventNames);
+		if (!timeEventEnumString.equals("")){
+			st.add("timeEventEnumString", timeEventEnumString);
 		}
 		
-		str +=  "\n	/* Maximum signal id */\n" +
-				"	Q_BAIL_SIG = 0x7FFFFFF-1 /* Internal: terminate region/submachine */,\n" +
-				"	MAX_SIG    = 0x7FFFFFF   /* Last possible ID! */\n";
-		str += "};\n";
 
-		return str;
+
+		return st.render();
 	}
 
 	/**
 	 * Generates the header file for the enumeration of states
 	 */
-	public CharSequence generateStatesHeader(final String smName, final Iterable<String> statesQualifiedNames){
-		String str = "";
+	public CharSequence generateStatesHeader(final CurrentGeneration current, final Iterable<String> statesQualifiedNames){
+		String statesEnumString = "";
 
-		//str += printIncludes();
-
-		str +=  "typedef enum " + smName + "_states {\n";
-		str += "	" + smName.toUpperCase() + "__TOP__, /* Top = 0 */\n";
+		statesEnumString += current.getSmQualifiedName().toUpperCase() + "__TOP__, /* Top = 0 */\n";
 		for (String stateQualifiedName : statesQualifiedNames) {
-			str += "	" + smName.toUpperCase() + "_" + stateQualifiedName.toUpperCase().replaceAll("::", "_") + ",\n";
+			statesEnumString += mUtils.formatStateEnum(stateQualifiedName, current.getSmQualifiedName()) + ",\n";
 		}
-		
-		str += "} " + smName + "_states;\n";
 
-		return str;
+		STGroup g = new STGroupFile("resources/qpc_tpl/QpcHeaders.stg");
+		ST st = g.getInstanceOf("StatesHeader");
+
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(current.getClassName(), current.getSmName(), false));
+		st.add("smQualifiedName", current.getSmQualifiedName());
+		st.add("smQualifiedNameUpperCase", current.getSmQualifiedName().toUpperCase());
+		st.add("statesEnumDefinition", statesEnumString);
+		
+		return st.render();
 	}
 
-
-	public CharSequence printIncludes(){
-		String str = "";
-
-		str += "#include <stdio.h>\n";
-		str += "#include <stdlib.h>\n";
-		str += "#include <string.h>\n";
-		str += "#include <assert.h>\n";
-		str += "#include <stdbool.h>\n";
-
-		str += "\n\n";
-
-		return str;
+	/**
+	 * Queries for all final states and return a list of all completiom event names for QPC.
+	 */
+	public TreeSet<String> getAllCompletionEventSignalNames(StateMachine sm) {
+		TreeSet<String> completionEventSignalNames = new TreeSet<String>();
+		for (State finalState : mQStateMachine.getAllFinalStates(sm)){
+			String completionSig;
+			if (mQState.isTopState(finalState)){
+				completionSig = "_SIG_" + current.getSmQualifiedName().toUpperCase() + "_COMPLETE_";
+			} else { // need to retrieve the parent state name for completion event.
+				completionSig = "_SIG_" + mUtils.formatStateEnum(mQState.getFullyQualifiedName(mQState.getParentState(finalState)), current.getSmQualifiedName().toUpperCase()) + "_COMPLETE_";	
+			}
+			completionEventSignalNames.add(completionSig);
+		}
+		return completionEventSignalNames;
 	}
 
 }

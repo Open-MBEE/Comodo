@@ -1,0 +1,105 @@
+delimiters "%", "%"
+
+
+StateMachineImplSource(smQualifiedName, className, guardNameList, implementationMethodsCodeString, fileDescriptionHeader) ::= <<
+%fileDescriptionHeader%
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <log_event.h>
+#include <qf_port.h>
+#include <qassert.h>
+#include <assert.h>
+#include <%smQualifiedName%_impl.h>
+#include <%className%_statechart_signals.h>
+
+
+%smQualifiedName%_impl *%smQualifiedName%_impl_constructor (%smQualifiedName%_impl *mepl) {
+    strncpy(mepl->machineName, "%smQualifiedName%", 128);
+    mepl->machineName[128-1] = '\0';  // null-terminate to be sure
+
+    // AttributeMapper_init(mepl);
+
+    %guardNameList :{ guard | // AttributeMapper_set(mepl, "%guard%", 0); %\n%}%
+    %guardNameList :{ guard | mepl->%guard% = 0; %\n%}%
+
+    return mepl;
+}
+
+void %smQualifiedName%_impl_set_qactive (%smQualifiedName%_impl *mepl, QActive *active) {
+    mepl->active = active;
+}
+
+
+////////////////////////////////////////////
+// Action and guard implementation methods
+////////////////////////////////////////////
+
+%implementationMethodsCodeString%
+
+>>
+
+
+
+
+
+
+
+StateMachineImplHeader(smQualifiedNameUpperCase, smQualifiedName, guardNameList, methodsDefinition, fileDescriptionHeader) ::= <<
+%fileDescriptionHeader%
+
+#ifndef %smQualifiedNameUpperCase%_IMPL_H
+#define %smQualifiedNameUpperCase%_IMPL_H
+
+#include <qf_port.h>
+#include <qassert.h>
+
+
+typedef struct %smQualifiedName%_impl {
+    char machineName[128];
+    /** Cache of pointer to the container QActive object, for ease of access */
+    QActive *active;
+    
+    %guardNameList :{ guard | bool %guard%; %\n%}%
+    
+    
+} %smQualifiedName%_impl;
+
+%smQualifiedName%_impl *%smQualifiedName%_impl_constructor (%smQualifiedName%_impl *mepl);  // Default constructor
+void %smQualifiedName%_impl_set_qactive (%smQualifiedName%_impl *mepl, QActive *active);
+
+////////////////////////////////////////////
+// Action and guard implementation methods
+////////////////////////////////////////////
+%methodsDefinition%
+
+#endif  /* %smQualifiedNameUpperCase%_IMPL_H */
+
+
+>>
+
+
+ActionFunction(smQualifiedName, functionName, argStr) ::= <<
+void %smQualifiedName%_impl_%functionName% (%smQualifiedName%_impl *mepl%argStr%) {
+	printf("\%s%\u002E%%functionName%() default action implementation invoked\n", mepl->machineName);
+}
+%\n%
+>>
+
+GuardFunction(smQualifiedName, guardName, argStr) ::= <<
+bool %smQualifiedName%_impl_%guardName% (%smQualifiedName%_impl *mepl%argStr%) {
+	printf("\%s%\u002E%%guardName%() == \%d", mepl->machineName, mepl->%guardName%);
+	return mepl->%guardName%;
+}
+%\n%
+>>
+
+ActionFunctionDeclaration(smQualifiedName, functionName, argStr) ::= <<
+void %smQualifiedName%_impl_%functionName% (%smQualifiedName%_impl *mepl%argStr%); %\n%
+>>
+
+GuardFunctionDeclaration(smQualifiedName, guardName, argStr) ::= <<
+bool %smQualifiedName%_impl_%guardName% (%smQualifiedName%_impl *mepl%argStr%); %\n%
+>>
+

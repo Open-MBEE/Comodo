@@ -1,0 +1,71 @@
+delimiters "%", "%"
+
+SignalsHeader(className, classNameUpperCase, signalsEnumDefinition, fileDescriptionHeader, completionEventNames, timeEventEnumString) ::= <<
+%fileDescriptionHeader%
+
+#ifndef %classNameUpperCase%_STATECHART_SIGNALS_H_
+#define %classNameUpperCase%_STATECHART_SIGNALS_H_
+
+enum %className%_statechart_signals {
+    /* "During" signal */
+    DURING = Q_USER_SIG,
+
+    /* User defined signals */
+    %signalsEnumDefinition%
+%if(timeEventEnumString)%
+    /* Timer Event signals */
+    %timeEventEnumString%
+%endif%
+%if(completionEventNames)%
+    /* State-Machine internal signals */
+    %completionEventNames :{ completionEvent | %completionEvent%, %\n%}%
+%endif%
+    /* Maximum signal id */
+    Q_BAIL_SIG = 0x7FFFFFF-1 /* Internal: terminate region/submachine */,
+    MAX_SIG    = 0x7FFFFFF   /* Last possible ID! */
+};
+
+/**
+ * Completion Event used to signal completion of, and thus enable exiting
+ * out of, Composite and SubMachine States.  For Submachine State, event carries
+ * the ID of instance -- enum value of containing substate -- that terminated.
+ * If applicable, Substate event also carries exit point used.
+ * 
+ * Making this a C Union ensures that just enough memory is allocated to
+ * contain the largest event type.
+ */
+typedef union {
+    struct {
+        QEvt super;  // C-style inheritance: QEvt is base type
+        int32_t substate;   // containing substate for Submachine completion
+        int32_t exitPoint;  // exitPoint used to exit Submachine, if applicable
+    } completion_evt;
+
+    QEvt base_evt;  // Mission-defined base event
+} QCompletionEvt;
+
+#endif /* %classNameUpperCase%_STATECHART_SIGNALS_H_ */
+
+>>
+
+
+
+
+StatesHeader(smQualifiedNameUpperCase, smQualifiedName, statesEnumDefinition, fileDescriptionHeader) ::= <<
+%fileDescriptionHeader%
+
+#ifndef %smQualifiedNameUpperCase%_STATES_H_
+#define %smQualifiedNameUpperCase%_STATES_H_
+
+/**
+ * Enumerate all the states that the state machine may be in at any given time.
+ * An addition to the Samek pattern, state enums facilitate convenient
+ * query of current state a State Machine is in at a given moment.
+ */
+typedef enum %smQualifiedName%_state {
+    %statesEnumDefinition%
+} %smQualifiedName%_state;
+
+#endif /* %smQualifiedNameUpperCase%_STATES_H_ */
+
+>>

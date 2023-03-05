@@ -38,6 +38,14 @@ public class FilesHelper {
 		return getRelativeSourcePath() + toFileName(className) + ".cpp";
 	}
 
+	public String toCFilePath(final String className) {
+		return "/" + Config.getInstance().getCurrentModule() + "/" + toFileName(className) + ".c";
+	}
+
+	public String toHFilePath(final String className) {
+		return "/" + Config.getInstance().getCurrentModule() + "/" + toFileName(className) + ".h";
+	}
+
 	public String toHppFilePath(final String className) {
 		return getRelativeSourcePath() + "/include/" + Config.getInstance().getCurrentModule() + "/" + toFileName(className) + ".hpp";
 	}

@@ -25,6 +25,10 @@ public class QEvent {
 		}
 	}
 
+	public String getTimeEventDurationString(final TimeEvent e) {
+		return e.getWhen().getExpr().stringValue();
+	}
+
 	public boolean isTimeEvent(final Event e) {
 		return (e instanceof TimeEvent);
 	}

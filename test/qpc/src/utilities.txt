@@ -1,0 +1,31 @@
+| *Settings*         | *Value*          |
+| Library            | Process          |
+| Library            | OperatingSystem  |
+
+| *Variable*         | *Value*          |
+| ${COMODO_LOG_FILE} | cmdo-out.log     |
+| ${COMODO_ERR_FILE} | cmdo-err.log     |
+| ${DIFF_LOG_FILE}   | diff-out.log     |
+| ${DIFF_ERR_FILE}   | diff-err.log     |
+
+| *Keywords*        |
+
+
+| Comodo |
+| | [Arguments]  | ${inModel} | ${outDir} | ${modules} | ${targetPlatform} | ${genMode} |
+| | ${result} =  | Run Process  | comodo | -i | ${inModel} | -o | ${outDir} | -m | ${modules} | -t | ${targetPlatform} | -g | ${genMode} | -n | -a | -d | alias=cmdoApp | stdout=${COMODO_LOG_FILE} | stderr=${COMODO_ERR_FILE} | 
+
+| | Log | ${result.stdout} |
+| | Log | ${result.stderr} |
+| | Should Be Equal As Integers | ${result.rc} | 0 |
+
+| Verify |
+| | [Arguments]  | ${refDir} | ${genDir} | 
+| | ${result} =  | Run Process  | diff | ${refDir} | ${genDir} | alias=diffApp | stdout=${DIFF_LOG_FILE} | stderr=${DIFF_ERR_FILE} |
+| | Log | ${result.stdout} |
+| | Log | ${result.stderr} |
+| | Should Be Equal As Integers | ${result.rc} | 0 |
+
+| Cleanup |
+| | [Arguments]  | ${dirPath} |
+| | Remove Directory | ${dirPath} | recursive=yes |

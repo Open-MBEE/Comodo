@@ -44,24 +44,33 @@ public class QStateMachine {
 	 * @return The name of initial state if it exists, "" otherwise.
 	 */
 	public String getInitialStateName(final StateMachine sm) {
+		State s = this.getInitialState(sm);
+		if (s != null) {
+			return mQState.getStateName(s);
+		}
+		return "";
+	}
+
+	/**
+	 * This method looks for the initial state of a State Machine.
+	 * It takes the "initial" pseudo-state (kind == "initial")
+	 * at the level of the SM (container.owner == sm)
+	 * and returns the destination state of the associated
+	 * transition.
+	 * @param sm State Machine
+	 * @return The initial state instance if it exists, null otherwise.
+	 */
+	public State getInitialState(final StateMachine sm) {
 		for (final Pseudostate ps : Iterables.<Pseudostate>filter(sm.allOwnedElements(), Pseudostate.class)) {
-			/*
-			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
-					Objects.equal(ps.getContainer().getOwner(), sm)) && 
-					(ps.getOutgoings().size() == 1)) && 
-					(IterableExtensions.<Transition>head(ps.getOutgoings()).getTarget() != null))) {
-				return mQState.getStateName(((State) IterableExtensions.<Transition>head(ps.getOutgoings()).getTarget()));
-			}
-			*/
 			if ((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
 					Objects.equal(ps.getContainer().getOwner(), sm)) && 
 					(ps.getOutgoings().size() == 1))) {
 				if (ps.getOutgoings().get(0).getTarget() != null) {
-					return mQState.getStateName((State)ps.getOutgoings().get(0).getTarget());
+					return (State)ps.getOutgoings().get(0).getTarget();
 				}
 			}
 		}
-		return "";
+		return null;
 	}
 
 	/**
@@ -205,6 +214,15 @@ public class QStateMachine {
 				}
 			}
 		}
+		// We also need to get all the outgoings from pseudostates
+		// because choice nodes are pseudostates, and have actions on outgoing transitions
+		for (final Pseudostate ps : getAllPseudostates(sm)) {
+			for (final Transition t : ps.getOutgoings()) {
+				if (mQTransition.hasAction(t)) {
+					names.add(mQTransition.getFirstActionName(t));
+				}
+			}
+		}
 		return names;
 	}
 
@@ -251,19 +269,34 @@ public class QStateMachine {
 
 
 	/**
-	 * This function returns all pseudostates contained in the
-	 * given state machine.
-	 * Needed for all transition guards of the SM because choice nodes are pseudostates.
-	 * 
-	 * @param sm State machine.
-	 * @return All signals contained in the given state machine.
+	 * This function returns all signals contained in the Statemachine plus
+	 * all the signals that are triggers on the statemachine's transitions
 	 */
 	public Iterable<String> getAllSignalNames(final StateMachine sm) {
 		TreeSet<String> sortedSignalNames = new TreeSet<String>();
 		for (Signal s : Iterables.<Signal>filter(sm.allOwnedElements(), Signal.class)){
 			sortedSignalNames.add(s.getName());
 		}
+		for (final Transition t : Iterables.<Transition>filter(sm.allOwnedElements(), Transition.class)){
+			if (mQTransition.hasSignalEvent(t)){
+				sortedSignalNames.add(mQTransition.getFirstEventName(t));
+			}
+		}
 		return sortedSignalNames;
+	}
+
+	/**
+	 * This function returns all final states contained in the given state machine.
+	 * @return All final states within a given state machine.
+	 */
+	public Iterable<State> getAllFinalStates(final StateMachine sm) {
+		BasicEList<State> finalStates = new BasicEList<State>();
+		for (final State s : Iterables.<State>filter(sm.allOwnedElements(), State.class)){
+			if (mQState.isFinal(s)){
+				finalStates.add(s);
+			}
+		}
+		return finalStates;
 	}
 
 
@@ -279,5 +312,50 @@ public class QStateMachine {
 			stateQualifiedNames.add(mQState.getFullyQualifiedName(state));
 		}
 		return stateQualifiedNames;
+	}
+
+	/**
+	 * @param sm State machine.
+	 * @return All history pseudostates contained in the given state machine.
+	 */
+	public Iterable<Pseudostate> getAllHistoryPseudostates(final StateMachine sm) {
+		BasicEList<Pseudostate> historyPs = new BasicEList<Pseudostate>();
+		for (final Pseudostate ps : getAllPseudostates(sm)) {
+			if (mQState.isHistoryState(ps)) {
+				historyPs.add(ps);
+			}
+		}
+		return historyPs;
+	}
+
+	/**
+	 * @param sm State machine.
+	 * @return List of all the names of the states that contain an outgoing transition with a TimeEventState
+	 */
+	public Iterable<String> getAllStatesWithTimeEvents(final StateMachine sm) {
+		BasicEList<String> timedStates = new BasicEList<String>();
+		for (final State s : getAllStates(sm)) {
+			if (mQState.hasOutgoingTimerTransition(s)) {
+				timedStates.add(s.getName());
+			}
+		}
+		return timedStates;
+	}
+
+	/**
+	 * This function returns all states contained in the
+	 * given state machine.
+	 * 
+	 * @param sm State machine.
+	 * @return All states contained in the given state machine.
+	 */
+	public Iterable<State> getAllOrthogonalStates(final StateMachine sm) {
+		BasicEList<State> orthStates = new BasicEList<State>();
+		for (State s: Iterables.<State>filter(sm.allOwnedElements(), State.class)) {
+			if (s.isOrthogonal()){
+				orthStates.add(s);
+			}
+		}
+		return orthStates;
 	}
 }

@@ -1,0 +1,52 @@
+delimiters "%", "%"
+
+StateMachineSourceDefinitions(smName, smNameUpperCase, timeEventInitString, orthogonalRegions) ::= <<
+
+%if(orthogonalRegions)%
+// Orthogonal regions initialized here
+%orthogonalRegions :{ region |
+%region.qualifiedName% %region.qualifiedName%_inst;%\n%}%
+%endif%
+
+
+/**
+ * %smName% Constructor
+ */
+%smName% *%smName%_constructor (%smName% *me, const char *objNameNew, %smName%_impl *implObj, QActive *active) {
+    QActive_ctor((QActive *)me, (QStateHandler )&%smName%_initial);
+    strncpy(me->objName, objNameNew, 128);
+    strncat(me->objName, ":%smName%", 128-strlen(me->objName));
+    me->impl = implObj;
+    if (0 == active) {  // self IS the active object
+        me->active = (QActive *)me;
+    } else {  // set containing machine as active object
+        me->active = active;
+    }
+    %smName%_impl_set_qactive(me->impl, me->active);  // give impl access to parent QActive
+
+%if(timeEventInitString)%
+    // Timer events initialized here
+    %timeEventInitString%
+%endif%
+%if(orthogonalRegions)%
+    // Orthogonal regions initialized here
+%orthogonalRegions :{ region |
+    me->%region.name% = &%region.qualifiedName%_inst;
+    (void)%region.qualifiedName%_constructor(me->%region.name%, me->impl, me->active, me);%\n%}%
+%endif%
+
+    // State is initially at TOP
+    me->myState = %smNameUpperCase%__TOP__;
+
+    return me;
+}
+
+%smName%_impl *%smName%_get_impl (%smName% *me) {
+    return me->impl;
+}
+
+%smName%_state %smName%_get_current_state (%smName% *me) {
+    return me->myState;
+}
+
+>>

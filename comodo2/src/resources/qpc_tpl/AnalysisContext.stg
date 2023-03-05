@@ -1,0 +1,26 @@
+delimiters "%", "%"
+
+SequenceDiagramYAML(cmdoModule, seqDiagName, lifelines, sequence) ::= <<
+#### Sequence Diagram ####
+
+ComodoModule: %cmdoModule%
+
+SequenceDiagram: %seqDiagName%
+
+Lifelines:
+%lifelines%
+
+Sequence:
+%sequence%
+>>
+
+
+SequenceElementYAML(source, target, signal, msg_id) ::= <<
+ - ID: %msg_id%
+   Signal: %signal%
+   From:   <%source%>
+   To:     <%target%>
+%\n%
+>>
+
+

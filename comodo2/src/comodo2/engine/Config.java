@@ -28,6 +28,7 @@ public class Config {
 	public final static  String TARGET_PLATFORM_ELT_RAD = "ELT-RAD";    // RAD application (SCXML, MAL, rad.ev)
 	public final static  String TARGET_PLATFORM_ELT_MAL = "ELT-MAL";    // MAL ICD only
 	public final static  String TARGET_PLATFORM_QPC_QM = "QPC-QM";    	// Quantum Framework: Quantum Modeler file format
+	public final static  String TARGET_PLATFORM_QPC_C = "QPC-C";    	// Quantum Framework: direct C generation
 
 	/**
 	 * Platforms specific configuration options

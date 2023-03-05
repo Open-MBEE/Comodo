@@ -93,18 +93,55 @@ public class QState {
 		return res;		
 	}
 
+	public Boolean hasInitialSubstate(final State s) {
+		State sub = this.getInitialSubstate(s);
+		if (sub != null) {
+			return true;
+		}		
+		return false;
+	}
+
 	public String getInitialSubstateName(final State s) {
+		State sub = this.getInitialSubstate(s);
+		if (sub != null) {
+			return getStateName(sub);
+		}		
+		return "";
+	}
+
+	/**
+	 * @return The substate of a composite state that is pointed at by the initial node.
+	 */
+	public State getInitialSubstate(final State s) {
 		Iterable<Pseudostate> _filter = Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class);		
 		for (final Pseudostate ps : _filter) {
 			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
 					Objects.equal(ps.getContainer().getOwner(), s)) && 
 					(ps.getOutgoings().size() == 1)) && 
 					(Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget() != null))) {
-				return getStateName( ((State) Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget()) );
+						return ( ((State) Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget()) );
 			}
 		}
 		
-		return "";
+		return null;
+	}
+
+	/**
+	 * Returns the initial transition of a composite state.
+	 * This is used when the initial transition of a composite state points to a pseudostate (like a choice node)
+	 * which makes getInitialSubstateName(s) throws a ClassCastException.
+	 */
+	public Transition getInitialSubstateTransition(final State s) {
+		Iterable<Pseudostate> _filter = Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class);		
+		for (final Pseudostate ps : _filter) {
+			if (((((ps.getKind() == PseudostateKind.INITIAL_LITERAL) && 
+					Objects.equal(ps.getContainer().getOwner(), s)) && 
+					(ps.getOutgoings().size() == 1)) && 
+					(Iterables.<Transition>getFirst(ps.getOutgoings(), null).getTarget() != null))) {
+				return ps.getOutgoings().get(0);
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -234,12 +271,24 @@ public class QState {
 		}
 		/*
 		final Function1<Transition, Boolean> _function = (Transition e) -> {
-			return Boolean.valueOf((mQTransition.isTimerTransition(e) && e.getSource().getName().matches(s.getName())));
+			return Boolean.valueOf((mQTransition.isTimerTransitionWithEvent(e) && e.getSource().getName().matches(s.getName())));
 		};
 		return !IterableExtensions.isEmpty(IterableExtensions.<Transition>filter(Iterables.<Transition>filter(this.getParentState(s).allOwnedElements(), Transition.class), _function));
 		*/
 		for (Transition e : Iterables.<Transition>filter(getParentState(s).allOwnedElements(), Transition.class)) {
-			if (mQTransition.isTimerTransition(e) && e.getSource().getName().matches(s.getName())) {
+			if (mQTransition.isTimerTransitionWithEvent(e) && e.getSource().getName().matches(s.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @return True if State s has at least one outgoing transition that carries a TimeEvent. False otherwise.
+	 */
+	public boolean hasOutgoingTimerTransition(final State s) {
+		for (Transition t : s.getOutgoings()){
+			if (mQTransition.isTimerTransition(t)) {
 				return true;
 			}
 		}
@@ -262,5 +311,101 @@ public class QState {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Returns all the pseudostates that are directly owned by State s.
+	 */
+	public Iterable<Pseudostate> getAllDirectlyOwnedPseudostates(final State s) {
+
+		BasicEList<Pseudostate> res = new BasicEList<Pseudostate>();		
+		for (Pseudostate ps : Iterables.<Pseudostate>filter(s.allOwnedElements(), Pseudostate.class)) {
+			if (ps.getKind() == PseudostateKind.ENTRY_POINT_LITERAL || 
+				ps.getKind() == PseudostateKind.EXIT_POINT_LITERAL){
+				// Entry and exit points are directly owned by the composite state
+					if (((State)ps.getOwner()).equals(s)) {
+					res.add(ps);
+				}
+			// other pseudostates are owned by the state's region
+			} else if (ps.getContainer().getState().equals(s)){
+				res.add(ps);
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Returns all the substates that are directly owned by State s.
+	 */
+	public Iterable<State> getAllDirectSubstates(final State s) {
+		BasicEList<State> res = new BasicEList<State>();
+		for (State e : Iterables.<State>filter(s.allOwnedElements(), State.class)) {
+			if (Objects.equal(getParentState(e), s)) {
+				res.add(e);
+			}
+		}
+		return res;		
+	}
+
+	/**
+	 * Returns all the History nodes that this state is tracked by.
+	 * That is, shallowHistory at depth +1 and all deepHistory that are owned by
+	 * a composite state that also owns this state.
+	 */
+	public BasicEList<Pseudostate> getAllParentHistoryNodes(final State s) {
+		BasicEList<Pseudostate> res = new BasicEList<Pseudostate>();		
+		State p = getParentState(s);
+		Integer depth = 1;
+
+		while (p!=null){
+			for (Pseudostate ps : getAllDirectlyOwnedPseudostates(p)) {
+				// We care about shallow history only at depth 0
+				if ((isHistoryState(ps) && depth <= 1) || ps.getKind() == PseudostateKind.DEEP_HISTORY_LITERAL) {
+					res.add(ps);
+				}
+			}
+			p = getParentState(p);
+			depth++;
+		}
+		return res;
+	}	
+	
+	/**
+	 * Returns the duration string of the first TimeEvent that the transitions of the state carry.
+	 * A state should only have one TimeEvent transition.
+	 */
+	public String getFirstTimeEventDurationString(final State s) {		
+		for (Transition t : s.getOutgoings()){
+			if (mQTransition.hasTimeEvent(t)){
+				return mQTransition.getFirstTimeEventDurationString(t);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the orthogonal region (belonging to an orthogonal state) that State s
+	 * is in, if any. If s in not within any orthogonal region, returns null.
+	 */
+	public Region getParentOrthogonalRegion(final State s) {
+
+		Region parent_region = getParentRegion(s);
+		State parent_state = null;
+
+		if (parent_region == null) {
+			return null;
+		}
+
+		while (parent_region!=null){
+			parent_state = mQRegion.getParentState(parent_region);
+			if (parent_state==null){
+				return null;
+			}
+			if (parent_state.isOrthogonal()){
+				return parent_region;
+			}
+			parent_region = getParentRegion(parent_state);
+		}
+		return null;
 	}
 }

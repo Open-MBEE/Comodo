@@ -12,15 +12,23 @@ import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
 
 import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
+import comodo2.templates.qpc.Utils;
+import comodo2.templates.qpc.model.CurrentGeneration;
+import comodo2.templates.qpc.model.FunctionCall;
+import comodo2.templates.qpc.traceability.FileDescriptionHeader;
 import comodo2.utils.FilesHelper;
 
 
 
 public class QpcImplFiles implements IGenerator {
 
+	private CurrentGeneration current;
 
 	@Inject
 	private FilesHelper mFilesHelper;
@@ -31,18 +39,12 @@ public class QpcImplFiles implements IGenerator {
 	@Inject
 	private QStateMachine mQStateMachine;
 
-	// %1$s is impl_name      %2$s is funciton_name        "%%s" is escaping %s, which we want in the output
-	final private String GUARD_FUNCTION_SOURCE_TEMPLATE = "" +
-		"bool %1$s_impl_%2$s (%1$s_impl *mepl) {\n" +
-		"	bool rv = AttributeMapper_get(mepl, \"%2$s\");\n" +
-		"	printf(\"%%s.%2$s() == %%s\", mepl->machineName, AttributeMapper_booltostr(rv));\n" +
-		"	return rv;\n" +
-		"};\n";
+	@Inject
+	private Utils mUtils;
 
-	final private String ACTION_FUNCTION_SOURCE_TEMPLATE = "" +
-		"void %1$s_impl_%2$s (%1$s_impl *mepl) {\n" +
-		"	printf(\"%%s.%2$s() default action implementation invoked\\n\", mepl->machineName);\n" +
-		"}\n";
+	@Inject
+	private FileDescriptionHeader mFileDescHeader;
+
 
     /**
 	 * Process a UML State Machine associated to a class (classifier behavior)
@@ -62,15 +64,14 @@ public class QpcImplFiles implements IGenerator {
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if ((mQClass.isToBeGenerated(e) && mQClass.hasStateMachines(e))) {
 				for (final StateMachine sm : mQClass.getStateMachines(e)) {
-					String smQualifiedName = e.getName() + "_" + sm.getName();
-					TreeSet<String> actionNames = new TreeSet<String>();
-					TreeSet<String> guardNames = new TreeSet<String>();
 
-					Iterables.<String>addAll(actionNames, mQStateMachine.getAllActionNames(sm));
-					Iterables.<String>addAll(guardNames, mQStateMachine.getAllGuardNames(sm));
-					
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.c"), this.generateImplSource(smQualifiedName, actionNames, guardNames));						
-					fsa.generateFile(mFilesHelper.toQmImplFilePath(smQualifiedName + "_impl.h"), this.generateImplHeader(smQualifiedName, actionNames, guardNames));						
+					current = new CurrentGeneration(e.getName(), sm.getName());
+
+					TreeSet<FunctionCall> functionCalls = mUtils.getAllFunctionCalls(mQStateMachine.getAllActionNames(sm));
+					TreeSet<FunctionCall> guardCalls = mUtils.getAllFunctionCalls(mQStateMachine.getAllGuardNames(sm));
+
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(current.getSmQualifiedName() + "_impl.c"), this.generateImplSource(current, functionCalls, guardCalls));						
+					fsa.generateFile(mFilesHelper.toQmImplFilePath(current.getSmQualifiedName() + "_impl.h"), this.generateImplHeader(current, functionCalls, guardCalls));						
 				}
 
 			}
@@ -82,90 +83,87 @@ public class QpcImplFiles implements IGenerator {
 	/**
 	 * Generates the source file for the implementation of actions and guards in the model
 	 */
-	public CharSequence generateImplSource(final String smName, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
-		String str = "";
+	public CharSequence generateImplSource(final CurrentGeneration current, final TreeSet<FunctionCall> functionCalls, final TreeSet<FunctionCall> guardCalls){
+		STGroup g = new STGroupFile("resources/qpc_tpl/QpcImplFiles.stg");
+		ST st = g.getInstanceOf("StateMachineImplSource");
 
-		str += printIncludes();
+		String methodsCodeString = "";
+		TreeSet<String> guardNamesNoParenthesis = new TreeSet<String>();
 
-		for (String guardName : guardNames) {
-			str += printGuardFunction(smName, guardName);
+
+		for (FunctionCall guardCall : guardCalls) {
+			methodsCodeString += printGuardFunctionCall(g, current.getSmQualifiedName(), guardCall);
+			guardNamesNoParenthesis.add(guardCall.getName());
 		}
 
-		for (String actionName : actionNames) {
-			str += printActionFunction(smName, actionName);
+		for (FunctionCall functionCall : functionCalls) {
+			methodsCodeString += printActionFunctionCall(g, current.getSmQualifiedName(), functionCall);
 		}
 
-		return str;
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(current.getClassName(), current.getSmName(), false));
+		st.add("className", current.getClassName());
+		st.add("smQualifiedName", current.getSmQualifiedName());
+		st.add("guardNameList", guardNamesNoParenthesis);
+		st.add("implementationMethodsCodeString", methodsCodeString);
+
+		return st.render();
 	}
 
 	/**
 	 * Generates the header file for the implementation of behaviors and guards in the model
 	 */
-	public CharSequence generateImplHeader(final String smName, final TreeSet<String> actionNames, final TreeSet<String> guardNames){
-		String str = "";
+	public CharSequence generateImplHeader(final CurrentGeneration current, final TreeSet<FunctionCall> actionCalls, final TreeSet<FunctionCall> guardCalls){
+		STGroup g = new STGroupFile("resources/qpc_tpl/QpcImplFiles.stg");
+		ST st = g.getInstanceOf("StateMachineImplHeader");
+		
+		TreeSet<String> guardNamesNoParenthesis = new TreeSet<String>();
 
-		str += printIncludes();
-
-		str += "typedef struct " + smName + "_impl {\n" +
-				"	char machineName[128];\n" +
-				"	QActive *active;\n\n";
-
-		for (String guardName : guardNames) {
-			str += String.format("	bool %s;\n", getFunctionName(guardName));
-		}
-
-		str += "}" + smName + "_impl;\n\n";
-
-		str +=  "////////////////////////////////////////////\n" +
-				"// Action and guard implementation methods\n" +
-				"////////////////////////////////////////////\n";
-
-		for (String guardName : guardNames) {
-			str += String.format("bool %s_impl_%s(" + smName + "_impl *mepl);\n", smName, getFunctionName(guardName));
-		}
-
-		for (String actionName : actionNames) {
-			str += String.format("void %s_impl_%s(" + smName + "_impl *mepl);", smName, getFunctionName(actionName));
-			str += "\n";
+		String methodsDefinition = "";
+		
+		for (FunctionCall guardCall : guardCalls) {
+			ST st_guard_decl = g.getInstanceOf("GuardFunctionDeclaration");
+			guardNamesNoParenthesis.add(guardCall.getName());
+			st_guard_decl.add("smQualifiedName", current.getSmQualifiedName());
+			st_guard_decl.add("guardName", guardCall.getName());
+			st_guard_decl.add("argStr", guardCall.getImplementationArgsString());
+			methodsDefinition += st_guard_decl.render();
 		}
 		
-		return str;
-	}
-
-
-	public CharSequence printGuardFunction(final String smName, final String guardName){
-		String str = "";
-		str += String.format(GUARD_FUNCTION_SOURCE_TEMPLATE, smName, getFunctionName(guardName));
-		str += "\n";
+		for (FunctionCall actionCall : actionCalls) {
+			ST st_action_decl = g.getInstanceOf("ActionFunctionDeclaration");
+			st_action_decl.add("smQualifiedName", current.getSmQualifiedName());
+			st_action_decl.add("functionName", actionCall.getName());
+			st_action_decl.add("argStr", actionCall.getImplementationArgsString());
+			methodsDefinition += st_action_decl.render();
+		}
 		
-		return str;
-	}
-	
-	public CharSequence printActionFunction(final String smName, final String actionName){
-		String str = "";
-		str += String.format(ACTION_FUNCTION_SOURCE_TEMPLATE, smName, getFunctionName(actionName));
-		str += "\n";
-
-		return str;
+		st.add("fileDescriptionHeader", mFileDescHeader.generateFileDescriptionHeader(current.getClassName(), current.getSmName(), false));
+		st.add("smQualifiedName", current.getSmQualifiedName());
+		st.add("smQualifiedNameUpperCase", current.getSmQualifiedName().toUpperCase());
+		st.add("guardNameList", guardNamesNoParenthesis);
+		st.add("methodsDefinition", methodsDefinition);
+		
+		return st.render();
 	}
 
-	public CharSequence printIncludes(){
-		String str = "";
+	public CharSequence printActionFunctionCall(final STGroup g, final String smQualifiedName, final FunctionCall functionCall){
+		ST st_call = g.getInstanceOf("ActionFunction");
 
-		str += "#include <stdio.h>\n";
-		str += "#include <stdlib.h>\n";
-		str += "#include <string.h>\n";
-		str += "#include <assert.h>\n";
-		str += "#include <stdbool.h>\n";
+		st_call.add("smQualifiedName", smQualifiedName);
+		st_call.add("functionName", functionCall.getName());	
+		st_call.add("argStr", functionCall.getImplementationArgsString());
 
-		str += "\n\n";
-
-		return str;
+		return st_call.render();
 	}
 
-	public CharSequence getFunctionName(String str){
-		// TODO: this is very brittle and shall be replaced with a more robust regex
-		// It basically only takes what's before the first set of parentheses
-		return str.replaceAll("(?s)\\(\\).*","");
+	public CharSequence printGuardFunctionCall(final STGroup g, final String smQualifiedName, final FunctionCall functionCall){
+		ST st_call = g.getInstanceOf("GuardFunction");
+
+		st_call.add("smQualifiedName", smQualifiedName);
+		st_call.add("guardName", functionCall.getName());
+		st_call.add("argStr", functionCall.getImplementationArgsString());
+
+		return st_call.render();
 	}
+
 }

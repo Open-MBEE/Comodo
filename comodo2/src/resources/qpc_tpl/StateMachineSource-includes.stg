@@ -1,0 +1,12 @@
+delimiters "%", "%"
+
+StateMachineSourceIncludes(smName) ::= <<
+
+#include <stdio.h>
+#include <string.h>
+#include <log_event.h>
+#include <assert.h>
+#include <%smName%.h>
+#include <%smName%_impl.h>
+
+>>

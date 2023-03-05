@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:DSLCustomization="http://UML_Standard_Profile/MagicDraw_Profile/DSL_Customization/_11_5_be00301_1153310565718_226811_161" xmlns:MagicDrawProfile="http://www.omg.org/spec/UML/20131001/MagicDrawProfile" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://UML_Standard_Profile/MagicDraw_Profile/DSL_Customization/_11_5_be00301_1153310565718_226811_161 UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_bDPnhv7oEeuunNBPCU_pFQ http://www.omg.org/spec/UML/20131001/MagicDrawProfile UML_Standard_Profile.MagicDraw_Profile.profile.uml#_bDKFGf7oEeuunNBPCU_pFQ">
+  <uml:Profile xmi:id="_16_8beta_2104050f_1267611143468_569866_21917" name="customizations for traceability" visibility="public" URI="" metamodelReference="_16_8beta_2104050f_1267611143530_995508_21918">
+    <eAnnotations xmi:id="_bDOXLf7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+      <contents xmi:type="ecore:EPackage" xmi:id="_bDOXLv7oEeuunNBPCU_pFQ" name="customizationsfortraceability" nsURI="http://MD_Customization_for_SysML/customizations_for_traceability/_16_8beta_2104050f_1267611143468_569866_21917" nsPrefix="customizationsfortraceability">
+        <eAnnotations xmi:id="_bDOXL_7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+          <details xmi:id="_bDOXMP7oEeuunNBPCU_pFQ" key="originalName" value="customizations for traceability"/>
+        </eAnnotations>
+        <eSubpackages xmi:id="_bDOXMf7oEeuunNBPCU_pFQ" name="Propertiesdescriptors" nsURI="http:///customizationsfortraceability/Propertiesdescriptors.ecore" nsPrefix="customizationsfortraceability.Propertiesdescriptors">
+          <eAnnotations xmi:id="_bDOXMv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+            <details xmi:id="_bDOXM_7oEeuunNBPCU_pFQ" key="originalName" value="Properties descriptors"/>
+          </eAnnotations>
+          <eAnnotations xmi:id="_bDOXNP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_16_8beta_2104050f_1267611187304_217363_21929"/>
+          <eSubpackages xmi:id="_bDOXNf7oEeuunNBPCU_pFQ" name="Specification" nsURI="http:///customizationsfortraceability/Propertiesdescriptors/Specification.ecore" nsPrefix="customizationsfortraceability.Propertiesdescriptors.Specification">
+            <eAnnotations xmi:id="_bDOXNv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_16_8beta_2104050f_1267611215031_537683_21953"/>
+            <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDOXN_7oEeuunNBPCU_pFQ" name="ElementAllAllocatedToElements">
+              <eAnnotations xmi:id="_bDOXOP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_16_8beta_2104050f_1267758713459_369018_22795">
+                <details xmi:id="_bDOXOf7oEeuunNBPCU_pFQ" key="originalName" value="Element All AllocatedTo Elements"/>
+              </eAnnotations>
+              <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDOXOv7oEeuunNBPCU_pFQ" name="AllocatedToElements" upperBound="-1">
+                <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Element"/>
+              </eStructuralFeatures>
+              <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDOXPP7oEeuunNBPCU_pFQ" name="Traceability" ordered="false" lowerBound="1"/>
+              <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDOXPf7oEeuunNBPCU_pFQ" name="AllocatedToAllo" upperBound="-1">
+                <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Element"/>
+              </eStructuralFeatures>
+            </eClassifiers>
+          </eSubpackages>
+          <eSubpackages xmi:id="_bDOXP_7oEeuunNBPCU_pFQ" name="Realization" nsURI="http:///customizationsfortraceability/Propertiesdescriptors/Realization.ecore" nsPrefix="customizationsfortraceability.Propertiesdescriptors.Realization">
+            <eAnnotations xmi:id="_bDOXQP7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/4.0.0/UML" references="_16_8beta_2104050f_1267611206319_826288_21942"/>
+            <eClassifiers xmi:type="ecore:EClass" xmi:id="_bDOXQf7oEeuunNBPCU_pFQ" name="ElementAllAllocatedFromElements">
+              <eAnnotations xmi:id="_bDOXQv7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_16_8beta_2104050f_1267680538850_188162_24865">
+                <details xmi:id="_bDOXQ_7oEeuunNBPCU_pFQ" key="originalName" value="Element All AllocatedFrom Elements"/>
+              </eAnnotations>
+              <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDOXRP7oEeuunNBPCU_pFQ" name="AllocatedFromElements" upperBound="-1">
+                <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Element"/>
+              </eStructuralFeatures>
+              <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_bDOXRv7oEeuunNBPCU_pFQ" name="Traceability" ordered="false" lowerBound="1"/>
+              <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_bDOXR_7oEeuunNBPCU_pFQ" name="AllocatedFromAllo" upperBound="-1">
+                <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Element"/>
+              </eStructuralFeatures>
+            </eClassifiers>
+          </eSubpackages>
+        </eSubpackages>
+      </contents>
+    </eAnnotations>
+    <packageImport xmi:id="_16_8beta_2104050f_1267611143530_995508_21918">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0primitiveTypescustomizations_for_traceability">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_0javaPrimitiveTypescustomizations_for_traceability">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_16_8beta_2104050f_1267611187304_217363_21929" name="Properties descriptors" visibility="public" URI="">
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_8beta_2104050f_1267611215031_537683_21953" name="Specification" visibility="public" URI="">
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267758713459_369018_22795" name="Element All AllocatedTo Elements" visibility="public">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267758713461_716556_22796" name="AllocatedToElements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267758713465_589295_22800" annotatedElement="_16_8beta_2104050f_1267758713461_716556_22796" body="Derived from all elements directly and indirectly this element is allocated to."/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267758713465_452976_22801" name="" visibility="public"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267758713465_305853_22799" name="" visibility="public" value="*"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267758713463_67814_22797" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267758713466_147537_22803" name="Specification" visibility="private"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_9beta_2104050f_1277377537185_698557_24486" name="AllocatedToAllo" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_9beta_2104050f_1277377537187_560873_24488" annotatedElement="_16_9beta_2104050f_1277377537185_698557_24486" body="All requirements which the requirement is directly traced from."/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9beta_2104050f_1277377537188_466258_24489" name="" visibility="public"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9beta_2104050f_1277377537187_712213_24487" name="" visibility="public" value="*"/>
+          </ownedAttribute>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_8beta_2104050f_1267611206319_826288_21942" name="Realization" visibility="public" URI="">
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8beta_2104050f_1267680538850_188162_24865" name="Element All AllocatedFrom Elements" visibility="public">
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267680538851_338376_24866" name="AllocatedFromElements" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_8beta_2104050f_1267680538856_455335_24870" annotatedElement="_16_8beta_2104050f_1267680538851_338376_24866" body="Derived from all elements directly and indirectly this element is allocated from."/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8beta_2104050f_1267680538857_557387_24871" name="" visibility="public"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8beta_2104050f_1267680538856_331231_24869" name="" visibility="public" value="*"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8beta_2104050f_1267680538853_477471_24867" name="Traceability" visibility="private">
+            <qualifier xmi:id="_16_8beta_2104050f_1267680538857_198954_24873" name="Realization" visibility="private"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_9beta_2104050f_1277377377950_387114_23484" name="AllocatedFromAllo" visibility="private" isOrdered="true">
+            <ownedComment xmi:id="_16_9beta_2104050f_1277377378002_537458_23486" annotatedElement="_16_9beta_2104050f_1277377377950_387114_23484" body="All requirements which the requirement is directly traced from."/>
+            <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Element"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9beta_2104050f_1277377378003_32682_23487" name="" visibility="public"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9beta_2104050f_1277377378002_652625_23485" name="" visibility="public" value="*"/>
+          </ownedAttribute>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_be00301_1073394351331_445580_2profileApplicationcustomizations_for_traceability">
+      <eAnnotations xmi:id="_bGH5Qf7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_bDKFGf7oEeuunNBPCU_pFQ"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
+    </profileApplication>
+    <profileApplication xmi:id="_11_5_be00301_1153310565718_226811_161profileApplicationcustomizations_for_traceability">
+      <eAnnotations xmi:id="_bGOm-P7oEeuunNBPCU_pFQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_bDPnhv7oEeuunNBPCU_pFQ"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_11_5_be00301_1153310565718_226811_161"/>
+    </profileApplication>
+  </uml:Profile>
+  <MagicDrawProfile:ED xmi:id="_bGH5Qv7oEeuunNBPCU_pFQ" base_Element="_16_8beta_2104050f_1267680538850_188162_24865" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267680538850_188162_24865"/>
+  <MagicDrawProfile:ED xmi:id="_bGH5Q_7oEeuunNBPCU_pFQ" base_Element="_16_8beta_2104050f_1267758713459_369018_22795" ed="Architect, Enterprise" base_Class="_16_8beta_2104050f_1267758713459_369018_22795"/>
+  <DSLCustomization:propertyGroup xmi:id="_bGPOAP7oEeuunNBPCU_pFQ" base_Property="_16_8beta_2104050f_1267680538853_477471_24867" useAsNode="true"/>
+  <DSLCustomization:propertyGroup xmi:id="_bGPOAf7oEeuunNBPCU_pFQ" base_Property="_16_8beta_2104050f_1267680538857_198954_24873">
+    <properties>AllocatedFromElements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_bGPOAv7oEeuunNBPCU_pFQ" base_Property="_16_8beta_2104050f_1267758713466_147537_22803">
+    <properties>AllocatedToElements</properties>
+  </DSLCustomization:propertyGroup>
+  <DSLCustomization:propertyGroup xmi:id="_bGPOA_7oEeuunNBPCU_pFQ" base_Property="_16_8beta_2104050f_1267758713463_67814_22797" useAsNode="true"/>
+  <DSLCustomization:Customization xmi:id="_bGa0Mv7oEeuunNBPCU_pFQ" base_Class="_16_8beta_2104050f_1267680538850_188162_24865">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147866677244_999655_1628"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:Customization xmi:id="_bGbbQ_7oEeuunNBPCU_pFQ" base_Class="_16_8beta_2104050f_1267758713459_369018_22795">
+    <customizationTarget xmi:type="uml:Stereotype" href="SysML.profile.uml#_11_5EAPbeta_be00301_1147866677244_999655_1628"/>
+  </DSLCustomization:Customization>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_bGtIE_7oEeuunNBPCU_pFQ" base_Property="_16_9beta_2104050f_1277377377950_387114_23484">
+    <expression>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?>
+&lt;callExpressionSpecification xmlns=&quot;http://www.nomagic.com/schemas/MagicDraw/StructuredExpression/2013&quot;>
+    &lt;taggedValues>
+        &lt;entry key=&quot;name&quot;>
+            &lt;value>Allocated To&lt;/value>
+        &lt;/entry>
+    &lt;/taggedValues>
+    &lt;type xsi:type=&quot;stereotypeIdType&quot; stereotypeId=&quot;_11_5EAPbeta_be00301_1147866677244_999655_1628&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;/>
+    &lt;argument xsi:type=&quot;lookupExpressionSpecification&quot; symbol=&quot;THIS&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;/>
+    &lt;expression xsi:type=&quot;tagExpressionSpecification&quot; direction=&quot;OPPOSITE&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;>
+        &lt;taggedValues>
+            &lt;entry key=&quot;name&quot;>
+                &lt;value>Allocated To&lt;/value>
+            &lt;/entry>
+        &lt;/taggedValues>
+        &lt;tag xsi:type=&quot;tag&quot; tagId=&quot;_11_5EAPbeta_be00301_1147866788835_905909_1723&quot; derived=&quot;false&quot;/>
+    &lt;/expression>
+&lt;/callExpressionSpecification>
+</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_bGtIFP7oEeuunNBPCU_pFQ" base_Property="_16_8beta_2104050f_1267680538851_338376_24866">
+    <expression>Allocated From Elements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Allocations::Allocated.AllocatedFromAllo,Allocations::Allocated.AllocatedFromElements);NamedElement</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_bGtIFf7oEeuunNBPCU_pFQ" base_Property="_16_9beta_2104050f_1277377537185_698557_24486">
+    <expression>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?>
+&lt;callExpressionSpecification xmlns=&quot;http://www.nomagic.com/schemas/MagicDraw/StructuredExpression/2013&quot;>
+    &lt;taggedValues>
+        &lt;entry key=&quot;name&quot;>
+            &lt;value>Allocated From&lt;/value>
+        &lt;/entry>
+    &lt;/taggedValues>
+    &lt;type xsi:type=&quot;stereotypeIdType&quot; stereotypeId=&quot;_11_5EAPbeta_be00301_1147866677244_999655_1628&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;/>
+    &lt;argument xsi:type=&quot;lookupExpressionSpecification&quot; symbol=&quot;THIS&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;/>
+    &lt;expression xsi:type=&quot;tagExpressionSpecification&quot; direction=&quot;OPPOSITE&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;>
+        &lt;taggedValues>
+            &lt;entry key=&quot;name&quot;>
+                &lt;value>Allocated From&lt;/value>
+            &lt;/entry>
+        &lt;/taggedValues>
+        &lt;tag xsi:type=&quot;tag&quot; tagId=&quot;_11_5EAPbeta_be00301_1147866770348_640413_1719&quot; derived=&quot;false&quot;/>
+    &lt;/expression>
+&lt;/callExpressionSpecification>
+</expression>
+  </DSLCustomization:derivedPropertySpecification>
+  <DSLCustomization:derivedPropertySpecification xmi:id="_bGtIFv7oEeuunNBPCU_pFQ" base_Property="_16_8beta_2104050f_1267758713461_716556_22796">
+    <expression>Allocated To Elements;Binary;com.nomagic.magicdraw.derivedproperty.RecursiveExpression(Allocations::Allocated.AllocatedToAllo,Allocations::Allocated.AllocatedToElements);NamedElement</expression>
+  </DSLCustomization:derivedPropertySpecification>
+</xmi:XMI>

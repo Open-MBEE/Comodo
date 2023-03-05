@@ -49,17 +49,25 @@ public class QRegion {
 	}
 	 */
 	public String getInitialStateName(final Region r) {
+		State s = this.getInitialState(r);
+		if (s != null) {
+			return mQState.getStateName(s);
+		}
+		return "";
+	}
+
+	public State getInitialState(final Region r) {
 		for (final Pseudostate ps : Iterables.<Pseudostate>filter(r.allOwnedElements(), Pseudostate.class)) {
 			if ((ps.getKind() == PseudostateKind.INITIAL_LITERAL) &&
 			    Objects.equal(ps.getContainer().getOwner(), this.getParentState(r)) &&
 				(ps.getOutgoings().size() == 1)) {
 				Vertex v = ps.getOutgoings().get(0).getTarget();
 				if (v != null) {
-					return  mQState.getStateName((State)v);
+					return  (State)v;
 				}
 			}
 		}
-		return "";
+		return null;
 	}
 
 	public boolean isTopState(final Region r) {

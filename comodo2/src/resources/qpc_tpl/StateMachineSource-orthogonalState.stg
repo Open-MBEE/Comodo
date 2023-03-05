@@ -1,0 +1,62 @@
+delimiters "%", "%"
+
+OrthogonalRegionMethodDefinitions(regionQualifiedName, smQualifiedName, smQualifiedNameUppercase, initialState, logging) ::= <<
+
+// ############ Utility method definitions for orthogonal region: %regionQualifiedName% ############
+
+/** 
+ * Orthogonal-region constructor for %regionQualifiedName%
+ */
+%regionQualifiedName% *%regionQualifiedName%_constructor (%regionQualifiedName% *me, const char *objNameNew, %smQualifiedName%_impl *implObj, QActive *active, %smQualifiedName% *parent) {
+    QHsm_ctor((QHsm *)me, (QStateHandler )%regionQualifiedName%_initial);
+    strncpy(me->objName, objNameNew, 128);
+    me->objName[128-1] = '\0';  // null-terminate string
+    me->impl = implObj;
+    me->active = active;
+    me->parent = parent;
+
+    // State is initially at TOP
+    me->myState = %smQualifiedNameUppercase%__TOP__;
+
+    return me;
+}
+
+%smQualifiedName%_state %regionQualifiedName%_get_current_state (%regionQualifiedName% *me) {
+    return me->myState;
+}
+
+void %regionQualifiedName%_reinit (%regionQualifiedName% *me) {
+    ((QHsm *)me)->state = (QStateHandler ) &%regionQualifiedName%_initial;
+}
+
+// ############ State handler methods definitions for orthogonal region: %regionQualifiedName% ############
+
+/**
+ * Initial transition of the state machine (equivalent to initial pseudostate node)
+ * This routine handles initial events of the state-machine.
+ */
+QState %smQualifiedName%_%regionQualifiedName%_initial (%regionQualifiedName% *me, QEvt const *e) {
+%if(logging)%
+    char logMsg[256];
+    strncpy(logMsg, me->objName, 256);
+    strncat(logMsg, " %regionQualifiedName%", 256-strlen(logMsg)-1/*null-char*/);
+    strncat(logMsg, " initialization", 256-strlen(logMsg)-1/*null-char*/);
+    LogEvent_log(logMsg);
+%endif%
+    return %initialState%;
+}
+
+QState %smQualifiedName%_%regionQualifiedName%_final (%regionQualifiedName% *me, QEvt const *e) {
+    switch (e->sig) {
+    case Q_ENTRY_SIG:
+        me->myState = %smQualifiedNameUppercase%__TOP__;
+        return Q_HANDLED();
+    case Q_EXIT_SIG:
+        return Q_HANDLED();
+    case Q_BAIL_SIG:  // prevents dropped event if submachine already terminated
+        return Q_HANDLED();
+    }
+    return Q_SUPER(&QHsm_top);
+}
+
+>>
