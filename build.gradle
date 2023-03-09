@@ -67,8 +67,64 @@ jar {
             it.isDirectory() ? it : zipTree(it)
         }
     } {exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'}
-    // from(sourceSets.main.output.resourcesDir) {
-    //     include '**/*'
-    //     into('resources')
-    // }
+}
+
+
+
+// #################### TESTING ########################
+
+// The testing strategy is: each target is executed on a set of models in the execute<name>Target. 
+// The output is then compared in test<name>Target with the reference output, usually stored under test/<name>/ref.
+// RESULTS_MAPPING is used to store the results of the tests.
+
+ext.TEST_OUTPUT_PATH = "./test/gradle-testgen"
+ext.RESULTS_MAPPING = [:]
+
+// This function defines tasks that execute the target on the test models and compares the output with the reference output
+def defineTargetTestingTask(String taskName, String targetType, String inputFilePath, String modelName, String expectedOutputPath, String extraArgs = "") {
+  task("execute${taskName}Target", type: Exec) {
+    dependsOn build
+    group = "Execution"
+    description = "Run the ${targetType} target on the test models (${modelName})"
+    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), mainClassName
+    args "-i", inputFilePath, "-o", "${TEST_OUTPUT_PATH}/${taskName}", "-t", targetType, "-m", modelName, "-a", extraArgs
+  }
+
+  task("test${taskName}Target", type: Exec) {
+    dependsOn "execute${taskName}Target"
+    group = "DiffTesting"
+    description = "Test the ${targetType} target by comparing its output with the reference output."
+    def outputFilename = "${TEST_OUTPUT_PATH}/${taskName}.difflog"
+    standardOutput = new FileOutputStream(outputFilename)
+    commandLine "diff", "-rb", "${TEST_OUTPUT_PATH}/${taskName}", "${expectedOutputPath}"
+    ignoreExitValue = true
+    doLast {
+        def output = new FileInputStream(outputFilename).text.trim()
+        if (output) {
+            println "[FAIL] Test failure: the generated code is different from the reference code. Please check the diff in ${outputFilename}."
+            RESULTS_MAPPING.put(taskName, "FAIL")
+        } else {
+            RESULTS_MAPPING.put(taskName, "PASS")
+            println "[PASS] Test succeeded."
+        }
+    }
+  }
+}
+
+// Defining test tasks
+defineTargetTestingTask("QPC-C", "QPC-C", "./test/qpc/model/qpc-test-model/qpc-test-model.uml", "BlinkyChoice", "./test/qpc/ref")
+defineTargetTestingTask("ELT-RAD1", "ELT-RAD", "./test/elt/model/hello/EELT_ICS_ApplicationFramework.uml", "hellomalif hellomal", "./test/elt/ref/hello", "-ndgALL")
+defineTargetTestingTask("ELT-RAD2", "ELT-RAD", "./test/elt/model/hello/EELT_ICS_ApplicationFramework.uml", "hellomalif2 externalif2 hellomal2", "./test/elt/ref/hello2", "-ndgALL")
+
+// Execute all tests and returns results
+task testAll {
+    dependsOn tasks.matching { it.group == "DiffTesting" }
+    doLast{
+        println "${RESULTS_MAPPING.size()} tests executed. Results (PASS/FAIL) by target: ${RESULTS_MAPPING}"
+        if (RESULTS_MAPPING.values().any { it == "FAIL" }) {
+            throw new GradleException("[FAIL] At least one test failed. See logs above and in ${TEST_OUTPUT_PATH}/*.difflog for details.")
+        } else {
+            println "[PASS] All tests succeeded."
+        }
+    }
 }
