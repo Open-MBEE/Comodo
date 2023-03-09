@@ -6,10 +6,8 @@ Installation from OpenMBEE Git repository using ant
 ---------------------------------------------------
 To install COMODO2 from OpenMBEE GIT repository:
 
-    $ git lfs install
     $ git clone https://github.com/Open-MBEE/Comodo.git comodo2  
     $ cd comodo2
-    $ git lfs pull
     $ ant build
     $ ant install
 
@@ -21,14 +19,11 @@ Installation from ESO Git repository using waf
 ----------------------------------------------
 To install COMODO2 from ESO GIT repository (it requires waf and wtools):
 
-    $ git lfs install
     $ git clone https://gitlab.eso.org/ifw/comodo2.git comodo2  
     $ cd comodo2
-    $ git lfs pull
     $ waf configure
     $ waf install
 
-The installation of Large File Storage (lfs) is required to retrieve the JAR files used by COMODO2. This step (`git lfs install`) should be executed only once per account.
 
 JARs (including comodo2.jar) are installed by waf in `$PREFIX/lib` directory.
 
