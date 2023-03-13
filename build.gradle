@@ -94,6 +94,7 @@ def defineTargetTestingTask(String taskName, String targetType, String inputFile
     dependsOn "execute${taskName}Target"
     group = "DiffTesting"
     description = "Test the ${targetType} target by comparing its output with the reference output."
+    new File("${TEST_OUTPUT_PATH}").mkdirs()
     def outputFilename = "${TEST_OUTPUT_PATH}/${taskName}.difflog"
     standardOutput = new FileOutputStream(outputFilename)
     commandLine "diff", "-rb", "${TEST_OUTPUT_PATH}/${taskName}", "${expectedOutputPath}"
