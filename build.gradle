@@ -1,9 +1,11 @@
 plugins {
     id 'java'
     id 'application'
+    id 'maven-publish'
 }
 
-version '1.0'
+group = 'org.openmbee'
+version '0.1'
 
 repositories {
     mavenCentral()
@@ -70,6 +72,42 @@ jar {
 }
 
 
+// #################### PUBLISH ########################
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = project.name
+            groupId = group
+            version = version
+            pom {
+                name = project.name
+                description = 'Transform a UML model into code for different software platforms.'
+                url = 'https://github.com/Open-MBEE/Comodo'
+                developers {
+                    developer {
+                        id = 'landolfa'
+                        name = 'landolfa'
+                    }
+                    developer {
+                        id = 'thomas-bc'
+                        name = 'Thomas Boyer Chammard'
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                    username = project.findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
+                    password = project.findProperty("ossrhPassword") ?: System.getenv("OSSRH_PASSWORD")
+            }
+        }
+    }
+}
 
 // #################### TESTING ########################
 
