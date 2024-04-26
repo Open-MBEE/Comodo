@@ -709,6 +709,9 @@ public class StateMachineSource implements IGenerator {
 	 * Returns the QPC-specific return statement for a transition to stateName
 	 */
 	public String transitionToStateMacro(State s){
+		if (s == null){
+			return null;
+		}
 		if (Objects.equal(s.getName(), "")){
 			return null;
 		}
