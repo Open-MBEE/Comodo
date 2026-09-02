@@ -1,3 +1,7 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.TaskAction
+
 plugins {
     id 'java'
     id 'application'
@@ -70,6 +74,49 @@ jar {
 }
 
 
+// #################### INSTALLATION INTO PREFIX  ########################
+
+tasks.register('install', Copy) {
+    def prefix = providers.gradleProperty("prefix").getOrElse("/usr/local")
+    def version = project.version
+
+    group = 'distribution'
+    description = 'Install JAR and launcher script'
+
+    // Ensure the JAR is build first
+    dependsOn assemble
+
+    doFirst {
+        println "--------------------------------------------------------"
+        println "Install Prefix: ${prefix}"
+        println "--------------------------------------------------------"
+    }
+
+    // Absolute path to install prefix
+    into {
+        return prefix
+    }
+
+    // Install jar file
+    into("share/java") {
+        from tasks.named("jar")
+    }
+
+    // Install launcher with substitution
+    into ("bin") {
+        from 'comodo2.in'
+
+        filter(ReplaceTokens, tokens: [
+            PREFIX: prefix,
+            VERSION: version
+        ])
+
+        rename { String fileName ->
+            fileName.replace('.in', '')
+        }
+    }
+}
+
 
 // #################### TESTING ########################
 
@@ -86,7 +133,7 @@ def defineTargetTestingTask(String taskName, String targetType, String inputFile
     dependsOn build
     group = "Execution"
     description = "Run the ${targetType} target on the test models (${modelName})"
-    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), mainClassName
+    commandLine "java", "--add-opens=java.base/java.lang=ALL-UNNAMED", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), mainClassName
     args "-i", inputFilePath, "-o", "${TEST_OUTPUT_PATH}/${taskName}", "-t", targetType, "-m", modelName, "-a", extraArgs
   }
 
