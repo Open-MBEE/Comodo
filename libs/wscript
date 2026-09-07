@@ -1,8 +1,0 @@
-from wtools.module import declare_custom
-
-
-def build(bld):
-    libs = bld.path.ant_glob('*.jar')
-    bld.install_files('${PREFIX}/lib/', libs)
-
-declare_custom()

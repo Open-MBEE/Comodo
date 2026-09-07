@@ -2,42 +2,26 @@ COMODO2
 =======
 COMODO2 is a Java tool that allows to transform a UML/SysML model into code for different software platforms.
 
-Installation from OpenMBEE Git repository using ant
----------------------------------------------------
-To install COMODO2 from OpenMBEE GIT repository:
+Installation
+------------
 
     $ git clone https://github.com/Open-MBEE/Comodo.git comodo2  
     $ cd comodo2
-    $ ant build
-    $ ant install
+    $ ./gradlew install [-Pprefix=/usr/local]
 
-JARs (including comodo2.jar) are installed by ant in `$PREFIX/lib` directory.
+comodo2.jar is installed into `$PREFIX/share/java` directory.
 
-A wrapper script, comodo, that sets the correct classpath is installed in `$PREFIX/bin` directory.
-
-Installation from ESO Git repository using waf
-----------------------------------------------
-To install COMODO2 from ESO GIT repository (it requires waf and wtools):
-
-    $ git clone https://gitlab.eso.org/ifw/comodo2.git comodo2  
-    $ cd comodo2
-    $ waf configure
-    $ waf install
-
-
-JARs (including comodo2.jar) are installed by waf in `$PREFIX/lib` directory.
-
-A wrapper script, comodo, that sets the correct classpath is installed in `$PREFIX/bin` directory.
+A wrapper script, comodo2, that sets the correct classpath is installed in `$PREFIX/bin` directory.
 
 Execution
 ---------
 COMODO2 can be executed by invoking a wrapper script which takes care to set the proper path for the required JAR files.
 
-    $ comodo <parameters>
+    $ comodo2 <parameters>
 
 For example:
 
-    $ comodo -i comodo2/test/hello/model/EELT_ICS_ApplicationFramework.uml -o ./gen -m "hellomalif hellomal" -t ELT-RAD -g ALL -a -d
+    $ comodo2 -i test/elt/model/hello/EELT_ICS_ApplicationFramework.uml -o ./gen -m "hellomalif hellomal" -t ELT-RAD -g ALL -a -d
 
 The supported options are:
 
@@ -51,7 +35,7 @@ The supported options are:
     -g, --generation-mode, Generation mode [DEFAULT|UPDATE|ALL].
     -n, --no-backup, Disable automatic backup for generated files (i.e. generated files may overwrite existing files with the same name).
     -a, --avoid-fully-qualified, Avoid using fully qualified names.
-     
+
 Input Model
 -----------
 The input model should comply with COMODO profile and be stored in EMF XMI 5.x format.

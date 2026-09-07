@@ -1,9 +1,12 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.TaskAction
+
 plugins {
     id 'java'
-    id 'application'
 }
 
-version '1.0'
+version = '0.1.0'
 
 repositories {
     mavenCentral()
@@ -23,19 +26,12 @@ def urlFile = { url, name ->
 }
 
 dependencies {
-    implementation group: 'javax.inject', name: 'javax.inject', version: '1'
-    // https://mvnrepository.com/artifact/commons-cli/commons-cli
-    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
-    // https://mvnrepository.com/artifact/com.google.guava/guava
-    implementation group: 'com.google.guava', name: 'guava', version: '21.0'
-    // https://mvnrepository.com/artifact/com.google.inject/guice
-    implementation group: 'com.google.inject', name: 'guice', version: '3.0'
-    // https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.common
-    implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.common', version: '2.15.0'
-    // https://mvnrepository.com/artifact/org.antlr/ST4
-    implementation group: 'org.antlr', name: 'ST4', version: '4.3.1'
-    // https://mvnrepository.com/artifact/org.eclipse.xtext/org.eclipse.xtext
-    implementation group: 'org.eclipse.xtext', name: 'org.eclipse.xtext', version: '2.19.0'
+    implementation(libs.javax.inject)
+    implementation(libs.commons.cli)
+    implementation(libs.com.google.inject)
+    implementation(libs.org.eclipse.emf)
+    implementation(libs.org.antlr)
+    implementation(libs.org.eclipse.xtext)
     
     // Eclipse doesn't manage a Maven repo, so we use this function to get the JAR from direct download
     implementation urlFile('https://download.eclipse.org/modeling/mdt/uml2/updates/5.5/R202211161811/plugins/org.eclipse.uml2.uml_5.5.0.v20221116-1811.jar', 'org.eclipse.uml2.uml_5.5.0')
@@ -46,12 +42,6 @@ dependencies {
 
 }
 
-mainClassName = 'comodo2.engine.Main'
-
-application {
-    mainClass = mainClassName
-}
-
 sourceSets {
     main.java.srcDirs = ['comodo2/src']
     main.resources.srcDirs = ['comodo2/src']
@@ -60,7 +50,7 @@ sourceSets {
 jar {
     duplicatesStrategy = 'exclude'
     manifest {
-        attributes 'Main-Class': mainClassName
+        attributes 'Main-Class': 'comodo2.engine.Main'
     }
     from {
         configurations.runtimeClasspath.collect {
@@ -69,6 +59,49 @@ jar {
     } {exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'}
 }
 
+
+// #################### INSTALLATION INTO PREFIX  ########################
+
+tasks.register('install', Copy) {
+    def prefix = providers.gradleProperty("prefix").getOrElse("/usr/local")
+    def version = project.version
+
+    group = 'distribution'
+    description = 'Install JAR and launcher script'
+
+    // Ensure the JAR is build first
+    dependsOn assemble
+
+    doFirst {
+        println "--------------------------------------------------------"
+        println "Install Prefix: ${prefix}"
+        println "--------------------------------------------------------"
+    }
+
+    // Absolute path to install prefix
+    into {
+        return prefix
+    }
+
+    // Install jar file
+    into("share/java") {
+        from tasks.named("jar")
+    }
+
+    // Install launcher with substitution
+    into ("bin") {
+        from 'comodo2.in'
+
+        filter(ReplaceTokens, tokens: [
+            PREFIX: prefix,
+            VERSION: version
+        ])
+
+        rename { String fileName ->
+            fileName.replace('.in', '')
+        }
+    }
+}
 
 
 // #################### TESTING ########################
@@ -86,7 +119,7 @@ def defineTargetTestingTask(String taskName, String targetType, String inputFile
     dependsOn build
     group = "Execution"
     description = "Run the ${targetType} target on the test models (${modelName})"
-    commandLine "java", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), mainClassName
+    commandLine "java", "--add-opens=java.base/java.lang=ALL-UNNAMED", "-jar", file(jar.archiveFile)
     args "-i", inputFilePath, "-o", "${TEST_OUTPUT_PATH}/${taskName}", "-t", targetType, "-m", modelName, "-a", extraArgs
   }
 
