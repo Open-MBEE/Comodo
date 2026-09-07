@@ -26,17 +26,12 @@ def urlFile = { url, name ->
 }
 
 dependencies {
-    implementation group: 'javax.inject', name: 'javax.inject', version: '1'
-    // https://mvnrepository.com/artifact/commons-cli/commons-cli
-    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
-    // https://mvnrepository.com/artifact/com.google.inject/guice
-    implementation group: 'com.google.inject', name: 'guice', version: '3.0'
-    // https://mvnrepository.com/artifact/org.eclipse.emf/org.eclipse.emf.common
-    implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.common', version: '2.15.0'
-    // https://mvnrepository.com/artifact/org.antlr/ST4
-    implementation group: 'org.antlr', name: 'ST4', version: '4.3.1'
-    // https://mvnrepository.com/artifact/org.eclipse.xtext/org.eclipse.xtext
-    implementation group: 'org.eclipse.xtext', name: 'org.eclipse.xtext', version: '2.19.0'
+    implementation(libs.javax.inject)
+    implementation(libs.commons.cli)
+    implementation(libs.com.google.inject)
+    implementation(libs.org.eclipse.emf)
+    implementation(libs.org.antlr)
+    implementation(libs.org.eclipse.xtext)
     
     // Eclipse doesn't manage a Maven repo, so we use this function to get the JAR from direct download
     implementation urlFile('https://download.eclipse.org/modeling/mdt/uml2/updates/5.5/R202211161811/plugins/org.eclipse.uml2.uml_5.5.0.v20221116-1811.jar', 'org.eclipse.uml2.uml_5.5.0')
