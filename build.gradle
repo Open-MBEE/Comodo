@@ -4,25 +4,28 @@ import org.gradle.api.tasks.TaskAction
 
 plugins {
     id 'java'
+    id 'dev.equo.p2deps' version '1.7.8' apply false
 }
 
 version = '0.1.0'
 
-repositories {
-    mavenCentral()
+// Eclipse doesn't manage a Maven repo, so we use this function to get the JAR from the p2 repo
+// https://github.com/equodev/equo-ide/tree/main/plugin-gradle#user-plugins
+apply plugin: 'dev.equo.p2deps'
+p2deps {
+    into 'implementation', {
+        // Sources can be found at https://github.com/eclipse-uml2/uml2
+        p2repo 'https://download.eclipse.org/modeling/mdt/uml2/builds/release/5.6.1/'
+        install 'org.eclipse.uml2.common'
+        install 'org.eclipse.uml2.types'
+        install 'org.eclipse.uml2.uml'
+        install 'org.eclipse.uml2.uml.profile.standard'
+        install 'org.eclipse.uml2.uml.resources'
+    }
 }
 
-def urlFile = { url, name ->
-    File file = new File("$buildDir/downloads/${name}.jar")
-    file.parentFile.mkdirs()
-    if (!file.exists()) {
-        new URL(url).withInputStream { downloadStream ->
-            file.withOutputStream { fileOut ->
-                fileOut << downloadStream
-            }
-        }
-    }
-    files(file.absolutePath)
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -32,16 +35,6 @@ dependencies {
     implementation(libs.org.eclipse.emf)
     implementation(libs.org.antlr)
     implementation(libs.org.eclipse.xtext)
-    
-    // Eclipse doesn't manage a Maven repo, so we use this function to get the JAR from direct download
-    // URLs are hand-crafted from https://download.eclipse.org/modeling/mdt/uml2/builds/release/index.html
-    // Sources can be found at https://github.com/eclipse-uml2/uml2
-    implementation urlFile('https://download.eclipse.org/releases/2026-06/202606101000/plugins/org.eclipse.uml2.common_2.6.0.v20260601-1345.jar', 'org.eclipse.uml2.common_2.6.0')
-    implementation urlFile('https://download.eclipse.org/releases/2026-06/202606101000/plugins/org.eclipse.uml2.types_2.6.0.v20260601-1345.jar', 'org.eclipse.uml2.types_2.6.0')
-    implementation urlFile('https://download.eclipse.org/releases/2026-06/202606101000/plugins/org.eclipse.uml2.uml_5.6.0.v20260601-1345.jar', 'org.eclipse.uml2.uml_5.6.0')
-    implementation urlFile('https://download.eclipse.org/releases/2026-06/202606101000/plugins/org.eclipse.uml2.uml.profile.standard_1.6.0.v20260601-1345.jar', 'org.eclipse.uml2.uml.profile.standard_1.6.0')
-    implementation urlFile('https://download.eclipse.org/releases/2026-06/202606101000/plugins/org.eclipse.uml2.uml.resources_5.6.0.v20260601-1345.jar', 'org.eclipse.uml2.uml.resources_5.6.0')
-
 }
 
 sourceSets {
