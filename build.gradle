@@ -4,7 +4,6 @@ import org.gradle.api.tasks.TaskAction
 
 plugins {
     id 'java'
-    id 'application'
 }
 
 version = '0.1.0'
@@ -48,12 +47,6 @@ dependencies {
 
 }
 
-mainClassName = 'comodo2.engine.Main'
-
-application {
-    mainClass = mainClassName
-}
-
 sourceSets {
     main.java.srcDirs = ['comodo2/src']
     main.resources.srcDirs = ['comodo2/src']
@@ -62,7 +55,7 @@ sourceSets {
 jar {
     duplicatesStrategy = 'exclude'
     manifest {
-        attributes 'Main-Class': mainClassName
+        attributes 'Main-Class': 'comodo2.engine.Main'
     }
     from {
         configurations.runtimeClasspath.collect {
@@ -131,7 +124,7 @@ def defineTargetTestingTask(String taskName, String targetType, String inputFile
     dependsOn build
     group = "Execution"
     description = "Run the ${targetType} target on the test models (${modelName})"
-    commandLine "java", "--add-opens=java.base/java.lang=ALL-UNNAMED", "-classpath", sourceSets.main.runtimeClasspath.getAsPath(), mainClassName
+    commandLine "java", "--add-opens=java.base/java.lang=ALL-UNNAMED", "-jar", file(jar.archiveFile)
     args "-i", inputFilePath, "-o", "${TEST_OUTPUT_PATH}/${taskName}", "-t", targetType, "-m", modelName, "-a", extraArgs
   }
 
