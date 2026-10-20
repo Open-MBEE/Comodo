@@ -33,9 +33,13 @@ public class RadConfig implements IGenerator {
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if (mQClass.isToBeGenerated(e)) {
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("config")));
+				String absFilenameHpp = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("config"));
+				mLogger.debug("Executing RAD-Config template for class: <" + e.getName() + "> generating: " + absFilenameHpp);
+				mFilesHelper.makeBackup(absFilenameHpp);
 				fsa.generateFile(mFilesHelper.toHppFilePath("config"), this.generateHeader(Config.getInstance().getCurrentModule(), "Config"));
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("config")));
+				String absFilenameCpp = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("config"));
+				mLogger.debug("Executing RAD-Config template for class: <" + e.getName() + "> generating: " + absFilenameCpp);
+				mFilesHelper.makeBackup(absFilenameCpp);
 				fsa.generateFile(mFilesHelper.toCppFilePath("config"), this.generateSource(Config.getInstance().getCurrentModule(), "Config"));
 			}
 		}
@@ -57,7 +61,7 @@ public class RadConfig implements IGenerator {
 		} catch(Throwable throwable) {
 			mLogger.error("Generating header file for " + className + " class (" + throwable.getMessage() + ").");
 		}
-		return "";		
+		return "";
 	}
 
 	/**

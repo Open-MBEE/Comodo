@@ -51,7 +51,9 @@ public class RadMain implements IGenerator {
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if (mQClass.isToBeGenerated(e)) {
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("main")));
+				String absFilename = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("main"));
+				mLogger.debug("Executing RAD-main template for class: <" + e.getName() + "> generating: " + absFilename);
+				mFilesHelper.makeBackup(absFilename);
 				fsa.generateFile(mFilesHelper.toCppFilePath("main"), this.generateSource(Config.getInstance().getCurrentModule(), "main", e));
 			}
 		}

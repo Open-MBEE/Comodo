@@ -69,7 +69,9 @@ public class RadWscript implements IGenerator {
 						}
 					}
 					String filename = mQClass.getContainerPackage(c).getName() + "/wscript";
-					mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(filename));
+					String absFilename = mFilesHelper.toAbsolutePath("/" + filename);
+					mLogger.debug("Executing RAD-wscript template for Module: <" + mQClass.getContainerPackage(c).getName() + "> generating: " + absFilename);
+					mFilesHelper.makeBackup(absFilename);
 					fsa.generateFile(filename, this.generate(mQClass.getContainerPackage(c).getName(), mQPackage.getContainerPackage(mQClass.getContainerPackage(c)).getName(), c.getName(), ifModules));
 					return;
 				}
@@ -82,13 +84,13 @@ public class RadWscript implements IGenerator {
 			STGroup g = new STGroupFile("resources/tpl/EltRadWaf.stg");
 			ST st = g.getInstanceOf("WscriptAppl");
 			st.add("moduleName", moduleName);
-			st.add("parentName", parentName);			
-			st.add("appName", appName);			
-			st.add("ifModulesName", ifModulesName);			
+			st.add("parentName", parentName);
+			st.add("appName", appName);
+			st.add("ifModulesName", ifModulesName);
 			return st.render();
 		} catch(Throwable throwable) {
-			mLogger.error("Generating wscript file for " + moduleName + " module (" + throwable.getMessage() + ").");			
+			mLogger.error("Generating wscript file for " + moduleName + " module (" + throwable.getMessage() + ").");
 		}
-		return "";		
+		return "";
 	}
 }

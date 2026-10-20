@@ -47,11 +47,13 @@ public class RadActivity implements IGenerator {
 					for (final String activityName : _allActivityNames) {
 						boolean skip = mFilesHelper.skipFile(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(activityName)));
 						if (skip == false) {
-							mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(activityName)));
+							String absFilenameHpp = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(activityName));
+							mLogger.debug("Executing RAD-Activity template for class: <" + e.getName() + "> generating: " + absFilenameHpp);
+							mFilesHelper.makeBackup(absFilenameHpp);
 							fsa.generateFile(mFilesHelper.toHppFilePath(activityName), this.generateHeader(Config.getInstance().getCurrentModule(), activityName));
-						}
-						if (skip == false) {
-							mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath(activityName)));
+							String absFilenameCpp = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath(activityName));
+							mFilesHelper.makeBackup(absFilenameCpp);
+							mLogger.debug("Executing RAD-Activity template for class: <" + e.getName() + "> generating: " + absFilenameCpp);
 							fsa.generateFile(mFilesHelper.toCppFilePath(activityName), this.generateSource(Config.getInstance().getCurrentModule(), activityName));
 						}
 					}
@@ -76,7 +78,7 @@ public class RadActivity implements IGenerator {
 		} catch(Throwable throwable) {
 			mLogger.error("Generating header file for " + className + " class (" + throwable.getMessage() + ").");
 		}
-		return "";		
+		return "";
 	}
 
 	/**

@@ -72,9 +72,11 @@ public class MalWscript implements IGenerator {
 		}
 
 		for (final String m : icdModules.keySet()) {
-			String p = (m + "/wscript");
-			mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(p));
-			fsa.generateFile(p, this.generate(m, icdModules.get(m), icdIncludedModules.get(m)));
+			String filename = (m + "/wscript");
+			String absFilename = mFilesHelper.toAbsolutePath("/" + filename);
+			mFilesHelper.makeBackup(absFilename);
+			mLogger.debug("Executing MAL-wscript template for Module: <" + m + "> generating: " + absFilename);
+			fsa.generateFile(filename, this.generate(m, icdModules.get(m), icdIncludedModules.get(m)));
 		}
 	}
 
@@ -90,6 +92,6 @@ public class MalWscript implements IGenerator {
 		} catch(Throwable throwable) {
 			mLogger.error("Generating wscript file for " + moduleName + " module (" + throwable.getMessage() + ").");			
 		}
-		return "";		
+		return "";
 	}
 }

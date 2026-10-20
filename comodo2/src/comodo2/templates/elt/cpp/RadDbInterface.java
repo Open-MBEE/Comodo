@@ -37,9 +37,13 @@ public class RadDbInterface implements IGenerator {
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if (mQClass.isToBeGenerated(e)) {
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("dbInterface")));
+				String absFilenameHpp = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("dbInterface"));
+				mLogger.debug("Executing RAD-DbInterface template for class: <" + e.getName() + "> generating: " + absFilenameHpp);
+				mFilesHelper.makeBackup(absFilenameHpp);
 				fsa.generateFile(mFilesHelper.toHppFilePath("dbInterface"), this.generateHeader(Config.getInstance().getCurrentModule(), "DbInterface"));
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("dbInterface")));
+				String absFilenameCpp = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("dbInterface"));
+				mLogger.debug("Executing RAD-DbInterface template for class: <" + e.getName() + "> generating: " + absFilenameCpp);
+				mFilesHelper.makeBackup(absFilenameCpp);
 				fsa.generateFile(mFilesHelper.toCppFilePath("dbInterface"), this.generateSource(Config.getInstance().getCurrentModule(), "DbInterface"));
 			}
 		}
@@ -60,7 +64,7 @@ public class RadDbInterface implements IGenerator {
 			return st.render();
 		} catch(Throwable throwable) {
 			mLogger.error("Generating header file for " + className + " class (" + throwable.getMessage() + ").");
-		}		
+		}
 		return "";
 	}
 
@@ -78,6 +82,6 @@ public class RadDbInterface implements IGenerator {
 		} catch(Throwable throwable) {
 			mLogger.error("Generating source file for " + className + " class (" + throwable.getMessage() + ").");
 		}
-		return "";						
+		return "";
 	}
 }

@@ -36,9 +36,13 @@ public class RadActionsStd implements IGenerator {
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			boolean _isToBeGenerated = this._qClass.isToBeGenerated(e);
 			if (_isToBeGenerated) {
-				this._filesHelper.makeBackup(this._filesHelper.toAbsolutePath(this._filesHelper.toHppFilePath("actionsStd")));
+				String absFilenameHpp = this._filesHelper.toAbsolutePath(this._filesHelper.toHppFilePath("actionsStd"));
+				this._filesHelper.makeBackup(absFilenameHpp);
+				mLogger.debug("Executing RAD-ActionsStd template for class: <" + e.getName() + "> generating: " + absFilenameHpp);
 				fsa.generateFile(this._filesHelper.toHppFilePath("actionsStd"), this.generateHeader(Config.getInstance().getCurrentModule(), "ActionsStd"));
-				this._filesHelper.makeBackup(this._filesHelper.toAbsolutePath(this._filesHelper.toCppFilePath("actionsStd")));
+				String absFilenameCpp = this._filesHelper.toAbsolutePath(this._filesHelper.toCppFilePath("actionsStd"));
+				this._filesHelper.makeBackup(absFilenameCpp);
+				mLogger.debug("Executing RAD-ActionsStd template for class: <" + e.getName() + "> generating: " + absFilenameCpp);
 				fsa.generateFile(this._filesHelper.toCppFilePath("actionsStd"), this.generateSource(Config.getInstance().getCurrentModule(), "ActionsStd"));
 			}
 		}

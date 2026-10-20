@@ -2,6 +2,9 @@ package comodo2.queries;
 
 import com.google.common.base.Objects;
 import javax.inject.Inject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.uml2.uml.Element;
 
@@ -48,5 +51,36 @@ public class QPackage {
 
 	public org.eclipse.uml2.uml.Package getContainerPackage(final org.eclipse.uml2.uml.Package p) {
 		return p.getNearestPackage();
+	}
+
+	/**
+	 * @param input UML Model.
+	 * @return The list of COMODO modules included in the model.
+	 */
+	public Iterable<org.eclipse.uml2.uml.Package> getAllComodoModules(final Resource input) {
+		BasicEList<org.eclipse.uml2.uml.Package> res = new BasicEList<org.eclipse.uml2.uml.Package>();
+		if (input != null && input.getContents() != null) {
+			final TreeIterator<EObject> allContents = input.getAllContents();
+			while (allContents.hasNext()) {
+				EObject e = allContents.next();
+				if (e instanceof org.eclipse.uml2.uml.Package) {
+					org.eclipse.uml2.uml.Package p = (org.eclipse.uml2.uml.Package)e;
+					if (mQStereotype.isComodoModule(p)) {
+						res.add(p);
+					}
+				}
+			}
+		}
+		return res;
+	}
+
+	public boolean containsComodoModule(Iterable<org.eclipse.uml2.uml.Package> cmdoModules, String moduleName) {
+		if (moduleName == null) return false;
+		for (org.eclipse.uml2.uml.Package p : cmdoModules) {
+			if (p.getName() != null && p.getName().equals(moduleName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

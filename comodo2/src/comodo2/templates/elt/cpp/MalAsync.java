@@ -68,7 +68,9 @@ public class MalAsync implements IGenerator {
 				if (mQClass.isToBeGenerated(c)) {
 					for (final Interface i : c.allRealizedInterfaces()) {
 						if (mQInterface.hasRequests(i)) {
-							mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath((i.getName() + "Impl"))));
+							String absFilename = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath((i.getName() + "Impl")));
+							mLogger.debug("Executing RAD-MalAsync template for Intarface: <" + i.getName() + "> generating: " + absFilename);
+							mFilesHelper.makeBackup(absFilename);
 							fsa.generateFile(mFilesHelper.toHppFilePath((i.getName() + "Impl")), generate(c, i));
 						}
 					}
@@ -94,7 +96,7 @@ public class MalAsync implements IGenerator {
 			st.add("classNameUpperCase", className.toUpperCase());	
 			st.add("radEvInclude" , radEvInclude);
 			st.add("parentClass" , parentClass);			
-			st.add("methodsImpl" , exploreSignals(getAllSignals(i), mQInterface.getContainerPackage(i).getName()));			
+			st.add("methodsImpl" , exploreSignals(getAllSignals(i), mQInterface.getContainerPackage(i).getName()));
 			return st.render();
 		} catch(Throwable throwable) {
 			mLogger.error("Generating header file for " + className + " class (" + throwable.getMessage() + ").");

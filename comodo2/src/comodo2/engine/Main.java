@@ -196,8 +196,8 @@ public class Main {
 			params.put("modelPath", modelDirPath.toString());
 
 
-			mLogger.info("Starting transformation " + Config.getInstance().getTargetPlatform() 
-					+ " on model " + modelFilePath + " for modules " + Config.getInstance().getModulesStr());
+			mLogger.info("Applying transformation <" + Config.getInstance().getTargetPlatform()
+					+ "> on model <" + modelFilePath + "> for modules <" + Config.getInstance().getModulesStr() + ">");
 			long startTime = System.nanoTime();			
 
 			// check  OperationCanceledException is accessible
@@ -231,7 +231,7 @@ public class Main {
 			Root templatesRoot = injector.getInstance(Root.class);
 			templatesRoot.doGenerate(inputModel, fsa);
 
-			mLogger.info("Execution completed (" + (System.nanoTime() - startTime)/1e9 + "s).");			
+			mLogger.info("Completed execution (" + (System.nanoTime() - startTime)/1e9 + "s).");
 		} catch(NoClassDefFoundError e) {
 			if ("org/eclipse/core/runtime/OperationCanceledException".equals(e.getMessage())) {
 				mLogger.error("Could not load class: org.eclipse.core.runtime.OperationCanceledException");

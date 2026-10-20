@@ -28,7 +28,7 @@ import org.eclipse.xtext.generator.IGenerator;
 
 public class Scxml implements IGenerator {
 
-	private static final Logger mLogger = Logger.getLogger(Main.class);
+	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
 
 	@Inject
 	private QStateMachine mQStateMachine;
@@ -79,6 +79,7 @@ public class Scxml implements IGenerator {
 				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
 				if ((mQClass.isToBeGenerated(c) && mQClass.hasStateMachines(c))) {
 					for (final StateMachine sm : mQClass.getStateMachines(c)) {
+						mLogger.debug("Executing SCXML template for State Machine <" + sm.getName() + "> in class <" + c.getName() + ">");
 						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toScxmlFilePath(sm.getName())));
 						fsa.generateFile(mFilesHelper.toScxmlFilePath(sm.getName()), this.generate(sm));
 					}

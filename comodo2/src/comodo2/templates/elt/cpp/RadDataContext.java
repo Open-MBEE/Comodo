@@ -35,9 +35,13 @@ public class RadDataContext implements IGenerator {
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if (mQClass.isToBeGenerated(e)) {
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("dataContext")));
+				String absFilenameHpp = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("dataContext"));
+				mLogger.debug("Executing RAD-DataContext template for class: <" + e.getName() + "> generating: " + absFilenameHpp);
+				mFilesHelper.makeBackup(absFilenameHpp);
 				fsa.generateFile(mFilesHelper.toHppFilePath("dataContext"), this.generateHeader(Config.getInstance().getCurrentModule(), "DataContext"));
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("dataContext")));
+				String absFilenameCpp = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("dataContext"));
+				mLogger.debug("Executing RAD-DataContext template for class: <" + e.getName() + "> generating: " + absFilenameCpp);
+				mFilesHelper.makeBackup(absFilenameCpp);
 				fsa.generateFile(mFilesHelper.toCppFilePath("dataContext"), this.generateSource(Config.getInstance().getCurrentModule(), "DataContext"));
 			}
 		}
@@ -59,7 +63,7 @@ public class RadDataContext implements IGenerator {
 		} catch(Throwable throwable) {
 			mLogger.error("Generating header file for " + className + " class (" + throwable.getMessage() + ").");
 		}
-		return "";			
+		return "";
 	}
 
 	/**
@@ -76,6 +80,6 @@ public class RadDataContext implements IGenerator {
 		} catch(Throwable throwable) {
 			mLogger.error("Generating source file for " + className + " class (" + throwable.getMessage() + ").");
 		}
-		return "";				
+		return "";
 	}
 }

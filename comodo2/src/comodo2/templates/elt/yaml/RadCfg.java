@@ -48,6 +48,7 @@ public class RadCfg implements IGenerator {
 				if (mQClass.isToBeGenerated(c)) {
 					String filename = (mFilesHelper.getRelativeConfigPath() + "config.yaml");
 					mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(filename));
+					mLogger.debug("Executing RAD-config template for Class: <" + c.getName() + "> generating: " + filename);
 					fsa.generateFile(filename, this.generate(mQClass.getContainerPackageName(c)));
 				}
 			}

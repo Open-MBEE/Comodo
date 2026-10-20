@@ -58,11 +58,15 @@ public class RadAction implements IGenerator {
 							(((Config.getInstance().hasTargetPlatformCfgOption(Config.ELT_RAD_OPT_NOACTIONSTD)).booleanValue() == false) && 
 									(!Objects.equal(c, "ActionsStd"))))) {
 						if (mFilesHelper.skipFile(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(c))) == false) {
-							mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(c)));
+							String absFilenameHpp = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(c));
+							mLogger.debug("Executing RAD-Action template for class: <" + c + "> generating: " + absFilenameHpp);
+							mFilesHelper.makeBackup(absFilenameHpp);
 							fsa.generateFile(mFilesHelper.toHppFilePath(c), this.generateHeader(Config.getInstance().getCurrentModule(), c, actionNames, guardNames));
 						}
 						if (mFilesHelper.skipFile(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath(c))) == false) {
-							mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath(c)));
+							String absFilenameCpp = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath(c));
+							mLogger.debug("Executing RAD-Action template for class: <" + c + "> generating: " + absFilenameCpp);
+							mFilesHelper.makeBackup(absFilenameCpp);
 							fsa.generateFile(mFilesHelper.toCppFilePath(c), this.generateSource(Config.getInstance().getCurrentModule(), c, actionNames, guardNames));
 						}
 					}

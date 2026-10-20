@@ -13,6 +13,8 @@ import java.util.TreeSet;
 
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
+
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -27,6 +29,9 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 
 public class RadEv implements IGenerator {
+
+	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
+
 	@Inject
 	private QClass mQClass;
 
@@ -72,7 +77,9 @@ public class RadEv implements IGenerator {
 				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
 				if (mQClass.isToBeGenerated(c)) {
 					for (final Interface i : c.allRealizedInterfaces()) {
-						mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toRadEvFilePath(i.getName())));
+						String filename = mFilesHelper.toAbsolutePath(mFilesHelper.toRadEvFilePath(i.getName()));
+						mLogger.debug("Executing RAD-events template for Interface: <" + i.getName() + "> generating: " + filename);
+						mFilesHelper.makeBackup(filename);
 						fsa.generateFile(mFilesHelper.toRadEvFilePath(i.getName()), this.generate(c, i));
 					}
 				}

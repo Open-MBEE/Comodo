@@ -46,7 +46,9 @@ public class RadLog implements IGenerator {
 				org.eclipse.uml2.uml.Class c = (org.eclipse.uml2.uml.Class)e; 
 				if (mQClass.isToBeGenerated(c)) {
 					String filename = mFilesHelper.getRelativeConfigPath() + "log.properties";
-					mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(filename));
+					String absFilename = mFilesHelper.toAbsolutePath(filename);
+					mLogger.debug("Executing RAD-log template for Class: <" + c.getName() + "> generating: " + absFilename);
+					mFilesHelper.makeBackup(absFilename);
 					fsa.generateFile(filename, generate(mQClass.getContainerPackageName(c)));
 				}
 			}
