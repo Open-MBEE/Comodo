@@ -9,6 +9,8 @@ import comodo2.utils.ReceptionComparator;
 import java.util.TreeSet;
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
@@ -31,6 +33,8 @@ import org.eclipse.xtext.generator.IGenerator;
 //import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 public class Mal implements IGenerator {
+
+	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
 
 	@Inject
 	private QStereotype mQStereotype;
@@ -56,21 +60,25 @@ public class Mal implements IGenerator {
 		while (allContents.hasNext()) {
 			EObject o = allContents.next();
 			if (o instanceof Element) {
-				Element e = (Element)o;		
+				Element e = (Element)o;
 				if (mQInterface.isToBeGenerated((Element)e)) {
 					if (e instanceof Interface) {
 						// UML
-						Interface i = (Interface)e; 
+						Interface i = (Interface)e;
 						if ((/*mQInterface.isToBeGenerated(i) &&*/ mQInterface.hasRequests(i))) {
-							mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(i).getName())));
+							String filename = mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(i).getName()));
+							mLogger.debug("Executing MAL template for Interface: <" + i.getName() + "> generating: " + filename);
+							mFilesHelper.makeBackup(filename);
 							fsa.generateFile(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(i).getName()), this.generate(i));
 							return;
 						}
 					} else {
 						// SysML
-						Class c = (Class)e; 
+						Class c = (Class)e;
 						if (mQInterface.hasRequests(c)) {
-							mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(c).getName())));
+							String filename = mFilesHelper.toAbsolutePath(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(c).getName()));
+							mLogger.debug("Executing MAL template for Interface: <" + c.getName() + "> generating: " + filename);
+							mFilesHelper.makeBackup(filename);
 							fsa.generateFile(mFilesHelper.toXmlFilePath(mQInterface.getContainerPackage(c).getName()), this.generate(c));
 							return;
 						}
@@ -83,14 +91,14 @@ public class Mal implements IGenerator {
 	public CharSequence generate(final Class c) {
 		StringConcatenation str = new StringConcatenation();
 		str.append(printXmlStart());
-		str.append(explorePackageIncludes(mQInterface.getContainerPackage(c)));				
-		str.append("    " + printPackageStart(mQInterface.getContainerPackage(c).getName()));		
-		str.append(exploreEnumerations(mQInterface.getContainerPackage(c)), "    ");		
+		str.append(explorePackageIncludes(mQInterface.getContainerPackage(c)));
+		str.append("    " + printPackageStart(mQInterface.getContainerPackage(c).getName()));
+		str.append(exploreEnumerations(mQInterface.getContainerPackage(c)), "    ");
 		str.append(exploreStructures(mQInterface.getContainerPackage(c)), "    ");
 		str.append(exploreExceptions(mQInterface.getContainerPackage(c)), "    ");
-		str.append(exploreUnions(mQInterface.getContainerPackage(c)), "    ");	
-		str.append(exploreInterfaces(c), "    ");	
-		str.append(printPackageEnd());	
+		str.append(exploreUnions(mQInterface.getContainerPackage(c)), "    ");
+		str.append(exploreInterfaces(c), "    ");
+		str.append(printPackageEnd());
 		str.append(printXmlEnd());
 		return str;
 	}
@@ -98,14 +106,14 @@ public class Mal implements IGenerator {
 	public CharSequence generate(final Interface i) {
 		StringConcatenation str = new StringConcatenation();
 		str.append(printXmlStart());
-		str.append(explorePackageIncludes(mQInterface.getContainerPackage(i)));				
-		str.append("    " + printPackageStart(mQInterface.getContainerPackage(i).getName()));		
-		str.append(exploreEnumerations(mQInterface.getContainerPackage(i)), "    ");		
+		str.append(explorePackageIncludes(mQInterface.getContainerPackage(i)));
+		str.append("    " + printPackageStart(mQInterface.getContainerPackage(i).getName()));
+		str.append(exploreEnumerations(mQInterface.getContainerPackage(i)), "    ");
 		str.append(exploreStructures(mQInterface.getContainerPackage(i)), "    ");
 		str.append(exploreExceptions(mQInterface.getContainerPackage(i)), "    ");
-		str.append(exploreUnions(mQInterface.getContainerPackage(i)), "    ");	
-		str.append(exploreInterfaces(i), "    ");	
-		str.append(printPackageEnd());	
+		str.append(exploreUnions(mQInterface.getContainerPackage(i)), "    ");
+		str.append(exploreInterfaces(i), "    ");
+		str.append(printPackageEnd());
 		str.append(printXmlEnd());
 		return str;
 	}

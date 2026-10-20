@@ -44,7 +44,9 @@ public class RadActionMgr implements IGenerator {
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if ((mQClass.isToBeGenerated(e) && mQClass.hasStateMachines(e))) {
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("actionMgr")));
+				String absFilenameHpp = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("actionMgr"));
+				mLogger.debug("Executing RAD-ActionMgr template for class: <" + e.getName() + "> generating: " + absFilenameHpp);
+				mFilesHelper.makeBackup(absFilenameHpp);
 				fsa.generateFile(mFilesHelper.toHppFilePath("actionMgr"), this.generateHeader(Config.getInstance().getCurrentModule(), "ActionMgr"));
 
 				Iterable<StateMachine> stateMachines = mQClass.getStateMachines(e);
@@ -61,7 +63,9 @@ public class RadActionMgr implements IGenerator {
 					TreeSet<String> allGuardNames = mQStateMachine.getAllGuardNames(sm);
 					Iterables.<String>addAll(guardNames, allGuardNames);
 				}
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("actionMgr")));
+				String absFilenameCpp = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("actionMgr"));
+				mLogger.debug("Executing RAD-ActionMgr template for class: <" + e.getName() + "> generating: " + absFilenameCpp);
+				mFilesHelper.makeBackup(absFilenameCpp);
 				fsa.generateFile(mFilesHelper.toCppFilePath("actionMgr"), this.generateSource(Config.getInstance().getCurrentModule(), "ActionMgr", activityNames, actionNames, guardNames));
 			}
 		}

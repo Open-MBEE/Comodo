@@ -5,6 +5,7 @@ import comodo2.engine.Config;
 import comodo2.queries.QClass;
 import comodo2.utils.FilesHelper;
 import javax.inject.Inject;
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
@@ -12,8 +13,8 @@ import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 public class RadLogger implements IGenerator {
-	
-	//private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
+
+	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
 
 	@Inject
 	private QClass mQClass;
@@ -30,9 +31,13 @@ public class RadLogger implements IGenerator {
 		Iterable<org.eclipse.uml2.uml.Class> _filter = Iterables.<org.eclipse.uml2.uml.Class>filter(IteratorExtensions.<EObject>toIterable(input.getAllContents()), org.eclipse.uml2.uml.Class.class);
 		for (final org.eclipse.uml2.uml.Class e : _filter) {
 			if (mQClass.isToBeGenerated(e)) {
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("logger")));
+				String absFilenameHpp = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath("logger"));
+				mLogger.debug("Executing RAD-logger template for class: <" + e.getName() + "> generating: " + absFilenameHpp);
+				mFilesHelper.makeBackup(absFilenameHpp);
 				fsa.generateFile(mFilesHelper.toHppFilePath("logger"), this.generateHeader(Config.getInstance().getCurrentModule(), "Logger"));
-				mFilesHelper.makeBackup(mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("logger")));
+				String absFilenameCpp = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath("logger"));
+				mLogger.debug("Executing RAD-logger template for class: <" + e.getName() + "> generating: " + absFilenameCpp);
+				mFilesHelper.makeBackup(absFilenameCpp);
 				fsa.generateFile(mFilesHelper.toCppFilePath("logger"), this.generateSource(Config.getInstance().getCurrentModule(), "Logger"));
 			}
 		}

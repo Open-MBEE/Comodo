@@ -4,11 +4,14 @@ import comodo2.engine.Config;
 import comodo2.templates.elt.Elt;
 import comodo2.templates.scxml.Scxml;
 import comodo2.templates.qpc.Qpc;
+import comodo2.queries.QPackage;
+
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
+
 
 public class Root implements IGenerator {
 	@Inject
@@ -20,12 +23,21 @@ public class Root implements IGenerator {
 	@Inject
 	private Qpc mQpcTemplate;
 
+	@Inject
+	private QPackage mQPackage;
+
 	private static final Logger mLogger = Logger.getLogger(comodo2.engine.Main.class);
 
 	@Override
 	public void doGenerate(final Resource input, final IFileSystemAccess fsa) {
 		if (Config.getInstance().getModules().length > 0) {
+			Iterable<org.eclipse.uml2.uml.Package> cmdoModules = mQPackage.getAllComodoModules(input);
 			for (final String m : Config.getInstance().getModules()) {
+				mLogger.debug("Processing module: <" + m + ">");
+				if (mQPackage.containsComodoModule(cmdoModules, m) == false) {
+					mLogger.error("Module <" + m + "> is not a Package of the model or it is not a cmdoModule.");
+					continue;
+				}
 				Config.getInstance().setCurrentModule(m);
 				generate(input, fsa);
 			}
@@ -36,7 +48,7 @@ public class Root implements IGenerator {
 
 	public void generate(final Resource input, final IFileSystemAccess fsa) {
 		if (Config.getInstance().isModelConfigured(input.getURI().toFileString())) {
-			long startTime = System.nanoTime();	
+			long startTime = System.nanoTime();
 			if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_SCXML)) {
 				mScxmlTemplate.doGenerate(input, fsa);
 			} else if (Config.getInstance().getTargetPlatform().contentEquals(Config.TARGET_PLATFORM_QPC_QM) ||
@@ -50,7 +62,7 @@ public class Root implements IGenerator {
 					mLogger.error("Unsupported target: <" + Config.getInstance().getTargetPlatform() + "> for module <" + Config.getInstance().getCurrentModule() + ">");
 				}
 			}
-			mLogger.debug("Processed module <" + Config.getInstance().getCurrentModule() + "> from resource URI <" + input.getURI().toString() + "> (" + 
+			mLogger.debug("Processed module <" + Config.getInstance().getCurrentModule() + "> (" + 
 					(System.nanoTime() - startTime)/1e9 + "s)");
 		}
 	}
