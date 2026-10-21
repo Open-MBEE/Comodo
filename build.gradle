@@ -54,6 +54,9 @@ jar {
     } {exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'}
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
+}
 
 // #################### INSTALLATION INTO PREFIX  ########################
 

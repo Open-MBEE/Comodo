@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.help.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -45,8 +45,14 @@ public class Main {
 	 * Print help
 	 */
 	public void printHelp(Options opt) {
-		HelpFormatter f = new HelpFormatter();
-		f.printHelp("\njava -jar comodo2.jar {options}\n\n", opt);
+		HelpFormatter f = HelpFormatter.builder().get();
+		try {
+			// The new printHelp requires catching or throwing an IOException
+			f.printHelp("\njava -jar comodo2.jar {options}\n\n", null, opt, null, false);
+		} catch (java.io.IOException e) {
+			// Fallback: write to standard error if formatting fails structurally
+			System.err.println("Error formatting help text: " + e.getMessage());
+		}
 	}
 
 	public Options getOptions() {
@@ -65,11 +71,11 @@ public class Main {
 		// -m option is added manually since requires multiple number of values
 		// -m for some platform may not be required
 		Option option = Option.builder("m")
-			    .longOpt( "modules" )
-			    .desc( "Specify the module(s) to generate."  )
-			    .hasArg()
-			    .argName( "modules" )
-			    .build();
+				.longOpt( "modules" )
+				.desc( "Specify the module(s) to generate."  )
+				.hasArg()
+				.argName( "modules" )
+				.get();
 		opt.addOption(option);
 		return opt;
 	}
