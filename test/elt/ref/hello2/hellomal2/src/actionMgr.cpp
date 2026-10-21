@@ -12,6 +12,7 @@
 #include <hellomal2/actionsStd.hpp>
 
 #include <hellomal2/activityPreset.hpp>
+#include <hellomal2/activityTrack.hpp>
 
 #include <hellomal2/dataContext.hpp>
 #include <hellomal2/logger.hpp>
@@ -104,6 +105,10 @@ void ActionMgr::CreateActivities(rad::SMAdapter& sm, DataContext& the_data) {
 
     the_activity = new ActivityPreset("ActivityPreset", sm, the_data);
     AddActivity(the_activity);
+
+    the_activity = new ActivityTrack("ActivityTrack", sm, the_data);
+    AddActivity(the_activity);
+
 }
 
 }  // namespace hellomal2

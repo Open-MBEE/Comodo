@@ -124,7 +124,11 @@ public class RadActionMgr implements IGenerator {
 	public CharSequence printActivitiesInclude(final String moduleName, final TreeSet<String> activityNames) {
 		String str = "";
 		for (final String name : activityNames) {
-			str += "#include <" + moduleName + "/" + mFilesHelper.toFileName(name) + ".hpp>\n";
+			// One UML do-activity can host several RAD activities separated by ';' char
+			String[] radActivities = name.split(";");
+			for (final String radActivity : radActivities) {
+				str += "#include <" + moduleName + "/" + mFilesHelper.toFileName(radActivity) + ".hpp>\n";
+			}
 		}
 		return str;
 	}
@@ -164,9 +168,13 @@ public class RadActionMgr implements IGenerator {
 		if (activityNames.size() > 0) {
 			str += "scxml4cpp::Activity* the_activity = nullptr;\n";
 			for (final String name : activityNames) {
-				str += "\n";
-				str += "the_activity = new "  + name + "(\"" + name + "\", sm, the_data);\n";
-				str += "AddActivity(the_activity);";
+				// One UML do-activity can host several RAD activities separated by ';' char
+				String[] radActivities = name.split(";");
+				for (final String radActivity : radActivities) {
+					str += "\n";
+					str += "the_activity = new "  + radActivity + "(\"" + radActivity + "\", sm, the_data);\n";
+					str += "AddActivity(the_activity);\n";
+				}
 			}
 		}
 		return str;
