@@ -429,7 +429,14 @@ public class Scxml implements IGenerator {
 	}
 
 	public CharSequence printDoActivities(final State s) {
-		return "<invoke id=\"" + s.getDoActivity().getName() + "\"/>\n";
+		String activityName = s.getDoActivity().getName();
+		// One UML do-activity can host several SCXML invoke separated by ';' char
+		String[] names = activityName.split(";");
+		String str = "";
+		for (final String name : names) {
+			str += "<invoke id=\"" + name + "\"/>\n";
+		}
+		return str;
 	}
 
 	public CharSequence printStateStart(final State s) {

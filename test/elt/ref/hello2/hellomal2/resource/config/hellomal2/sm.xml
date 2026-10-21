@@ -37,6 +37,7 @@
     
       <state id="Presetting">
         <invoke id="ActivityPreset"/>
+        <invoke id="ActivityTrack"/>
         <transition event="StdCmds.Stop" target="Idle">
           <customActionDomain:ActionsStd.Stop name="ActionsStd.Stop"/>
         </transition>

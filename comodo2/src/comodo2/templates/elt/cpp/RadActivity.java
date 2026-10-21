@@ -44,17 +44,21 @@ public class RadActivity implements IGenerator {
 				Iterable<StateMachine> _stateMachines = mQClass.getStateMachines(e);
 				for (final StateMachine sm : _stateMachines) {
 					TreeSet<String> _allActivityNames = mQStateMachine.getAllActivityNames(sm);
-					for (final String activityName : _allActivityNames) {
-						boolean skip = mFilesHelper.skipFile(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(activityName)));
-						if (skip == false) {
-							String absFilenameHpp = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(activityName));
-							mLogger.debug("Executing RAD-Activity template for class: <" + e.getName() + "> generating: " + absFilenameHpp);
-							mFilesHelper.makeBackup(absFilenameHpp);
-							fsa.generateFile(mFilesHelper.toHppFilePath(activityName), this.generateHeader(Config.getInstance().getCurrentModule(), activityName));
-							String absFilenameCpp = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath(activityName));
-							mFilesHelper.makeBackup(absFilenameCpp);
-							mLogger.debug("Executing RAD-Activity template for class: <" + e.getName() + "> generating: " + absFilenameCpp);
-							fsa.generateFile(mFilesHelper.toCppFilePath(activityName), this.generateSource(Config.getInstance().getCurrentModule(), activityName));
+					for (final String activityNames : _allActivityNames) {
+						// Multiple do-activities are separated by ';' char
+						String[] names = activityNames.split(";");
+						for (String activityName : names) {
+							boolean skip = mFilesHelper.skipFile(mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(activityName)));
+							if (skip == false) {
+								String absFilenameHpp = mFilesHelper.toAbsolutePath(mFilesHelper.toHppFilePath(activityName));
+								mLogger.debug("Executing RAD-Activity template for class: <" + e.getName() + "> generating: " + absFilenameHpp);
+								mFilesHelper.makeBackup(absFilenameHpp);
+								fsa.generateFile(mFilesHelper.toHppFilePath(activityName), this.generateHeader(Config.getInstance().getCurrentModule(), activityName));
+								String absFilenameCpp = mFilesHelper.toAbsolutePath(mFilesHelper.toCppFilePath(activityName));
+								mFilesHelper.makeBackup(absFilenameCpp);
+								mLogger.debug("Executing RAD-Activity template for class: <" + e.getName() + "> generating: " + absFilenameCpp);
+								fsa.generateFile(mFilesHelper.toCppFilePath(activityName), this.generateSource(Config.getInstance().getCurrentModule(), activityName));
+							}
 						}
 					}
 				}
