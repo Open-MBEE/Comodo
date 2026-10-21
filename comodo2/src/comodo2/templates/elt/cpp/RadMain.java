@@ -7,7 +7,7 @@ import comodo2.queries.QSignal;
 import comodo2.queries.QInterface;
 import comodo2.queries.QStereotype;
 import comodo2.utils.FilesHelper;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;

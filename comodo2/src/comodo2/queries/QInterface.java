@@ -1,7 +1,7 @@
 package comodo2.queries;
 
 import comodo2.engine.Config;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.Class;

@@ -6,7 +6,7 @@ import comodo2.queries.QClass;
 import comodo2.queries.QStateMachine;
 import comodo2.utils.FilesHelper;
 import java.util.TreeSet;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;

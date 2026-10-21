@@ -18,7 +18,7 @@ import comodo2.templates.elt.xml.Mal;
 import comodo2.templates.elt.yaml.RadCfg;
 import comodo2.templates.elt.yaml.RadEv;
 import comodo2.templates.scxml.Scxml;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;

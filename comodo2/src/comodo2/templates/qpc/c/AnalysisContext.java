@@ -1,6 +1,6 @@
 package comodo2.templates.qpc.c;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;

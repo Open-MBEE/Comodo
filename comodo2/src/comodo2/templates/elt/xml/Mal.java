@@ -7,7 +7,7 @@ import comodo2.utils.FilesHelper;
 import comodo2.utils.PropertyComparator;
 import comodo2.utils.ReceptionComparator;
 import java.util.TreeSet;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.log4j.Logger;
 

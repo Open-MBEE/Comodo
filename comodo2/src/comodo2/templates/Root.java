@@ -6,7 +6,7 @@ import comodo2.templates.scxml.Scxml;
 import comodo2.templates.qpc.Qpc;
 import comodo2.queries.QPackage;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
