@@ -2,16 +2,8 @@
 
 
 [libraries]
-# TODO remove when guice is updated
-javax-inject = { group = "javax.inject", name = "javax.inject", version = "1" }
 commons-cli = { group = "commons-cli", name = "commons-cli", version = "1.11.0" }
-# TODO
-# Version 7.0.0 is available but incompatible with comodo2, needs porting to jakarta.inject:
-# https://github.com/google/guice
-# > * **[6.0.0](https://github.com/google/guice/wiki/Guice600) (supports `javax.{inject,servlet,persistence}`, [mostly supports](https://github.com/google/guice/wiki/Guice600#jee-jakarta-transition) `jakarta.inject`)**
-# > * **[7.0.0](https://github.com/google/guice/wiki/Guice700) (supports `jakarta.{inject,servlet,persistence}`)**
-# > * (6.0.0 & 7.0.0 are equivalent except for their javax/jakarta support.)
-com-google-inject  = { group = "com.google.inject", name = "guice", version = "6.0.0" }
+com-google-inject  = { group = "com.google.inject", name = "guice", version = "7.0.0" }
 org-eclipse-emf = { group = "org.eclipse.emf", name = "org.eclipse.emf.common", version = "2.46.0" }
 org-antlr = { group = "org.antlr", name = "ST4", version = "4.3.4" }
 # TODO fails with >= 2.32.0

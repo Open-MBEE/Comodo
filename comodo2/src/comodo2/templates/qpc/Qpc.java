@@ -8,7 +8,7 @@ import comodo2.templates.qpc.impl.QpcHeaders;
 import comodo2.templates.qpc.impl.QpcImplFiles;
 import comodo2.templates.qpc.qm.Qm;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;

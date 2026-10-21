@@ -2,7 +2,7 @@ package comodo2.templates.elt.txt;
 
 import comodo2.queries.QClass;
 import comodo2.utils.FilesHelper;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;

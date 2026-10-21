@@ -2,7 +2,7 @@ package comodo2.queries;
 
 import com.google.common.collect.Iterables;
 import comodo2.engine.Config;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.uml2.uml.Element;

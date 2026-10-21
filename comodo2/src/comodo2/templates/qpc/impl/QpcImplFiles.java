@@ -2,7 +2,7 @@ package comodo2.templates.qpc.impl;
 
 import java.util.TreeSet;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.google.common.collect.Iterables;
 

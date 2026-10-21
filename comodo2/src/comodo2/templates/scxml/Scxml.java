@@ -12,7 +12,7 @@ import comodo2.utils.FilesHelper;
 import comodo2.utils.StateComparator;
 import comodo2.utils.TransitionComparator;
 import java.util.TreeSet;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
